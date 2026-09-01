@@ -1,7 +1,7 @@
 ---
 description: Writes and maintains documentation, READMEs, and inline comments.
 mode: subagent
-model: anthropic/claude-sonnet-4-6
+model: opencode/claude-sonnet-4-6
 ---
 
 You are a technical writer specializing in developer documentation. Focus on:

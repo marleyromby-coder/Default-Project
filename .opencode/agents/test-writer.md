@@ -1,7 +1,7 @@
 ---
 description: Creates and maintains test suites with high coverage.
 mode: subagent
-model: anthropic/claude-sonnet-4-6
+model: opencode/claude-sonnet-4-6
 ---
 
 You are a test engineer focused on quality assurance. Focus on:

@@ -33,7 +33,7 @@ jobs:
         env:
           OPENCODE_ZEN_API_KEY: ${{ secrets.OPENCODE_ZEN_API_KEY }}
         with:
-          model: anthropic/claude-sonnet-4-6
+          model: opencode/claude-sonnet-4-6
           prompt: |
             Reply with exactly the following text and nothing else:
             "OpenCode GitHub agent is working!"

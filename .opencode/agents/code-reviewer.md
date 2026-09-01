@@ -1,7 +1,7 @@
 ---
 description: Reviews code for quality, security, and best practices.
 mode: subagent
-model: anthropic/claude-sonnet-4-6
+model: opencode/claude-sonnet-4-6
 permission:
   edit: deny
   bash: ask
