@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #000; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x1a1a2e);
+        document.body.appendChild(renderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+
+        const pointLight = new THREE.PointLight(0x00ff88, 1, 100);
+        pointLight.position.set(-5, 3, -5);
+        scene.add(pointLight);
+
+        const torusKnotGeometry = new THREE.TorusKnotGeometry(1, 0.3, 128, 32);
+        const torusKnotMaterial = new THREE.MeshPhongMaterial({
+            color: 0x00aaff,
+            emissive: 0x002244,
+            shininess: 100,
+            wireframe: false
+        });
+        const torusKnot = new THREE.Mesh(torusKnotGeometry, torusKnotMaterial);
+        scene.add(torusKnot);
+
+        const icosahedronGeometry = new THREE.IcosahedronGeometry(0.3, 0);
+        const icosahedronMaterial = new THREE.MeshPhongMaterial({
+            color: 0xff0066,
+            emissive: 0x220011,
+            shininess: 100
+        });
+        const orbitingShapes = [];
+        for (let i = 0; i < 6; i++) {
+            const shape = new THREE.Mesh(icosahedronGeometry, icosahedronMaterial.clone());
+            shape.material.color.setHSL(i / 6, 0.8, 0.5);
+            scene.add(shape);
+            orbitingShapes.push({ mesh: shape, index: i });
+        }
+
+        const particleCount = 500;
+        const particleGeometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount * 3; i += 3) {
+            positions[i] = (Math.random() - 0.5) * 20;
+            positions[i + 1] = (Math.random() - 0.5) * 20;
+            positions[i + 2] = (Math.random() - 0.5) * 20;
+        }
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const particleMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.05 });
+        const particles = new THREE.Points(particleGeometry, particleMaterial);
+        scene.add(particles);
+
+        camera.position.z = 5;
+
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            torusKnot.rotation.x += 0.005;
+            torusKnot.rotation.y += 0.008;
+
+            torusKnot.scale.setScalar(1 + Math.sin(Date.now() * 0.001) * 0.1);
+
+            orbitingShapes.forEach(({ mesh, index }) => {
+                const angle = (Date.now() * 0.001) + (index * Math.PI * 2 / 6);
+                const radius = 2.5;
+                mesh.position.x = Math.cos(angle) * radius;
+                mesh.position.z = Math.sin(angle) * radius;
+                mesh.position.y = Math.sin(angle * 2) * 0.5;
+                mesh.rotation.x += 0.02;
+                mesh.rotation.y += 0.03;
+            });
+
+            particles.rotation.y += 0.0005;
+            particles.rotation.x += 0.0002;
+
+            camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
+            camera.position.y += (mouseY * 2 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+    </script>
+</body>
+</html>

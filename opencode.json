@@ -1,0 +1,59 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "anthropic/claude-sonnet-4-6",
+  "small_model": "anthropic/claude-haiku-3.5",
+  "default_agent": "build",
+  "logLevel": "INFO",
+  "share": "manual",
+  "autoupdate": true,
+
+  "agent": {
+    "code-reviewer": {
+      "description": "Reviews code for quality, security, and best practices.",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": {
+        "edit": "deny",
+        "bash": "ask"
+      }
+    },
+    "doc-writer": {
+      "description": "Writes and maintains documentation, READMEs, and inline comments.",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6"
+    },
+    "test-writer": {
+      "description": "Creates and maintains test suites with high coverage.",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6"
+    }
+  },
+
+  "skills": {
+    "paths": [".opencode/skills"]
+  },
+
+  "plugin": [],
+
+  "mcp": {},
+
+  "permission": {
+    "edit": "ask",
+    "bash": {
+      "git *": "allow",
+      "npm *": "allow",
+      "npx *": "allow",
+      "node *": "allow",
+      "python *": "allow",
+      "pip *": "allow",
+      "ls *": "allow",
+      "cat *": "allow",
+      "*": "ask"
+    },
+    "external_directory": {
+      "~/Documents/**": "allow",
+      "~/Desktop/**": "allow",
+      "*": "ask"
+    }
+  }
+}
