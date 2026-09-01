@@ -31,9 +31,9 @@ jobs:
       - name: Run OpenCode
         uses: anomalyco/opencode/github@latest
         env:
-          OPENCODE_ZEN_API_KEY: ${{ secrets.OPENCODE_ZEN_API_KEY }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         with:
-          model: claude-sonnet-4-6
+          model: opencode/claude-sonnet-4-6
           prompt: |
             Reply with exactly the following text and nothing else:
             "OpenCode GitHub agent is working!"
