@@ -16,6 +16,7 @@ import { AUTHORIZATION_LABELS, getCategory } from '@/data/categories';
 import { useResults } from '@/hooks/use-results';
 import { useTheme } from '@/hooks/use-theme';
 import { showDialog } from '@/lib/dialog';
+import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { activeFilterCount, DEFAULT_FILTERS } from '@/lib/filters';
 import { formatDistance, formatPriceRange } from '@/lib/format';
 import { summarizeJobPrice } from '@/lib/prices';
@@ -23,12 +24,13 @@ import { weightsFromPriorities } from '@/lib/ranking';
 import type { SortMode } from '@/lib/types';
 import { MAX_COMPARE, useApp } from '@/state/app-state';
 
-const SORT_OPTIONS: { value: SortMode; label: string; accessibilityLabel: string }[] = [
+const ALL_SORT_OPTIONS: { value: SortMode; label: string; accessibilityLabel: string }[] = [
   { value: 'match', label: 'Match', accessibilityLabel: 'Sortér efter bedste match' },
   { value: 'price', label: 'Pris', accessibilityLabel: 'Sortér efter laveste pris' },
   { value: 'distance', label: 'Afstand', accessibilityLabel: 'Sortér efter korteste afstand' },
   { value: 'rating', label: 'Anmeldelser', accessibilityLabel: 'Sortér efter bedste anmeldelser' },
 ];
+const SORT_OPTIONS = ALL_SORT_OPTIONS.filter((o) => TRUSTPILOT_ENABLED || o.value !== 'rating');
 
 export default function CategoryScreen() {
   const colors = useTheme();
@@ -49,7 +51,13 @@ export default function CategoryScreen() {
   const filterCount = activeFilterCount(filters);
   const weights = weightsFromPriorities(state.priorities);
   const jobPrice = useMemo(
-    () => (job && category ? summarizeJobPrice(job, state.businesses.filter((b) => b.categories.includes(category.id))) : null),
+    () =>
+      job && category
+        ? summarizeJobPrice(
+            job,
+            state.businesses.filter((b) => b.categories.includes(category.id)),
+          )
+        : null,
     [job, category, state.businesses],
   );
 
@@ -65,7 +73,10 @@ export default function CategoryScreen() {
   }
 
   const onCompareLimit = () =>
-    showDialog('Højst 3 ad gangen', `Du kan sammenligne op til ${MAX_COMPARE} virksomheder. Fjern en for at vælge en ny.`);
+    showDialog(
+      'Højst 3 ad gangen',
+      `Du kan sammenligne op til ${MAX_COMPARE} virksomheder. Fjern en for at vælge en ny.`,
+    );
 
   const toggle = (key: 'openNow' | 'emergency' | 'authorizedOnly') => setFilters({ ...filters, [key]: !filters[key] });
 
@@ -74,7 +85,8 @@ export default function CategoryScreen() {
       <View style={styles.summaryRow}>
         <AppText variant="subhead" tone="textSecondary" style={styles.flex}>
           {results.items.length} {results.items.length === 1 ? category.name : category.plural}{' '}
-          {filters.maxDistanceKm === null ? 'i hele landet' : `inden for ${filters.maxDistanceKm} km`} af {state.location.label}
+          {filters.maxDistanceKm === null ? 'i hele landet' : `inden for ${filters.maxDistanceKm} km`} af{' '}
+          {state.location.label}
         </AppText>
         <Tappable
           onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'rangering' } })}
@@ -94,7 +106,8 @@ export default function CategoryScreen() {
             {job.name}
           </AppText>
           <AppText variant="footnote" tone="textSecondary">
-            Typisk pris her: {formatPriceRange(jobPrice.min, jobPrice.max, jobPrice.unit)} inkl. moms. Vejledende – bed om et skriftligt tilbud.
+            Typisk pris her: {formatPriceRange(jobPrice.min, jobPrice.max, jobPrice.unit)} inkl. moms. Vejledende – bed
+            om et skriftligt tilbud.
           </AppText>
         </View>
       ) : null}
@@ -112,13 +125,20 @@ export default function CategoryScreen() {
         <Chip label="Åben nu" selected={filters.openNow} onPress={() => toggle('openNow')} />
         <Chip label="Døgnvagt" icon="bolt" selected={filters.emergency} onPress={() => toggle('emergency')} />
         {category.authorization ? (
-          <Chip label="Autoriseret" icon="shield" selected={filters.authorizedOnly} onPress={() => toggle('authorizedOnly')} />
+          <Chip
+            label="Autoriseret"
+            icon="shield"
+            selected={filters.authorizedOnly}
+            onPress={() => toggle('authorizedOnly')}
+          />
         ) : null}
-        <Chip
-          label="4+ på Trustpilot"
-          selected={filters.minRating === 4}
-          onPress={() => setFilters({ ...filters, minRating: filters.minRating === 4 ? null : 4 })}
-        />
+        {TRUSTPILOT_ENABLED ? (
+          <Chip
+            label="4+ på Trustpilot"
+            selected={filters.minRating === 4}
+            onPress={() => setFilters({ ...filters, minRating: filters.minRating === 4 ? null : 4 })}
+          />
+        ) : null}
       </ScrollView>
 
       <Tappable
@@ -167,7 +187,12 @@ export default function CategoryScreen() {
         data={results.items}
         keyExtractor={(item) => item.business.id}
         renderItem={({ item, index }) => (
-          <BusinessCard item={item} job={job} rank={sort === 'match' ? index + 1 : undefined} onCompareLimit={onCompareLimit} />
+          <BusinessCard
+            item={item}
+            job={job}
+            rank={sort === 'match' ? index + 1 : undefined}
+            onCompareLimit={onCompareLimit}
+          />
         )}
         ListHeaderComponent={header}
         ListEmptyComponent={
@@ -184,7 +209,12 @@ export default function CategoryScreen() {
                 <Button
                   title={results.nearestOutside ? 'Vis hele landet' : 'Nulstil filtre'}
                   variant="tinted"
-                  onPress={() => setFilters({ ...DEFAULT_FILTERS, maxDistanceKm: results.nearestOutside ? null : DEFAULT_FILTERS.maxDistanceKm })}
+                  onPress={() =>
+                    setFilters({
+                      ...DEFAULT_FILTERS,
+                      maxDistanceKm: results.nearestOutside ? null : DEFAULT_FILTERS.maxDistanceKm,
+                    })
+                  }
                 />
               ) : undefined
             }

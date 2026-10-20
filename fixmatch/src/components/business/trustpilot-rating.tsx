@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Stars } from '@/components/ui/stars';
 import { AppText } from '@/components/ui/text';
 import { Spacing } from '@/constants/theme';
+import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { formatNumber, formatRating, pluralize } from '@/lib/format';
 import type { TrustpilotInfo } from '@/lib/types';
 
@@ -16,6 +17,7 @@ interface Props {
  * Trustpilot's brand guidelines for licensed partners (see docs/jura).
  */
 export function TrustpilotRating({ trustpilot, size = 'small' }: Props) {
+  if (!TRUSTPILOT_ENABLED) return null;
   if (!trustpilot) {
     return (
       <AppText variant={size === 'large' ? 'subhead' : 'footnote'} tone="textSecondary">

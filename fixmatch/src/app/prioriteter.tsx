@@ -10,6 +10,7 @@ import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { PRIORITY_PRESETS, weightsFromPriorities } from '@/lib/ranking';
 import type { Priorities } from '@/lib/types';
 import { useApp } from '@/state/app-state';
@@ -49,7 +50,7 @@ export default function PrioritiesScreen() {
           })}
         </View>
 
-        {FACTORS.map((factor) => (
+        {FACTORS.filter((f) => TRUSTPILOT_ENABLED || f.key !== 'reviews').map((factor) => (
           <View key={factor.key} style={[styles.factor, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <View style={styles.factorHeader}>
               <View style={[styles.factorIcon, { backgroundColor: colors.brandSoft }]}>

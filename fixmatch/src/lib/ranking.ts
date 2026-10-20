@@ -1,3 +1,4 @@
+import { TRUSTPILOT_ENABLED } from './features';
 import { distanceKm } from './geo';
 import type { Business, CategoryId, Coords, Priorities, SortMode } from './types';
 
@@ -43,10 +44,10 @@ export function clampPriority(value: number): number {
   return Math.min(5, Math.max(1, Math.round(value)));
 }
 
-export function weightsFromPriorities(priorities: Priorities): Weights {
+export function weightsFromPriorities(priorities: Priorities, reviewsEnabled = TRUSTPILOT_ENABLED): Weights {
   const price = clampPriority(priorities.price);
   const distance = clampPriority(priorities.distance);
-  const reviews = clampPriority(priorities.reviews);
+  const reviews = reviewsEnabled ? clampPriority(priorities.reviews) : 0;
   const total = price + distance + reviews;
   return { price: price / total, distance: distance / total, reviews: reviews / total };
 }

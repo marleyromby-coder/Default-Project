@@ -18,6 +18,7 @@ import { CATEGORIES, getCategory } from '@/data/categories';
 import { useGps, GPS_MESSAGES } from '@/hooks/use-gps';
 import { useTheme } from '@/hooks/use-theme';
 import { DATA_MODE } from '@/lib/data-source';
+import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { showDialog } from '@/lib/dialog';
 import { formatDistance, formatHourly, formatPriceRange } from '@/lib/format';
 import { distanceKm } from '@/lib/geo';
@@ -232,7 +233,7 @@ export default function HomeScreen() {
         </Section>
       ) : null}
 
-      {topRated.length > 0 ? (
+      {TRUSTPILOT_ENABLED && topRated.length > 0 ? (
         <Section title="Bedst anmeldt nær dig" subtitle="Højeste TrustScore inden for 10 km">
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
             {topRated.map(({ business, km }) => (

@@ -1,56 +1,116 @@
-# Welcome to your Expo app 👋
+# FixMatch
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**Find den rette håndværker eller mekaniker – sammenlign pris, afstand og Trustpilot-anmeldelser, og ring direkte.**
 
-## Get started
+FixMatch er en iPhone-app (Expo / React Native) til det danske marked. Brugeren vælger et fag eller en opgave og får lokale virksomheder rangeret efter en gennemsigtig FixMatch-score. Hver virksomhed har en side med telefonnummer, hjemmeside, prisinterval inkl. moms, TrustScore, CVR, autorisation og åbningstider.
 
-1. Install dependencies
+| Fag | VVS'er · Elektriker · Tømrer · Murer · Mekaniker · Maler · Tagdækker · Låsesmed |
+| --- | --- |
+| Sammenligning | Pris (timepris + eksempelpriser), afstand (luftlinje) og Trustpilot (TrustScore, antal anmeldelser) |
+| Kontakt | Ring op, hjemmeside, rutevejledning, del |
+| Andet | Personlige prioriteter, filtre, sammenlign op til 3, gemte, kort, søgning, akut/døgnvagt, mørk tilstand, VoiceOver |
+| Jura indbygget | "Sådan rangerer vi" (mfl. § 6 a), "Om anmeldelser" (mfl. § 6 b), annoncer altid markeret, priser inkl. moms, "Rapportér fejl" (DSA art. 16) |
 
-   ```bash
-   npm install
-   ```
+---
 
-2. Start the app
+## Kom i gang (5 minutter)
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Krav: [Node.js 20+](https://nodejs.org) og en iPhone med appen **Expo Go** (gratis i App Store).
 
 ```bash
-npm run reset-project
+cd fixmatch
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+Scan QR-koden med iPhonens kamera → appen åbner i Expo Go. Alt du ændrer i koden, vises med det samme.
 
-### Other setup steps
+- **Web-demo** (til projektor eller jury på bærbar): `npx expo start --web`, eller `npm run export:web` og læg mappen `dist/` på fx Netlify, Vercel eller GitHub Pages.
+- **Tjek koden**: `npm run check` (TypeScript, lint og 38 tests).
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+> Appen starter i **demotilstand** med 104 fiktive virksomheder i København, Aarhus, Odense og Aalborg. De er tydeligt markeret, telefonnumre er i en ubrugt nummerserie, CVR-numre er ugyldige, og opkald er slået fra.
 
-## Learn more
+## Fotos
 
-To learn more about developing your project with Expo, look at the following resources:
+Fotos er rigtige fotos fra [Pexels](https://www.pexels.com/license/) (gratis til kommerciel brug). De hentes fra Pexels' CDN og gemmes på telefonen. Før App Store-udgivelsen bør de lægges ind i appen, så den også virker offline:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npm run photos:bundle   # kræver internet; henter alle fotos til assets/photos/
+```
 
-## Join the community
+Fotos til de rigtige virksomheder: brug virksomhedens egne billeder (med deres tilladelse – det står i samtykket) og angiv en https-adresse i kolonnen `billede`.
 
-Join our community of developers creating universal apps.
+## Rigtige virksomheder: fra regneark til app
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+1. Kopiér `templates/virksomheder-skabelon.csv` til Google Sheets (Filer → Importér) eller Excel. Én række pr. virksomhed.
+2. Udfyld **kun** oplysninger, virksomheden har godkendt. Kolonnen `samtykke_dato` skal udfyldes – rækker uden samtykke afvises.
+3. Eksportér som CSV og kør:
+
+   ```bash
+   npm run import:businesses -- ~/Downloads/virksomheder.csv
+   ```
+
+   Scriptet tjekker CVR, telefonnummer, postnummer, priser, Trustpilot-link, åbningstider og autorisation og skriver fejl på dansk. Gyldige rækker gemmes i `src/data/live-businesses.json`.
+
+4. Byg appen med `EXPO_PUBLIC_FIXMATCH_DATA=live` (er sat i `eas.json` under `production`).
+
+Formater i regnearket:
+
+| Kolonne | Eksempel |
+| --- | --- |
+| `kategorier` | `vvs` eller `toemrer\|tagdaekker` |
+| `prisexempler` | `Stoppet afløb=1200-2500; Nyt trægulv=350-650/m2` |
+| `autorisationer` | `vvs:12345\|kloak:23456` |
+| `aabningstider` | `man-tor 07:00-15:30; fre 07:00-14:00; lør-søn lukket` |
+| `doegnvagt`, `annonce` | `ja` / `nej` |
+| `breddegrad`, `laengdegrad` | Højreklik på adressen i Google Maps → kopiér koordinater. Tomme felter → postnummerets midtpunkt |
+
+**Opdatering uden ny app-version:** læg `live-businesses.json` på en https-adresse og sæt `EXPO_PUBLIC_FIXMATCH_DATA_URL`. Appen henter listen ved opstart og bruger den indbyggede, hvis den er offline.
+
+## Til App Store
+
+Du behøver **ikke** en Mac – EAS bygger appen i skyen.
+
+1. Opret en Apple Developer-konto (99 USD/år). Som virksomhed kræver det et D-U-N-S-nummer (gratis, tager nogle dage).
+2. Opret appen i [App Store Connect](https://appstoreconnect.apple.com) med bundle id `dk.fixmatch.app`. Kopiér App ID ind i `eas.json` (`ascAppId`).
+3. Udfyld virksomhedsoplysningerne i `src/constants/app-info.ts` (navn, CVR, e-mail, hjemmeside, privatlivs-URL).
+4. Byg og upload:
+
+   ```bash
+   npx eas-cli@latest login
+   npx eas-cli@latest build -p ios --profile testflight   # demodata, til jury og test
+   npx eas-cli@latest submit -p ios --profile testflight
+   ```
+
+   Når de rigtige virksomheder er importeret: `--profile production`.
+
+5. Følg `docs/app-store/tjekliste.md` og brug teksterne i `docs/app-store/app-store-tekster.md`.
+
+> **Trustpilot er slået fra i `production`** (`EXPO_PUBLIC_FIXMATCH_TRUSTPILOT=off` i `eas.json`). Så skjules TrustScores, anmeldelsesfiltre og anmeldelsesvægt. Skift til `on`, når partneraftalen med Trustpilot er underskrevet.
+>
+> **Byg aldrig production med demodata.** Apple afviser apps med pladsholder-indhold (retningslinje 2.1), og Trustpilot-scorer må først vises, når der er en aftale med Trustpilot (se `docs/jura/`).
+
+## Projektstruktur
+
+```
+src/app/            Skærme (Expo Router): faner, kategori, virksomhed, sammenlign, søg, filtre …
+src/components/     UI-komponenter (kort, knapper, Trustpilot-visning, kort/radar)
+src/lib/            Logik: rangering, filtre, åbningstider, søgning, formatering, kontakt
+src/data/           Fag, fotos, postnumre, demodata, live-data og tekster
+src/state/          App-tilstand (gemmes kun på telefonen)
+scripts/            Import af regneark, fotos, postnumre, demodata og ikoner
+templates/          Regnearksskabelon til virksomheder
+docs/app-store/     App Store-tekster, privatlivs-svar og tjekliste
+docs/jura/          Samtykke, privatlivspolitik, vilkår, Trustpilot og kontakt-regler
+```
+
+## Sådan virker FixMatch-scoren
+
+`src/lib/ranking.ts` – og forklaret for brugeren på siden "Sådan rangerer vi":
+
+- **Pris**: timeprisens midtpunkt sammenlignet med de andre i faget (billigst = 1, dyrest = 0).
+- **Afstand**: `e^(−km/15)` – 0 km = 1, 15 km ≈ 0,37.
+- **Anmeldelser**: Bayesiansk gennemsnit af TrustScore (20 "neutrale" anmeldelser på 3,9 lægges til) fra 2,5–5,0 → 0–1.
+- **Score** = vægtet sum × 100. Brugeren vælger vægtene. Betaling (`promoted`) påvirker aldrig scoren.
+
+Ændrer I formlen, så opdatér teksten i `src/data/content.ts` – markedsføringsloven § 6 a kræver, at rangeringen er beskrevet korrekt.

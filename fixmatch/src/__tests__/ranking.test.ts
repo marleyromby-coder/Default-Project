@@ -35,6 +35,12 @@ describe('weights', () => {
     expect(w.price).toBeCloseTo(5 / 9);
   });
 
+  it('drops the review weight when Trustpilot is switched off', () => {
+    const w = weightsFromPriorities({ price: 3, distance: 3, reviews: 5 }, false);
+    expect(w.reviews).toBe(0);
+    expect(w.price).toBeCloseTo(0.5);
+  });
+
   it('clamps out-of-range values', () => {
     const w = weightsFromPriorities({ price: 99, distance: -3, reviews: 1 });
     expect(w.price).toBeCloseTo(5 / 7);

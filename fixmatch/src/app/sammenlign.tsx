@@ -15,6 +15,7 @@ import { getCategory } from '@/data/categories';
 import { useScored } from '@/hooks/use-results';
 import { useTheme } from '@/hooks/use-theme';
 import { callBusiness } from '@/lib/contact';
+import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { formatDistance, formatHourly, formatNumber, formatPrice, formatPriceRange, formatRating } from '@/lib/format';
 import { getOpenStatus } from '@/lib/opening-hours';
 import { priceIndex, reviewValue, type ScoredBusiness } from '@/lib/ranking';
@@ -81,7 +82,9 @@ export default function CompareScreen() {
       <ScrollView contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + Spacing.xxl }]}>
         <View style={styles.columns}>
           {items.map(({ business }) => (
-            <View key={business.id} style={[styles.headerCell, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View
+              key={business.id}
+              style={[styles.headerCell, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               <Photo photo={business.photo} category={business.categories[0]} width={400} style={styles.photo} />
               <Tappable
                 onPress={() => toggleCompare(business.id)}
@@ -154,27 +157,29 @@ export default function CompareScreen() {
             </Value>
           ))}
         </Row>
-        <Row label="Trustpilot">
-          {items.map((s) => (
-            <Value key={s.business.id} best={winners.rating === s.business.id} bestLabel="Bedst anmeldt">
-              {s.business.trustpilot ? (
-                <>
-                  <AppText variant="subhead" weight="600">
-                    {formatRating(s.business.trustpilot.score)}
+        {TRUSTPILOT_ENABLED ? (
+          <Row label="Trustpilot">
+            {items.map((s) => (
+              <Value key={s.business.id} best={winners.rating === s.business.id} bestLabel="Bedst anmeldt">
+                {s.business.trustpilot ? (
+                  <>
+                    <AppText variant="subhead" weight="600">
+                      {formatRating(s.business.trustpilot.score)}
+                    </AppText>
+                    <Stars value={s.business.trustpilot.score} size={11} />
+                    <AppText variant="caption" tone="textSecondary">
+                      {formatNumber(s.business.trustpilot.reviews)} anm.
+                    </AppText>
+                  </>
+                ) : (
+                  <AppText variant="footnote" tone="textSecondary">
+                    Ingen profil
                   </AppText>
-                  <Stars value={s.business.trustpilot.score} size={11} />
-                  <AppText variant="caption" tone="textSecondary">
-                    {formatNumber(s.business.trustpilot.reviews)} anm.
-                  </AppText>
-                </>
-              ) : (
-                <AppText variant="footnote" tone="textSecondary">
-                  Ingen profil
-                </AppText>
-              )}
-            </Value>
-          ))}
-        </Row>
+                )}
+              </Value>
+            ))}
+          </Row>
+        ) : null}
         <Row label="Åben nu">
           {items.map((s) => {
             const status = getOpenStatus(s.business.hours);
@@ -215,7 +220,14 @@ export default function CompareScreen() {
         <View style={styles.columns}>
           {items.map(({ business }) => (
             <View key={business.id} style={styles.actionCell}>
-              <Button title="Ring" icon="phone" size="small" onPress={() => callBusiness(business)} block accessibilityLabel={`Ring til ${business.name}`} />
+              <Button
+                title="Ring"
+                icon="phone"
+                size="small"
+                onPress={() => callBusiness(business)}
+                block
+                accessibilityLabel={`Ring til ${business.name}`}
+              />
               <Button
                 title="Se side"
                 variant="secondary"
@@ -278,7 +290,12 @@ function YesNo({ value }: { value: boolean }) {
   const colors = useTheme();
   return (
     <View style={styles.yesNo}>
-      <Icon name={value ? 'check' : 'close'} size={14} color={value ? colors.success : colors.textTertiary} weight="bold" />
+      <Icon
+        name={value ? 'check' : 'close'}
+        size={14}
+        color={value ? colors.success : colors.textTertiary}
+        weight="bold"
+      />
       <AppText variant="footnote" tone={value ? 'success' : 'textSecondary'}>
         {value ? 'Ja' : 'Nej'}
       </AppText>
@@ -289,7 +306,13 @@ function YesNo({ value }: { value: boolean }) {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   content: { padding: ScreenPadding, gap: Spacing.md },
-  headerButton: { minHeight: 44, minWidth: 44, justifyContent: 'center', alignItems: 'flex-end', paddingHorizontal: Spacing.sm },
+  headerButton: {
+    minHeight: 44,
+    minWidth: 44,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    paddingHorizontal: Spacing.sm,
+  },
   columns: { flexDirection: 'row', gap: Spacing.sm },
   headerCell: { flex: 1, borderRadius: Radius.lg, borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden' },
   photo: { height: 84 },
@@ -308,9 +331,23 @@ const styles = StyleSheet.create({
   row: { gap: 6 },
   rowLabel: { letterSpacing: 0.3, paddingHorizontal: Spacing.xs },
   rowCells: { borderWidth: StyleSheet.hairlineWidth, borderRadius: Radius.md, gap: 0, overflow: 'hidden' },
-  cell: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: Spacing.md, paddingHorizontal: Spacing.xs, gap: 3 },
+  cell: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.xs,
+    gap: 3,
+  },
   cellDivider: { width: StyleSheet.hairlineWidth },
-  best: { flexDirection: 'row', alignItems: 'center', gap: 3, paddingHorizontal: 6, paddingVertical: 2, borderRadius: Radius.pill },
+  best: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: Radius.pill,
+  },
   yesNo: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   actionCell: { flex: 1, gap: Spacing.sm },
   note: { marginTop: Spacing.sm },

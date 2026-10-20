@@ -32,6 +32,7 @@ import {
   shareBusiness,
 } from '@/lib/contact';
 import { showDialog } from '@/lib/dialog';
+import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import {
   displayHost,
   formatCvr,
@@ -82,7 +83,10 @@ export default function BusinessScreen() {
   const goBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
   const onCompare = () => {
     if (!toggleCompare(business.id)) {
-      showDialog('Højst 3 ad gangen', `Du kan sammenligne op til ${MAX_COMPARE} virksomheder. Fjern en for at vælge en ny.`);
+      showDialog(
+        'Højst 3 ad gangen',
+        `Du kan sammenligne op til ${MAX_COMPARE} virksomheder. Fjern en for at vælge en ny.`,
+      );
     }
   };
 
@@ -97,7 +101,13 @@ export default function BusinessScreen() {
           if (past !== scrolled) setScrolled(past);
         }}>
         <View style={{ height: HERO_HEIGHT + insets.top }}>
-          <Photo photo={business.photo} category={business.categories[0]} width={1200} scrim style={StyleSheet.absoluteFill} />
+          <Photo
+            photo={business.photo}
+            category={business.categories[0]}
+            width={1200}
+            scrim
+            style={StyleSheet.absoluteFill}
+          />
           <View style={styles.heroText}>
             <View style={styles.heroBadges}>
               {category ? <Badge label={category.name} tone="neutral" icon={category.id} /> : null}
@@ -143,7 +153,12 @@ export default function BusinessScreen() {
 
           <Card>
             <CardTitle title="Kontakt" icon="phone" />
-            <InfoRow icon="phone" label="Telefon" value={formatPhone(business.contact.phone)} onPress={() => callBusiness(business)} />
+            <InfoRow
+              icon="phone"
+              label="Telefon"
+              value={formatPhone(business.contact.phone)}
+              onPress={() => callBusiness(business)}
+            />
             <Divider inset={30} />
             {business.contact.website ? (
               <>
@@ -176,25 +191,34 @@ export default function BusinessScreen() {
             ) : null}
           </Card>
 
-          <Card>
-            <CardTitle title="Anmeldelser" icon="star" />
-            <TrustpilotRating trustpilot={business.trustpilot} size="large" />
-            {business.trustpilot ? (
-              <>
-                <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
-                  Hentet fra Trustpilot {formatDate(business.trustpilot.updatedAt)}. FixMatch ændrer eller udvælger ikke anmeldelser.
+          {TRUSTPILOT_ENABLED ? (
+            <Card>
+              <CardTitle title="Anmeldelser" icon="star" />
+              <TrustpilotRating trustpilot={business.trustpilot} size="large" />
+              {business.trustpilot ? (
+                <>
+                  <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
+                    Hentet fra Trustpilot {formatDate(business.trustpilot.updatedAt)}. FixMatch ændrer eller udvælger
+                    ikke anmeldelser.
+                  </AppText>
+                  <View style={styles.buttonRow}>
+                    <Button
+                      title="Se anmeldelser på Trustpilot"
+                      icon="external"
+                      variant="secondary"
+                      size="small"
+                      onPress={() => openTrustpilot(business)}
+                    />
+                  </View>
+                </>
+              ) : (
+                <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
+                  Virksomheden har endnu ingen anmeldelser på Trustpilot. Den rangeres derfor med en neutral score.
                 </AppText>
-                <View style={styles.buttonRow}>
-                  <Button title="Se anmeldelser på Trustpilot" icon="external" variant="secondary" size="small" onPress={() => openTrustpilot(business)} />
-                </View>
-              </>
-            ) : (
-              <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
-                Virksomheden har endnu ingen anmeldelser på Trustpilot. Den rangeres derfor med en neutral score.
-              </AppText>
-            )}
-            <LinkText label="Om anmeldelser i FixMatch" slug="anmeldelser" />
-          </Card>
+              )}
+              <LinkText label="Om anmeldelser i FixMatch" slug="anmeldelser" />
+            </Card>
+          ) : null}
 
           <Card>
             <CardTitle title="Priser" icon="tag" />
@@ -204,7 +228,9 @@ export default function BusinessScreen() {
               </AppText>
               <AppText variant="footnote" tone="textSecondary">
                 Timepris inkl. moms
-                {business.pricing.calloutFee ? ` · kørsel/opstart ${formatPrice(business.pricing.calloutFee)} pr. besøg` : ' · ingen kørselsgebyr'}
+                {business.pricing.calloutFee
+                  ? ` · kørsel/opstart ${formatPrice(business.pricing.calloutFee)} pr. besøg`
+                  : ' · ingen kørselsgebyr'}
               </AppText>
               <PriceLevel level={level} trade={tradePlural} />
             </View>
@@ -226,7 +252,8 @@ export default function BusinessScreen() {
               </View>
             ) : null}
             <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
-              Vejledende priser oplyst af virksomheden {formatDate(business.pricing.updatedAt)}. Materialer kan komme oveni. Bed altid om et skriftligt tilbud.
+              Vejledende priser oplyst af virksomheden {formatDate(business.pricing.updatedAt)}. Materialer kan komme
+              oveni. Bed altid om et skriftligt tilbud.
             </AppText>
             <LinkText label="Om priserne og håndværkerfradrag" slug="priser" />
           </Card>
@@ -235,7 +262,13 @@ export default function BusinessScreen() {
             <CardTitle title={`Match-score ${scored.score} · ${matchLabel(scored.score)}`} icon="sparkles" />
             <ScoreBars parts={scored.parts} weights={weights} />
             <View style={styles.buttonRow}>
-              <Button title="Justér dine prioriteter" icon="sliders" variant="tinted" size="small" onPress={() => router.push('/prioriteter')} />
+              <Button
+                title="Justér dine prioriteter"
+                icon="sliders"
+                variant="tinted"
+                size="small"
+                onPress={() => router.push('/prioriteter')}
+              />
             </View>
             <LinkText label="Sådan rangerer vi" slug="rangering" />
           </Card>
@@ -248,7 +281,11 @@ export default function BusinessScreen() {
                   {WEEKDAYS[index]}
                   {index === today ? ' (i dag)' : ''}
                 </AppText>
-                <AppText variant="subhead" tone={slot ? 'text' : 'textSecondary'} weight={index === today ? '700' : '400'} tabular>
+                <AppText
+                  variant="subhead"
+                  tone={slot ? 'text' : 'textSecondary'}
+                  weight={index === today ? '700' : '400'}
+                  tabular>
                   {slot ? `${slot[0].replace(':', '.')}–${slot[1].replace(':', '.')}` : 'Lukket'}
                 </AppText>
               </View>
@@ -294,7 +331,10 @@ export default function BusinessScreen() {
                   value={`Aut.nr. ${auth.number}`}
                   onPress={() =>
                     business.demo
-                      ? showDialog('Eksempelvirksomhed', 'I den færdige app kan du slå autorisationen op i Sikkerhedsstyrelsens register.')
+                      ? showDialog(
+                          'Eksempelvirksomhed',
+                          'I den færdige app kan du slå autorisationen op i Sikkerhedsstyrelsens register.',
+                        )
                       : openLink(AUTHORIZATION_REGISTER_URL)
                   }
                 />
@@ -307,21 +347,35 @@ export default function BusinessScreen() {
               </View>
             ))}
             <Divider inset={30} />
-            <InfoRow icon="check" label="Samtykke" value={`Godkendt af virksomheden ${formatDate(business.consent.date)}`} />
+            <InfoRow
+              icon="check"
+              label="Samtykke"
+              value={`Godkendt af virksomheden ${formatDate(business.consent.date)}`}
+            />
           </Card>
 
           <View style={styles.footer}>
             <AppText variant="caption" tone="textSecondary" align="center">
-              Oplysningerne er opdateret {formatDate(business.updatedAt)}. FixMatch er ikke part i aftaler mellem dig og virksomheden.
+              Oplysningerne er opdateret {formatDate(business.updatedAt)}. FixMatch er ikke part i aftaler mellem dig og
+              virksomheden.
             </AppText>
-            <Button title="Rapportér fejl eller ulovligt indhold" icon="flag" variant="plain" size="small" onPress={() => reportProblem(business)} />
+            <Button
+              title="Rapportér fejl eller ulovligt indhold"
+              icon="flag"
+              variant="plain"
+              size="small"
+              onPress={() => reportProblem(business)}
+            />
           </View>
         </View>
       </ScrollView>
 
       {scrolled ? (
         <View
-          style={[styles.topBar, { height: insets.top + 60, backgroundColor: colors.surface, borderBottomColor: colors.border }]}
+          style={[
+            styles.topBar,
+            { height: insets.top + 60, backgroundColor: colors.surface, borderBottomColor: colors.border },
+          ]}
           pointerEvents="none">
           <AppText variant="headline" numberOfLines={1} style={styles.topBarTitle}>
             {business.name}
@@ -344,7 +398,11 @@ export default function BusinessScreen() {
       <View
         style={[
           styles.contactBar,
-          { paddingBottom: Math.max(insets.bottom, Spacing.md), backgroundColor: colors.surface, borderTopColor: colors.border },
+          {
+            paddingBottom: Math.max(insets.bottom, Spacing.md),
+            backgroundColor: colors.surface,
+            borderTopColor: colors.border,
+          },
         ]}>
         <Button
           title={`Ring ${formatPhone(business.contact.phone)}`}
@@ -391,17 +449,35 @@ function QuickAction({
       accessibilityState={selected === undefined ? undefined : { selected }}
       style={[
         styles.quickAction,
-        { backgroundColor: filled ? colors.brandStrong : colors.surface, borderColor: filled ? colors.brandStrong : colors.border },
+        {
+          backgroundColor: filled ? colors.brandStrong : colors.surface,
+          borderColor: filled ? colors.brandStrong : colors.border,
+        },
       ]}>
       <Icon name={icon} size={20} color={filled ? colors.onBrand : colors.brandText} weight="semibold" />
-      <AppText variant="caption" weight="600" style={{ color: filled ? colors.onBrand : colors.text }} numberOfLines={1} maxFontSizeMultiplier={1.2}>
+      <AppText
+        variant="caption"
+        weight="600"
+        style={{ color: filled ? colors.onBrand : colors.text }}
+        numberOfLines={1}
+        maxFontSizeMultiplier={1.2}>
         {label}
       </AppText>
     </Tappable>
   );
 }
 
-function InfoRow({ icon, label, value, onPress }: { icon: IconName; label: string; value: string; onPress?: () => void }) {
+function InfoRow({
+  icon,
+  label,
+  value,
+  onPress,
+}: {
+  icon: IconName;
+  label: string;
+  value: string;
+  onPress?: () => void;
+}) {
   const colors = useTheme();
   const content = (
     <View style={styles.infoRow}>
@@ -428,7 +504,10 @@ function InfoRow({ icon, label, value, onPress }: { icon: IconName; label: strin
 function Fact({ icon, label, value }: { icon: IconName; label: string; value: string }) {
   const colors = useTheme();
   return (
-    <View style={[styles.fact, { backgroundColor: colors.surfaceAlt }]} accessible accessibilityLabel={`${label}: ${value}`}>
+    <View
+      style={[styles.fact, { backgroundColor: colors.surfaceAlt }]}
+      accessible
+      accessibilityLabel={`${label}: ${value}`}>
       <Icon name={icon} size={16} color={colors.brand} />
       <View>
         <AppText variant="caption" tone="textSecondary">
@@ -494,7 +573,13 @@ const styles = StyleSheet.create({
     gap: 4,
     paddingHorizontal: 4,
   },
-  infoRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, minHeight: MinTouchSize + 8, paddingVertical: Spacing.xs },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.md,
+    minHeight: MinTouchSize + 8,
+    paddingVertical: Spacing.xs,
+  },
   spaced: { marginTop: Spacing.md },
   buttonRow: { flexDirection: 'row', marginTop: Spacing.md },
   priceHeader: { gap: Spacing.xs },
@@ -503,7 +588,14 @@ const styles = StyleSheet.create({
   hoursRow: { flexDirection: 'row', paddingVertical: 5 },
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs, marginTop: Spacing.md },
   facts: { flexDirection: 'row', gap: Spacing.sm, marginTop: Spacing.md },
-  fact: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md },
+  fact: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+    padding: Spacing.md,
+    borderRadius: Radius.md,
+  },
   linkText: { marginTop: Spacing.sm, minHeight: 36, justifyContent: 'center', alignSelf: 'flex-start' },
   footer: { gap: Spacing.sm, alignItems: 'center', paddingTop: Spacing.sm },
   topBar: {
@@ -516,7 +608,7 @@ const styles = StyleSheet.create({
     paddingBottom: 18,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  topBarTitle: { maxWidth: '60%' },
+  topBarTitle: { maxWidth: '50%' },
   topButtons: {
     position: 'absolute',
     left: ScreenPadding,

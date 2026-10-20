@@ -6,26 +6,39 @@
   "build": {
     "demo": {
       "distribution": "internal",
-      "env": { "EXPO_PUBLIC_FIXMATCH_DATA": "demo" },
-      "ios": { "simulator": false }
+      "env": {
+        "EXPO_PUBLIC_FIXMATCH_DATA": "demo"
+      },
+      "ios": {
+        "simulator": false
+      }
     },
     "testflight": {
       "distribution": "store",
       "autoIncrement": true,
-      "env": { "EXPO_PUBLIC_FIXMATCH_DATA": "demo" }
+      "env": {
+        "EXPO_PUBLIC_FIXMATCH_DATA": "demo"
+      }
     },
     "production": {
       "distribution": "store",
       "autoIncrement": true,
-      "env": { "EXPO_PUBLIC_FIXMATCH_DATA": "live" }
+      "env": {
+        "EXPO_PUBLIC_FIXMATCH_DATA": "live",
+        "EXPO_PUBLIC_FIXMATCH_TRUSTPILOT": "off"
+      }
     }
   },
   "submit": {
     "testflight": {
-      "ios": { "ascAppId": "UDFYLD_MED_APP_ID_FRA_APP_STORE_CONNECT" }
+      "ios": {
+        "ascAppId": "UDFYLD_MED_APP_ID_FRA_APP_STORE_CONNECT"
+      }
     },
     "production": {
-      "ios": { "ascAppId": "UDFYLD_MED_APP_ID_FRA_APP_STORE_CONNECT" }
+      "ios": {
+        "ascAppId": "UDFYLD_MED_APP_ID_FRA_APP_STORE_CONNECT"
+      }
     }
   }
 }
