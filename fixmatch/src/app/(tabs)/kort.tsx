@@ -58,34 +58,38 @@ export default function MapScreen() {
 
       {selected ? (
         <View style={[styles.sheet, { bottom: insets.bottom + 90 }]}>
-          <Tappable
-            onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: selected.business.id } })}
-            accessibilityLabel={`${selected.business.name}, ${formatDistance(selected.distanceKm)} væk. Åbn`}
-            pressedOpacity={0.8}
-            style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border, shadowColor: colors.shadow }]}>
-            <Photo photo={selected.business.photo} category={selected.business.categories[0]} width={300} style={styles.photo} />
-            <View style={styles.cardBody}>
-              <View style={styles.row}>
-                <AppText variant="headline" numberOfLines={1} style={styles.flex}>
-                  {selected.business.name}
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border, shadowColor: colors.shadow }]}>
+            <Tappable
+              onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: selected.business.id } })}
+              accessibilityLabel={`${selected.business.name}, ${formatDistance(selected.distanceKm)} væk. Åbn`}
+              pressedOpacity={0.8}
+              style={styles.cardMain}>
+              <Photo photo={selected.business.photo} category={selected.business.categories[0]} width={300} style={styles.photo} />
+              <View style={styles.cardBody}>
+                <View style={styles.row}>
+                  <AppText variant="headline" numberOfLines={1} style={styles.flex}>
+                    {selected.business.name}
+                  </AppText>
+                  <MatchBadge score={selected.score} />
+                </View>
+                <TrustpilotRating trustpilot={selected.business.trustpilot} />
+                <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
+                  {formatHourly(selected.business.pricing.hourlyMin, selected.business.pricing.hourlyMax)} ·{' '}
+                  {formatDistance(selected.distanceKm)}
                 </AppText>
-                <MatchBadge score={selected.score} />
               </View>
-              <TrustpilotRating trustpilot={selected.business.trustpilot} />
-              <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
-                {formatHourly(selected.business.pricing.hourlyMin, selected.business.pricing.hourlyMax)} · {formatDistance(selected.distanceKm)}
-              </AppText>
-              <View style={styles.row}>
-                <Button title="Ring" icon="phone" size="small" onPress={() => callBusiness(selected.business)} />
-                <Button
-                  title="Se side"
-                  variant="secondary"
-                  size="small"
-                  onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: selected.business.id } })}
-                />
-              </View>
+            </Tappable>
+            <View style={[styles.cardActions, { borderTopColor: colors.border }]}>
+              <Button title="Ring" icon="phone" size="small" onPress={() => callBusiness(selected.business)} style={styles.flex} />
+              <Button
+                title="Se side"
+                variant="secondary"
+                size="small"
+                style={styles.flex}
+                onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: selected.business.id } })}
+              />
             </View>
-          </Tappable>
+          </View>
         </View>
       ) : null}
     </View>
@@ -100,7 +104,6 @@ const styles = StyleSheet.create({
   chips: { paddingHorizontal: ScreenPadding, gap: Spacing.sm },
   sheet: { position: 'absolute', left: ScreenPadding, right: ScreenPadding },
   card: {
-    flexDirection: 'row',
     borderRadius: Radius.lg,
     borderWidth: StyleSheet.hairlineWidth,
     overflow: 'hidden',
@@ -109,7 +112,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     elevation: 6,
   },
-  photo: { width: 96 },
+  cardMain: { flexDirection: 'row' },
+  cardActions: { flexDirection: 'row', gap: Spacing.sm, padding: Spacing.sm, borderTopWidth: StyleSheet.hairlineWidth },
+  photo: { width: 96, minHeight: 96 },
   cardBody: { flex: 1, padding: Spacing.md, gap: 5 },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
 });

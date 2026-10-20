@@ -17,6 +17,7 @@ export default function AppTabs() {
     <Tabs>
       <TabSlot style={styles.slot} />
       <TabList
+        role="tablist"
         style={[
           styles.bar,
           { backgroundColor: colors.surface, borderTopColor: colors.border, paddingBottom: Math.max(insets.bottom, 6) },

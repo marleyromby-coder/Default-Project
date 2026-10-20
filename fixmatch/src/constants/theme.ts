@@ -45,7 +45,7 @@ export const Colors = {
     textSecondary: '#A9B3C1',
     textTertiary: '#8893A3',
     brand: '#FF6B35',
-    brandStrong: '#D9531C',
+    brandStrong: '#C2410C',
     brandText: '#FF7A47',
     brandSoft: '#2A1A12',
     onBrand: '#FFFFFF',

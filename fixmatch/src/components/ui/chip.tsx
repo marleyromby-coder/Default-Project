@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import { Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
@@ -23,8 +23,9 @@ export function Chip({ label, selected = false, onPress, icon, count, accessibil
   return (
     <Tappable
       onPress={onPress}
-      accessibilityRole="togglebutton"
+      accessibilityRole={Platform.OS === 'web' ? 'checkbox' : 'togglebutton'}
       accessibilityState={{ checked: selected }}
+      aria-checked={selected}
       accessibilityLabel={accessibilityLabel ?? label}
       hitSlop={{ top: 6, bottom: 6 }}
       style={[

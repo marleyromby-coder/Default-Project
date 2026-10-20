@@ -30,6 +30,9 @@ const ALL_SORT_OPTIONS: { value: SortMode; label: string; accessibilityLabel: st
   { value: 'distance', label: 'Afstand', accessibilityLabel: 'Sortér efter korteste afstand' },
   { value: 'rating', label: 'Anmeldelser', accessibilityLabel: 'Sortér efter bedste anmeldelser' },
 ];
+/** "Elektrikere" → "elektrikere", but "VVS'ere" keeps its capitals. */
+const lowerTrade = (word: string) => (word.startsWith('VVS') ? word : word.toLowerCase());
+
 const SORT_OPTIONS = ALL_SORT_OPTIONS.filter((o) => TRUSTPILOT_ENABLED || o.value !== 'rating');
 
 export default function CategoryScreen() {
@@ -84,7 +87,7 @@ export default function CategoryScreen() {
     <View style={styles.header}>
       <View style={styles.summaryRow}>
         <AppText variant="subhead" tone="textSecondary" style={styles.flex}>
-          {results.items.length} {results.items.length === 1 ? category.name : category.plural}{' '}
+          {results.items.length} {lowerTrade(results.items.length === 1 ? category.name : category.plural)}{' '}
           {filters.maxDistanceKm === null ? 'i hele landet' : `inden for ${filters.maxDistanceKm} km`} af{' '}
           {state.location.label}
         </AppText>

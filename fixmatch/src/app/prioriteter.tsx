@@ -76,6 +76,7 @@ export default function PrioritiesScreen() {
                     onPress={() => setDraft({ ...draft, [factor.key]: value })}
                     accessibilityRole="radio"
                     accessibilityState={{ checked: selected }}
+                    aria-checked={selected}
                     accessibilityLabel={`${level} vigtigt`}
                     style={[
                       styles.level,

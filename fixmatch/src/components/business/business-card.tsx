@@ -47,7 +47,9 @@ export function BusinessCard({ item, job, rank, onCompareLimit }: Props) {
     rank ? `Nummer ${rank}` : undefined,
     business.name,
     `match ${score} ud af 100`,
-    business.trustpilot ? `TrustScore ${formatRating(business.trustpilot.score)} på Trustpilot` : 'ingen Trustpilot-profil',
+    business.trustpilot
+      ? `TrustScore ${formatRating(business.trustpilot.score)} på Trustpilot`
+      : 'ingen Trustpilot-profil',
     priceText.replace('–', ' til ').replace('kr./time', 'kroner i timen').replace('kr.', 'kroner'),
     `${formatDistance(distanceKm)} væk`,
     open.label,
@@ -58,21 +60,22 @@ export function BusinessCard({ item, job, rank, onCompareLimit }: Props) {
     .join(', ');
 
   return (
-    <Tappable
-      onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
-      accessibilityLabel={summary}
-      accessibilityHint="Åbner virksomhedens side med telefonnummer og hjemmeside"
-      accessibilityActions={[
-        { name: 'favorite', label: favorite ? 'Fjern fra gemte' : 'Gem' },
-        { name: 'compare', label: comparing ? 'Fjern fra sammenligning' : 'Sammenlign' },
-      ]}
-      onAccessibilityAction={(event) => {
-        if (event.nativeEvent.actionName === 'favorite') toggleFavorite(business.id);
-        if (event.nativeEvent.actionName === 'compare') onCompare();
-      }}
-      pressedOpacity={0.75}
+    <View
       style={[styles.card, { backgroundColor: colors.surface, borderColor: comparing ? colors.brand : colors.border }]}>
-      <View style={styles.top}>
+      <Tappable
+        onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
+        accessibilityLabel={summary}
+        accessibilityHint="Åbner virksomhedens side med telefonnummer og hjemmeside"
+        accessibilityActions={[
+          { name: 'favorite', label: favorite ? 'Fjern fra gemte' : 'Gem' },
+          { name: 'compare', label: comparing ? 'Fjern fra sammenligning' : 'Sammenlign' },
+        ]}
+        onAccessibilityAction={(event) => {
+          if (event.nativeEvent.actionName === 'favorite') toggleFavorite(business.id);
+          if (event.nativeEvent.actionName === 'compare') onCompare();
+        }}
+        pressedOpacity={0.75}
+        style={styles.top}>
         <Photo photo={business.photo} category={business.categories[0]} width={300} style={styles.photo} />
         <View style={styles.body}>
           <View style={styles.titleRow}>
@@ -104,7 +107,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit }: Props) {
             <OpenStatus business={business} />
           </View>
         </View>
-      </View>
+      </Tappable>
       <View style={[styles.footer, { borderTopColor: colors.border }]}>
         <View style={styles.badges}>
           {authorized ? <Badge label="Autoriseret" tone="success" icon="shield" /> : null}
@@ -115,7 +118,12 @@ export function BusinessCard({ item, job, rank, onCompareLimit }: Props) {
           accessibilityLabel={favorite ? `Fjern ${business.name} fra gemte` : `Gem ${business.name}`}
           accessibilityState={{ selected: favorite }}
           style={styles.footerButton}>
-          <Icon name={favorite ? 'heartFill' : 'heart'} size={19} color={favorite ? colors.brand : colors.textSecondary} weight="semibold" />
+          <Icon
+            name={favorite ? 'heartFill' : 'heart'}
+            size={19}
+            color={favorite ? colors.brand : colors.textSecondary}
+            weight="semibold"
+          />
         </Tappable>
         <Tappable
           onPress={onCompare}
@@ -125,13 +133,22 @@ export function BusinessCard({ item, job, rank, onCompareLimit }: Props) {
             styles.compareButton,
             comparing ? { backgroundColor: colors.brandStrong } : { backgroundColor: colors.brandSoft },
           ]}>
-          <Icon name={comparing ? 'check' : 'plus'} size={13} color={comparing ? colors.onBrand : colors.brandText} weight="bold" />
-          <AppText variant="footnote" weight="600" style={{ color: comparing ? colors.onBrand : colors.brandText }} maxFontSizeMultiplier={1.3}>
+          <Icon
+            name={comparing ? 'check' : 'plus'}
+            size={13}
+            color={comparing ? colors.onBrand : colors.brandText}
+            weight="bold"
+          />
+          <AppText
+            variant="footnote"
+            weight="600"
+            style={{ color: comparing ? colors.onBrand : colors.brandText }}
+            maxFontSizeMultiplier={1.3}>
             {comparing ? 'Valgt' : 'Sammenlign'}
           </AppText>
         </Tappable>
       </View>
-    </Tappable>
+    </View>
   );
 }
 
