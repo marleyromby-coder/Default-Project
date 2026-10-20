@@ -45,11 +45,26 @@
   },
   "scripts": {
     "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "check": "npm run typecheck && npm run lint && npm test",
+    "export:web": "expo export --platform web",
+    "import:businesses": "node scripts/import-businesses.js",
+    "photos:bundle": "node scripts/bundle-photos.js",
+    "data:demo": "node scripts/generate-demo-data.js",
+    "data:places": "node scripts/build-places.js",
+    "brand:render": "node scripts/render-brand-assets.js"
   },
-  "private": true
+  "private": true,
+  "jest": {
+    "preset": "jest-expo",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ]
+  }
 }

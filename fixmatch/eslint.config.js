@@ -12,7 +12,15 @@ module.exports = defineConfig([
     files: ['scripts/**/*.js', '*.config.js'],
     languageOptions: {
       sourceType: 'commonjs',
-      globals: { __dirname: 'readonly', require: 'readonly', module: 'writable', process: 'readonly', console: 'readonly' },
+      globals: {
+        __dirname: 'readonly',
+        require: 'readonly',
+        module: 'writable',
+        process: 'readonly',
+        console: 'readonly',
+        Buffer: 'readonly',
+        fetch: 'readonly',
+      },
     },
   },
 ]);

@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import Svg, { Circle, G, Text as SvgText } from 'react-native-svg';
 
 import { AppText } from '@/components/ui/text';
-import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { bearingDegrees } from '@/lib/geo';
 
