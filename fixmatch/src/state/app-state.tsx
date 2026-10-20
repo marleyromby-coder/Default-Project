@@ -76,8 +76,12 @@ function reducer(state: State, action: Action): State {
     case 'favorite':
       return { ...state, favorites: toggle(state.favorites, action.id) };
     case 'compare': {
-      if (!state.compare.includes(action.id) && state.compare.length >= MAX_COMPARE) return state;
-      return { ...state, compare: toggle(state.compare, action.id) };
+      if (state.compare.includes(action.id)) return { ...state, compare: state.compare.filter((x) => x !== action.id) };
+      // Only businesses in the same trade are compared; picking another trade starts over.
+      const trade = state.businesses.find((b) => b.id === action.id)?.categories[0];
+      const sameTrade = state.compare.filter((id) => state.businesses.find((b) => b.id === id)?.categories[0] === trade);
+      if (sameTrade.length >= MAX_COMPARE) return state;
+      return { ...state, compare: [...sameTrade, action.id] };
     }
     case 'compare-clear':
       return { ...state, compare: [] };
@@ -185,7 +189,9 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       setPriorities: (priorities) => dispatch({ type: 'priorities', priorities }),
       toggleFavorite: (id) => dispatch({ type: 'favorite', id }),
       toggleCompare: (id) => {
-        if (!state.compare.includes(id) && state.compare.length >= MAX_COMPARE) return false;
+        const trade = state.businesses.find((b) => b.id === id)?.categories[0];
+        const sameTrade = state.compare.filter((x) => state.businesses.find((b) => b.id === x)?.categories[0] === trade);
+        if (!state.compare.includes(id) && sameTrade.length >= MAX_COMPARE) return false;
         dispatch({ type: 'compare', id });
         return true;
       },

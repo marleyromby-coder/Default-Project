@@ -107,7 +107,6 @@ export function BusinessCard({ item, job, rank, onCompareLimit }: Props) {
       </View>
       <View style={[styles.footer, { borderTopColor: colors.border }]}>
         <View style={styles.badges}>
-          {business.demo ? <Badge label="Demo" tone="neutral" /> : null}
           {authorized ? <Badge label="Autoriseret" tone="success" icon="shield" /> : null}
           {business.emergency ? <Badge label="Døgnvagt" tone="warning" icon="bolt" /> : null}
         </View>

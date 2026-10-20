@@ -1,5 +1,4 @@
 import { TabList, TabSlot, Tabs, TabTrigger, type TabTriggerSlotProps } from 'expo-router/ui';
-import { forwardRef } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -39,18 +38,17 @@ export default function AppTabs() {
   );
 }
 
-interface TabButtonProps extends TabTriggerSlotProps {
+interface TabButtonProps extends Omit<TabTriggerSlotProps, 'ref'> {
   icon: IconName;
   label: string;
   badge?: number;
 }
 
-const TabButton = forwardRef<View, TabButtonProps>(function TabButton({ icon, label, badge, isFocused, ...props }, ref) {
+function TabButton({ icon, label, badge, isFocused, ...props }: TabButtonProps) {
   const colors = useTheme();
   const color = isFocused ? colors.brandText : colors.textSecondary;
   return (
     <Pressable
-      ref={ref}
       {...props}
       accessibilityRole="tab"
       accessibilityState={{ selected: isFocused }}
@@ -71,7 +69,7 @@ const TabButton = forwardRef<View, TabButtonProps>(function TabButton({ icon, la
       </AppText>
     </Pressable>
   );
-});
+}
 
 const styles = StyleSheet.create({
   slot: { flex: 1 },

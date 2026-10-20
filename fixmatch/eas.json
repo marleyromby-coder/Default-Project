@@ -1,0 +1,31 @@
+{
+  "cli": {
+    "version": ">= 16.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "demo": {
+      "distribution": "internal",
+      "env": { "EXPO_PUBLIC_FIXMATCH_DATA": "demo" },
+      "ios": { "simulator": false }
+    },
+    "testflight": {
+      "distribution": "store",
+      "autoIncrement": true,
+      "env": { "EXPO_PUBLIC_FIXMATCH_DATA": "demo" }
+    },
+    "production": {
+      "distribution": "store",
+      "autoIncrement": true,
+      "env": { "EXPO_PUBLIC_FIXMATCH_DATA": "live" }
+    }
+  },
+  "submit": {
+    "testflight": {
+      "ios": { "ascAppId": "UDFYLD_MED_APP_ID_FRA_APP_STORE_CONNECT" }
+    },
+    "production": {
+      "ios": { "ascAppId": "UDFYLD_MED_APP_ID_FRA_APP_STORE_CONNECT" }
+    }
+  }
+}

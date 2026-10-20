@@ -8,8 +8,6 @@
  * (recommended before an App Store build, so the app also works offline).
  */
 
-import type { ImageSourcePropType } from 'react-native';
-
 import { LOCAL_PHOTOS } from './photo-assets.generated';
 
 export interface PhotoInfo {
@@ -79,7 +77,7 @@ export function isPhotoKey(value: string): value is PhotoKey {
 }
 
 /** Resolves a photo key or URL to an image source, preferring a bundled copy. */
-export function photoSource(photo: string, width = 1200): ImageSourcePropType {
+export function photoSource(photo: string, width = 1200): number | { uri: string } {
   if (isPhotoKey(photo)) {
     const local = LOCAL_PHOTOS[photo];
     if (local !== undefined) return local;

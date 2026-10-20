@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "FixMatch",
+    "NSLocationWhenInUseUsageDescription": "FixMatch bruger din placering, mens appen er åben, til at vise håndværkere og værksteder nær dig og beregne afstanden til dem. Placeringen bliver på din telefon."
+  }
+}

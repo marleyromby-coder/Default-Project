@@ -6,15 +6,17 @@ import type { Business, CategoryId, Coords, Priorities, SortMode } from './types
  *
  * Every listed business gets three part scores between 0 and 1:
  *   - price:    cheapest hourly rate among the results = 1, most expensive = 0
- *   - distance: exp(−km / DISTANCE_SCALE_KM), so 0 km = 1, 12 km ≈ 0.37
- *   - reviews:  Bayesian average of the Trustpilot score, mapped from 3.0–5.0 to 0–1
+ *   - distance: exp(−km / DISTANCE_SCALE_KM), so 0 km = 1, 15 km ≈ 0.37
+ *   - reviews:  Bayesian average of the Trustpilot score, mapped from 2.5–5.0 to 0–1
  *
  * The total is the weighted sum × 100. The user sets the weights. Payment never
  * affects the score: promoted businesses only appear in the labelled "Annonce" slot.
  * Any change here must be reflected on the "Sådan rangerer vi" page (data/content.ts).
  */
 
-export const DISTANCE_SCALE_KM = 12;
+export const DISTANCE_SCALE_KM = 15;
+/** Review scores at or below this count as 0 in the review part score. */
+export const REVIEW_FLOOR = 2.5;
 /** Number of "virtual" average reviews mixed into every score. */
 export const REVIEW_PRIOR_COUNT = 20;
 /** The score those virtual reviews have. */
@@ -93,7 +95,7 @@ export function scoreBusinesses(
     const parts: ScoreParts = {
       price: spread > 0 ? 1 - (prices[index] - cheapest) / spread : 1,
       distance: Math.exp(-km / DISTANCE_SCALE_KM),
-      reviews: clamp01((reviewValue(business) - 3) / 2),
+      reviews: clamp01((reviewValue(business) - REVIEW_FLOOR) / (5 - REVIEW_FLOOR)),
     };
     const score = Math.round(
       100 * (weights.price * parts.price + weights.distance * parts.distance + weights.reviews * parts.reviews),

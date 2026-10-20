@@ -21,6 +21,7 @@ const ICONS = {
   info: { ios: 'info.circle', web: 'info' },
   close: { ios: 'xmark', web: 'close' },
   chevronRight: { ios: 'chevron.right', web: 'chevron_right' },
+  back: { ios: 'chevron.left', web: 'chevron_left' },
   chevronDown: { ios: 'chevron.down', web: 'expand_more' },
   compare: { ios: 'square.split.2x1', web: 'compare_arrows' },
   plus: { ios: 'plus', web: 'add' },

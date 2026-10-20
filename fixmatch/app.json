@@ -1,18 +1,49 @@
 {
   "expo": {
-    "name": "fixmatch",
+    "name": "FixMatch",
     "slug": "fixmatch",
     "version": "1.0.0",
+    "description": "Find og sammenlign danske håndværkere og mekanikere på pris, afstand og Trustpilot-anmeldelser – og ring direkte.",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "fixmatch",
     "userInterfaceStyle": "automatic",
+    "primaryColor": "#F2541B",
+    "backgroundColor": "#F3F4F6",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "bundleIdentifier": "dk.fixmatch.app",
+      "buildNumber": "1",
+      "supportsTablet": false,
+      "icon": "./assets/fixmatch.icon",
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "infoPlist": {
+        "CFBundleDevelopmentRegion": "da",
+        "CFBundleLocalizations": [
+          "da"
+        ],
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "privacyManifests": {
+        "NSPrivacyTracking": false,
+        "NSPrivacyTrackingDomains": [],
+        "NSPrivacyCollectedDataTypes": [],
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "NSPrivacyAccessedAPITypeReasons": [
+              "CA92.1"
+            ]
+          }
+        ]
+      }
     },
     "android": {
+      "package": "dk.fixmatch.app",
+      "versionCode": 1,
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#F2541B",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
@@ -20,19 +51,42 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "output": "server",
-      "favicon": "./assets/images/favicon.png"
+      "output": "single",
+      "favicon": "./assets/images/favicon.png",
+      "name": "FixMatch",
+      "shortName": "FixMatch",
+      "lang": "da",
+      "themeColor": "#F2541B",
+      "backgroundColor": "#F3F4F6"
+    },
+    "locales": {
+      "da": "./locales/da.json"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#FFFFFF",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 120,
+          "dark": {
+            "backgroundColor": "#0B0F15",
+            "image": "./assets/images/splash-icon.png"
+          }
         }
-      ]
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "FixMatch bruger din placering, mens appen er åben, til at vise håndværkere og værksteder nær dig og beregne afstanden til dem. Placeringen bliver på din telefon.",
+          "locationAlwaysAndWhenInUsePermission": false,
+          "locationAlwaysPermission": false,
+          "locationFullAccuracyPermission": false,
+          "motionUsagePermission": false
+        }
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

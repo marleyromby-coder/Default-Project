@@ -55,11 +55,11 @@ export function isValidBusiness(value: unknown): value is Business {
 export function parseBusinesses(value: unknown): Business[] {
   if (!Array.isArray(value)) return [];
   return value.filter(isValidBusiness).map((business) => ({
-    authorizations: [],
-    memberships: [],
-    services: [],
-    emergency: false,
     ...business,
+    authorizations: business.authorizations ?? [],
+    memberships: business.memberships ?? [],
+    services: business.services ?? [],
+    emergency: business.emergency ?? false,
   }));
 }
 

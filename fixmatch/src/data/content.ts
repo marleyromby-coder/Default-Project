@@ -237,6 +237,10 @@ export const INFO_PAGES = {
         paragraphs: ['Fotos fra Pexels (pexels.com), brugt under Pexels-licensen. Tak til fotograferne.'],
       },
     ],
+    links: [
+      { label: 'Pexels-licensen', url: 'https://www.pexels.com/license/' },
+      { label: 'FixMatch på nettet', url: APP_INFO.website },
+    ],
   },
 } satisfies Record<string, InfoPage>;
 

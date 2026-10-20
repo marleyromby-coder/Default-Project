@@ -99,6 +99,16 @@ const TOWN_COORDS = {
   Svaneke: [55.135, 15.14], Hasle: [55.183, 14.71],
 };
 
+/** Towns split between municipalities, labelled with the one most of the town is in. */
+const KOMMUNE_OVERRIDES = { Valby: 101, Vanløse: 101, Vedbæk: 230, Karlslunde: 253, Skovlunde: 151 };
+
+/** Squared distance between a town and a "nr|name" municipality key's main town. */
+function sqDist([lat, lon], kommuneKey) {
+  const coords = MUNICIPALITY_COORDS[Number(kommuneKey.split('|')[0])];
+  if (!coords) return Infinity;
+  return (coords[0] - lat) ** 2 + ((coords[1] - lon) * 0.56) ** 2;
+}
+
 function main() {
   const csvPath = path.join(__dirname, 'data', 'postnumre.csv');
   const outPath = path.join(__dirname, '..', 'src', 'data', 'places.json');
@@ -124,7 +134,16 @@ function main() {
 
   const places = [];
   for (const town of towns.values()) {
-    const [kommuneKey] = [...town.kommuner.entries()].sort((a, b) => b[1] - a[1])[0];
+    // Prefer the municipality named after the town ("Vejle" → "Vejle Kommune"), else the most common one.
+    const stem = town.name.split(' ')[0].slice(0, 5).toLowerCase();
+    const ranked = [...town.kommuner.entries()].sort((a, b) => b[1] - a[1]);
+    const own0 = TOWN_COORDS[town.name];
+    const nearest = own0
+      ? [...ranked].sort((x, y) => sqDist(own0, x[0]) - sqDist(own0, y[0]))[0]
+      : ranked[0];
+    const forced = ranked.find(([key]) => Number(key.split('|')[0]) === KOMMUNE_OVERRIDES[town.name]);
+    const [kommuneKey] =
+      forced ?? ranked.find(([key]) => key.split('|')[1].toLowerCase().startsWith(stem)) ?? nearest;
     const [kommuneNr, kommune] = kommuneKey.split('|');
     const own = TOWN_COORDS[town.name];
     const fallback = MUNICIPALITY_COORDS[Number(kommuneNr)];
