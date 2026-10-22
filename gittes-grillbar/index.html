@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gittes Grillbar · Esbjerg</title>
+<meta name="description" content="Gittes Grillbar på Nyhavnsgade 7 i Esbjerg, bag SuperBrugsen på Strandby Plads. Burgere med hjemmelavede bøffer, grillpølser, pølsemix og grillkylling. Ring og bestil på 75 14 53 33.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Inline&family=Archivo:wght@400;500;700;800;900&family=Courier+Prime:wght@400;700&display=swap">
+<style>
+/* Udkast: en dansk grillbar fra drive-in-tiden. Markise, lysskilt, filttavle, bonstrimler på skinnen. */
+:root{
+  color-scheme:light;
+  --ketchup:#D3281F; --ketchup-dk:#9E1A14;
+  --sennep:#F3B512; --remo:#F2E4A6;
+  --brod:#E6A04A; --brod-dk:#BF7A2C;
+  --pickle:#5F8F35; --loeg:#80522A; --boef:#5E3420;
+  --ink:#1E1814; --filt:#181513; --papir:#F5EEE1; --papir-dk:#E7DCC8;
+  --muted:#6A5D52;
+  --sign:"Bungee", "Arial Black", Impact, sans-serif;
+  --sign-inline:"Bungee Inline", "Bungee", "Arial Black", sans-serif;
+  --body:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --bon:"Courier Prime", "Courier New", monospace;
+  --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .09 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--papir);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::after{content:"";position:fixed;inset:0;background-image:var(--grain);pointer-events:none;z-index:50;mix-blend-mode:multiply}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3{margin:0;font-weight:400;line-height:1}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:max(16px,4vw)}
+:focus-visible{outline:3px solid var(--sennep);outline-offset:3px}
+
+/* Udkast-bånd */
+.draft{background:var(--ink);color:var(--papir);font-size:.8rem;text-align:center;padding:7px 16px;letter-spacing:.02em}
+.draft b{color:var(--sennep);font-weight:700}
+
+/* Markise */
+.awning{height:74px;position:relative;background:repeating-linear-gradient(90deg,var(--ketchup) 0 56px,#FFF8EE 56px 112px);box-shadow:inset 0 -8px 0 rgba(0,0,0,.08)}
+.awning::after{content:"";position:absolute;left:0;right:0;top:100%;height:26px;
+  background:repeating-linear-gradient(90deg,var(--ketchup) 0 56px,#FFF8EE 56px 112px);
+  -webkit-mask:radial-gradient(28px 26px at 28px 0,#000 98%,transparent) 0 0/56px 26px repeat-x;
+          mask:radial-gradient(28px 26px at 28px 0,#000 98%,transparent) 0 0/56px 26px repeat-x;
+  filter:drop-shadow(0 4px 0 rgba(30,24,20,.12))}
+.awning nav{position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;gap:6px;padding-inline:max(16px,4vw)}
+.awning nav a{font-family:var(--sign);font-size:.82rem;text-decoration:none;background:var(--ink);color:var(--papir);padding:7px 12px;border-radius:3px}
+.awning nav a:hover{background:var(--sennep);color:var(--ink)}
+
+/* Hero */
+.hero{position:relative;padding-block:72px 40px}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:24px;align-items:center}
+.lightbox{position:relative;background:var(--sennep);border:6px solid var(--ink);border-radius:10px;padding:28px 30px 24px;box-shadow:0 0 0 6px #fff8ee,0 0 0 10px var(--ink),14px 16px 0 10px rgba(30,24,20,.85);transform:rotate(-1.2deg)}
+.lightbox::before{content:"";position:absolute;inset:0;border-radius:4px;background:radial-gradient(120% 90% at 50% 40%,rgba(255,255,255,.55),transparent 60%);pointer-events:none}
+.screw{position:absolute;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ddd,#777);border:2px solid var(--ink)}
+.screw::after{content:"";position:absolute;left:1px;right:1px;top:3px;height:2px;background:var(--ink);transform:rotate(40deg)}
+.s1{top:8px;left:8px}.s2{top:8px;right:8px}.s3{bottom:8px;left:8px}.s4{bottom:8px;right:8px}
+.lightbox .over{font-family:var(--sign);font-size:clamp(.85rem,1.6vw,1.05rem);letter-spacing:.06em;color:var(--ink)}
+.lightbox h1{font-family:var(--sign);font-size:clamp(3.6rem,11vw,8.6rem);color:var(--ketchup);letter-spacing:-.02em;line-height:.88;text-shadow:4px 4px 0 var(--ink);margin-block:6px 4px}
+.lightbox .under{font-family:var(--sign-inline);font-size:clamp(1.5rem,4.2vw,3rem);color:var(--ink);letter-spacing:.04em}
+.tagline{margin-top:34px;font-size:clamp(1.1rem,2vw,1.3rem);max-width:30ch;font-weight:500}
+.tagline em{font-style:normal;background:linear-gradient(transparent 58%,var(--remo) 58%)}
+.cta-row{margin-top:24px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.call{display:inline-flex;align-items:center;gap:14px;background:var(--ketchup);color:#fff;text-decoration:none;border:4px solid var(--ink);border-radius:999px;padding:10px 24px 10px 12px;box-shadow:5px 5px 0 var(--ink);transition:transform .12s,box-shadow .12s}
+.call:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--ink)}
+.call .ic{width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.call small{display:block;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.9}
+.call strong{display:block;font-family:var(--sign);font-size:1.55rem;font-weight:400;letter-spacing:.03em;line-height:1.05}
+.openbadge{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:.95rem;padding:8px 14px;border:3px solid var(--ink);border-radius:6px;background:#fff8ee}
+.bulb{width:16px;height:16px;border-radius:50%;background:#9b9188;border:2px solid var(--ink)}
+.openbadge.is-open .bulb{background:#FFE36B;box-shadow:0 0 0 4px rgba(255,214,60,.45),0 0 18px 6px rgba(255,200,40,.8)}
+.hero-art{position:relative;min-height:340px}
+.hero-art .big-dog{position:absolute;width:118%;max-width:none;right:-12%;top:30%;transform:rotate(-9deg);filter:drop-shadow(10px 12px 0 rgba(30,24,20,.18))}
+.sticker{position:absolute;right:4%;top:-8%;z-index:2;width:168px;height:168px;border-radius:50%;background:var(--ink);color:var(--sennep);display:grid;place-items:center;text-align:center;transform:rotate(12deg);border:4px dashed var(--sennep);outline:6px solid var(--ink);font-family:var(--sign);font-size:.95rem;line-height:1.05;padding:16px}
+.sticker b{display:block;font-weight:400;font-size:1.9rem;color:#fff}
+
+/* Filttavle: åbningstider */
+.board-sec{padding-block:40px 70px}
+.board-sec .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}
+.feltboard{background:
+   repeating-linear-gradient(180deg,transparent 0 13px,rgba(255,255,255,.05) 13px 15px),
+   var(--filt);
+  border:16px solid #6B4A2E;border-image:linear-gradient(135deg,#8A6240,#5A3D25 40%,#7C5536) 1;
+  padding:26px 18px 30px;box-shadow:10px 12px 0 rgba(30,24,20,.85);transform:rotate(.8deg)}
+.feltboard .row{display:flex;justify-content:center;flex-wrap:wrap;gap:0 .5em;font-family:"Archivo",sans-serif;font-weight:900;color:#F4F1EA;font-size:clamp(1.15rem,3vw,1.75rem);letter-spacing:.06em;line-height:1.55;text-transform:uppercase}
+.feltboard .row.dim{color:#F3B512}
+.feltboard .row span.l{display:inline-block}
+.feltboard .row .w{white-space:nowrap}
+.board-copy h2{font-family:var(--sign);font-size:clamp(2rem,5vw,3.2rem);color:var(--ketchup);text-shadow:3px 3px 0 var(--ink)}
+.board-copy p{margin-top:16px;max-width:42ch;color:var(--muted)}
+.board-copy p strong{color:var(--ink)}
+.where{margin-top:22px;display:grid;gap:4px;padding:16px 18px;border:3px solid var(--ink);background:#fff8ee;border-radius:6px;max-width:440px;position:relative}
+.where b{font-family:var(--sign);font-weight:400;font-size:1.15rem}
+.where a{font-weight:700}
+.where svg.arrow{position:absolute;right:-56px;top:-30px;width:80px;transform:rotate(18deg)}
+
+/* Menutavle */
+.menu{background:var(--ink);color:var(--papir);padding-block:80px 90px;position:relative}
+.menu::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1.2px,transparent 1.4px);background-size:9px 9px;pointer-events:none}
+.menu .wrap{position:relative}
+.menu-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px;margin-bottom:38px}
+.menu-head h2{font-family:var(--sign);font-size:clamp(2.4rem,7vw,5rem);color:var(--sennep);line-height:.9}
+.menu-head p{max-width:40ch;color:#CFC4B4}
+.dishes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.dish{background:var(--panel,#F5EEE1);color:var(--ink);border:4px solid #000;border-radius:8px;overflow:hidden;display:grid;grid-template-rows:auto 1fr;box-shadow:inset 0 0 0 4px rgba(255,255,255,.35)}
+.dish figure{margin:0;position:relative;aspect-ratio:4/3;display:grid;place-items:center;padding:14px;background:radial-gradient(90% 80% at 50% 45%,rgba(255,255,255,.75),transparent 70%),var(--panel,#F5EEE1);border-bottom:4px solid #000}
+.dish figure svg{width:92%;height:auto;transition:transform .25s ease}
+.dish:hover figure svg{transform:rotate(-4deg) scale(1.04)}
+/* Når rigtige fotos kommer på: samme behandling på alle, så de ligner én serie */
+.dish figure img{width:100%;height:100%;object-fit:cover;filter:contrast(1.12) saturate(1.18) sepia(.12);border-radius:3px}
+.dish figure:has(img)::after{content:"";position:absolute;inset:14px;background-image:var(--grain);mix-blend-mode:multiply;border-radius:3px;pointer-events:none}
+.dish .txt{padding:16px 18px 20px;display:grid;gap:6px;align-content:start}
+.dish h3{font-family:var(--sign);font-size:1.45rem;line-height:1}
+.dish p{font-size:.95rem;color:#4a3f37}
+.dish .q{font-family:var(--bon);font-size:.86rem;color:var(--ketchup-dk)}
+.p-yellow{--panel:#F7CB45}.p-red{--panel:#EE6A4D}.p-cream{--panel:#F2E4A6}.p-green{--panel:#A9C46F}.p-blue{--panel:#9CC7CF}.p-orange{--panel:#F4A04A}
+.menu-foot{margin-top:34px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;color:#CFC4B4}
+.menu-foot a{color:var(--sennep);font-weight:700}
+
+/* Anmeldelser: bonskinnen */
+.reviews{padding-block:80px 70px;overflow:hidden}
+.reviews h2{font-family:var(--sign);font-size:clamp(2.2rem,6vw,4.2rem);color:var(--ketchup);text-shadow:3px 3px 0 var(--ink)}
+.reviews .lead{margin-top:12px;max-width:52ch;color:var(--muted)}
+.scores{margin-top:30px;display:flex;flex-wrap:wrap;gap:16px}
+.score{display:grid;grid-template-columns:auto auto;align-items:center;gap:0 12px;padding:12px 18px 12px 14px;border:3px solid var(--ink);background:#fff8ee;border-radius:6px;box-shadow:4px 4px 0 var(--ink)}
+.score .n{grid-row:1/3;font-family:var(--sign);font-size:2.6rem;line-height:1}
+.score .src{font-weight:800}
+.score .cnt{font-size:.85rem;color:var(--muted)}
+.score .stars{color:var(--sennep);-webkit-text-stroke:1px var(--ink);letter-spacing:2px}
+.rail-wrap{margin-top:46px;position:relative}
+.rail{height:22px;border-radius:11px;background:linear-gradient(180deg,#f2f2f2,#9a9a9a 55%,#cfcfcf);border:3px solid var(--ink);position:relative;z-index:2}
+.tickets{display:flex;gap:22px;margin-top:-12px;padding:0 4px 28px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.ticket{flex:0 0 280px;min-height:300px;display:flex;flex-direction:column;scroll-snap-align:start;background:#FFFDF7;font-family:var(--bon);font-size:.95rem;color:#2a231e;padding:30px 20px 34px;position:relative;transform:rotate(var(--r,0deg));transform-origin:top center;box-shadow:0 10px 18px -10px rgba(0,0,0,.45);
+  -webkit-mask:linear-gradient(#000,#000) top/100% calc(100% - 10px) no-repeat,conic-gradient(from 135deg at 50% 0,#000 90deg,transparent 0) bottom/14px 10px repeat-x;
+          mask:linear-gradient(#000,#000) top/100% calc(100% - 10px) no-repeat,conic-gradient(from 135deg at 50% 0,#000 90deg,transparent 0) bottom/14px 10px repeat-x}
+.ticket::before{content:"";position:absolute;top:0;left:0;right:0;height:16px;background:repeating-linear-gradient(90deg,transparent 0 6px,rgba(0,0,0,.05) 6px 7px)}
+.ticket .hd{display:flex;justify-content:space-between;font-size:.78rem;color:#7b6f65;border-bottom:1px dashed #b7aa9b;padding-bottom:8px;margin-bottom:12px}
+.ticket .stars{color:var(--ketchup);letter-spacing:3px;font-size:1.05rem}
+.ticket blockquote{margin:8px 0 10px;font-weight:700;font-size:1.18rem;line-height:1.25;color:var(--ink)}
+.ticket .sum{margin-bottom:14px;font-size:.88rem;color:#4b4038}
+.ticket .ft{margin-top:auto;padding-top:8px;border-top:1px dashed #b7aa9b;font-size:.8rem;display:flex;justify-content:space-between;gap:10px}
+.ticket .ft a{color:#7b6f65}
+.ticket.stamp::after{content:"BYENS BEDSTE";position:absolute;right:14px;bottom:62px;font-family:var(--sign);font-size:1.05rem;color:var(--ketchup);border:3px solid var(--ketchup);padding:4px 8px;transform:rotate(-14deg);opacity:.75;border-radius:4px}
+.ticket.blank{background:#FFF3C4}
+.ticket.blank blockquote{color:var(--ketchup-dk)}
+.review-note{margin-top:8px;font-size:.85rem;color:var(--muted)}
+
+/* Historien: 180 dage */
+.story{background:var(--ketchup);color:#fff;padding-block:84px;position:relative;overflow:hidden}
+.story::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(0,0,0,.14) 1.4px,transparent 1.6px);background-size:8px 8px;pointer-events:none}
+.story .wrap{position:relative;display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:48px;align-items:center}
+.days{font-family:var(--sign);font-size:clamp(7rem,22vw,15rem);line-height:.8;color:var(--sennep);text-shadow:6px 6px 0 var(--ink)}
+.days-lbl{font-family:var(--sign);font-size:clamp(1.3rem,3vw,2rem);margin-top:14px}
+.tally{margin-top:26px;display:grid;grid-template-columns:repeat(30,1fr);gap:4px 3px;max-width:460px}
+.tally i{display:block;height:16px;background:rgba(255,255,255,.55);border-radius:1px}
+.tally i:nth-child(5n){background:rgba(255,255,255,.9)}
+.tally i.lit{background:var(--sennep);box-shadow:0 0 10px 2px rgba(243,181,18,.9)}
+.story h2{font-family:var(--sign);font-size:clamp(2rem,4.6vw,3.3rem);line-height:.95}
+.timeline{margin:26px 0 0;padding:0;list-style:none;display:grid;gap:14px}
+.timeline li{display:grid;grid-template-columns:118px minmax(0,1fr);gap:14px;align-items:baseline;border-top:2px solid rgba(255,255,255,.35);padding-top:12px}
+.timeline .d{font-family:var(--bon);font-weight:700;color:var(--sennep)}
+.timeline li:last-child{border-top-color:var(--sennep)}
+.timeline li:last-child p{font-weight:700}
+
+/* Find os */
+.visit{padding-block:80px 110px}
+.visit .wrap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.card{border:4px solid var(--ink);border-radius:8px;background:#fff8ee;padding:22px;box-shadow:6px 6px 0 var(--ink);display:grid;gap:10px;align-content:start}
+.card h3{font-family:var(--sign);font-size:1.5rem;color:var(--ketchup)}
+.card .big{font-family:var(--sign);font-size:1.9rem;line-height:1.05}
+.card a.btn{justify-self:start;margin-top:6px;font-weight:800;text-decoration:none;border:3px solid var(--ink);padding:8px 14px;border-radius:999px;background:var(--sennep)}
+.card a.btn:hover{background:var(--ink);color:var(--sennep)}
+.hours{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;font-family:var(--bon);font-size:1rem}
+.hours .today{background:var(--remo);font-weight:700}
+
+footer{background:var(--ink);color:#CFC4B4;padding-block:40px 110px;font-size:.9rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+footer b{font-family:var(--sign);font-weight:400;color:var(--sennep);font-size:1.2rem}
+
+/* Ring-knap på mobil */
+.callbar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:40;display:none;align-items:center;justify-content:center;gap:10px;background:var(--ketchup);color:#fff;text-decoration:none;border:4px solid var(--ink);border-radius:999px;padding:12px;font-family:var(--sign);font-size:1.15rem;box-shadow:4px 4px 0 var(--ink)}
+
+/* Fælles for illustrationerne: tryk, der er rykket en smule (som serigrafi) */
+.ink{fill:none;stroke:var(--ink);stroke-width:4;stroke-linejoin:round;stroke-linecap:round}
+.fl{transform:translate(4px,3px)}
+
+@media (max-width:960px){
+  .hero .wrap,.board-sec .wrap,.story .wrap{grid-template-columns:minmax(0,1fr)}
+  .hero-art{min-height:0;margin-top:24px}
+  .hero-art .big-dog{width:100%;right:0;top:0;position:relative;margin-top:40px}
+  .sticker{right:2%;top:-14px;width:132px;height:132px;font-size:.78rem}
+  .sticker b{font-size:1.5rem}
+  .dishes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .visit .wrap{grid-template-columns:minmax(0,1fr)}
+  .where svg.arrow{display:none}
+}
+@media (max-width:620px){
+  body{font-size:16px}
+  .awning{height:58px}
+  .awning nav a{font-size:.7rem;padding:6px 8px}
+  .awning nav a.hide-s{display:none}
+  .hero{padding-top:56px}
+  .lightbox{padding:22px 18px 18px}
+  .dishes{grid-template-columns:minmax(0,1fr)}
+  .callbar{display:flex}
+  .cta-row .call{display:none}
+  .timeline li{grid-template-columns:minmax(0,1fr);gap:2px}
+  .tally{grid-template-columns:repeat(20,1fr)}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.dish figure svg,.call{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="draft"><b>Udkast</b> · Forslag til ny forside til Gittes Grillbar, lavet af Marley · ikke Gittes Grillbars officielle side</div>
+
+<header class="awning">
+  <nav aria-label="Genveje">
+    <a href="#menu">Menu</a>
+    <a href="#anmeldelser" class="hide-s">Anmeldelser</a>
+    <a href="#find">Find os</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="lightbox">
+        <span class="screw s1"></span><span class="screw s2"></span><span class="screw s3"></span><span class="screw s4"></span>
+        <div class="over">STRANDBY PLADS · ESBJERG</div>
+        <h1>GITTES</h1>
+        <div class="under">GRILLBAR</div>
+      </div>
+      <p class="tagline">Burgere med <em>hjemmelavede bøffer</em>, god gammeldags grillpølse og halve grillkyllinger med fritter. Bag SuperBrugsen på Strandby Plads.</p>
+      <div class="cta-row">
+        <a class="call" href="tel:+4575145333">
+          <span class="ic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="#D3281F"/></svg></span>
+          <span><small>Ring og bestil</small><strong>75 14 53 33</strong></span>
+        </a>
+        <span class="openbadge" id="openbadge"><span class="bulb" aria-hidden="true"></span><span id="opentxt">Man–lør 11–20 · søn 12–20</span></span>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <svg class="big-dog ill" viewBox="0 0 240 170"><use href="#ill-hotdog"/></svg>
+      <div class="sticker"><span>Genåbnet efter branden<b>JUNI 2025</b></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="board-sec" aria-labelledby="h-aabent">
+  <div class="wrap">
+    <div class="feltboard" id="feltboard" role="img" aria-label="Åbningstider: mandag til lørdag 11 til 20, søndag 12 til 20">
+      <div class="row dim">Grillen er tændt</div>
+      <div class="row">Man – Lør</div>
+      <div class="row">11.00 – 20.00</div>
+      <div class="row dim">· · ·</div>
+      <div class="row">Søndag</div>
+      <div class="row">12.00 – 20.00</div>
+    </div>
+    <div class="board-copy">
+      <h2 id="h-aabent">Ring. Hent. Spis.</h2>
+      <p>Ring din bestilling ind, så står den klar, når du kommer. <strong>Ingen app, ingen konto</strong>, bare et opkald til en grillbar, der har stået på Strandby Plads i omkring 20 år.</p>
+      <div class="where">
+        <svg class="arrow" viewBox="0 0 80 60" aria-hidden="true"><path d="M6 8 C30 4 62 14 66 44" fill="none" stroke="#1E1814" stroke-width="3.5" stroke-linecap="round"/><path d="M56 38 L66 48 L72 34" fill="none" stroke="#1E1814" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <b>Nyhavnsgade 7, 6700 Esbjerg</b>
+        <span>Bag SuperBrugsen på Strandby Plads</span>
+        <a href="https://www.google.com/maps/search/?api=1&query=Gittes+Grillbar+Nyhavnsgade+7+6700+Esbjerg" target="_blank" rel="noopener">Vis vej i Google Maps ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="menu" id="menu" aria-labelledby="h-menu">
+  <div class="wrap">
+    <div class="menu-head">
+      <h2 id="h-menu">Fra<br>grillen</h2>
+      <p>Det er burgerne, gæsterne skriver om. Men pølsemixen og den halve kylling har også deres faste kunder.</p>
+    </div>
+    <div class="dishes">
+      <article class="dish p-yellow">
+        <figure><svg class="ill" viewBox="0 0 240 170" role="img" aria-label="Tegning af burger"><use href="#ill-burger"/></svg></figure>
+        <div class="txt"><h3>Burgere</h3><p>Hjemmelavede, friske bøffer. Flere burgere at vælge imellem.</p><span class="q">"Gode burgere …" · Henrik, Dagens Menu</span></div>
+      </article>
+      <article class="dish p-red">
+        <figure><svg class="ill" viewBox="0 0 240 170" role="img" aria-label="Tegning af hotdog"><use href="#ill-hotdog"/></svg></figure>
+        <div class="txt"><h3>Grillpølser</h3><p>God gammeldags grillpølse. Med det hele eller lige som du vil have den.</p></div>
+      </article>
+      <article class="dish p-cream">
+        <figure><svg class="ill" viewBox="0 0 240 170" role="img" aria-label="Tegning af halv grillkylling med fritter"><use href="#ill-kylling"/></svg></figure>
+        <div class="txt"><h3>½ Grillkylling</h3><p>Med fritter. Den klassiske aftensmad, når ingen gider lave mad.</p><span class="q">"Lækker grillkylling m fritter" · Benny, juli 2025</span></div>
+      </article>
+      <article class="dish p-orange">
+        <figure><svg class="ill" viewBox="0 0 240 170" role="img" aria-label="Tegning af pølsemix i bakke"><use href="#ill-mix"/></svg></figure>
+        <div class="txt"><h3>Pølsemix</h3><p>Pølser og pommes frites i én bakke. Grillbarens egen ret.</p></div>
+      </article>
+      <article class="dish p-green">
+        <figure><svg class="ill" viewBox="0 0 240 170" role="img" aria-label="Tegning af ribbensburger"><use href="#ill-ribbe"/></svg></figure>
+        <div class="txt"><h3>Ribbensburger</h3><p>Ribbenssteg i blød bolle. En af de retter, gæsterne anbefaler.</p></div>
+      </article>
+      <article class="dish p-blue">
+        <figure><svg class="ill" viewBox="0 0 240 170" role="img" aria-label="Tegning af bøfsandwich med brun sovs"><use href="#ill-boef"/></svg></figure>
+        <div class="txt"><h3>Bøfsandwich</h3><p>Bøf, løg og brun sovs. Den gamle grillbarklassiker.</p></div>
+      </article>
+    </div>
+    <div class="menu-foot">
+      <span>Hele menukortet med sandwich, salat og priser:</span>
+      <a href="tel:+4575145333">Ring 75 14 53 33</a>
+    </div>
+  </div>
+</section>
+
+<section class="reviews" id="anmeldelser" aria-labelledby="h-anm">
+  <div class="wrap">
+    <h2 id="h-anm">Bestillinger med ros</h2>
+    <p class="lead">Hundredvis af gæster har givet stjerner på Google, Restaurant Guru og Dagens Menu. Her er et udpluk.</p>
+    <div class="scores">
+      <div class="score"><span class="n">4,3</span><span class="src">Google <span class="stars" aria-hidden="true">★★★★</span></span><span class="cnt">ca. 246 anmeldelser</span></div>
+      <div class="score"><span class="n">4,5</span><span class="src">Restaurant Guru <span class="stars" aria-hidden="true">★★★★</span></span><span class="cnt">292 anmeldelser</span></div>
+      <div class="score"><span class="n">4,8</span><span class="src">Dagens Menu <span class="stars" aria-hidden="true">★★★★★</span></span><span class="cnt">10 anmeldelser</span></div>
+    </div>
+    <div class="rail-wrap">
+      <div class="rail" aria-hidden="true"></div>
+      <div class="tickets" tabindex="0" aria-label="Anmeldelser, rul vandret">
+        <article class="ticket stamp" style="--r:-1.5deg">
+          <div class="hd"><span>BON #5360</span><span>DAGENS MENU</span></div>
+          <div class="stars" aria-label="5 ud af 5">★★★★★</div>
+          <blockquote>"Byens bedste grillbar"</blockquote>
+          <p class="sum">Overskriften siger det hele.</p>
+          <div class="ft"><span>Gæst</span><a href="https://www.dagensmenu.dk/byens-bedste-gittes-grillbar?review=5360" target="_blank" rel="noopener">Se anmeldelse ↗</a></div>
+        </article>
+        <article class="ticket" style="--r:1.2deg">
+          <div class="hd"><span>BON #16161</span><span>10.07.2025</span></div>
+          <div class="stars" aria-label="5 ud af 5">★★★★★</div>
+          <blockquote>"Lækker grillkylling m fritter"</blockquote>
+          <p class="sum">Kort fortalt: to halve grillkyllinger med fritter til ham og broren. Lækkert, og det smagte som i gamle dage.</p>
+          <div class="ft"><span>Benny H.</span><a href="https://www.dagensmenu.dk/l%C3%A6kker-grillkylling-gittes-grillbar?review=16161" target="_blank" rel="noopener">Se anmeldelse ↗</a></div>
+        </article>
+        <article class="ticket" style="--r:-.6deg">
+          <div class="hd"><span>BON #7774</span><span>03.01.2022</span></div>
+          <div class="stars" aria-label="5 ud af 5">★★★★★</div>
+          <blockquote>"Gode burgere …"</blockquote>
+          <p class="sum">Kort fortalt: burgere lavet af gode råvarer, og venligt personale, selv på en travl dag.</p>
+          <div class="ft"><span>Henrik</span><a href="https://www.dagensmenu.dk/gode-burgere-af-gode-gittes-grillbar?review=7774" target="_blank" rel="noopener">Se anmeldelse ↗</a></div>
+        </article>
+        <article class="ticket" style="--r:1.6deg">
+          <div class="hd"><span>BON #9314</span><span>31.07.2022</span></div>
+          <div class="stars" aria-label="5 ud af 5">★★★★★</div>
+          <blockquote>"Nu har jeg besøgt …"</blockquote>
+          <p class="sum">Kort fortalt: kommet der, siden de nye ejere tog over i 2018, og aldrig haft en dårlig oplevelse med maden eller betjeningen.</p>
+          <div class="ft"><span>René H.</span><a href="https://www.dagensmenu.dk/nu-har-jeg-bes%C3%B8gt-gittes-grillbar?review=9314" target="_blank" rel="noopener">Se anmeldelse ↗</a></div>
+        </article>
+        <article class="ticket blank" style="--r:-1.1deg">
+          <div class="hd"><span>BON #—</span><span>I DAG</span></div>
+          <div class="stars" aria-hidden="true">☆☆☆☆☆</div>
+          <blockquote>Har du lige spist her?</blockquote>
+          <p class="sum">Din bon kan hænge her næste gang. Giv grillen et par ord med på vejen.</p>
+          <div class="ft"><span>Dig</span><a href="https://www.google.com/maps/search/?api=1&query=Gittes+Grillbar+Nyhavnsgade+7+6700+Esbjerg" target="_blank" rel="noopener">Skriv på Google ↗</a></div>
+        </article>
+      </div>
+    </div>
+    <p class="review-note">Rul for flere bonner →</p>
+  </div>
+</section>
+
+<section class="story" aria-labelledby="h-story">
+  <div class="wrap">
+    <div>
+      <div class="days" aria-hidden="true">180</div>
+      <div class="days-lbl">dage med kold grill</div>
+      <div class="tally" id="tally" aria-hidden="true"></div>
+    </div>
+    <div>
+      <h2 id="h-story">Branden lukkede os.<br>Så tændte vi grillen igen.</h2>
+      <ol class="timeline">
+        <li><span class="d">Ca. 2005</span><p>Gittes åbner som drive-in-grillbar på Strandby Plads.</p></li>
+        <li><span class="d">2018</span><p>Susan Tran overtager grillen og fortsætter Gittes.</p></li>
+        <li><span class="d">5. dec. 2024</span><p>Sent om aftenen ringer brandvæsenet. En kortslutning i ventilationen har sat ild i køkkenet, og alt er sodskadet.</p></li>
+        <li><span class="d">3. juni 2025</span><p>Grillen er tændt igen. Vi fejrede det med gratis hotdogs i tre timer.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="visit" id="find" aria-label="Find os">
+  <div class="wrap">
+    <div class="card">
+      <h3>Bestil</h3>
+      <p class="big">75 14 53 33</p>
+      <p>Ring, og sig hvornår du kommer. Så står maden klar.</p>
+      <a class="btn" href="tel:+4575145333">Ring nu</a>
+    </div>
+    <div class="card">
+      <h3>Åbent</h3>
+      <div class="hours" id="hours">
+        <span data-d="1">Mandag</span><span data-d="1">11–20</span>
+        <span data-d="2">Tirsdag</span><span data-d="2">11–20</span>
+        <span data-d="3">Onsdag</span><span data-d="3">11–20</span>
+        <span data-d="4">Torsdag</span><span data-d="4">11–20</span>
+        <span data-d="5">Fredag</span><span data-d="5">11–20</span>
+        <span data-d="6">Lørdag</span><span data-d="6">11–20</span>
+        <span data-d="0">Søndag</span><span data-d="0">12–20</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Find os</h3>
+      <p class="big">Nyhavnsgade 7</p>
+      <p>6700 Esbjerg. Bag SuperBrugsen på Strandby Plads.</p>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Gittes+Grillbar+Nyhavnsgade+7+6700+Esbjerg" target="_blank" rel="noopener">Vis vej ↗</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><b>GITTES GRILLBAR</b><br>v/Susan Tran · Nyhavnsgade 7 · 6700 Esbjerg · CVR 39926180</span>
+    <span>Tlf. 75 14 53 33</span>
+  </div>
+</footer>
+
+<a class="callbar" href="tel:+4575145333"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="#fff"/></svg>Ring og bestil</a>
+
+<!-- Illustrationer: farve trykt lidt forskudt af stregen, som et gammelt serigrafi-skilt -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- HOTDOG -->
+    <g id="ill-hotdog">
+      <g class="fl">
+        <path d="M38 96 Q38 62 74 60 L166 60 Q202 62 202 96 Z" fill="#E6A04A"/>
+        <rect x="14" y="76" width="212" height="32" rx="16" fill="#C8432B"/>
+        <path d="M34 100 Q36 138 74 140 L166 140 Q204 138 206 100 Q120 118 34 100 Z" fill="#E6A04A"/>
+      </g>
+      <g class="ink">
+        <path d="M38 96 Q38 62 74 60 L166 60 Q202 62 202 96"/>
+        <rect x="14" y="76" width="212" height="32" rx="16"/>
+      </g>
+      <path d="M22 84 Q30 80 40 84" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="4" stroke-linecap="round"/>
+      <polyline points="44,84 56,96 68,84 80,96 92,84 104,96 116,84 128,96 140,84 152,96 164,84 176,96 188,84" fill="none" stroke="#D3281F" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+      <polyline points="50,92 62,82 74,92 86,82 98,92 110,82 122,92 134,82 146,92 158,82 170,92 182,82" fill="none" stroke="#F3B512" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M58 78 q10 -8 20 0 t20 0 t20 0 t20 0 t20 0 t20 0" fill="none" stroke="#F2E4A6" stroke-width="7" stroke-linecap="round"/>
+      <g fill="#80522A" stroke="#1E1814" stroke-width="1.5">
+        <circle cx="70" cy="72" r="4"/><circle cx="84" cy="69" r="3.5"/><circle cx="98" cy="73" r="4"/><circle cx="114" cy="68" r="3.5"/><circle cx="128" cy="72" r="4"/><circle cx="142" cy="69" r="3.5"/><circle cx="156" cy="73" r="4"/><circle cx="170" cy="70" r="3.5"/><circle cx="90" cy="64" r="3"/><circle cx="134" cy="63" r="3"/>
+      </g>
+      <g fill="#5F8F35" stroke="#1E1814" stroke-width="2.5">
+        <ellipse cx="92" cy="80" rx="10" ry="5" transform="rotate(-10 92 80)"/><ellipse cx="122" cy="78" rx="10" ry="5" transform="rotate(8 122 78)"/><ellipse cx="152" cy="80" rx="10" ry="5" transform="rotate(-6 152 80)"/>
+      </g>
+      <g class="ink"><path d="M34 100 Q36 138 74 140 L166 140 Q204 138 206 100 Q120 118 34 100 Z"/></g>
+      <path d="M60 128 Q90 134 120 132" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="4" stroke-linecap="round"/>
+    </g>
+
+    <!-- BURGER -->
+    <g id="ill-burger">
+      <g class="fl">
+        <path d="M42 90 Q42 30 120 30 Q198 30 198 90 Z" fill="#E6A04A"/>
+        <path d="M32 92 q11 12 22 0 t22 0 t22 0 t22 0 t22 0 t22 0 t22 0 t22 0 v10 H32 Z" fill="#79A83B"/>
+        <path d="M36 98 H204 V106 H190 L184 122 L178 106 H124 L116 128 L108 106 H62 L56 118 L50 106 H36 Z" fill="#F6C230"/>
+        <rect x="34" y="104" width="172" height="26" rx="13" fill="#5E3420"/>
+        <path d="M40 132 H200 Q200 158 168 158 H72 Q40 158 40 132 Z" fill="#E6A04A"/>
+      </g>
+      <g class="ink">
+        <path d="M42 90 Q42 30 120 30 Q198 30 198 90 Z"/>
+        <path d="M32 92 q11 12 22 0 t22 0 t22 0 t22 0 t22 0 t22 0 t22 0 t22 0"/>
+        <path d="M36 98 H204 V106 H190 L184 122 L178 106 H124 L116 128 L108 106 H62 L56 118 L50 106 H36 Z"/>
+        <rect x="34" y="104" width="172" height="26" rx="13"/>
+        <path d="M40 132 H200 Q200 158 168 158 H72 Q40 158 40 132 Z"/>
+      </g>
+      <g fill="#FFF3D6" stroke="#1E1814" stroke-width="1.5">
+        <ellipse cx="88" cy="50" rx="5" ry="3" transform="rotate(-20 88 50)"/><ellipse cx="112" cy="42" rx="5" ry="3"/><ellipse cx="138" cy="48" rx="5" ry="3" transform="rotate(20 138 48)"/><ellipse cx="160" cy="60" rx="5" ry="3" transform="rotate(30 160 60)"/><ellipse cx="72" cy="66" rx="5" ry="3" transform="rotate(-30 72 66)"/><ellipse cx="122" cy="62" rx="5" ry="3"/>
+      </g>
+      <path d="M62 52 Q80 36 104 36" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="5" stroke-linecap="round"/>
+      <path d="M50 116 h20 M96 118 h28 M150 114 h24" stroke="#3A1F12" stroke-width="3" stroke-linecap="round"/>
+    </g>
+
+    <!-- HALV GRILLKYLLING MED FRITTER -->
+    <g id="ill-kylling">
+      <g class="fl">
+        <g fill="#F4C24A">
+          <rect x="150" y="30" width="12" height="70" rx="3" transform="rotate(12 156 65)"/><rect x="166" y="34" width="12" height="66" rx="3" transform="rotate(-6 172 67)"/><rect x="182" y="40" width="12" height="62" rx="3" transform="rotate(18 188 71)"/><rect x="198" y="46" width="12" height="56" rx="3" transform="rotate(-10 204 74)"/>
+        </g>
+        <ellipse cx="118" cy="140" rx="104" ry="20" fill="#FFF8EE"/>
+        <path d="M44 116 Q26 70 74 52 Q124 34 156 74 Q176 100 156 124 Q112 146 44 116 Z" fill="#D98A3D"/>
+        <path d="M150 118 Q170 128 186 144" stroke="#D98A3D" stroke-width="20" stroke-linecap="round" fill="none"/>
+      </g>
+      <g class="ink">
+        <rect x="150" y="30" width="12" height="70" rx="3" transform="rotate(12 156 65)"/><rect x="166" y="34" width="12" height="66" rx="3" transform="rotate(-6 172 67)"/><rect x="182" y="40" width="12" height="62" rx="3" transform="rotate(18 188 71)"/><rect x="198" y="46" width="12" height="56" rx="3" transform="rotate(-10 204 74)"/>
+        <ellipse cx="118" cy="140" rx="104" ry="20"/>
+        <path d="M44 116 Q26 70 74 52 Q124 34 156 74 Q176 100 156 124 Q112 146 44 116 Z"/>
+      </g>
+      <path d="M148 116 Q170 128 184 142" stroke="#1E1814" stroke-width="28" stroke-linecap="round" fill="none"/>
+      <path d="M148 116 Q170 128 184 142" stroke="#D98A3D" stroke-width="20" stroke-linecap="round" fill="none"/>
+      <g fill="#FFF3D6" stroke="#1E1814" stroke-width="3"><circle cx="192" cy="146" r="8"/><circle cx="198" cy="138" r="7"/></g>
+      <path d="M66 72 Q92 56 122 62" fill="none" stroke="#FFE2A8" stroke-width="6" stroke-linecap="round"/>
+      <g stroke="#9A5420" stroke-width="3" stroke-linecap="round"><path d="M80 98 l10 -6"/><path d="M104 90 l10 -6"/><path d="M96 112 l10 -6"/><path d="M124 104 l10 -6"/><path d="M70 82 l8 -5"/></g>
+    </g>
+
+    <!-- POELSEMIX I BAKKE -->
+    <g id="ill-mix">
+      <g class="fl">
+        <g fill="#F4C24A">
+          <rect x="70" y="30" width="12" height="70" rx="3" transform="rotate(-14 76 65)"/><rect x="88" y="22" width="12" height="78" rx="3" transform="rotate(-4 94 61)"/><rect x="106" y="26" width="12" height="74" rx="3" transform="rotate(8 112 63)"/><rect x="124" y="20" width="12" height="80" rx="3" transform="rotate(-8 130 60)"/><rect x="142" y="28" width="12" height="72" rx="3" transform="rotate(12 148 64)"/><rect x="158" y="34" width="12" height="66" rx="3" transform="rotate(-2 164 67)"/>
+        </g>
+        <path d="M48 86 H192 L176 160 H64 Z" fill="#D3281F"/>
+      </g>
+      <g class="ink">
+        <rect x="70" y="30" width="12" height="70" rx="3" transform="rotate(-14 76 65)"/><rect x="88" y="22" width="12" height="78" rx="3" transform="rotate(-4 94 61)"/><rect x="106" y="26" width="12" height="74" rx="3" transform="rotate(8 112 63)"/><rect x="124" y="20" width="12" height="80" rx="3" transform="rotate(-8 130 60)"/><rect x="142" y="28" width="12" height="72" rx="3" transform="rotate(12 148 64)"/><rect x="158" y="34" width="12" height="66" rx="3" transform="rotate(-2 164 67)"/>
+      </g>
+      <g fill="#C8432B" stroke="#1E1814" stroke-width="3">
+        <ellipse cx="78" cy="86" rx="15" ry="11"/><ellipse cx="108" cy="80" rx="15" ry="11"/><ellipse cx="138" cy="86" rx="15" ry="11"/><ellipse cx="166" cy="82" rx="15" ry="11"/><ellipse cx="94" cy="92" rx="15" ry="11"/><ellipse cx="152" cy="94" rx="15" ry="11"/>
+      </g>
+      <g fill="#E8735B"><ellipse cx="78" cy="86" rx="8" ry="5"/><ellipse cx="108" cy="80" rx="8" ry="5"/><ellipse cx="138" cy="86" rx="8" ry="5"/><ellipse cx="166" cy="82" rx="8" ry="5"/><ellipse cx="94" cy="92" rx="8" ry="5"/><ellipse cx="152" cy="94" rx="8" ry="5"/></g>
+      <path d="M112 66 q8 -12 18 -2 q10 -6 12 6 q4 10 -12 10 h-14 q-12 -2 -4 -14 Z" fill="#D3281F" stroke="#1E1814" stroke-width="3"/>
+      <g class="ink"><path d="M48 86 H192 L176 160 H64 Z"/></g>
+      <g fill="#FFF8EE"><path d="M76 96 h14 l-4 56 h-10 Z"/><path d="M112 96 h14 l-1 56 h-12 Z"/><path d="M150 96 h14 l-6 56 h-10 Z"/></g>
+    </g>
+
+    <!-- RIBBENSBURGER -->
+    <g id="ill-ribbe">
+      <g class="fl">
+        <path d="M44 86 Q44 34 120 34 Q196 34 196 86 Z" fill="#E6A04A"/>
+        <path d="M34 88 q10 10 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 v8 H34 Z" fill="#7B3D7A"/>
+        <rect x="36" y="96" width="168" height="34" rx="6" fill="#E9B98C"/>
+        <path d="M42 132 H198 Q198 156 168 156 H72 Q42 156 42 132 Z" fill="#E6A04A"/>
+      </g>
+      <g class="ink">
+        <path d="M44 86 Q44 34 120 34 Q196 34 196 86 Z"/>
+        <path d="M34 88 q10 10 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"/>
+        <rect x="36" y="96" width="168" height="34" rx="6"/>
+        <path d="M42 132 H198 Q198 156 168 156 H72 Q42 156 42 132 Z"/>
+      </g>
+      <rect x="36" y="96" width="168" height="10" rx="4" fill="#B56A2E" stroke="#1E1814" stroke-width="3"/>
+      <g stroke="#1E1814" stroke-width="2.5"><path d="M52 96 v10 M68 96 v10 M84 96 v10 M100 96 v10 M116 96 v10 M132 96 v10 M148 96 v10 M164 96 v10 M180 96 v10"/></g>
+      <path d="M44 116 H196 M44 124 H196" stroke="#D49A6A" stroke-width="3"/>
+      <g fill="#5F8F35" stroke="#1E1814" stroke-width="2.5"><ellipse cx="96" cy="84" rx="10" ry="5"/><ellipse cx="144" cy="84" rx="10" ry="5"/></g>
+      <path d="M66 54 Q84 40 108 40" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="5" stroke-linecap="round"/>
+    </g>
+
+    <!-- BOEFSANDWICH MED BRUN SOVS -->
+    <g id="ill-boef">
+      <g class="fl">
+        <path d="M42 84 Q42 40 120 40 Q198 40 198 84 Z" fill="#EDB064"/>
+        <rect x="36" y="88" width="168" height="28" rx="14" fill="#5E3420"/>
+        <path d="M40 112 H200 V118 H186 Q182 140 176 118 H134 Q128 150 120 118 H78 Q72 136 66 118 H40 Z" fill="#7A4521"/>
+        <path d="M40 124 H200 Q200 152 168 152 H72 Q40 152 40 124 Z" fill="#EDB064"/>
+      </g>
+      <g class="ink">
+        <path d="M42 84 Q42 40 120 40 Q198 40 198 84 Z"/>
+        <rect x="36" y="88" width="168" height="28" rx="14"/>
+        <path d="M40 112 H200 V118 H186 Q182 140 176 118 H134 Q128 150 120 118 H78 Q72 136 66 118 H40 Z"/>
+        <path d="M40 124 H200 Q200 152 168 152 H72 Q40 152 40 124 Z"/>
+      </g>
+      <g fill="none" stroke="#1E1814" stroke-width="3"><ellipse cx="78" cy="86" rx="14" ry="6"/><ellipse cx="116" cy="84" rx="14" ry="6"/><ellipse cx="156" cy="86" rx="14" ry="6"/></g>
+      <g fill="none" stroke="#FFF3D6" stroke-width="3"><ellipse cx="78" cy="86" rx="10" ry="3.5"/><ellipse cx="116" cy="84" rx="10" ry="3.5"/><ellipse cx="156" cy="86" rx="10" ry="3.5"/></g>
+      <g fill="#80522A" stroke="#1E1814" stroke-width="1.5"><circle cx="96" cy="80" r="3.5"/><circle cx="136" cy="80" r="3.5"/><circle cx="176" cy="82" r="3"/><circle cx="62" cy="82" r="3"/></g>
+      <path d="M66 58 Q86 46 110 46" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="5" stroke-linecap="round"/>
+    </g>
+  </defs>
+</svg>
+
+<script>
+// Filttavle: hvert bogstav sidder lidt skævt, som når man selv har trykket dem i
+(function(){
+  let seed = 7;
+  const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  document.querySelectorAll("#feltboard .row").forEach(row => {
+    const words = row.textContent.trim().split(/\s+/);
+    row.textContent = "";
+    words.forEach(w => {
+      const ws = document.createElement("span"); ws.className = "w";
+      [...w].forEach(ch => {
+        const s = document.createElement("span"); s.className = "l"; s.textContent = ch;
+        s.style.transform = `translateY(${((rnd() - .5) * 3).toFixed(1)}px) rotate(${((rnd() - .5) * 5).toFixed(1)}deg)`;
+        ws.appendChild(s);
+      });
+      row.appendChild(ws);
+    });
+  });
+})();
+
+// 180 streger for 180 lukkede dage; den sidste lyser
+(function(){
+  const t = document.getElementById("tally");
+  for (let i = 0; i < 180; i++) { const b = document.createElement("i"); if (i === 179) b.className = "lit"; t.appendChild(b); }
+})();
+
+// Åben nu? Regnet i dansk tid
+(function(){
+  const HOURS = {0:[12,20],1:[11,20],2:[11,20],3:[11,20],4:[11,20],5:[11,20],6:[11,20]};
+  const DAYS = ["søndag","mandag","tirsdag","onsdag","torsdag","fredag","lørdag"];
+  let d, h, m;
+  try {
+    const parts = new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/Copenhagen",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date());
+    const get = k => parts.find(p => p.type === k).value;
+    d = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].indexOf(get("weekday"));
+    h = +get("hour") % 24; m = +get("minute");
+  } catch(e) { const n = new Date(); d = n.getDay(); h = n.getHours(); m = n.getMinutes(); }
+  const [o, c] = HOURS[d];
+  const now = h + m / 60;
+  const badge = document.getElementById("openbadge"), txt = document.getElementById("opentxt");
+  if (now >= o && now < c) { badge.classList.add("is-open"); txt.textContent = `Åbent nu · til kl. ${c}`; }
+  else if (now < o) { txt.textContent = `Åbner i dag kl. ${o}`; }
+  else { const nd = (d + 1) % 7; txt.textContent = `Lukket · åbner ${DAYS[nd]} kl. ${HOURS[nd][0]}`; }
+  document.querySelectorAll(`#hours [data-d="${d}"]`).forEach(e => e.classList.add("today"));
+})();
+</script>
+</body>
+</html>
