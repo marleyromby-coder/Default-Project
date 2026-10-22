@@ -94,6 +94,15 @@ p{margin:0}
 .where a{font-weight:700}
 .where svg.arrow{position:absolute;right:-56px;top:-30px;width:80px;transform:rotate(18deg)}
 
+/* Om stedet */
+.about{padding-block:10px 84px}
+.about .wrap{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:20px 48px;align-items:start}
+.about h2{font-family:var(--sign);font-size:clamp(1.9rem,4.2vw,3rem);line-height:.98;color:var(--ink);text-shadow:3px 3px 0 var(--sennep);text-wrap:balance}
+.about-txt{display:grid;gap:14px;min-width:0}
+.about-txt p{max-width:62ch;font-size:1.06rem}
+.facts{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.facts li{border:3px solid var(--ink);border-radius:999px;background:var(--remo);padding:5px 14px;font-weight:800;font-size:.86rem;letter-spacing:.02em}
+
 /* Menutavle */
 .menu{background:var(--ink);color:var(--papir);padding-block:80px 90px;position:relative}
 .menu::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1.2px,transparent 1.4px);background-size:9px 9px;pointer-events:none}
@@ -102,6 +111,10 @@ p{margin:0}
 .menu-head h2{font-family:var(--sign);font-size:clamp(2.4rem,7vw,5rem);color:var(--sennep);line-height:.9}
 .menu-head p{max-width:40ch;color:#CFC4B4}
 .menu-dog{display:inline-block;width:1.6em;height:auto;margin-left:.15em;vertical-align:-.1em;transform:rotate(-12deg)}
+.menu .sub{font-family:var(--sign);font-weight:400;font-size:1.3rem;color:var(--papir);margin-bottom:16px;display:flex;align-items:center;gap:14px}
+.menu .sub::after{content:"";flex:1;height:3px;background:repeating-linear-gradient(90deg,var(--sennep) 0 10px,transparent 10px 18px)}
+.menu .dishes + .sub{margin-top:46px}
+.rec{position:absolute;top:2px;left:2px;z-index:2;font-family:var(--sign);font-size:.82rem;letter-spacing:.04em;background:var(--sennep);color:var(--ink);border:3px solid var(--ink);border-radius:4px;padding:5px 9px;transform:rotate(-6deg);box-shadow:3px 3px 0 var(--ink)}
 .dishes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
 .dish{background:var(--panel,#F5EEE1);color:var(--ink);border:4px solid #000;border-radius:8px;overflow:hidden;display:grid;grid-template-rows:auto 1fr;box-shadow:inset 0 0 0 4px rgba(255,255,255,.35)}
 .dish figure{margin:0;position:relative;aspect-ratio:4/3;max-width:100%;display:grid;place-items:center;padding:14px;background:var(--panel,#F5EEE1);border-bottom:4px solid #000;overflow:hidden}
@@ -171,6 +184,14 @@ p{margin:0}
 .card .big{font-family:var(--sign);font-size:1.9rem;line-height:1.05}
 .card a.btn{justify-self:start;margin-top:6px;font-weight:800;text-decoration:none;border:3px solid var(--ink);padding:8px 14px;border-radius:999px;background:var(--sennep)}
 .card a.btn:hover{background:var(--ink);color:var(--sennep)}
+.map{grid-column:1/-1;border:4px solid var(--ink);border-radius:8px;overflow:hidden;background:#fff8ee;box-shadow:6px 6px 0 var(--ink)}
+.map iframe{display:block;width:100%;height:clamp(260px,42vw,420px);border:0;border-bottom:4px solid var(--ink);filter:saturate(.9) sepia(.08)}
+.map-bar{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;padding:18px 22px;background:var(--sennep)}
+.map-bar .pin{width:36px;flex:none}
+.map-addr{display:grid;gap:2px;flex:1 1 260px;min-width:0}
+.map-addr b{font-family:var(--sign);font-weight:400;font-size:1.25rem}
+.map-bar a.btn{font-weight:800;text-decoration:none;border:3px solid var(--ink);padding:8px 14px;border-radius:999px;background:#fff8ee}
+.map-bar a.btn:hover{background:var(--ink);color:var(--sennep)}
 .hours{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;font-family:var(--bon);font-size:1rem}
 .hours .today{background:var(--remo);font-weight:700}
 
@@ -193,6 +214,7 @@ footer b{font-family:var(--sign);font-weight:400;color:var(--sennep);font-size:1
   .sticker b{font-size:1.35rem}
   .dishes{grid-template-columns:repeat(2,minmax(0,1fr))}
   .visit .wrap{grid-template-columns:minmax(0,1fr)}
+  .about .wrap{grid-template-columns:minmax(0,1fr)}
   .where svg.arrow{display:none}
 }
 @media (max-width:620px){
@@ -270,17 +292,42 @@ footer b{font-family:var(--sign);font-weight:400;color:var(--sennep);font-size:1
   </div>
 </section>
 
+<section class="about" aria-labelledby="h-om">
+  <div class="wrap">
+    <h2 id="h-om">Lækker mad, serveret med et smil</h2>
+    <div class="about-txt">
+      <p>Hos Gittes Grillbar på Nyhavnsgade 7 i Esbjerg får du lækker mad serveret med et smil. Gittes Grillbar er et takeaway-sted med mad, der er inspireret af det danske køkken. Menukortet er fyldt med lækre retter, og du kan blandt andet vælge mellem fast food, grill og salat.</p>
+      <p>Maden bliver tilberedt med sans for kvalitet og den gode smag, og Gittes Grillbar stræber til hver en tid efter, at du får en god madoplevelse. Alle retter på menukortet kan bestilles som takeaway til afhentning, både til frokost og aftensmad.</p>
+      <ul class="facts" aria-label="Kort fortalt">
+        <li>Takeaway til afhentning</li><li>Dansk køkken</li><li>Fast food · Grill · Salat</li><li>Frokost og aftensmad</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <section class="menu" id="menu" aria-labelledby="h-menu">
   <div class="wrap">
     <div class="menu-head">
       <h2 id="h-menu">Fra<br>grillen<svg class="menu-dog" viewBox="0 0 240 170" aria-hidden="true"><use href="#ill-hotdog"/></svg></h2>
-      <p>Det er burgerne, gæsterne skriver om. Men pølsemixen og den halve kylling har også deres faste kunder.</p>
+      <p>Gæsterne anbefaler især tre retter: burgerne, pølsemixen og ribbensburgeren. Men grillpølsen og den halve kylling har også deres faste kunder.</p>
     </div>
+    <h3 class="sub">Gæsternes anbefalinger</h3>
     <div class="dishes">
-      <article class="dish p-yellow">
-        <figure><img src="img/burger.jpg" width="1000" height="750" loading="lazy" alt="Burger med hjemmelavet bøf, cheddar, salat og tomat i sesambolle"></figure>
-        <div class="txt"><h3>Burgere</h3><p>Hjemmelavede, friske bøffer. Flere burgere at vælge imellem.</p><span class="q">"Gode burgere …" · Henrik, Dagens Menu</span></div>
+      <article class="dish is-rec p-yellow">
+        <figure><span class="rec">Anbefalet</span><img src="img/burger.jpg" width="1000" height="750" loading="lazy" alt="Burger med hjemmelavet bøf, cheddar, salat og tomat i sesambolle"></figure>
+        <div class="txt"><h3>Burgere</h3><p>Hjemmelavede, friske bøffer. Det er dem, gæsterne roser mest.</p><span class="q">"Gode burgere …" · Henrik, Dagens Menu</span></div>
       </article>
+      <article class="dish is-rec p-orange">
+        <figure><span class="rec">Anbefalet</span><img src="img/polsemix.jpg" width="1000" height="747" loading="lazy" alt="Pølsemix med pommes frites, pølsestykker, ketchup, remoulade og ristede løg"></figure>
+        <div class="txt"><h3>Pølsemix</h3><p>Pølser og pommes frites i én bakke. En af stedets mest anbefalede retter.</p></div>
+      </article>
+      <article class="dish is-rec p-green">
+        <figure><span class="rec">Anbefalet</span><img src="img/ribbe.jpg" width="1000" height="747" loading="lazy" alt="Ribbensburger skåret over med ribbensteg, sprød svær, rødkål og agurk"></figure>
+        <div class="txt"><h3>Ribbensburger</h3><p>Ribbenssteg i blød bolle. En af de retter, gæsterne anbefaler.</p></div>
+      </article>
+    </div>
+    <h3 class="sub">Også på grillen</h3>
+    <div class="dishes">
       <article class="dish p-red">
         <figure><img src="img/hotdog.jpg" width="1000" height="747" loading="lazy" alt="Ristet hotdog med remoulade, ketchup, sennep, ristede løg og agurker"></figure>
         <div class="txt"><h3>Grillpølser</h3><p>God gammeldags grillpølse. Med det hele eller lige som du vil have den.</p></div>
@@ -288,14 +335,6 @@ footer b{font-family:var(--sign);font-weight:400;color:var(--sennep);font-size:1
       <article class="dish p-cream">
         <figure><img src="img/kylling.jpg" width="1000" height="747" loading="lazy" alt="Halv grillkylling med fritter og remoulade i en rød kurv"></figure>
         <div class="txt"><h3>½ Grillkylling</h3><p>Med fritter. Den klassiske aftensmad, når ingen gider lave mad.</p><span class="q">"Lækker grillkylling m fritter" · Benny, juli 2025</span></div>
-      </article>
-      <article class="dish p-orange">
-        <figure><img src="img/polsemix.jpg" width="1000" height="747" loading="lazy" alt="Pølsemix med pommes frites, pølsestykker, ketchup, remoulade og ristede løg"></figure>
-        <div class="txt"><h3>Pølsemix</h3><p>Pølser og pommes frites i én bakke. Grillbarens egen ret.</p></div>
-      </article>
-      <article class="dish p-green">
-        <figure><img src="img/ribbe.jpg" width="1000" height="747" loading="lazy" alt="Ribbensburger skåret over med ribbensteg, sprød svær, rødkål og agurk"></figure>
-        <div class="txt"><h3>Ribbensburger</h3><p>Ribbenssteg i blød bolle. En af de retter, gæsterne anbefaler.</p></div>
       </article>
       <article class="dish p-blue">
         <figure><img src="img/boef.jpg" width="1000" height="747" loading="lazy" alt="Bøfsandwich med brun sovs, ristede løg, rødbede og agurk"></figure>
@@ -408,6 +447,13 @@ footer b{font-family:var(--sign);font-weight:400;color:var(--sennep);font-size:1
       <p>6700 Esbjerg. Bag SuperBrugsen på Strandby Plads.</p>
       <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Gittes+Grillbar+Nyhavnsgade+7+6700+Esbjerg" target="_blank" rel="noopener">Vis vej ↗</a>
     </div>
+    <div class="map" id="kort">
+      <div class="map-bar">
+        <svg class="pin" viewBox="0 0 40 52" aria-hidden="true"><path d="M20 2C10 2 3 9.5 3 19c0 13 17 30 17 30s17-17 17-30C37 9.5 30 2 20 2Z" fill="#D3281F" stroke="#1E1814" stroke-width="3.5" stroke-linejoin="round"/><circle cx="20" cy="19" r="6.5" fill="#F3B512" stroke="#1E1814" stroke-width="3"/></svg>
+        <div class="map-addr"><b>Nyhavnsgade 7, 6700 Esbjerg</b><span>Bag SuperBrugsen på Strandby Plads.</span></div>
+        <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Gittes+Grillbar+Nyhavnsgade+7+6700+Esbjerg" target="_blank" rel="noopener">Åbn i Google Maps ↗</a>
+      </div>
+    </div>
   </div>
 </section>
 </main>
@@ -477,6 +523,19 @@ footer b{font-family:var(--sign);font-weight:400;color:var(--sennep);font-size:1
 (function(){
   const t = document.getElementById("tally");
   for (let i = 0; i < 180; i++) { const b = document.createElement("i"); if (i === 179) b.className = "lit"; t.appendChild(b); }
+})();
+
+// Google Maps-kortet: kun når siden vises for sig selv (på den rigtige side), ikke inde i en anden side
+(function(){
+  let framed = true;
+  try { framed = window.self !== window.top; } catch(e) {}
+  if (framed) return;
+  const f = document.createElement("iframe");
+  f.src = "https://www.google.com/maps?q=Gittes+Grillbar,+Nyhavnsgade+7,+6700+Esbjerg&z=16&output=embed";
+  f.title = "Kort over Gittes Grillbar, Nyhavnsgade 7, Esbjerg";
+  f.loading = "lazy";
+  f.referrerPolicy = "no-referrer-when-downgrade";
+  document.getElementById("kort").prepend(f);
 })();
 
 // Åben nu? Regnet i dansk tid
