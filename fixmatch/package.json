@@ -41,7 +41,9 @@
     "eslint-config-expo": "~58.0.4",
     "jest": "^30.5.2",
     "jest-expo": "^58.0.11",
-    "typescript": "~6.0.3"
+    "topojson-client": "^3.1.0",
+    "typescript": "~6.0.3",
+    "world-atlas": "^2.0.2"
   },
   "scripts": {
     "start": "expo start",
@@ -57,7 +59,8 @@
     "photos:bundle": "node scripts/bundle-photos.js",
     "data:demo": "node scripts/generate-demo-data.js",
     "data:places": "node scripts/build-places.js",
-    "brand:render": "node scripts/render-brand-assets.js"
+    "brand:render": "node scripts/render-brand-assets.js",
+    "data:outline": "node scripts/build-denmark-outline.js"
   },
   "private": true,
   "jest": {
