@@ -8,7 +8,9 @@ FixMatch er en iPhone-app (Expo / React Native) til det danske marked. Brugeren 
 | --- | --- |
 | Sammenligning | Pris (timepris + eksempelpriser), afstand (luftlinje) og Trustpilot (TrustScore, antal anmeldelser) |
 | Kontakt | Ring op, hjemmeside, rutevejledning, del |
-| Andet | Personlige prioriteter, filtre, sammenlign op til 3, gemte, kort, søgning, akut/døgnvagt, mørk tilstand, VoiceOver |
+| Beskriv dit problem | Fritekst + budget → fag og opgave genkendes på telefonen, og virksomhederne grupperes efter, om deres egen pris passer til budgettet |
+| Kort | Apple Kort (MapKit) med alle virksomheder i Danmark, farvet efter fag, klynger og swipe-kort. Se `docs/jura/apple-kort.md` |
+| Andet | Personlige prioriteter, filtre, sammenlign op til 3, gemte, søgning, akut/døgnvagt, mørk tilstand, VoiceOver |
 | Jura indbygget | "Sådan rangerer vi" (mfl. § 6 a), "Om anmeldelser" (mfl. § 6 b), annoncer altid markeret, priser inkl. moms, "Rapportér fejl" (DSA art. 16) |
 
 ---
@@ -63,7 +65,7 @@ Formater i regnearket:
 | `autorisationer` | `vvs:12345\|kloak:23456` |
 | `aabningstider` | `man-tor 07:00-15:30; fre 07:00-14:00; lør-søn lukket` |
 | `doegnvagt`, `annonce` | `ja` / `nej` |
-| `breddegrad`, `laengdegrad` | Højreklik på adressen i Google Maps → kopiér koordinater. Tomme felter → postnummerets midtpunkt |
+| `breddegrad`, `laengdegrad` | Slå adressen op i Danmarks Adresseregister (DAR) via [Datafordeleren](https://datafordeler.dk) eller Adressevælgeren (gratis, åbne data). DAWA lukkede 1. oktober 2026. Kopiér **ikke** koordinater fra Google Maps eller Apple Kort – deres vilkår forbyder at bygge databaser af dem. Tomme felter → postnummerets midtpunkt |
 
 **Opdatering uden ny app-version:** læg `live-businesses.json` på en https-adresse og sæt `EXPO_PUBLIC_FIXMATCH_DATA_URL`. Appen henter listen ved opstart og bruger den indbyggede, hvis den er offline.
 
@@ -94,7 +96,7 @@ Du behøver **ikke** en Mac – EAS bygger appen i skyen.
 
 ```
 src/app/            Skærme (Expo Router): faner, kategori, virksomhed, sammenlign, søg, filtre …
-src/components/     UI-komponenter (kort, knapper, Trustpilot-visning, kort/radar)
+src/components/     UI-komponenter (kort, knapper, Trustpilot-visning, Apple Kort og webkort)
 src/lib/            Logik: rangering, filtre, åbningstider, søgning, formatering, kontakt
 src/data/           Fag, fotos, postnumre, demodata, live-data og tekster
 src/state/          App-tilstand (gemmes kun på telefonen)

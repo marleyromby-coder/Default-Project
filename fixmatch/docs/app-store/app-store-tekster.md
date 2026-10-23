@@ -34,6 +34,15 @@ Ny: Sammenlign op til tre håndværkere side om side – timepris inkl. moms, af
 ```
 Mangler du en VVS'er, elektriker, tømrer, murer eller mekaniker? FixMatch finder lokale danske virksomheder og sammenligner dem på det, der betyder noget: pris, afstand og kundeanmeldelser. Så sparer du både tid og penge.
 
+BESKRIV DIT PROBLEM – VI MATCHER DIT BUDGET
+• Skriv med dine egne ord, fx "køkkenvasken er stoppet", og hvad du vil give
+• FixMatch finder faget og viser, hvem der ligger inden for dit budget – og hvem der er tæt på
+• Din beskrivelse bliver på telefonen
+
+ALLE HÅNDVÆRKERE PÅ ÉT KORT
+• Se hvor virksomhederne holder til i hele Danmark – farvet efter fag
+• Swipe gennem dem i kortudsnittet, og ring direkte fra kortet
+
 SE PRISEN FØR DU RINGER
 • Timepris og typiske priser for almindelige opgaver – altid inkl. moms
 • Kørselsgebyr og prisniveau sammenlignet med andre i faget
@@ -88,6 +97,7 @@ Det er korrekt, fordi:
 
 - placeringen kun bruges på telefonen og aldrig sendes nogen steder hen,
 - gemte virksomheder, by og prioriteter kun gemmes lokalt,
+- teksten i "Beskriv dit problem" kun behandles på telefonen og ikke sendes nogen steder hen,
 - der ikke er login, analyse-SDK'er, reklamer eller crash-rapportering.
 
 Tilføjer I senere analyse (fx Firebase, PostHog) eller login, skal svaret opdateres, før den version indsendes – ellers risikerer I afvisning efter retningslinje 5.1.2.
@@ -100,8 +110,10 @@ FixMatch helps people in Denmark find and compare local tradespeople (plumbers, 
 • No account or login is required.
 • Location permission is optional. Without it, the user picks a town manually (Mere → Placering). Location is processed on the device only.
 • All listed businesses have given written consent to be listed. Prices are provided by the businesses.
+• The map uses Apple MapKit. The pins are the businesses' own addresses; the app does not store any map data.
+• "Beskriv dit problem" matches the user's text and budget on the device; the text is not sent anywhere.
 • Trustpilot content is displayed under our partner agreement with Trustpilot A/S (agreement available on request).
-• The app is in Danish. To test: open the app → tap "VVS'er" → tap a business → "Ring" opens the phone dialer.
+• The app is in Danish. To test: open the app → tap "VVS'er" → tap a business → "Ring" opens the phone dialer. Or tap "Beskriv dit problem" → tap an example → "Find match".
 ```
 
 *Fjern Trustpilot-linjen, hvis aftalen ikke er på plads – og vis i så fald ikke TrustScores i den version.*

@@ -168,7 +168,7 @@ export default function HomeScreen() {
         </View>
       </Section>
 
-      <Section title="Akut hjælp – døgnvagt">
+      <Section title="Akut hjælp – døgnvagt" subtitle="Ved fare for liv eller brand: ring 112.">
         <View style={styles.urgentRow}>
           {URGENT.map((item) => (
             <Tappable
