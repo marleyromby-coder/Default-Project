@@ -78,6 +78,8 @@ function RootNavigator() {
             title: 'Dine prioriteter',
           }}
         />
+        <Stack.Screen name="beskriv" options={{ title: 'Beskriv dit problem' }} />
+        <Stack.Screen name="match" options={{ title: 'Dit match' }} />
         <Stack.Screen name="placering" options={{ presentation: 'modal', title: 'Vælg placering' }} />
         <Stack.Screen name="info/[slug]" options={{ title: '' }} />
       </Stack.Protected>

@@ -1,8 +1,8 @@
 import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
-import { Badge } from '@/components/ui/badge';
-import { Icon } from '@/components/ui/icon';
+import { Badge, type BadgeTone } from '@/components/ui/badge';
+import { Icon, type IconName } from '@/components/ui/icon';
 import { Photo } from '@/components/ui/photo';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
@@ -24,18 +24,24 @@ interface Props {
   job?: JobType;
   rank?: number;
   onCompareLimit?: () => void;
+  /** Replaces the price line, e.g. a job price for 25 m². */
+  priceOverride?: string;
+  /** Extra badge shown first in the footer, e.g. "Inden for budget". */
+  highlight?: { label: string; tone: BadgeTone; icon?: IconName };
 }
 
-export function BusinessCard({ item, job, rank, onCompareLimit }: Props) {
+export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, highlight }: Props) {
   const colors = useTheme();
   const { state, toggleFavorite, toggleCompare } = useApp();
   const { business, distanceKm, score } = item;
   const favorite = state.favorites.includes(business.id);
   const comparing = state.compare.includes(business.id);
   const jobPrice = job ? business.pricing.examples.find((e) => e.job === job.id) : undefined;
-  const priceText = jobPrice
-    ? `${job?.name}: ${formatPriceRange(jobPrice.min, jobPrice.max, jobPrice.unit)}`
-    : formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax);
+  const priceText =
+    priceOverride ??
+    (jobPrice
+      ? `${job?.name}: ${formatPriceRange(jobPrice.min, jobPrice.max, jobPrice.unit)}`
+      : formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax));
   const authorized = business.authorizations.length > 0;
   const open = getOpenStatus(business.hours);
 
@@ -46,6 +52,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit }: Props) {
   const summary = [
     rank ? `Nummer ${rank}` : undefined,
     business.name,
+    highlight?.label,
     `match ${score} ud af 100`,
     business.trustpilot
       ? `TrustScore ${formatRating(business.trustpilot.score)} på Trustpilot`
@@ -98,7 +105,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit }: Props) {
           </View>
           <View style={styles.metaRow}>
             <Icon name="pin" size={13} color={colors.textSecondary} />
-            <AppText variant="footnote" tone="textSecondary">
+            <AppText variant="footnote" tone="textSecondary" numberOfLines={1} style={styles.noShrink}>
               {formatDistance(distanceKm)}
             </AppText>
             <AppText variant="footnote" tone="textTertiary">
@@ -110,6 +117,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit }: Props) {
       </Tappable>
       <View style={[styles.footer, { borderTopColor: colors.border }]}>
         <View style={styles.badges}>
+          {highlight ? <Badge label={highlight.label} tone={highlight.tone} icon={highlight.icon} /> : null}
           {authorized ? <Badge label="Autoriseret" tone="success" icon="shield" /> : null}
           {business.emergency ? <Badge label="Døgnvagt" tone="warning" icon="bolt" /> : null}
         </View>
@@ -161,6 +169,7 @@ const styles = StyleSheet.create({
   titleText: { flex: 1, gap: 1 },
   metaRow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   flexShrink: { flexShrink: 1 },
+  noShrink: { flexShrink: 0 },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',

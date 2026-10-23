@@ -115,6 +115,24 @@ export default function HomeScreen() {
         </AppText>
       </Tappable>
 
+      <Tappable
+        onPress={() => router.push('/beskriv')}
+        accessibilityLabel="Beskriv dit problem og dit budget, så matcher vi dig med virksomheder"
+        style={[styles.describe, { backgroundColor: colors.brandStrong }]}>
+        <View style={styles.describeIcon}>
+          <Icon name="wand" size={20} color={colors.onBrand} weight="semibold" />
+        </View>
+        <View style={styles.flex}>
+          <AppText variant="headline" tone="onBrand">
+            Beskriv dit problem
+          </AppText>
+          <AppText variant="footnote" tone="onBrand">
+            Skriv hvad der er galt og dit budget – vi finder dem, der passer.
+          </AppText>
+        </View>
+        <Icon name="chevronRight" size={16} color={colors.onBrand} weight="semibold" />
+      </Tappable>
+
       {state.location.source === 'default' ? (
         <View style={[styles.notice, { backgroundColor: colors.infoSoft }]}>
           <Icon name="info" size={16} color={colors.info} weight="semibold" />
@@ -354,6 +372,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Spacing.sm,
     paddingHorizontal: Spacing.md,
+  },
+  describe: {
+    marginHorizontal: ScreenPadding,
+    marginTop: -Spacing.sm,
+    borderRadius: Radius.lg,
+    padding: Spacing.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.md,
+  },
+  describeIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.18)',
   },
   notice: {
     marginHorizontal: ScreenPadding,

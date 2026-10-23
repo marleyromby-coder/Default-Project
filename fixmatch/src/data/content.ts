@@ -1,5 +1,6 @@
 import { APP_INFO } from '@/constants/app-info';
 import { DISTANCE_SCALE_KM, NO_REVIEWS_SCORE, REVIEW_PRIOR_COUNT, REVIEW_PRIOR_MEAN } from '@/lib/ranking';
+import { CLOSE_MARGIN, WORKSHOP_RADIUS_KM } from '@/lib/matcher';
 
 export interface InfoSection {
   heading?: string;
@@ -39,6 +40,13 @@ export const INFO_PAGES = {
         heading: 'Din vægtning',
         paragraphs: [
           'Under "Dine prioriteter" vælger du, hvor vigtig hver parameter er. Vægtene lægges sammen til 100 %, og scoren er det vægtede gennemsnit gange 100. Du kan også sortere efter pris, afstand eller anmeldelser alene.',
+        ],
+      },
+      {
+        heading: 'Når du beskriver dit problem',
+        paragraphs: [
+          `Under "Beskriv dit problem" finder appen faget og opgaven ud fra dine ord. Virksomhedernes egen pris for opgaven (inkl. moms, gange antal m² eller stk.) sammenlignes med dit budget, og de deles i fire grupper i denne rækkefølge: "Inden for budget" og "Kan passe", "Tæt på budget" (højst ${Math.round(CLOSE_MARGIN * 100)} % over), "Pris på forespørgsel" (virksomheden har ikke oplyst en pris for opgaven) og "Over budget". Inden for hver gruppe afgør FixMatch-scoren rækkefølgen. Haster det, kommer virksomheder med døgnvagt først.`,
+          `Vi viser kun virksomheder, der kører ud til din adresse (inden for deres eget område). Mekanikere vises inden for ${WORKSHOP_RADIUS_KM} km, fordi du selv kører derhen. Din beskrivelse bliver på telefonen og sendes ikke til FixMatch eller virksomhederne.`,
         ],
       },
       {

@@ -6,7 +6,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { Icon, type IconName } from './icon';
 import { AppText } from './text';
 
-type BadgeTone = 'neutral' | 'brand' | 'success' | 'danger' | 'warning' | 'info';
+export type BadgeTone = 'neutral' | 'brand' | 'success' | 'danger' | 'warning' | 'info';
 
 interface Props {
   label: string;

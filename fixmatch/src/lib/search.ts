@@ -15,7 +15,7 @@ export interface SearchResults {
 }
 
 /** Plain-language phrases mapped to a trade, for searches like "låst ude". */
-const SYNONYMS: [string, Category['id']][] = [
+export const SYNONYMS: [string, Category['id']][] = [
   ['blikkenslager', 'vvs'],
   ['rørlægger', 'vvs'],
   ['vandhane', 'vvs'],
