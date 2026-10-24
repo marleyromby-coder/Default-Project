@@ -178,7 +178,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
         {
           heading: 'Fejl i FixMatch',
           paragraphs: [
-            'Er en oplysning forkert eller ulovlig? Tryk på "Rapportér fejl" nederst på virksomhedens side, eller skriv til os. Vi svarer inden for 2 hverdage.',
+            'Er en oplysning forkert eller ulovlig? Tryk på "Rapportér fejl eller ulovligt indhold" nederst på virksomhedens side, eller skriv til os. Vi svarer inden for 2 hverdage.',
           ],
         },
       ],
@@ -240,7 +240,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
             'Appen er gratis og kræver ikke login.',
             'Priser, åbningstider og andre oplysninger er oplyst af virksomhederne. Vi gør os umage for, at de er korrekte, men kan ikke garantere det.',
             ...(reviews ? ['TrustScores kommer fra Trustpilot og opdateres løbende.'] : []),
-            'Rapportér fejl eller ulovligt indhold via "Rapportér fejl", så ser vi på det hurtigst muligt.',
+            'Rapportér fejl eller ulovligt indhold nederst på virksomhedens side, så ser vi på det hurtigst muligt.',
             'Dansk ret gælder.',
           ],
         },

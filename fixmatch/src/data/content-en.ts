@@ -160,7 +160,7 @@ export function infoPagesEn(
         {
           heading: 'Errors in FixMatch',
           paragraphs: [
-            'Is something wrong or unlawful? Tap "Report an error" at the bottom of the business page, or write to us. We reply within 2 working days.',
+            'Is something wrong or unlawful? Tap "Report an error or unlawful content" at the bottom of the business page, or write to us. We reply within 2 working days.',
           ],
         },
       ],
@@ -207,7 +207,7 @@ export function infoPagesEn(
           ],
         },
       ],
-      links: [{ label: 'Full privacy policy', url: APP_INFO.privacyUrl }],
+      links: [{ label: 'Full privacy policy', url: APP_INFO.privacyUrlEn }],
     },
     vilkaar: {
       title: 'Terms of use',
@@ -219,12 +219,12 @@ export function infoPagesEn(
             'The app is free and needs no login.',
             'Prices, opening hours and other details come from the businesses. We work to keep them correct but cannot guarantee it.',
             ...(reviews ? ['TrustScores come from Trustpilot and are updated regularly.'] : []),
-            'Report errors or unlawful content with "Report an error", and we will look at it as soon as possible.',
+            'Report errors or unlawful content at the bottom of the business page, and we will look at it as soon as possible.',
             'Danish law applies, without limiting the consumer rights you have where you live.',
           ],
         },
       ],
-      links: [{ label: 'Full terms', url: APP_INFO.termsUrl }],
+      links: [{ label: 'Full terms', url: APP_INFO.termsUrlEn }],
     },
     om: {
       title: 'About FixMatch',

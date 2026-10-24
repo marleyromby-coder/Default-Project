@@ -65,7 +65,8 @@
     "data:places": "node scripts/build-places.js",
     "brand:render": "node scripts/render-brand-assets.js",
     "data:cities": "node scripts/build-world-cities.js",
-    "data:map": "node scripts/build-map-outline.js"
+    "data:map": "node scripts/build-map-outline.js",
+    "website:build": "node scripts/build-website.js"
   },
   "private": true,
   "jest": {

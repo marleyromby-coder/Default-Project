@@ -21,7 +21,7 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 - [ ] `npm run import:businesses` kører uden fejl.
 - [ ] `npm run photos:bundle` er kørt, så fotos ligger i appen.
 - [ ] Udfyld `src/constants/app-info.ts` (navn som på Apple-kontoen, e-mail, URL'er). CVR kan stå tomt.
-- [ ] Privatlivspolitik og vilkår ligger på offentlige URL'er.
+- [ ] Hjemmesiden er online: `npm run website:build`, og læg `dist-website/` på fx Netlify. Privatlivspolitik, vilkår og support findes på dansk og engelsk og kræver ikke login.
 
 ## 3. Teknik
 

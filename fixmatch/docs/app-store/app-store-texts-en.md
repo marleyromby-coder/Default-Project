@@ -100,7 +100,13 @@ The first version of FixMatch: find, compare and call local tradespeople and mec
 
 ## Links
 
-Same URLs as the Danish version (see `app-store-tekster.md`). The privacy policy page should have an English version too: `docs/jura/privatlivspolitik.md` can be translated directly, and the app already shows it in English (More → Privacy policy).
+| Field | URL |
+| --- | --- |
+| Support URL | `https://fixmatch.dk/en/support/` |
+| Marketing URL | `https://fixmatch.dk/en/` |
+| Privacy Policy URL | `https://fixmatch.dk/en/privacy/` |
+
+The pages are built with `npm run website:build` from `docs/jura/privacy-policy.en.md`, `docs/jura/terms.en.md` and `website/` (see README → Hjemmeside).
 
 ## Review notes
 

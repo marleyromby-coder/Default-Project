@@ -1,12 +1,14 @@
 # Privatlivspolitik for FixMatch
 
-*Senest opdateret: [dato]. Skabelon – udfyld felterne i [klammer], og læg teksten på en offentlig side (fx fixmatch.dk/privatliv). Linket skal angives i App Store Connect.*
+*Senest opdateret: {{updated}}.*
+
+> Skabelon. Felterne i {{…}} udfyldes fra `src/constants/app-info.ts`, når hjemmesiden bygges med `npm run website:build`. Linjer, der starter med ">", er noter til jer og kommer ikke med på hjemmesiden. Den engelske udgave er `privacy-policy.en.md` – ret begge, når I ændrer noget.
 
 ## 1. Dataansvarlig
 
-[Navn som på Apple Developer-kontoen], [adresse]. E-mail: [e-mail].
+{{publisher}}. E-mail: {{email}}.
 
-*Uden firma er det personen bag Apple Developer-kontoen, der er dataansvarlig. Når der er et firma: skriv firmanavn og CVR-nummer i stedet. Appen bruger samme navn (`src/constants/app-info.ts`). Til andre lande end Danmark: læg også en engelsk udgave online. Appen har den allerede (Mere → Privatlivspolitik på engelsk).*
+> Uden firma er det personen bag Apple Developer-kontoen, der er dataansvarlig. Når der er et firma, skriver I firmanavn og CVR-nummer i `company` i `app-info.ts`. En adresse er ikke et krav, når der er en e-mail, I læser.
 
 ## 2. Kort fortalt
 
@@ -22,7 +24,7 @@ Kortet vises med Apple Kort (MapKit). For at vise kortet henter din iPhone kortb
 
 ## 5. "Beskriv dit problem"
 
-Teksten, du skriver, og dit budget behandles kun på din telefon for at finde faget og de virksomheder, der passer. Teksten sendes ikke til FixMatch eller til virksomhederne. Hvis du trykker "Del beskrivelsen", bestemmer du selv, hvem du sender den til.
+Teksten, du skriver, og dit budget behandles kun på din telefon for at finde faget og de virksomheder, der passer. Teksten sendes ikke til FixMatch eller til virksomhederne. Hvis du trykker "Del beskrivelsen med en virksomhed", bestemmer du selv, hvem du sender den til.
 
 ## 6. Oplysninger gemt på din telefon
 
@@ -38,7 +40,7 @@ Appen henter billeder fra Pexels og (hvis aktiveret) en opdateret virksomhedslis
 
 ## 9. Oplysninger om virksomheder
 
-Vi viser oplysninger om virksomheder (fx navn, CVR, telefonnummer og priser), som virksomhederne selv har godkendt. For enkeltmandsvirksomheder kan det være personoplysninger om ejeren. Retsgrundlaget er virksomhedens samtykke (GDPR art. 6, stk. 1, litra a). Samtykket kan til enhver tid trækkes tilbage ved at skrive til [e-mail], og så fjerner vi oplysningerne inden for 2 hverdage. Kontaktpersoners navn og e-mail bruges kun til at administrere profilen og opbevares, så længe profilen findes, og 12 måneder derefter som dokumentation for samtykket.
+Vi viser oplysninger om virksomheder (fx navn, CVR, telefonnummer og priser), som virksomhederne selv har godkendt. For enkeltmandsvirksomheder kan det være personoplysninger om ejeren. Retsgrundlaget er virksomhedens samtykke (GDPR art. 6, stk. 1, litra a). Samtykket kan til enhver tid trækkes tilbage ved at skrive til {{email}}, og så fjerner vi oplysningerne inden for 2 hverdage. Kontaktpersoners navn og e-mail bruges kun til at administrere profilen og opbevares, så længe profilen findes, og 12 måneder derefter som dokumentation for samtykket.
 
 ## 10. Henvendelser til os
 
@@ -46,7 +48,7 @@ Skriver du til os, bruger vi din e-mail og det, du skriver, til at svare dig. Vi
 
 ## 11. Dine rettigheder
 
-Du har ret til indsigt, berigtigelse, sletning, begrænsning og indsigelse samt dataportabilitet. Skriv til [e-mail]. Du kan klage til Datatilsynet, Carl Jacobsens Vej 35, 2500 Valby, www.datatilsynet.dk.
+Du har ret til indsigt, berigtigelse, sletning, begrænsning og indsigelse samt dataportabilitet. Skriv til {{email}}. Du kan klage til Datatilsynet, Carl Jacobsens Vej 35, 2500 Valby, www.datatilsynet.dk. Bor du i et andet land, kan du også klage til tilsynsmyndigheden dér, fx Integritetsskyddsmyndigheten i Sverige, Datatilsynet i Norge eller ICO i Storbritannien.
 
 ## 12. Ændringer
 

@@ -18,7 +18,7 @@
 | Trustpilot | ✅ Løst | Slået fra i App Store-versionen (`production`), indtil der er en partneraftale. Så nævner appen og App Store-teksten ingen anmeldelser |
 | Spærre mod fejl-builds | ✅ Løst | `scripts/check-release.js` stopper et App Store-build uden rigtige virksomheder, med demodata eller manglende samtykke, eller med TODO-felter i `app-info.ts` |
 | Apple Kort | ✅ Løst | Godkendt via udvikleraftalen. Se `docs/jura/apple-kort.md` |
-| Privatlivspolitik og vilkår på en hjemmeside | ⏳ Mangler | Læg skabelonerne i `docs/jura/` online. Apple kræver et link til privatlivspolitikken |
+| Privatlivspolitik og vilkår på en hjemmeside | ⏳ Klar til at lægge online | `npm run website:build` bygger forside, privatlivspolitik, vilkår og support på dansk og engelsk. Læg `dist-website/` på fx Netlify. Apple kræver et link til privatlivspolitikken og en support-side |
 | Trader-status i EU | ⏳ Mangler | Se afsnittet nedenfor |
 | CVR-nummer | ✅ Ikke nødvendigt | Kræves ikke af Apple. Se afsnittet om skat og moms |
 | Apple tester ofte fra USA | ✅ Løst | Appen regner kun lande med virksomheder som åbne og viser ellers "FixMatch er endnu ikke i USA". Review-noterne fortæller, hvilken by de skal vælge (`docs/app-store/app-store-tekster.md`) |

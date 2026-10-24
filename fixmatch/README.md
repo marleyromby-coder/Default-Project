@@ -29,7 +29,7 @@ npx expo start
 Scan QR-koden med iPhonens kamera → appen åbner i Expo Go. Alt du ændrer i koden, vises med det samme.
 
 - **Web-demo** (til projektor eller jury på bærbar): `npx expo start --web`, eller `npm run export:web` og læg mappen `dist/` på fx Netlify, Vercel eller GitHub Pages.
-- **Tjek koden**: `npm run check` (TypeScript, lint og 93 tests).
+- **Tjek koden**: `npm run check` (TypeScript, lint og 96 tests).
 - **Engelsk version**: på iPhone under Indstillinger → FixMatch → Sprog. På web: tilføj `?lang=en` til adressen.
 
 > Appen starter i **demotilstand** med 224 fiktive virksomheder: 104 i København, Aarhus, Odense og Aalborg og 24 i hver af Stockholm, Oslo, Berlin, London og New York. De er tydeligt markeret, telefonnumre er i nummerserier til fiktion eller ugyldige, registreringsnumre er ugyldige, og opkald er slået fra.
@@ -51,6 +51,18 @@ Fotos til de rigtige virksomheder: brug virksomhedens egne billeder (med deres t
 - Byer i hele verden: [GeoNames](https://www.geonames.org) (CC BY 4.0) via `all-the-cities`. Genbyg med `npm run data:cities`.
 - Kystlinjer på webkortet: [Natural Earth](https://www.naturalearthdata.com) (public domain) via `world-atlas`. Genbyg med `npm run data:map`.
 - På iPhone bruges Apple Kort. Der gemmes ingen data fra Apple i appen.
+
+## Hjemmeside (privatlivspolitik og support)
+
+Apple kræver en offentlig privatlivspolitik og en support-side. De bygges ud fra de samme tekster som skabelonerne i `docs/jura/`:
+
+```bash
+npm run website:build   # → dist-website/ med forside, privatliv, vilkår og support på dansk og engelsk
+```
+
+1. Udfyld først navn og e-mail i `src/constants/app-info.ts`. Felterne i `{{…}}` i teksterne udfyldes derfra, og linjer, der starter med `>`, er noter til jer og kommer ikke med.
+2. Læg mappen online. Den nemmeste vej er [Netlify Drop](https://app.netlify.com/drop): træk `dist-website/` ind, og I får en gratis adresse. Domænet `fixmatch.dk` kan kobles på senere.
+3. Ret domænet i `src/constants/app-info.ts`, hvis I bruger en anden adresse. Stierne (`/privatliv/`, `/en/privacy/` osv.) skal være de samme.
 
 ## Rigtige virksomheder: fra regneark til app
 
@@ -116,6 +128,7 @@ templates/          Regnearksskabelon til virksomheder
 docs/app-store/     App Store-tekster, privatlivs-svar og tjekliste
 docs/jura/          Samtykke, privatlivspolitik, vilkår, Trustpilot, Apple Kort og kontakt-regler
 docs/lancering/     Global lancering, udgivelse uden CVR og fremvisning
+website/            Forside og support til hjemmesiden (resten kommer fra docs/jura/)
 ```
 
 ## Sådan virker FixMatch-scoren

@@ -89,13 +89,13 @@ Første version af FixMatch: find, sammenlign og ring til lokale håndværkere o
 
 ## Links (skal være offentlige, før I indsender)
 
-| Felt | Forslag |
-| --- | --- |
-| Support-URL | `https://fixmatch.dk/support` |
-| Marketing-URL | `https://fixmatch.dk` |
-| Privatlivspolitik-URL | `https://fixmatch.dk/privatliv` – brug teksten i `docs/jura/privatlivspolitik.md` |
+| Felt | Dansk | Engelsk |
+| --- | --- | --- |
+| Support-URL | `https://fixmatch.dk/support/` | `https://fixmatch.dk/en/support/` |
+| Marketing-URL | `https://fixmatch.dk/` | `https://fixmatch.dk/en/` |
+| Privatlivspolitik-URL | `https://fixmatch.dk/privatliv/` | `https://fixmatch.dk/en/privacy/` |
 
-Har I ikke et domæne endnu, kan I bruge en gratis side (fx GitHub Pages, Notion eller Google Sites) – men den skal være offentlig og må ikke kræve login.
+Siderne bygges med `npm run website:build` ud fra `docs/jura/` og `website/` (se README → Hjemmeside). Har I ikke domænet endnu, så brug den gratis adresse, Netlify giver jer, og ret domænet i `src/constants/app-info.ts` og her.
 
 ## App Privacy ("privatlivsetiket")
 

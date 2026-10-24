@@ -12,11 +12,17 @@ export const APP_INFO = {
   cvr: '',
   /** TODO: a mailbox the team actually reads. */
   email: 'hej@fixmatch.dk',
-  /** TODO: the public website hosting the privacy policy (required by Apple). */
+  /**
+   * TODO: the public website hosting the privacy policy (required by Apple).
+   * `npm run website:build` makes these pages; keep the paths if you change the domain.
+   */
   website: 'https://fixmatch.dk',
-  privacyUrl: 'https://fixmatch.dk/privatliv',
-  termsUrl: 'https://fixmatch.dk/vilkaar',
-  forBusinessesUrl: 'https://fixmatch.dk/virksomheder',
+  privacyUrl: 'https://fixmatch.dk/privatliv/',
+  privacyUrlEn: 'https://fixmatch.dk/en/privacy/',
+  termsUrl: 'https://fixmatch.dk/vilkaar/',
+  termsUrlEn: 'https://fixmatch.dk/en/terms/',
+  supportUrl: 'https://fixmatch.dk/support/',
+  supportUrlEn: 'https://fixmatch.dk/en/support/',
   /** Date the legal texts were last reviewed. */
   legalUpdated: '2026-10-20',
 } as const;
