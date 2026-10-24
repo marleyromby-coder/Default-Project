@@ -33,7 +33,24 @@ export const PRIORITY_PRESETS: { id: string; label: string; priorities: Prioriti
   { id: 'cheap', label: t('Lavest pris'), priorities: { price: 5, distance: 2, reviews: 2 } },
   { id: 'near', label: t('Tættest på'), priorities: { price: 2, distance: 5, reviews: 2 } },
   { id: 'quality', label: t('Bedst anmeldt'), priorities: { price: 2, distance: 2, reviews: 5 } },
-];
+].filter((preset) => TRUSTPILOT_ENABLED || preset.id !== 'quality');
+
+/** The weights as text, e.g. "Pris 40 % · Afstand 30 % · Anmeldelser 30 %". Reviews only when Trustpilot is on. */
+export function weightsText(weights: Weights, spoken = false): string {
+  const values = {
+    price: Math.round(weights.price * 100),
+    distance: Math.round(weights.distance * 100),
+    reviews: Math.round(weights.reviews * 100),
+  };
+  if (spoken) {
+    return TRUSTPILOT_ENABLED
+      ? t('pris {price} procent, afstand {distance} procent, anmeldelser {reviews} procent', values)
+      : t('pris {price} procent, afstand {distance} procent', values);
+  }
+  return TRUSTPILOT_ENABLED
+    ? t('Pris {price} % · Afstand {distance} % · Anmeldelser {reviews} %', values)
+    : t('Pris {price} % · Afstand {distance} %', values);
+}
 
 export interface Weights {
   price: number;

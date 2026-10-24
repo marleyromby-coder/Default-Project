@@ -80,8 +80,7 @@ const en: Record<string, string> = {
   'Din valgte placering': 'Your chosen location',
   'Din vægtning lige nu': 'Your weighting right now',
   'Din vægtning:': 'Your weighting:',
-  'Din vægtning: pris {price} procent, afstand {distance} procent, anmeldelser {reviews} procent. Juster':
-    'Your weighting: price {price} percent, distance {distance} percent, reviews {reviews} percent. Adjust',
+  'Din vægtning: {weights}. Juster': 'Your weighting: {weights}. Adjust',
   'Dine prioriteter': 'Your priorities',
   'Dit budget': 'Your budget',
   'Dit match': 'Your match',
@@ -117,6 +116,8 @@ const en: Record<string, string> = {
   'Fiktiv (demo)': 'Fictional (demo)',
   'Fiktiv eksempelvirksomhed. Navn, telefonnummer, CVR og anmeldelser er opdigtede, og opkald er slået fra.':
     'Fictional demo business. The name, phone number, company number and reviews are made up, and calls are turned off.',
+  'Fiktiv eksempelvirksomhed. Navn, telefonnummer og CVR er opdigtede, og opkald er slået fra.':
+    'Fictional demo business. The name, phone number and company number are made up, and calls are turned off.',
   Filtre: 'Filters',
   'Filtre, {count} aktive': 'Filters, {count} active',
   Find: 'Find',
@@ -315,9 +316,13 @@ const en: Record<string, string> = {
   'Placeringen kunne ikke findes': 'Your location could not be found',
   Pris: 'Price',
   'Pris på forespørgsel': 'Price on request',
+  'Pris {price} % · Afstand {distance} %': 'Price {price} % · Distance {distance} %',
   'Pris {price} % · Afstand {distance} % · Anmeldelser {reviews} %':
     'Price {price} % · Distance {distance} % · Reviews {reviews} %',
+  'Pris {tax} og afstand – side om side.': 'Price {tax} and distance – side by side.',
   'Pris {tax}, afstand og TrustScore – side om side.': 'Price {tax}, distance and TrustScore – side by side.',
+  'Pris og afstand i procent': 'Price and distance in percent',
+  'Pris og afstand side om side': 'Price and distance side by side',
   'Pris, afstand og anmeldelser i procent': 'Price, distance and reviews in percent',
   'Pris, afstand og anmeldelser side om side': 'Price, distance and reviews side by side',
   'Prisen ganges med antallet': 'The price is multiplied by the amount',
@@ -343,6 +348,8 @@ const en: Record<string, string> = {
   'Ryd sammenligning': 'Clear comparison',
   'STORE BYER I DANMARK': 'BIG CITIES IN DENMARK',
   Sammenlign: 'Compare',
+  'Sammenlign pris og afstand hos lokale virksomheder – og ring direkte.':
+    'Compare price and distance of local businesses – and call them directly.',
   'Sammenlign pris, afstand og Trustpilot-anmeldelser hos lokale virksomheder – og ring direkte.':
     'Compare price, distance and Trustpilot reviews of local businesses – and call them directly.',
   'Sammenlign på det, der betyder noget': 'Compare on what matters',
@@ -398,7 +405,7 @@ const en: Record<string, string> = {
   'Til forsiden': 'Go to home',
   Tilbage: 'Back',
   'Timepris inkl. moms': 'Hourly rate incl. VAT',
-  'Timepris og eksempelpriser inkl. moms – før du ringer.': 'Hourly rates and example prices – before you call.',
+  'Timepris og eksempelpriser {tax} – før du ringer.': 'Hourly rates and example prices {tax} – before you call.',
   'Timepris {tax}': 'Hourly rate {tax}',
   Tirsdag: 'Tuesday',
   'Tjekket af FixMatch': 'Checked by FixMatch',
@@ -503,6 +510,9 @@ const en: Record<string, string> = {
   'match {score} ud af 100': 'match {score} out of 100',
   ons: 'Wed',
   'pr. time': 'per hour',
+  'pris {price} procent, afstand {distance} procent': 'price {price} percent, distance {distance} percent',
+  'pris {price} procent, afstand {distance} procent, anmeldelser {reviews} procent':
+    'price {price} percent, distance {distance} percent, reviews {reviews} percent',
   'ringer knappen direkte op til virksomheden. Nummeret {number} er fiktivt, så opkald er slået fra.':
     'the button calls the business directly. The number {number} is fictional, so calls are turned off.',
   'stk.': 'pcs',

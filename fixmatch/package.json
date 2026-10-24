@@ -56,6 +56,8 @@
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "check": "npm run typecheck && npm run lint && npm test",
+    "check:release": "node scripts/check-release.js",
+    "eas-build-pre-install": "node scripts/check-release.js",
     "export:web": "expo export --platform web",
     "import:businesses": "node scripts/import-businesses.js",
     "photos:bundle": "node scripts/bundle-photos.js",

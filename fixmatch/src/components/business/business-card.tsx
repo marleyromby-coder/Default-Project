@@ -9,6 +9,7 @@ import { AppText } from '@/components/ui/text';
 import { MinTouchSize, Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { businessText, currencyOf } from '@/lib/business-text';
+import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { formatDistance, formatHourly, formatPriceRange, formatRating, speakablePrice } from '@/lib/format';
 import { getOpenStatus } from '@/lib/opening-hours';
 import type { ScoredBusiness } from '@/lib/ranking';
@@ -56,9 +57,11 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
     business.name,
     highlight?.label,
     t('match {score} ud af 100', { score }),
-    business.trustpilot
-      ? t('TrustScore {rating} på Trustpilot', { rating: formatRating(business.trustpilot.score) })
-      : t('ingen Trustpilot-profil'),
+    !TRUSTPILOT_ENABLED
+      ? undefined
+      : business.trustpilot
+        ? t('TrustScore {rating} på Trustpilot', { rating: formatRating(business.trustpilot.score) })
+        : t('ingen Trustpilot-profil'),
     speakablePrice(priceText),
     t('{distance} væk', { distance: formatDistance(distanceKm) }),
     open.label,

@@ -109,7 +109,9 @@ export default function HomeScreen() {
       <View style={styles.hero}>
         <AppText variant="title1">{t('Find den rette håndværker')}</AppText>
         <AppText variant="callout" tone="textSecondary">
-          {t('Sammenlign pris, afstand og Trustpilot-anmeldelser hos lokale virksomheder – og ring direkte.')}
+          {TRUSTPILOT_ENABLED
+            ? t('Sammenlign pris, afstand og Trustpilot-anmeldelser hos lokale virksomheder – og ring direkte.')
+            : t('Sammenlign pris og afstand hos lokale virksomheder – og ring direkte.')}
         </AppText>
       </View>
 
@@ -341,7 +343,11 @@ export default function HomeScreen() {
           <Step
             number={2}
             title={t('Sammenlign')}
-            text={t('Pris {tax}, afstand og TrustScore – side om side.', { tax: taxNote(market) })}
+            text={
+              TRUSTPILOT_ENABLED
+                ? t('Pris {tax}, afstand og TrustScore – side om side.', { tax: taxNote(market) })
+                : t('Pris {tax} og afstand – side om side.', { tax: taxNote(market) })
+            }
           />
           <Step
             number={3}
@@ -354,7 +360,7 @@ export default function HomeScreen() {
       <View style={styles.footerLinks}>
         <FooterLink label={t('Sådan rangerer vi')} slug="rangering" />
         <FooterLink label={t('Om priserne')} slug="priser" />
-        <FooterLink label={t('Om anmeldelser')} slug="anmeldelser" />
+        {TRUSTPILOT_ENABLED ? <FooterLink label={t('Om anmeldelser')} slug="anmeldelser" /> : null}
       </View>
     </ScrollView>
   );

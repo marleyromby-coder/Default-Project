@@ -7,7 +7,8 @@ Kopiér felterne direkte ind i App Store Connect → appen → Distribution → 
 | Felt | Værdi | Tegn |
 | --- | --- | --- |
 | Navn | `FixMatch: Find håndværker` | 25 / 30 |
-| Undertitel | `Sammenlign pris & anmeldelser` | 29 / 30 |
+| Undertitel (Trustpilot fra) | `Sammenlign pris og afstand` | 26 / 30 |
+| Undertitel (Trustpilot til) | `Sammenlign pris & anmeldelser` | 29 / 30 |
 | Primær kategori | Livsstil (Lifestyle) | |
 | Sekundær kategori | Hjælpeværktøjer (Utilities) | |
 | Aldersgrænse | 4+ (ingen af spørgsmålene besvares med ja) | |
@@ -23,7 +24,17 @@ vvs,elektriker,tømrer,murer,mekaniker,værksted,maler,tagdækker,låsesmed,bilv
 
 Brug ikke "Trustpilot" eller konkurrenters navne som søgeord – Apple afviser brug af andres varemærker (retningslinje 2.3.7).
 
-**Reklametekst** (141 / 170 tegn – kan ændres uden ny version):
+Standard er **Trustpilot fra** (`production` i `eas.json`), indtil partneraftalen er underskrevet. Så viser appen ingen anmeldelser, og App Store-teksten må heller ikke love dem (retningslinje 2.3.1).
+
+**Reklametekst** – kan ændres uden ny version.
+
+Trustpilot fra (142 / 170):
+
+```
+Ny: Beskriv dit problem med dine egne ord, sæt et budget, og se hvilke lokale håndværkere der passer – med timepris inkl. moms, før du ringer.
+```
+
+Trustpilot til (141 / 170):
 
 ```
 Ny: Sammenlign op til tre håndværkere side om side – timepris inkl. moms, afstand og TrustScore. Og vælg selv, hvad der betyder mest for dig.
@@ -32,7 +43,7 @@ Ny: Sammenlign op til tre håndværkere side om side – timepris inkl. moms, af
 ## Beskrivelse
 
 ```
-Mangler du en VVS'er, elektriker, tømrer, murer eller mekaniker? FixMatch finder lokale danske virksomheder og sammenligner dem på det, der betyder noget: pris, afstand og kundeanmeldelser. Så sparer du både tid og penge.
+Mangler du en VVS'er, elektriker, tømrer, murer eller mekaniker? FixMatch finder lokale danske virksomheder og sammenligner dem på det, der betyder noget: pris og afstand. Så sparer du både tid og penge.
 
 BESKRIV DIT PROBLEM – VI MATCHER DIT BUDGET
 • Skriv med dine egne ord, fx "køkkenvasken er stoppet", og hvad du vil give
@@ -49,12 +60,11 @@ SE PRISEN FØR DU RINGER
 • Vejledende priser for fx stoppet afløb, ladestander, stort service og døroplukning
 
 SAMMENLIGN PÅ ÉT SKÆRMBILLEDE
-• Vælg op til tre virksomheder og se pris, afstand, TrustScore, døgnvagt og autorisation side om side
-• FixMatch-scoren samler pris, afstand og anmeldelser – og du bestemmer selv vægtningen
-• Sortér efter pris, afstand eller anmeldelser, og filtrér på åben nu, døgnvagt og autorisation
+• Vælg op til tre virksomheder og se pris, afstand, døgnvagt og autorisation side om side
+• FixMatch-scoren samler pris og afstand – og du bestemmer selv vægtningen
+• Sortér efter pris eller afstand, og filtrér på åben nu, døgnvagt og autorisation
 
 TJEKKET OG GENNEMSIGTIGT
-• TrustScore og antal anmeldelser fra Trustpilot ved hver virksomhed
 • CVR-nummer og autorisation fra Sikkerhedsstyrelsen for el og VVS
 • Ingen kan betale sig til en bedre placering. Annoncer er altid tydeligt markeret
 
@@ -125,7 +135,11 @@ Kun hvis Trustpilot-aftalen er underskrevet og Trustpilot er slået til i builde
 • Trustpilot content is displayed under our partner agreement with Trustpilot A/S (agreement available on request).
 ```
 
-**Uden Trustpilot-aftale** (standard i `production`): brug undertitlen `Sammenlign pris og afstand` (26 / 30), og fjern Trustpilot-punktet under "TJEKKET OG GENNEMSIGTIGT" i beskrivelsen. Appen viser så ingen anmeldelser, og App Store-teksten må ikke love dem.
+**Med Trustpilot-aftale** (og `EXPO_PUBLIC_FIXMATCH_TRUSTPILOT=on` i buildet): brug undertitlen og reklameteksten for "Trustpilot til", og ret beskrivelsen sådan:
+
+- Første afsnit: "pris og afstand" → "pris, afstand og kundeanmeldelser".
+- Under SAMMENLIGN: tilføj "TrustScore" i første punkt, skriv "pris, afstand og anmeldelser" i andet og "pris, afstand eller anmeldelser" i tredje.
+- Under TJEKKET OG GENNEMSIGTIGT: tilføj punktet "• TrustScore og antal anmeldelser fra Trustpilot ved hver virksomhed" øverst.
 
 ## Skærmbilleder
 
@@ -134,7 +148,7 @@ Krav: mindst ét sæt til **6,9" iPhone** (1320 × 2868 eller 1290 × 2796 px). 
 Tag billederne på en rigtig iPhone (TestFlight-build med **live**-data, ikke demo). Forslag til rækkefølge og overskrifter:
 
 1. Forside – *"Find den rette håndværker"*
-2. Liste over VVS'ere – *"Sammenlign pris, afstand og anmeldelser"*
-3. Virksomhedsside – *"Pris inkl. moms og TrustScore – før du ringer"*
+2. Liste over VVS'ere – *"Sammenlign pris og afstand"*
+3. Virksomhedsside – *"Pris inkl. moms – før du ringer"*
 4. Sammenlign side om side – *"Vælg den bedste på 10 sekunder"*
 5. Dine prioriteter – *"Du bestemmer, hvad der tæller"*

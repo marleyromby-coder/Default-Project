@@ -3,15 +3,17 @@ import { StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/ui/text';
 import { Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { formatDecimal } from '@/lib/format';
 import type { ScoreParts, Weights } from '@/lib/ranking';
 import { t } from '@/i18n';
 
-const ROWS: { key: keyof ScoreParts; label: string }[] = [
+const ALL_ROWS: { key: keyof ScoreParts; label: string }[] = [
   { key: 'price', label: t('Pris') },
   { key: 'distance', label: t('Afstand') },
   { key: 'reviews', label: t('Anmeldelser') },
 ];
+const ROWS = ALL_ROWS.filter((row) => TRUSTPILOT_ENABLED || row.key !== 'reviews');
 
 /** Shows each part score out of 10 and the user's weight for it. */
 export function ScoreBars({ parts, weights }: { parts: ScoreParts; weights: Weights }) {

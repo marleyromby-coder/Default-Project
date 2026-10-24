@@ -143,9 +143,11 @@ export default function BusinessScreen() {
             <View style={[styles.notice, { backgroundColor: colors.warningSoft }]}>
               <Icon name="info" size={16} color={colors.warning} weight="semibold" />
               <AppText variant="footnote" style={styles.flex}>
-                {t(
-                  'Fiktiv eksempelvirksomhed. Navn, telefonnummer, CVR og anmeldelser er opdigtede, og opkald er slået fra.',
-                )}
+                {TRUSTPILOT_ENABLED
+                  ? t(
+                      'Fiktiv eksempelvirksomhed. Navn, telefonnummer, CVR og anmeldelser er opdigtede, og opkald er slået fra.',
+                    )
+                  : t('Fiktiv eksempelvirksomhed. Navn, telefonnummer og CVR er opdigtede, og opkald er slået fra.')}
               </AppText>
             </View>
           ) : null}

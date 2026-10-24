@@ -20,7 +20,7 @@ import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { activeFilterCount, DEFAULT_FILTERS } from '@/lib/filters';
 import { formatDistance, formatPriceRange } from '@/lib/format';
 import { summarizeJobPrice } from '@/lib/prices';
-import { weightsFromPriorities } from '@/lib/ranking';
+import { weightsFromPriorities, weightsText } from '@/lib/ranking';
 import type { SortMode } from '@/lib/types';
 import { t } from '@/i18n';
 import { countryOf } from '@/lib/business-text';
@@ -160,25 +160,14 @@ export default function CategoryScreen() {
 
       <Tappable
         onPress={() => router.push('/prioriteter')}
-        accessibilityLabel={t(
-          'Din vægtning: pris {price} procent, afstand {distance} procent, anmeldelser {reviews} procent. Juster',
-          {
-            price: Math.round(weights.price * 100),
-            distance: Math.round(weights.distance * 100),
-            reviews: Math.round(weights.reviews * 100),
-          },
-        )}
+        accessibilityLabel={t('Din vægtning: {weights}. Juster', { weights: weightsText(weights, true) })}
         style={[styles.weights, { backgroundColor: colors.surface, borderColor: colors.border }]}>
         <Icon name="sliders" size={16} color={colors.brand} weight="semibold" />
         <AppText variant="footnote" style={styles.flex} numberOfLines={2}>
           <AppText variant="footnote" weight="600">
             {t('Din vægtning:')}{' '}
           </AppText>
-          {t('Pris {price} % · Afstand {distance} % · Anmeldelser {reviews} %', {
-            price: Math.round(weights.price * 100),
-            distance: Math.round(weights.distance * 100),
-            reviews: Math.round(weights.reviews * 100),
-          })}
+          {weightsText(weights)}
         </AppText>
         <AppText variant="footnote" tone="brandText" weight="700">
           {t('Justér')}

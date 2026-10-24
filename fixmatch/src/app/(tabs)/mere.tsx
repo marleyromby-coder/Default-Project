@@ -13,6 +13,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { reportProblem } from '@/lib/contact';
 import { DATA_MODE } from '@/lib/data-source';
 import { showDialog } from '@/lib/dialog';
+import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { weightsFromPriorities } from '@/lib/ranking';
 import { getLanguage, LANGUAGES, t } from '@/i18n';
 import { countryName } from '@/lib/markets';
@@ -83,9 +84,13 @@ export default function MoreScreen() {
           <ListRow
             icon="sliders"
             title={t('Dine prioriteter')}
-            value={`${Math.round(weights.price * 100)}/${Math.round(weights.distance * 100)}/${Math.round(weights.reviews * 100)}`}
+            value={[weights.price, weights.distance, ...(TRUSTPILOT_ENABLED ? [weights.reviews] : [])]
+              .map((w) => Math.round(w * 100))
+              .join('/')}
             onPress={() => router.push('/prioriteter')}
-            accessibilityHint={t('Pris, afstand og anmeldelser i procent')}
+            accessibilityHint={
+              TRUSTPILOT_ENABLED ? t('Pris, afstand og anmeldelser i procent') : t('Pris og afstand i procent')
+            }
           />
         </ListSection>
 
@@ -93,7 +98,9 @@ export default function MoreScreen() {
           title={t('Gennemsigtighed')}
           footer={t('Ingen kan betale sig til en bedre placering i søgeresultaterne.')}>
           <ListRow icon="list" title={t('Sådan rangerer vi')} onPress={info('rangering')} />
-          <ListRow icon="star" title={t('Om anmeldelser')} onPress={info('anmeldelser')} />
+          {TRUSTPILOT_ENABLED ? (
+            <ListRow icon="star" title={t('Om anmeldelser')} onPress={info('anmeldelser')} />
+          ) : null}
           <ListRow icon="tag" title={t('Om priserne')} onPress={info('priser')} />
           <ListRow icon="scale" title={t('Hvis noget går galt')} onPress={info('hjaelp')} />
         </ListSection>

@@ -63,13 +63,13 @@ SEE THE PRICE BEFORE YOU CALL
 
 COMPARE ON ONE SCREEN
 • Pick up to three businesses and see price, distance, 24/7 service and licences side by side
-• The FixMatch score combines price, distance and more – and you decide what counts most
+• The FixMatch score combines price and distance – and you decide what counts most
 • Sort by price or distance, and filter by open now, 24/7 and licensed
 
 TRANSPARENT BY DESIGN
 • Nobody can pay for a better ranking. Ads are always clearly marked
 • We explain exactly how the ranking works, inside the app
-• Company registration number and licences shown for every business
+• Registration numbers and licences on each business page, where they apply
 
 CALL DIRECTLY
 • Phone, website and directions in one tap
@@ -84,7 +84,7 @@ FixMatch has no login and no ad tracking. Your location is only used on your pho
 Are you a tradesperson or a garage? Get in touch and get listed for free.
 ```
 
-With the Trustpilot agreement in place, add this bullet under *TRANSPARENT BY DESIGN* and change "price and distance" in the first paragraph to "price, distance and reviews":
+With the Trustpilot agreement in place (and `EXPO_PUBLIC_FIXMATCH_TRUSTPILOT=on` in the build), use the *Trustpilot on* subtitle, change "price and distance" to "price, distance and reviews" in the first paragraph and in the FixMatch score bullet, and add this bullet under *TRANSPARENT BY DESIGN*:
 
 ```
 • TrustScore and number of reviews from Trustpilot for every business

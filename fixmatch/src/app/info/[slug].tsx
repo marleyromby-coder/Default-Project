@@ -12,7 +12,7 @@ import { INFO_PAGES, type InfoPage, isInfoSlug } from '@/data/content';
 import { useTheme } from '@/hooks/use-theme';
 import { openLink } from '@/lib/contact';
 import { formatDate } from '@/lib/format';
-import { weightsFromPriorities } from '@/lib/ranking';
+import { weightsFromPriorities, weightsText } from '@/lib/ranking';
 import { useApp } from '@/state/app-state';
 import { t } from '@/i18n';
 
@@ -49,13 +49,7 @@ export default function InfoScreen() {
           <AppText variant="subhead" weight="600">
             {t('Din vægtning lige nu')}
           </AppText>
-          <AppText variant="subhead">
-            {t('Pris {price} % · Afstand {distance} % · Anmeldelser {reviews} %', {
-              price: Math.round(weights.price * 100),
-              distance: Math.round(weights.distance * 100),
-              reviews: Math.round(weights.reviews * 100),
-            })}
-          </AppText>
+          <AppText variant="subhead">{weightsText(weights)}</AppText>
           <Button
             title={t('Justér dine prioriteter')}
             variant="plain"

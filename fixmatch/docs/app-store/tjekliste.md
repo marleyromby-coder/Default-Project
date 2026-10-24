@@ -36,6 +36,8 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 - ✅ Kun iPhone (`supportsTablet: false`) – ingen iPad-skærmbilleder nødvendige.
 - [ ] `EXPO_PUBLIC_FIXMATCH_DATA=live` i den build, der indsendes (profilen `production` i `eas.json`).
 - [ ] `npm run check` er grønt.
+- [ ] `EXPO_PUBLIC_FIXMATCH_DATA=live npm run check:release` siger "klar til App Store". EAS kører samme tjek og stopper buildet ellers.
+- ✅ Med Trustpilot slået fra nævner appen ingen anmeldelser – heller ikke i VoiceOver eller på "Sådan rangerer vi" (testet i `trustpilot-off.test.ts`).
 - [ ] Test på en rigtig iPhone via TestFlight: ring, hjemmeside, rute, del, placering til/fra, mørk tilstand, stor tekst.
 - [ ] Kortet: Apple-logo og "Legal" er synlige over kortene i bunden (lys/mørk, stor tekst). Klynger zoomer ind, "Hele DK" viser hele landet.
 - [ ] "Beskriv dit problem": prøv eksemplerne, og tjek at budgetgrupperne passer med virksomhedernes priser.

@@ -11,7 +11,9 @@ import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { GPS_MESSAGES, useGps } from '@/hooks/use-gps';
 import { useTheme } from '@/hooks/use-theme';
 import { showDialog } from '@/lib/dialog';
-import { useApp } from '@/state/app-state';
+import { TRUSTPILOT_ENABLED } from '@/lib/features';
+import { taxNote } from '@/lib/markets';
+import { useApp, useMarket } from '@/state/app-state';
 import { t } from '@/i18n';
 
 const STEPS = 3;
@@ -21,6 +23,7 @@ export default function WelcomeScreen() {
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { setOnboarded } = useApp();
+  const { market } = useMarket();
   const { locate, busy } = useGps();
   const [step, setStep] = useState(0);
 
@@ -50,9 +53,19 @@ export default function WelcomeScreen() {
         {step === 1 ? (
           <View style={styles.textBlock}>
             <AppText variant="largeTitle">{t('Sammenlign på det, der betyder noget')}</AppText>
-            <Feature icon="tag" title={t('Pris')} text={t('Timepris og eksempelpriser inkl. moms – før du ringer.')} />
+            <Feature
+              icon="tag"
+              title={t('Pris')}
+              text={t('Timepris og eksempelpriser {tax} – før du ringer.', { tax: taxNote(market) })}
+            />
             <Feature icon="pin" title={t('Afstand')} text={t('Se hvem der er tættest på, og hvor langt de kører.')} />
-            <Feature icon="star" title={t('Anmeldelser')} text={t('TrustScore fra Trustpilot ved hver virksomhed.')} />
+            {TRUSTPILOT_ENABLED ? (
+              <Feature
+                icon="star"
+                title={t('Anmeldelser')}
+                text={t('TrustScore fra Trustpilot ved hver virksomhed.')}
+              />
+            ) : null}
             <Feature
               icon="phone"
               title={t('Ring direkte')}

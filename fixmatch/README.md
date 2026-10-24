@@ -29,7 +29,7 @@ npx expo start
 Scan QR-koden med iPhonens kamera → appen åbner i Expo Go. Alt du ændrer i koden, vises med det samme.
 
 - **Web-demo** (til projektor eller jury på bærbar): `npx expo start --web`, eller `npm run export:web` og læg mappen `dist/` på fx Netlify, Vercel eller GitHub Pages.
-- **Tjek koden**: `npm run check` (TypeScript, lint og 86 tests).
+- **Tjek koden**: `npm run check` (TypeScript, lint og 93 tests).
 - **Engelsk version**: på iPhone under Indstillinger → FixMatch → Sprog. På web: tilføj `?lang=en` til adressen.
 
 > Appen starter i **demotilstand** med 224 fiktive virksomheder: 104 i København, Aarhus, Odense og Aalborg og 24 i hver af Stockholm, Oslo, Berlin, London og New York. De er tydeligt markeret, telefonnumre er i nummerserier til fiktion eller ugyldige, registreringsnumre er ugyldige, og opkald er slået fra.
@@ -94,7 +94,7 @@ Du behøver **ikke** en Mac – EAS bygger appen i skyen.
    npx eas-cli@latest submit -p ios --profile testflight
    ```
 
-   Når de rigtige virksomheder er importeret: `--profile production`.
+   Når de rigtige virksomheder er importeret: `--profile production`. Tjek først med `npm run check:release`. EAS kører samme tjek automatisk (`eas-build-pre-install` i `package.json`) og stopper buildet, hvis der mangler rigtige virksomheder, hvis der er demodata eller manglende samtykke, eller hvis `app-info.ts` stadig har TODO-felter.
 
 5. Følg `docs/app-store/tjekliste.md` og brug teksterne i `docs/app-store/app-store-tekster.md`.
 
