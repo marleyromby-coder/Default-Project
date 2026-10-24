@@ -14,6 +14,7 @@ import { openLink } from '@/lib/contact';
 import { formatDate } from '@/lib/format';
 import { weightsFromPriorities } from '@/lib/ranking';
 import { useApp } from '@/state/app-state';
+import { t } from '@/i18n';
 
 export default function InfoScreen() {
   const colors = useTheme();
@@ -25,9 +26,9 @@ export default function InfoScreen() {
     return (
       <EmptyState
         icon="help"
-        title="Siden findes ikke"
-        message="Linket virker ikke længere."
-        action={<Button title="Til forsiden" onPress={() => router.replace('/')} />}
+        title={t('Siden findes ikke')}
+        message={t('Linket virker ikke længere.')}
+        action={<Button title={t('Til forsiden')} onPress={() => router.replace('/')} />}
       />
     );
   }
@@ -46,13 +47,22 @@ export default function InfoScreen() {
       {slug === 'rangering' ? (
         <View style={[styles.callout, { backgroundColor: colors.brandSoft }]}>
           <AppText variant="subhead" weight="600">
-            Din vægtning lige nu
+            {t('Din vægtning lige nu')}
           </AppText>
           <AppText variant="subhead">
-            Pris {Math.round(weights.price * 100)} % · Afstand {Math.round(weights.distance * 100)} % · Anmeldelser{' '}
-            {Math.round(weights.reviews * 100)} %
+            {t('Pris {price} % · Afstand {distance} % · Anmeldelser {reviews} %', {
+              price: Math.round(weights.price * 100),
+              distance: Math.round(weights.distance * 100),
+              reviews: Math.round(weights.reviews * 100),
+            })}
           </AppText>
-          <Button title="Justér dine prioriteter" variant="plain" size="small" onPress={() => router.push('/prioriteter')} style={styles.alignStart} />
+          <Button
+            title={t('Justér dine prioriteter')}
+            variant="plain"
+            size="small"
+            onPress={() => router.push('/prioriteter')}
+            style={styles.alignStart}
+          />
         </View>
       ) : null}
 
@@ -82,7 +92,7 @@ export default function InfoScreen() {
       ))}
 
       {page.links?.length ? (
-        <ListSection title="Læs mere">
+        <ListSection title={t('Læs mere')}>
           {page.links.map((link) => (
             <ListRow key={link.url} title={link.label} icon="external" external onPress={() => openLink(link.url)} />
           ))}
@@ -91,7 +101,7 @@ export default function InfoScreen() {
 
       {slug === 'privatliv' || slug === 'vilkaar' ? (
         <AppText variant="caption" tone="textSecondary">
-          Senest opdateret {formatDate(APP_INFO.legalUpdated)}.
+          {t('Senest opdateret {date}.', { date: formatDate(APP_INFO.legalUpdated) })}
         </AppText>
       ) : null}
     </ScrollView>

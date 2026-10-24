@@ -4,6 +4,8 @@ import { createContext, type PropsWithChildren, useContext, useEffect, useMemo, 
 import { DEFAULT_LOCATION } from '@/data/places';
 import { bundledBusinesses, parseBusinesses, REMOTE_DATA_URL } from '@/lib/data-source';
 import { DEFAULT_FILTERS } from '@/lib/filters';
+import { setDistanceUnit } from '@/lib/format';
+import { getMarket, isCountryCode, type CountryCode, type Market } from '@/lib/markets';
 import { DEFAULT_PRIORITIES } from '@/lib/ranking';
 import type { Business, Filters, Priorities, UserLocation } from '@/lib/types';
 
@@ -79,7 +81,9 @@ function reducer(state: State, action: Action): State {
       if (state.compare.includes(action.id)) return { ...state, compare: state.compare.filter((x) => x !== action.id) };
       // Only businesses in the same trade are compared; picking another trade starts over.
       const trade = state.businesses.find((b) => b.id === action.id)?.categories[0];
-      const sameTrade = state.compare.filter((id) => state.businesses.find((b) => b.id === id)?.categories[0] === trade);
+      const sameTrade = state.compare.filter(
+        (id) => state.businesses.find((b) => b.id === id)?.categories[0] === trade,
+      );
       if (sameTrade.length >= MAX_COMPARE) return state;
       return { ...state, compare: [...sameTrade, action.id] };
     }
@@ -102,7 +106,8 @@ function sanitize(raw: unknown): Partial<Persisted> {
   if (value.location && typeof value.location.coords?.lat === 'number') out.location = value.location;
   if (value.priorities && typeof value.priorities.price === 'number') out.priorities = value.priorities;
   if (Array.isArray(value.favorites)) out.favorites = value.favorites.filter((x) => typeof x === 'string');
-  if (Array.isArray(value.compare)) out.compare = value.compare.filter((x) => typeof x === 'string').slice(0, MAX_COMPARE);
+  if (Array.isArray(value.compare))
+    out.compare = value.compare.filter((x) => typeof x === 'string').slice(0, MAX_COMPARE);
   return out;
 }
 
@@ -135,8 +140,16 @@ interface AppContextValue {
 
 const AppContext = createContext<AppContextValue | null>(null);
 
+/** The user's country, if FixMatch lists businesses there. */
+export function userCountry(location: UserLocation): CountryCode | undefined {
+  const country = location.country ?? 'DK';
+  return isCountryCode(country) ? country : undefined;
+}
+
 export function AppStateProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(reducer, undefined, initialState);
+  // Distances are shown in miles in the UK and the US. Set before the screens render.
+  setDistanceUnit(getMarket(userCountry(state.location)).distanceUnit);
 
   useEffect(() => {
     let cancelled = false;
@@ -190,7 +203,9 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       toggleFavorite: (id) => dispatch({ type: 'favorite', id }),
       toggleCompare: (id) => {
         const trade = state.businesses.find((b) => b.id === id)?.categories[0];
-        const sameTrade = state.compare.filter((x) => state.businesses.find((b) => b.id === x)?.categories[0] === trade);
+        const sameTrade = state.compare.filter(
+          (x) => state.businesses.find((b) => b.id === x)?.categories[0] === trade,
+        );
         if (!state.compare.includes(id) && sameTrade.length >= MAX_COMPARE) return false;
         dispatch({ type: 'compare', id });
         return true;
@@ -212,6 +227,13 @@ export function useApp(): AppContextValue {
   const value = useContext(AppContext);
   if (!value) throw new Error('useApp must be used inside AppStateProvider');
   return value;
+}
+
+/** Where the user is: the market to compare within, or `supported: false` outside FixMatch's countries. */
+export function useMarket(): { country: CountryCode | undefined; market: Market; supported: boolean } {
+  const { state } = useApp();
+  const country = userCountry(state.location);
+  return { country, market: getMarket(country), supported: country !== undefined };
 }
 
 export function useBusiness(id: string | undefined): Business | undefined {

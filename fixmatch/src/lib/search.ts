@@ -1,4 +1,5 @@
 import { CATEGORIES } from '@/data/categories';
+import { pick } from '@/i18n';
 
 import { loose } from './text';
 import type { Business, Category, JobType } from './types';
@@ -77,4 +78,7 @@ export function search(query: string, businesses: Business[]): SearchResults {
   };
 }
 
-export const SEARCH_SUGGESTIONS = ['Stoppet afløb', 'Ladestander', 'Nyt badeværelse', 'Stort service', 'Låst ude', 'Tagrender'];
+export const SEARCH_SUGGESTIONS = pick({
+  da: ['Stoppet afløb', 'Ladestander', 'Nyt badeværelse', 'Stort service', 'Låst ude', 'Tagrender'],
+  en: ['Blocked drain', 'EV charger', 'New bathroom', 'Full service', 'Locked out', 'Gutters'],
+});

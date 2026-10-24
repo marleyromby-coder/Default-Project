@@ -9,6 +9,7 @@ import { formatDistance } from '@/lib/format';
 
 import { ClusterBubble, MapPin, OriginDot } from './map-pin';
 import type { BusinessMapProps } from './types';
+import { t } from '@/i18n';
 
 /**
  * Apple Maps through MapKit (react-native-maps' default provider on iOS, no
@@ -76,7 +77,7 @@ export function BusinessMap({
         bottom: padding.bottom + 6,
         right: 0,
       }}
-      accessibilityLabel="Kort over virksomheder. Brug listen under kortet for at gennemgå dem">
+      accessibilityLabel={t('Kort over virksomheder. Brug listen under kortet for at gennemgå dem')}>
       {clusters.map((cluster) => {
         if (cluster.items.length === 1) {
           const { business, distanceKm } = cluster.items[0];
@@ -91,7 +92,11 @@ export function BusinessMap({
               }}
               onPress={() => onSelect(business.id)}
               zIndex={selected ? 10 : 1}
-              accessibilityLabel={`${business.name}, ${getCategory(business.categories[0])?.name}, ${formatDistance(distanceKm)} væk`}>
+              accessibilityLabel={t('{name}, {name2}, {distance} væk', {
+                name: business.name,
+                name2: getCategory(business.categories[0])?.name,
+                distance: formatDistance(distanceKm),
+              })}>
               <MapPin category={business.categories[0]} selected={selected} />
             </Marker>
           );
@@ -111,7 +116,7 @@ export function BusinessMap({
               if (zoomTo) map.current?.animateToRegion(zoomTo, 450);
             }}
             zIndex={2}
-            accessibilityLabel={`${cluster.items.length} virksomheder. Zoom ind`}>
+            accessibilityLabel={t('{count} virksomheder. Zoom ind', { count: cluster.items.length })}>
             <ClusterBubble count={cluster.items.length} />
           </Marker>
         );
@@ -120,7 +125,7 @@ export function BusinessMap({
         <Marker
           coordinate={{ latitude: origin.lat, longitude: origin.lon }}
           zIndex={0}
-          accessibilityLabel="Din valgte placering">
+          accessibilityLabel={t('Din valgte placering')}>
           <OriginDot />
         </Marker>
       )}

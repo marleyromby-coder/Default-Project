@@ -15,9 +15,12 @@ import { getCategory } from '@/data/categories';
 import { useBudgetMatch } from '@/hooks/use-budget-match';
 import { useTheme } from '@/hooks/use-theme';
 import { showDialog } from '@/lib/dialog';
-import { formatNumber, formatPrice, formatPriceRange, pluralize } from '@/lib/format';
+import { formatPrice, formatPriceRange, pluralize } from '@/lib/format';
 import { CLOSE_MARGIN, FIT_LABELS, type BudgetFit, type BudgetMatch } from '@/lib/matcher';
-import { MAX_COMPARE, useApp } from '@/state/app-state';
+import { t } from '@/i18n';
+import { currencyOf } from '@/lib/business-text';
+import { taxNote } from '@/lib/markets';
+import { MAX_COMPARE, useApp, useMarket } from '@/state/app-state';
 
 type Group = {
   id: string;
@@ -28,20 +31,22 @@ type Group = {
 };
 
 const GROUPS: Group[] = [
-  { id: 'fit', title: 'Passer til dit budget', fits: ['within', 'maybe'] },
+  { id: 'fit', title: t('Passer til dit budget'), fits: ['within', 'maybe'] },
   {
     id: 'close',
-    title: 'Tæt på dit budget',
-    subtitle: `Højst ${Math.round(CLOSE_MARGIN * 100)} % over – spørg, om de kan komme ned`,
+    title: t('Tæt på dit budget'),
+    subtitle: t('Højst {CLOSE_MARGIN} % over – spørg, om de kan komme ned', {
+      CLOSE_MARGIN: Math.round(CLOSE_MARGIN * 100),
+    }),
     fits: ['close'],
   },
   {
     id: 'unknown',
-    title: 'Pris på forespørgsel',
-    subtitle: 'Har ikke oplyst en pris for opgaven',
+    title: t('Pris på forespørgsel'),
+    subtitle: t('Har ikke oplyst en pris for opgaven'),
     fits: ['unknown'],
   },
-  { id: 'over', title: 'Over dit budget', fits: ['over'], collapsed: true },
+  { id: 'over', title: t('Over dit budget'), fits: ['over'], collapsed: true },
 ];
 
 const FIT_BADGE: Record<BudgetFit, { tone: BadgeTone; icon?: IconName }> = {
@@ -63,6 +68,7 @@ export default function MatchScreen() {
     tekst?: string;
   }>();
   const { state } = useApp();
+  const { market } = useMarket();
   const category = getCategory(params.kategori);
   const job = category?.jobs.find((j) => j.id === params.job);
   const budget = params.budget ? Number(params.budget) : undefined;
@@ -79,9 +85,9 @@ export default function MatchScreen() {
     return (
       <EmptyState
         icon="help"
-        title="Vi mangler faget"
-        message="Gå tilbage og beskriv problemet igen."
-        action={<Button title="Tilbage" onPress={() => router.back()} />}
+        title={t('Vi mangler faget')}
+        message={t('Gå tilbage og beskriv problemet igen.')}
+        action={<Button title={t('Tilbage')} onPress={() => router.back()} />}
       />
     );
   }
@@ -93,19 +99,19 @@ export default function MatchScreen() {
       : [
           {
             id: 'all',
-            title: job ? 'Uden budget – sorteret efter FixMatch-score' : 'Sorteret efter FixMatch-score',
+            title: job ? t('Uden budget – sorteret efter FixMatch-score') : t('Sorteret efter FixMatch-score'),
             fits: ['unknown'] as BudgetFit[],
           },
         ];
-  const unit = job?.unit === 'm2' ? 'm²' : 'stk.';
+  const unit = job?.unit === 'm2' ? 'm²' : t('stk.');
 
   const priceLine = (m: BudgetMatch) => {
     if (!job) return undefined;
-    if (!m.price) return `${job.name}: pris på forespørgsel`;
-    const amount = formatPriceRange(m.price.min, m.price.max);
+    if (!m.price) return t('{name}: pris på forespørgsel', { name: job.name });
+    const amount = formatPriceRange(m.price.min, m.price.max, 'opgave', currencyOf(m.business));
     return job.unit === 'opgave'
       ? `${job.name}: ${amount}`
-      : `${amount} for ${quantity ?? 1} ${unit}`;
+      : t('{price} for {quantity} {unit}', { price: amount, quantity: quantity ?? 1, unit });
   };
 
   const highlight = (m: BudgetMatch) => {
@@ -119,20 +125,26 @@ export default function MatchScreen() {
 
   const share = () =>
     Share.share({
-      message: [params.tekst, budget ? `Budget: ${formatPrice(budget)} inkl. moms` : undefined, `Fundet via FixMatch`]
+      message: [
+        params.tekst,
+        budget
+          ? t('Budget: {price} {tax}', { price: formatPrice(budget, market.currency), tax: taxNote(market) })
+          : undefined,
+        t('Fundet via FixMatch'),
+      ]
         .filter(Boolean)
         .join('\n'),
     }).catch(() => undefined);
 
   const onCompareLimit = () =>
     showDialog(
-      'Højst 3 ad gangen',
-      `Du kan sammenligne op til ${MAX_COMPARE} virksomheder. Fjern en for at vælge en ny.`,
+      t('Højst 3 ad gangen'),
+      t('Du kan sammenligne op til {MAX_COMPARE} virksomheder. Fjern en for at vælge en ny.', { MAX_COMPARE }),
     );
 
   return (
     <View style={[styles.flex, { backgroundColor: colors.background }]}>
-      <Stack.Screen options={{ title: 'Dit match' }} />
+      <Stack.Screen options={{ title: t('Dit match') }} />
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
         <View style={[styles.summary, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <View style={styles.row}>
@@ -146,18 +158,18 @@ export default function MatchScreen() {
               </AppText>
               <AppText variant="footnote" tone="textSecondary">
                 {[
-                  budget ? `Budget ${formatNumber(budget)} kr.` : 'Intet budget',
+                  budget ? t('Budget {price}', { price: formatPrice(budget, market.currency) }) : t('Intet budget'),
                   quantity && job && job.unit !== 'opgave' ? `${quantity} ${unit}` : undefined,
-                  urgent ? 'Haster' : undefined,
+                  urgent ? t('Haster') : undefined,
                   state.location.label,
                 ]
                   .filter(Boolean)
                   .join(' · ')}
               </AppText>
             </View>
-            <Tappable onPress={() => router.back()} accessibilityLabel="Ret beskrivelsen" style={styles.edit}>
+            <Tappable onPress={() => router.back()} accessibilityLabel={t('Ret beskrivelsen')} style={styles.edit}>
               <AppText variant="subhead" tone="brandText" weight="600">
-                Ret
+                {t('Ret')}
               </AppText>
             </Tappable>
           </View>
@@ -168,7 +180,7 @@ export default function MatchScreen() {
           ) : null}
           {params.tekst ? (
             <Button
-              title="Del beskrivelsen med en virksomhed"
+              title={t('Del beskrivelsen med en virksomhed')}
               icon="share"
               variant="secondary"
               size="small"
@@ -189,10 +201,10 @@ export default function MatchScreen() {
           <Icon name="info" size={14} color={colors.textSecondary} />
           <AppText variant="caption" tone="textSecondary" style={styles.flexShrink}>
             {budget && job
-              ? 'Sorteret efter, hvor godt virksomhedens egen pris passer til dit budget, derefter FixMatch-score. Priser er vejledende og inkl. moms. Betaling påvirker ikke rækkefølgen. '
-              : 'Sorteret efter FixMatch-score. Betaling påvirker ikke rækkefølgen. '}
+              ? `${t('Sorteret efter, hvor godt virksomhedens egen pris passer til dit budget, derefter FixMatch-score. Priser er vejledende og {tax}. Betaling påvirker ikke rækkefølgen.', { tax: taxNote(market) })} `
+              : `${t('Sorteret efter FixMatch-score. Betaling påvirker ikke rækkefølgen.')} `}
             <AppText variant="caption" tone="brandText" weight="600">
-              Sådan rangerer vi
+              {t('Sådan rangerer vi')}
             </AppText>
           </AppText>
         </Tappable>
@@ -200,15 +212,19 @@ export default function MatchScreen() {
         {list.length === 0 ? (
           <EmptyState
             icon="search"
-            title="Ingen kører ud til dig endnu"
+            title={t('Ingen kører ud til dig endnu')}
             message={
               outOfReach.length > 0
-                ? `Der er ${pluralize(outOfReach.length, category.name.toLowerCase(), category.plural.toLowerCase())} længere væk.`
-                : `Der er endnu ingen ${category.plural.toLowerCase()} på FixMatch. Vi arbejder på at få flere med.`
+                ? t('Der er {countText} længere væk.', {
+                    countText: pluralize(outOfReach.length, category.name.toLowerCase(), category.plural.toLowerCase()),
+                  })
+                : t('Der er endnu ingen {plural} på FixMatch. Vi arbejder på at få flere med.', {
+                    plural: category.plural.toLowerCase(),
+                  })
             }
             action={
               outOfReach.length > 0 ? (
-                <Button title="Vis dem alligevel" variant="tinted" onPress={() => setShowFar(true)} />
+                <Button title={t('Vis dem alligevel')} variant="tinted" onPress={() => setShowFar(true)} />
               ) : undefined
             }
           />
@@ -235,7 +251,7 @@ export default function MatchScreen() {
               </View>
               {hidden ? (
                 <Button
-                  title={`Vis ${members.length} over budget`}
+                  title={t('Vis {count} over budget', { count: members.length })}
                   variant="secondary"
                   icon="chevronDown"
                   onPress={() => setShowOver(true)}
@@ -258,7 +274,7 @@ export default function MatchScreen() {
 
         {!showFar && outOfReach.length > 0 && list.length > 0 ? (
           <Button
-            title={`Vis også ${outOfReach.length} længere væk`}
+            title={t('Vis også {count} længere væk', { count: outOfReach.length })}
             variant="tinted"
             icon="map"
             onPress={() => setShowFar(true)}
@@ -266,7 +282,7 @@ export default function MatchScreen() {
         ) : null}
 
         <Button
-          title={`Se ${category.plural.toLowerCase()} på kortet`}
+          title={t('Se {plural} på kortet', { plural: category.plural.toLowerCase() })}
           variant="secondary"
           icon="map"
           onPress={() =>

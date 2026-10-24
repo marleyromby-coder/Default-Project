@@ -12,6 +12,7 @@ import { useScored } from '@/hooks/use-results';
 import { useTheme } from '@/hooks/use-theme';
 import { showDialog } from '@/lib/dialog';
 import { MAX_COMPARE, useApp } from '@/state/app-state';
+import { t } from '@/i18n';
 
 export default function SavedScreen() {
   const colors = useTheme();
@@ -27,23 +28,30 @@ export default function SavedScreen() {
         renderItem={({ item }) => (
           <BusinessCard
             item={item}
-            onCompareLimit={() => showDialog('Højst 3 ad gangen', `Du kan sammenligne op til ${MAX_COMPARE} virksomheder.`)}
+            onCompareLimit={() =>
+              showDialog(
+                t('Højst 3 ad gangen'),
+                t('Du kan sammenligne op til {MAX_COMPARE} virksomheder.', { MAX_COMPARE }),
+              )
+            }
           />
         )}
         ListHeaderComponent={
           <View style={{ paddingTop: insets.top + Spacing.md, marginHorizontal: -ScreenPadding }}>
             <ScreenHeader
-              title="Gemte"
-              subtitle={items.length ? 'Tryk på “Sammenlign” ved op til tre, så ser du dem side om side.' : undefined}
+              title={t('Gemte')}
+              subtitle={
+                items.length ? t('Tryk på “Sammenlign” ved op til tre, så ser du dem side om side.') : undefined
+              }
             />
           </View>
         }
         ListEmptyComponent={
           <EmptyState
             icon="heart"
-            title="Ingen gemte endnu"
-            message="Tryk på hjertet ved en virksomhed, så finder du den hurtigt her næste gang."
-            action={<Button title="Find håndværkere" variant="tinted" onPress={() => router.navigate('/')} />}
+            title={t('Ingen gemte endnu')}
+            message={t('Tryk på hjertet ved en virksomhed, så finder du den hurtigt her næste gang.')}
+            action={<Button title={t('Find håndværkere')} variant="tinted" onPress={() => router.navigate('/')} />}
           />
         }
         ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}

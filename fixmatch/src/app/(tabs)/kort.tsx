@@ -17,13 +17,16 @@ import { TRADE_COLORS } from '@/constants/trade-colors';
 import { CATEGORIES, getCategory, isCategoryId } from '@/data/categories';
 import { useResults } from '@/hooks/use-results';
 import { useTheme } from '@/hooks/use-theme';
-import { DENMARK_REGION, inRegion, regionAround, type Region } from '@/lib/cluster';
+import { inRegion, regionAround, type Region } from '@/lib/cluster';
 import { callBusiness } from '@/lib/contact';
 import { DEFAULT_FILTERS } from '@/lib/filters';
-import { formatDistance, formatHourly } from '@/lib/format';
+import { formatDistance, formatHourly, speakablePrice } from '@/lib/format';
 import type { ScoredBusiness } from '@/lib/ranking';
 import type { CategoryId, Filters } from '@/lib/types';
-import { useApp } from '@/state/app-state';
+import { t } from '@/i18n';
+import { countryOf, currencyOf } from '@/lib/business-text';
+import { WORLD_REGION } from '@/lib/markets';
+import { useApp, useMarket } from '@/state/app-state';
 
 const NEARBY_KM = 7;
 const MAX_CARDS = 40;
@@ -33,7 +36,7 @@ const CARD_HEIGHT = 148;
 const TAB_BAR = Platform.OS === 'web' ? 0 : 62;
 
 /**
- * Overview map of every listed business in Denmark. Pins are coloured by
+ * Overview map of every listed business, in Denmark and abroad. Pins are coloured by
  * trade, nearby pins merge into clusters, and the cards at the bottom follow
  * what is on screen. Swipe the cards or tap a pin to pick a business.
  */
@@ -43,7 +46,9 @@ export default function MapScreen() {
   const window = useWindowDimensions();
   const params = useLocalSearchParams<{ kategori?: string }>();
   const { state } = useApp();
+  const { country, market } = useMarket();
   const origin = state.location.coords;
+  const countryRegion = () => ({ ...market.region });
 
   const [category, setCategory] = useState<CategoryId | undefined>(
     params.kategori && isCategoryId(params.kategori) ? params.kategori : undefined,
@@ -72,7 +77,11 @@ export default function MapScreen() {
     () => ({ ...DEFAULT_FILTERS, maxDistanceKm: null, openNow, emergency }),
     [openNow, emergency],
   );
-  const results = useResults(category, 'distance', filters);
+  const results = useResults(category, 'distance', filters, 'world');
+  const inCountry = useMemo(
+    () => results.items.filter((s) => countryOf(s.business) === country).length,
+    [results.items, country],
+  );
   const onScreen = useMemo(
     () => results.items.filter((s) => inRegion(region, s.business.coords)).slice(0, MAX_CARDS),
     [results.items, region],
@@ -118,7 +127,7 @@ export default function MapScreen() {
         <View style={styles.topRow} pointerEvents="box-none">
           <Tappable
             onPress={() => router.push('/beskriv')}
-            accessibilityLabel="Beskriv dit problem og dit budget"
+            accessibilityLabel={t('Beskriv dit problem og dit budget')}
             style={[
               styles.describe,
               styles.floating,
@@ -130,13 +139,13 @@ export default function MapScreen() {
             ]}>
             <Icon name="wand" size={17} color={colors.brand} weight="semibold" />
             <AppText variant="subhead" tone="textSecondary" numberOfLines={1} style={styles.flexShrink}>
-              Beskriv dit problem …
+              {t('Beskriv dit problem …')}
             </AppText>
           </Tappable>
           <LocationPill />
         </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
-          <Chip label="Alle fag" selected={!category} onPress={() => setCategory(undefined)} />
+          <Chip label={t('Alle fag')} selected={!category} onPress={() => setCategory(undefined)} />
           {CATEGORIES.map((c) => (
             <Chip
               key={c.id}
@@ -145,18 +154,21 @@ export default function MapScreen() {
               count={category === c.id ? undefined : tradeCount(c.id)}
               selected={category === c.id}
               onPress={() => setCategory(category === c.id ? undefined : c.id)}
-              accessibilityLabel={`${c.plural}, ${tradeCount(c.id)} på kortet`}
+              accessibilityLabel={t('{plural}, {tradeCount} på kortet', {
+                plural: c.plural,
+                tradeCount: tradeCount(c.id),
+              })}
             />
           ))}
-          <Chip label="Åben nu" icon="clock" selected={openNow} onPress={() => setOpenNow(!openNow)} />
-          <Chip label="Døgnvagt" icon="bolt" selected={emergency} onPress={() => setEmergency(!emergency)} />
+          <Chip label={t('Åben nu')} icon="clock" selected={openNow} onPress={() => setOpenNow(!openNow)} />
+          <Chip label={t('Døgnvagt')} icon="bolt" selected={emergency} onPress={() => setEmergency(!emergency)} />
         </ScrollView>
       </View>
 
       <View style={[styles.side, { top: topHeight + Spacing.sm }]} pointerEvents="box-none">
         <Tappable
           onPress={() => setTarget(regionAround(origin, NEARBY_KM))}
-          accessibilityLabel={`Vis området omkring ${state.location.label}`}
+          accessibilityLabel={t('Vis området omkring {label}', { label: state.location.label })}
           style={[
             styles.roundButton,
             styles.floating,
@@ -169,8 +181,8 @@ export default function MapScreen() {
           <Icon name="crosshair" size={18} color={colors.brandText} weight="semibold" />
         </Tappable>
         <Tappable
-          onPress={() => setTarget({ ...DENMARK_REGION })}
-          accessibilityLabel="Vis hele Danmark"
+          onPress={() => setTarget(countryRegion())}
+          accessibilityLabel={t('Vis hele {country}', { country: t(market.name) })}
           style={[
             styles.textButton,
             styles.floating,
@@ -181,8 +193,22 @@ export default function MapScreen() {
             },
           ]}>
           <AppText variant="caption" weight="700" tone="brandText">
-            Hele DK
+            {t('Hele landet')}
           </AppText>
+        </Tappable>
+        <Tappable
+          onPress={() => setTarget({ ...WORLD_REGION })}
+          accessibilityLabel={t('Vis alle lande')}
+          style={[
+            styles.roundButton,
+            styles.floating,
+            {
+              backgroundColor: colors.surface,
+              borderColor: colors.border,
+              shadowColor: colors.shadow,
+            },
+          ]}>
+          <Icon name="world" size={18} color={colors.brandText} weight="semibold" />
         </Tappable>
       </View>
 
@@ -199,11 +225,11 @@ export default function MapScreen() {
           ]}>
           <AppText variant="footnote" weight="600">
             {onScreen.length === 0
-              ? 'Ingen her – zoom ud'
-              : `${results.items.length > MAX_CARDS && onScreen.length === MAX_CARDS ? `${MAX_CARDS}+` : onScreen.length} her`}
+              ? t('Ingen her – zoom ud')
+              : t('{count} her', { count: onScreen.length === MAX_CARDS ? `${MAX_CARDS}+` : onScreen.length })}
             <AppText variant="footnote" tone="textSecondary">
               {' '}
-              · {results.items.length} i Danmark
+              {t('· {count} i {country}', { count: inCountry, country: t(market.name) })}
             </AppText>
           </AppText>
         </View>
@@ -238,15 +264,15 @@ export default function MapScreen() {
                   borderColor: colors.border,
                 },
               ]}>
-              <AppText variant="headline">Ingen virksomheder i kortudsnittet</AppText>
+              <AppText variant="headline">{t('Ingen virksomheder i kortudsnittet')}</AppText>
               <AppText variant="footnote" tone="textSecondary">
-                Zoom ud, eller se {category ? getCategory(category)?.plural.toLowerCase() : 'alle'} i hele Danmark.
+                {t('Zoom ud, eller se hele landet.')}
               </AppText>
               <Button
-                title="Vis hele Danmark"
+                title={t('Vis hele landet')}
                 variant="tinted"
                 size="small"
-                onPress={() => setTarget({ ...DENMARK_REGION })}
+                onPress={() => setTarget(countryRegion())}
               />
             </View>
           }
@@ -273,7 +299,14 @@ function MapCard({ item, width, selected }: { item: ScoredBusiness; width: numbe
         ]}>
         <Tappable
           onPress={open}
-          accessibilityLabel={`${business.name}, ${trade?.name}, ${formatDistance(distanceKm)} væk, ${formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax).replace('–', ' til ')}. Åbn`}
+          accessibilityLabel={t('{name}, {name2}, {distance} væk, {hourly}. Åbn', {
+            name: business.name,
+            name2: trade?.name,
+            distance: formatDistance(distanceKm),
+            hourly: speakablePrice(
+              formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business)),
+            ),
+          })}
           pressedOpacity={0.8}
           style={styles.cardMain}>
           <Photo photo={business.photo} category={business.categories[0]} width={240} style={styles.photo} />
@@ -291,19 +324,25 @@ function MapCard({ item, width, selected }: { item: ScoredBusiness; width: numbe
             </AppText>
             <TrustpilotRating trustpilot={business.trustpilot} />
             <AppText variant="footnote" weight="600" numberOfLines={1}>
-              {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax)}
+              {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business))}
               {business.emergency ? (
                 <AppText variant="footnote" tone="warning" weight="600">
                   {' '}
-                  · Døgnvagt
+                  {t('· Døgnvagt')}
                 </AppText>
               ) : null}
             </AppText>
           </View>
         </Tappable>
         <View style={[styles.cardActions, { borderTopColor: colors.border }]}>
-          <Button title="Ring" icon="phone" size="small" onPress={() => callBusiness(business)} style={styles.flex} />
-          <Button title="Se side" variant="secondary" size="small" onPress={open} style={styles.flex} />
+          <Button
+            title={t('Ring')}
+            icon="phone"
+            size="small"
+            onPress={() => callBusiness(business)}
+            style={styles.flex}
+          />
+          <Button title={t('Se side')} variant="secondary" size="small" onPress={open} style={styles.flex} />
         </View>
       </View>
     </View>

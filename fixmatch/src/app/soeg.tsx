@@ -15,14 +15,18 @@ import { useTheme } from '@/hooks/use-theme';
 import { formatPriceRange } from '@/lib/format';
 import { summarizeJobPrice } from '@/lib/prices';
 import { search, SEARCH_SUGGESTIONS } from '@/lib/search';
-import { useApp } from '@/state/app-state';
+import { t } from '@/i18n';
+import { countryOf } from '@/lib/business-text';
+import { useApp, useMarket } from '@/state/app-state';
 
 export default function SearchScreen() {
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { state } = useApp();
   const [query, setQuery] = useState('');
-  const results = useMemo(() => search(query, state.businesses), [query, state.businesses]);
+  const { country, market } = useMarket();
+  const local = useMemo(() => state.businesses.filter((b) => countryOf(b) === country), [state.businesses, country]);
+  const results = useMemo(() => search(query, local), [query, local]);
   const hasQuery = query.trim().length >= 2;
   const empty = hasQuery && results.categories.length + results.jobs.length + results.businesses.length === 0;
 
@@ -40,28 +44,30 @@ export default function SearchScreen() {
           <TextInput
             value={query}
             onChangeText={setQuery}
-            placeholder="Opgave, fag eller virksomhed"
+            placeholder={t('Opgave, fag eller virksomhed')}
             placeholderTextColor={colors.textTertiary}
             autoFocus
             autoCorrect={false}
             returnKeyType="search"
             clearButtonMode="while-editing"
-            accessibilityLabel="Søg"
+            accessibilityLabel={t('Søg')}
             style={[styles.input, { color: colors.text }]}
           />
         </View>
-        <Tappable onPress={close} accessibilityLabel="Annuller søgning" style={styles.cancel}>
+        <Tappable onPress={close} accessibilityLabel={t('Annuller søgning')} style={styles.cancel}>
           <AppText variant="body" tone="brandText">
-            Annuller
+            {t('Annuller')}
           </AppText>
         </Tappable>
       </View>
 
-      <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + 40 }]}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + 40 }]}>
         {!hasQuery ? (
           <>
             <AppText variant="footnote" tone="textSecondary" style={styles.label}>
-              POPULÆRE SØGNINGER
+              {t('POPULÆRE SØGNINGER')}
             </AppText>
             <View style={styles.suggestions}>
               {SEARCH_SUGGESTIONS.map((s) => (
@@ -69,7 +75,7 @@ export default function SearchScreen() {
               ))}
             </View>
             <AppText variant="footnote" tone="textSecondary" style={styles.label}>
-              ALLE FAG
+              {t('ALLE FAG')}
             </AppText>
             <View style={[styles.group, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               {CATEGORIES.map((c, i) => (
@@ -83,19 +89,30 @@ export default function SearchScreen() {
         ) : null}
 
         {empty ? (
-          <EmptyState icon="search" title="Ingen resultater" message="Prøv et andet ord, fx “vandhane”, “bremser” eller “tag”." />
+          <EmptyState
+            icon="search"
+            title={t('Ingen resultater')}
+            message={t('Prøv et andet ord, fx “vandhane”, “bremser” eller “tag”.')}
+          />
         ) : null}
 
         {results.jobs.length > 0 ? (
-          <ResultGroup title="Opgaver">
+          <ResultGroup title={t('Opgaver')}>
             {results.jobs.map(({ category, job }) => {
-              const price = summarizeJobPrice(job, state.businesses.filter((b) => b.categories.includes(category.id)));
+              const price = summarizeJobPrice(
+                job,
+                local.filter((b) => b.categories.includes(category.id)),
+                market,
+              );
               return (
                 <ResultRow
                   key={`${category.id}-${job.id}`}
                   icon={category.id}
                   title={job.name}
-                  subtitle={`${category.name} · typisk ${formatPriceRange(price.min, price.max, price.unit)}`}
+                  subtitle={t('{name} · typisk {priceRange}', {
+                    name: category.name,
+                    priceRange: formatPriceRange(price.min, price.max, price.unit, price.currency),
+                  })}
                   onPress={() => goCategory(category.id, job.id)}
                 />
               );
@@ -104,21 +121,27 @@ export default function SearchScreen() {
         ) : null}
 
         {results.categories.length > 0 ? (
-          <ResultGroup title="Fag">
+          <ResultGroup title={t('Fag')}>
             {results.categories.map((c) => (
-              <ResultRow key={c.id} icon={c.id} title={c.plural} subtitle={c.description} onPress={() => goCategory(c.id)} />
+              <ResultRow
+                key={c.id}
+                icon={c.id}
+                title={c.plural}
+                subtitle={c.description}
+                onPress={() => goCategory(c.id)}
+              />
             ))}
           </ResultGroup>
         ) : null}
 
         {results.businesses.length > 0 ? (
-          <ResultGroup title="Virksomheder">
+          <ResultGroup title={t('Virksomheder')}>
             {results.businesses.map((b) => (
               <ResultRow
                 key={b.id}
                 icon={b.categories[0]}
                 title={b.name}
-                subtitle={`${getCategory(b.categories[0])?.name} · ${b.address.city}`}
+                subtitle={t('{name} · {city}', { name: getCategory(b.categories[0])?.name, city: b.address.city })}
                 onPress={() => {
                   router.back();
                   router.push({ pathname: '/virksomhed/[id]', params: { id: b.id } });
@@ -151,10 +174,24 @@ function ResultGroup({ title, children }: { title: string; children: React.React
   );
 }
 
-function ResultRow({ icon, title, subtitle, onPress }: { icon: IconName; title: string; subtitle: string; onPress: () => void }) {
+function ResultRow({
+  icon,
+  title,
+  subtitle,
+  onPress,
+}: {
+  icon: IconName;
+  title: string;
+  subtitle: string;
+  onPress: () => void;
+}) {
   const colors = useTheme();
   return (
-    <Tappable onPress={onPress} accessibilityLabel={`${title}, ${subtitle}`} pressedOpacity={0.5} style={styles.row}>
+    <Tappable
+      onPress={onPress}
+      accessibilityLabel={t('{title}, {subtitle}', { title, subtitle })}
+      pressedOpacity={0.5}
+      style={styles.row}>
       <View style={[styles.rowIcon, { backgroundColor: colors.brandSoft }]}>
         <Icon name={icon} size={16} color={colors.brand} weight="semibold" />
       </View>
@@ -191,6 +228,13 @@ const styles = StyleSheet.create({
   suggestions: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   group: { borderRadius: Radius.md, borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden' },
   resultGroup: { gap: Spacing.sm },
-  row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingHorizontal: Spacing.lg, minHeight: 56, paddingVertical: Spacing.sm },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    minHeight: 56,
+    paddingVertical: Spacing.sm,
+  },
   rowIcon: { width: 28, height: 28, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
 });

@@ -23,6 +23,7 @@ import { useTheme } from '@/hooks/use-theme';
 import {
   AUTHORIZATION_REGISTER_URL,
   callBusiness,
+  registryUrl,
   openCvr,
   openDirections,
   openLink,
@@ -35,16 +36,19 @@ import { showDialog } from '@/lib/dialog';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import {
   displayHost,
-  formatCvr,
   formatDate,
   formatDistance,
   formatHourly,
   formatPhone,
   formatPrice,
   formatPriceRange,
+  formatRegistryNumber,
 } from '@/lib/format';
-import { mondayIndex, WEEKDAYS } from '@/lib/opening-hours';
+import { formatTime, mondayIndex, WEEKDAYS } from '@/lib/opening-hours';
 import { matchLabel, priceLevel, weightsFromPriorities } from '@/lib/ranking';
+import { t } from '@/i18n';
+import { businessText, countryOf, currencyOf } from '@/lib/business-text';
+import { getMarket, taxNote } from '@/lib/markets';
 import { MAX_COMPARE, useApp, useBusiness } from '@/state/app-state';
 
 const HERO_HEIGHT = 300;
@@ -64,28 +68,35 @@ export default function BusinessScreen() {
       <View style={[styles.flex, { backgroundColor: colors.background, paddingTop: insets.top }]}>
         <EmptyState
           icon="store"
-          title="Virksomheden findes ikke længere"
-          message="Den kan være fjernet fra FixMatch efter eget ønske."
-          action={<Button title="Til forsiden" onPress={() => router.replace('/')} />}
+          title={t('Virksomheden findes ikke længere')}
+          message={t('Den kan være fjernet fra FixMatch efter eget ønske.')}
+          action={<Button title={t('Til forsiden')} onPress={() => router.replace('/')} />}
         />
       </View>
     );
   }
 
   const category = getCategory(business.categories[0]);
+  const text = businessText(business);
+  const country = countryOf(business);
+  const market = getMarket(country);
+  const currency = currencyOf(business);
+  const jobName = (jobId: string | undefined, fallback: string) =>
+    category?.jobs.find((j) => j.id === jobId)?.name ?? fallback;
   const favorite = state.favorites.includes(business.id);
   const comparing = state.compare.includes(business.id);
   const weights = weightsFromPriorities(state.priorities);
   const level = priceLevel(business, state.businesses);
+
   const today = mondayIndex(new Date());
-  const tradePlural = (category?.plural ?? 'virksomheder').toLowerCase();
+  const tradePlural = (category?.plural ?? t('virksomheder')).toLowerCase();
 
   const goBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
   const onCompare = () => {
     if (!toggleCompare(business.id)) {
       showDialog(
-        'Højst 3 ad gangen',
-        `Du kan sammenligne op til ${MAX_COMPARE} virksomheder. Fjern en for at vælge en ny.`,
+        t('Højst 3 ad gangen'),
+        t('Du kan sammenligne op til {MAX_COMPARE} virksomheder. Fjern en for at vælge en ny.', { MAX_COMPARE }),
       );
     }
   };
@@ -111,7 +122,7 @@ export default function BusinessScreen() {
           <View style={styles.heroText}>
             <View style={styles.heroBadges}>
               {category ? <Badge label={category.name} tone="neutral" icon={category.id} /> : null}
-              {business.demo ? <Badge label="Eksempel" tone="warning" /> : null}
+              {business.demo ? <Badge label={t('Eksempel')} tone="warning" /> : null}
             </View>
             <View style={styles.heroTitleRow}>
               <View style={styles.flex}>
@@ -119,7 +130,7 @@ export default function BusinessScreen() {
                   {business.name}
                 </AppText>
                 <AppText variant="subhead" style={styles.whiteSoft} numberOfLines={2}>
-                  {business.tagline}
+                  {text.tagline}
                 </AppText>
               </View>
               <MatchBadge score={scored.score} size="large" onPhoto />
@@ -132,30 +143,32 @@ export default function BusinessScreen() {
             <View style={[styles.notice, { backgroundColor: colors.warningSoft }]}>
               <Icon name="info" size={16} color={colors.warning} weight="semibold" />
               <AppText variant="footnote" style={styles.flex}>
-                Fiktiv eksempelvirksomhed. Navn, telefonnummer, CVR og anmeldelser er opdigtede, og opkald er slået fra.
+                {t(
+                  'Fiktiv eksempelvirksomhed. Navn, telefonnummer, CVR og anmeldelser er opdigtede, og opkald er slået fra.',
+                )}
               </AppText>
             </View>
           ) : null}
 
           <View style={styles.quickActions}>
-            <QuickAction icon="phone" label="Ring" onPress={() => callBusiness(business)} primary />
+            <QuickAction icon="phone" label={t('Ring')} onPress={() => callBusiness(business)} primary />
             {business.contact.website ? (
-              <QuickAction icon="globe" label="Hjemmeside" onPress={() => openWebsite(business)} />
+              <QuickAction icon="globe" label={t('Hjemmeside')} onPress={() => openWebsite(business)} />
             ) : null}
-            <QuickAction icon="directions" label="Rute" onPress={() => openDirections(business)} />
+            <QuickAction icon="directions" label={t('Rute')} onPress={() => openDirections(business)} />
             <QuickAction
               icon={comparing ? 'check' : 'compare'}
-              label={comparing ? 'Valgt' : 'Sammenlign'}
+              label={comparing ? t('Valgt') : t('Sammenlign')}
               onPress={onCompare}
               selected={comparing}
             />
           </View>
 
           <Card>
-            <CardTitle title="Kontakt" icon="phone" />
+            <CardTitle title={t('Kontakt')} icon="phone" />
             <InfoRow
               icon="phone"
-              label="Telefon"
+              label={t('Telefon')}
               value={formatPhone(business.contact.phone)}
               onPress={() => callBusiness(business)}
             />
@@ -164,8 +177,8 @@ export default function BusinessScreen() {
               <>
                 <InfoRow
                   icon="globe"
-                  label="Hjemmeside"
-                  value={business.demo ? 'Fiktiv (demo)' : displayHost(business.contact.website)}
+                  label={t('Hjemmeside')}
+                  value={business.demo ? t('Fiktiv (demo)') : displayHost(business.contact.website)}
                   onPress={() => openWebsite(business)}
                 />
                 <Divider inset={30} />
@@ -173,37 +186,41 @@ export default function BusinessScreen() {
             ) : null}
             <InfoRow
               icon="pin"
-              label="Adresse"
+              label={t('Adresse')}
               value={`${business.address.street}, ${business.address.postalCode} ${business.address.city}`}
               onPress={() => openDirections(business)}
             />
             <Divider inset={30} />
             <InfoRow
               icon="route"
-              label="Afstand"
-              value={`${formatDistance(scored.distanceKm)} i luftlinje · kører op til ${business.serviceRadiusKm} km`}
+              label={t('Afstand')}
+              value={t('{distance} i luftlinje · kører op til {radius}', {
+                distance: formatDistance(scored.distanceKm),
+                radius: formatDistance(business.serviceRadiusKm),
+              })}
             />
-            {business.responseTime ? (
+            {text.responseTime ? (
               <>
                 <Divider inset={30} />
-                <InfoRow icon="chat" label="Svartid" value={business.responseTime} />
+                <InfoRow icon="chat" label={t('Svartid')} value={text.responseTime} />
               </>
             ) : null}
           </Card>
 
           {TRUSTPILOT_ENABLED ? (
             <Card>
-              <CardTitle title="Anmeldelser" icon="star" />
+              <CardTitle title={t('Anmeldelser')} icon="star" />
               <TrustpilotRating trustpilot={business.trustpilot} size="large" />
               {business.trustpilot ? (
                 <>
                   <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
-                    Hentet fra Trustpilot {formatDate(business.trustpilot.updatedAt)}. FixMatch ændrer eller udvælger
-                    ikke anmeldelser.
+                    {t('Hentet fra Trustpilot {date}. FixMatch ændrer eller udvælger ikke anmeldelser.', {
+                      date: formatDate(business.trustpilot.updatedAt),
+                    })}
                   </AppText>
                   <View style={styles.buttonRow}>
                     <Button
-                      title="Se anmeldelser på Trustpilot"
+                      title={t('Se anmeldelser på Trustpilot')}
                       icon="external"
                       variant="secondary"
                       size="small"
@@ -213,80 +230,94 @@ export default function BusinessScreen() {
                 </>
               ) : (
                 <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
-                  Virksomheden har endnu ingen anmeldelser på Trustpilot. Den rangeres derfor med en neutral score.
+                  {t(
+                    'Virksomheden har endnu ingen anmeldelser på Trustpilot. Den rangeres derfor med en neutral score.',
+                  )}
                 </AppText>
               )}
-              <LinkText label="Om anmeldelser i FixMatch" slug="anmeldelser" />
+              <LinkText label={t('Om anmeldelser i FixMatch')} slug="anmeldelser" />
             </Card>
           ) : null}
 
           <Card>
-            <CardTitle title="Priser" icon="tag" />
+            <CardTitle title={t('Priser')} icon="tag" />
             <View style={styles.priceHeader}>
               <AppText variant="title2" rounded>
-                {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax)}
+                {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currency)}
               </AppText>
               <AppText variant="footnote" tone="textSecondary">
-                Timepris inkl. moms
-                {business.pricing.calloutFee
-                  ? ` · kørsel/opstart ${formatPrice(business.pricing.calloutFee)} pr. besøg`
-                  : ' · ingen kørselsgebyr'}
+                {[
+                  t('Timepris {tax}', { tax: taxNote(market) }),
+                  business.pricing.calloutFee
+                    ? t('kørsel/opstart {price} pr. besøg', {
+                        price: formatPrice(business.pricing.calloutFee, currency),
+                      })
+                    : t('ingen kørselsgebyr'),
+                ].join(' · ')}
               </AppText>
               <PriceLevel level={level} trade={tradePlural} />
             </View>
             {business.pricing.examples.length > 0 ? (
               <View style={styles.examples}>
                 <AppText variant="subhead" weight="600">
-                  Eksempelpriser
+                  {t('Eksempelpriser')}
                 </AppText>
                 {business.pricing.examples.map((example) => (
                   <View key={example.label} style={styles.exampleRow}>
                     <AppText variant="subhead" style={styles.flex}>
-                      {example.label}
+                      {jobName(example.job, example.label)}
                     </AppText>
                     <AppText variant="subhead" weight="600" tabular>
-                      {formatPriceRange(example.min, example.max, example.unit)}
+                      {formatPriceRange(example.min, example.max, example.unit, currency)}
                     </AppText>
                   </View>
                 ))}
               </View>
             ) : null}
             <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
-              Vejledende priser oplyst af virksomheden {formatDate(business.pricing.updatedAt)}. Materialer kan komme
-              oveni. Bed altid om et skriftligt tilbud.
+              {t(
+                'Vejledende priser oplyst af virksomheden {date}. Materialer kan komme oveni. Bed altid om et skriftligt tilbud.',
+                { date: formatDate(business.pricing.updatedAt) },
+              )}
             </AppText>
-            <LinkText label="Om priserne og håndværkerfradrag" slug="priser" />
+            <LinkText label={t('Om priserne og håndværkerfradrag')} slug="priser" />
           </Card>
 
           <Card>
-            <CardTitle title={`Match-score ${scored.score} · ${matchLabel(scored.score)}`} icon="sparkles" />
+            <CardTitle
+              title={t('Match-score {score} · {matchLabel}', {
+                score: scored.score,
+                matchLabel: matchLabel(scored.score),
+              })}
+              icon="sparkles"
+            />
             <ScoreBars parts={scored.parts} weights={weights} />
             <View style={styles.buttonRow}>
               <Button
-                title="Justér dine prioriteter"
+                title={t('Justér dine prioriteter')}
                 icon="sliders"
                 variant="tinted"
                 size="small"
                 onPress={() => router.push('/prioriteter')}
               />
             </View>
-            <LinkText label="Sådan rangerer vi" slug="rangering" />
+            <LinkText label={t('Sådan rangerer vi')} slug="rangering" />
           </Card>
 
           <Card>
-            <CardTitle title="Åbningstider" icon="clock" trailing={<OpenStatus business={business} />} />
+            <CardTitle title={t('Åbningstider')} icon="clock" trailing={<OpenStatus business={business} />} />
             {business.hours.map((slot, index) => (
               <View key={WEEKDAYS[index]} style={styles.hoursRow} accessible>
                 <AppText variant="subhead" weight={index === today ? '700' : '400'} style={styles.flex}>
                   {WEEKDAYS[index]}
-                  {index === today ? ' (i dag)' : ''}
+                  {index === today ? ` (${t('i dag')})` : ''}
                 </AppText>
                 <AppText
                   variant="subhead"
                   tone={slot ? 'text' : 'textSecondary'}
                   weight={index === today ? '700' : '400'}
                   tabular>
-                  {slot ? `${slot[0].replace(':', '.')}–${slot[1].replace(':', '.')}` : 'Lukket'}
+                  {slot ? `${formatTime(slot[0])}–${formatTime(slot[1])}` : t('Lukket')}
                 </AppText>
               </View>
             ))}
@@ -294,48 +325,56 @@ export default function BusinessScreen() {
               <View style={[styles.notice, styles.spaced, { backgroundColor: colors.warningSoft }]}>
                 <Icon name="bolt" size={15} color={colors.warning} weight="semibold" />
                 <AppText variant="footnote" style={styles.flex}>
-                  Døgnvagt: kan ringes op uden for åbningstid. Der kan være tillæg for akut udkald.
+                  {t('Døgnvagt: kan ringes op uden for åbningstid. Der kan være tillæg for akut udkald.')}
                 </AppText>
               </View>
             ) : null}
           </Card>
 
           <Card>
-            <CardTitle title="Om virksomheden" icon="store" />
-            <AppText variant="body">{business.description}</AppText>
+            <CardTitle title={t('Om virksomheden')} icon="store" />
+            <AppText variant="body">{text.description}</AppText>
             <View style={styles.tags}>
-              {business.services.map((service) => (
+              {text.services.map((service) => (
                 <Badge key={service} label={service} tone="brand" />
               ))}
             </View>
             <View style={styles.facts}>
-              {business.founded ? <Fact icon="calendar" label="Etableret" value={String(business.founded)} /> : null}
-              {business.employees ? <Fact icon="people" label="Ansatte" value={business.employees} /> : null}
+              {business.founded ? (
+                <Fact icon="calendar" label={t('Etableret')} value={String(business.founded)} />
+              ) : null}
+              {business.employees ? <Fact icon="people" label={t('Ansatte')} value={business.employees} /> : null}
             </View>
           </Card>
 
           <Card>
-            <CardTitle title="Tjekket af FixMatch" icon="verified" />
-            <InfoRow
-              icon="building"
-              label="CVR-nummer"
-              value={`${formatCvr(business.cvr)}${business.demo ? ' (fiktivt)' : ''}`}
-              onPress={() => openCvr(business)}
-            />
+            <CardTitle title={t('Tjekket af FixMatch')} icon="verified" />
+            {business.cvr && market.registryLabel ? (
+              <InfoRow
+                icon="building"
+                label={t(market.registryLabel)}
+                value={`${formatRegistryNumber(business.cvr, country)}${business.demo ? ` (${t('fiktivt')})` : ''}`}
+                onPress={business.demo || registryUrl(business) ? () => openCvr(business) : undefined}
+              />
+            ) : null}
             {business.authorizations.map((auth) => (
               <View key={auth.kind}>
                 <Divider inset={30} />
                 <InfoRow
                   icon="shield"
                   label={AUTHORIZATION_LABELS[auth.kind]}
-                  value={`Aut.nr. ${auth.number}`}
+                  value={t('Aut.nr. {number}', { number: auth.number })}
                   onPress={() =>
                     business.demo
                       ? showDialog(
-                          'Eksempelvirksomhed',
-                          'I den færdige app kan du slå autorisationen op i Sikkerhedsstyrelsens register.',
+                          t('Eksempelvirksomhed'),
+                          country === 'DK'
+                            ? t('I den færdige app kan du slå autorisationen op i Sikkerhedsstyrelsens register.')
+                            : t(market.licenceNote),
                         )
-                      : openLink(AUTHORIZATION_REGISTER_URL)
+                      : country === 'DK'
+                        ? openLink(AUTHORIZATION_REGISTER_URL)
+                        : showDialog(t('Autorisation'), t(market.licenceNote))
                   }
                 />
               </View>
@@ -343,24 +382,25 @@ export default function BusinessScreen() {
             {business.memberships.map((membership) => (
               <View key={membership}>
                 <Divider inset={30} />
-                <InfoRow icon="handshake" label="Medlem af" value={membership} />
+                <InfoRow icon="handshake" label={t('Medlem af')} value={membership} />
               </View>
             ))}
             <Divider inset={30} />
             <InfoRow
               icon="check"
-              label="Samtykke"
-              value={`Godkendt af virksomheden ${formatDate(business.consent.date)}`}
+              label={t('Samtykke')}
+              value={t('Godkendt af virksomheden {date}', { date: formatDate(business.consent.date) })}
             />
           </Card>
 
           <View style={styles.footer}>
             <AppText variant="caption" tone="textSecondary" align="center">
-              Oplysningerne er opdateret {formatDate(business.updatedAt)}. FixMatch er ikke part i aftaler mellem dig og
-              virksomheden.
+              {t('Oplysningerne er opdateret {date}. FixMatch er ikke part i aftaler mellem dig og virksomheden.', {
+                date: formatDate(business.updatedAt),
+              })}
             </AppText>
             <Button
-              title="Rapportér fejl eller ulovligt indhold"
+              title={t('Rapportér fejl eller ulovligt indhold')}
               icon="flag"
               variant="plain"
               size="small"
@@ -383,12 +423,12 @@ export default function BusinessScreen() {
         </View>
       ) : null}
       <View style={[styles.topButtons, { top: insets.top + Spacing.sm }]} pointerEvents="box-none">
-        <FloatingButton icon="back" label="Tilbage" onPress={goBack} />
+        <FloatingButton icon="back" label={t('Tilbage')} onPress={goBack} />
         <View style={styles.topRight}>
-          <FloatingButton icon="share" label="Del" onPress={() => shareBusiness(business)} />
+          <FloatingButton icon="share" label={t('Del')} onPress={() => shareBusiness(business)} />
           <FloatingButton
             icon={favorite ? 'heartFill' : 'heart'}
-            label={favorite ? 'Fjern fra gemte' : 'Gem'}
+            label={favorite ? t('Fjern fra gemte') : t('Gem')}
             onPress={() => toggleFavorite(business.id)}
             active={favorite}
           />
@@ -405,21 +445,21 @@ export default function BusinessScreen() {
           },
         ]}>
         <Button
-          title={`Ring ${formatPhone(business.contact.phone)}`}
+          title={t('Ring {phone}', { phone: formatPhone(business.contact.phone) })}
           icon="phone"
           onPress={() => callBusiness(business)}
           size="large"
           style={styles.flex}
-          accessibilityLabel={`Ring til ${business.name}`}
+          accessibilityLabel={t('Ring til {name}', { name: business.name })}
         />
         {business.contact.website ? (
           <Button
-            title="Web"
+            title={t('Web')}
             icon="globe"
             variant="secondary"
             size="large"
             onPress={() => openWebsite(business)}
-            accessibilityLabel={`Åbn ${business.name}s hjemmeside`}
+            accessibilityLabel={t('Åbn {name}s hjemmeside', { name: business.name })}
           />
         ) : null}
       </View>
@@ -495,7 +535,7 @@ function InfoRow({
   );
   if (!onPress) return content;
   return (
-    <Tappable onPress={onPress} accessibilityLabel={`${label}: ${value}`} pressedOpacity={0.5}>
+    <Tappable onPress={onPress} accessibilityLabel={t('{label}: {value}', { label, value })} pressedOpacity={0.5}>
       {content}
     </Tappable>
   );
@@ -507,7 +547,7 @@ function Fact({ icon, label, value }: { icon: IconName; label: string; value: st
     <View
       style={[styles.fact, { backgroundColor: colors.surfaceAlt }]}
       accessible
-      accessibilityLabel={`${label}: ${value}`}>
+      accessibilityLabel={t('{label}: {value}', { label, value })}>
       <Icon name={icon} size={16} color={colors.brand} />
       <View>
         <AppText variant="caption" tone="textSecondary">

@@ -25,7 +25,10 @@ import { distanceKm } from '@/lib/geo';
 import { summarizeJobPrice } from '@/lib/prices';
 import { reviewValue, scoreBusinesses } from '@/lib/ranking';
 import type { CategoryId } from '@/lib/types';
-import { useApp } from '@/state/app-state';
+import { t } from '@/i18n';
+import { countryOf, currencyOf } from '@/lib/business-text';
+import { COUNTRY_CODES, countryName, taxNote } from '@/lib/markets';
+import { useApp, useMarket } from '@/state/app-state';
 
 const POPULAR_JOBS: [CategoryId, string][] = [
   ['vvs', 'stoppet-afloeb'],
@@ -39,9 +42,9 @@ const POPULAR_JOBS: [CategoryId, string][] = [
 ];
 
 const URGENT: { label: string; category: CategoryId; icon: IconName }[] = [
-  { label: 'Vandskade', category: 'vvs', icon: 'vvs' },
-  { label: 'Låst ude', category: 'laasesmed', icon: 'laasesmed' },
-  { label: 'Strømsvigt', category: 'elektriker', icon: 'elektriker' },
+  { label: t('Vandskade'), category: 'vvs', icon: 'vvs' },
+  { label: t('Låst ude'), category: 'laasesmed', icon: 'laasesmed' },
+  { label: t('Strømsvigt'), category: 'elektriker', icon: 'elektriker' },
 ];
 
 const NEARBY_KM = 25;
@@ -50,37 +53,40 @@ export default function HomeScreen() {
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { state } = useApp();
+  const { country, market, supported } = useMarket();
   const { locate, busy } = useGps();
   const origin = state.location.coords;
+  // Only this country's businesses: prices are never compared across currencies.
+  const local = useMemo(() => state.businesses.filter((b) => countryOf(b) === country), [state.businesses, country]);
 
   const nearbyCount = useMemo(() => {
     const counts = new Map<CategoryId, number>();
-    for (const b of state.businesses) {
+    for (const b of local) {
       if (distanceKm(origin, b.coords) > NEARBY_KM) continue;
       for (const c of b.categories) counts.set(c, (counts.get(c) ?? 0) + 1);
     }
     return counts;
-  }, [state.businesses, origin]);
+  }, [local, origin]);
 
   const topRated = useMemo(
     () =>
-      state.businesses
+      local
         .map((b) => ({ business: b, km: distanceKm(origin, b.coords) }))
         .filter((x) => x.km <= 10 && x.business.trustpilot)
         .sort((a, b) => reviewValue(b.business) - reviewValue(a.business))
         .slice(0, 6),
-    [state.businesses, origin],
+    [local, origin],
   );
 
   const promoted = useMemo(() => {
-    const ads = state.businesses.filter((b) => b.promoted && distanceKm(origin, b.coords) <= NEARBY_KM);
+    const ads = local.filter((b) => b.promoted && distanceKm(origin, b.coords) <= NEARBY_KM);
     if (ads.length === 0) return [];
     return ads.map((b) => {
-      const peers = state.businesses.filter((p) => p.categories.includes(b.categories[0]));
+      const peers = local.filter((p) => p.categories.includes(b.categories[0]));
       const scored = scoreBusinesses(peers, origin, state.priorities).find((s) => s.business.id === b.id);
       return { business: b, score: scored?.score ?? 0, km: distanceKm(origin, b.coords) };
     });
-  }, [state.businesses, origin, state.priorities]);
+  }, [local, origin, state.priorities]);
 
   async function useMyLocation() {
     const result = await locate();
@@ -90,7 +96,10 @@ export default function HomeScreen() {
   return (
     <ScrollView
       style={{ backgroundColor: colors.background }}
-      contentContainerStyle={[styles.content, { paddingTop: insets.top + Spacing.sm, paddingBottom: insets.bottom + 96 }]}
+      contentContainerStyle={[
+        styles.content,
+        { paddingTop: insets.top + Spacing.sm, paddingBottom: insets.bottom + 96 },
+      ]}
       contentInsetAdjustmentBehavior="never">
       <View style={styles.topBar}>
         <Logo />
@@ -98,36 +107,36 @@ export default function HomeScreen() {
       </View>
 
       <View style={styles.hero}>
-        <AppText variant="title1">Find den rette håndværker</AppText>
+        <AppText variant="title1">{t('Find den rette håndværker')}</AppText>
         <AppText variant="callout" tone="textSecondary">
-          Sammenlign pris, afstand og Trustpilot-anmeldelser hos lokale virksomheder – og ring direkte.
+          {t('Sammenlign pris, afstand og Trustpilot-anmeldelser hos lokale virksomheder – og ring direkte.')}
         </AppText>
       </View>
 
       <Tappable
         onPress={() => router.push('/soeg')}
         accessibilityRole="search"
-        accessibilityLabel="Søg efter opgave, fag eller virksomhed"
+        accessibilityLabel={t('Søg efter opgave, fag eller virksomhed')}
         style={[styles.search, { backgroundColor: colors.surface, borderColor: colors.border }]}>
         <Icon name="search" size={18} color={colors.textSecondary} weight="semibold" />
         <AppText variant="body" tone="textTertiary" numberOfLines={1}>
-          Hvad skal laves? Fx “stoppet afløb”
+          {t('Hvad skal laves? Fx “stoppet afløb”')}
         </AppText>
       </Tappable>
 
       <Tappable
         onPress={() => router.push('/beskriv')}
-        accessibilityLabel="Beskriv dit problem og dit budget, så matcher vi dig med virksomheder"
+        accessibilityLabel={t('Beskriv dit problem og dit budget, så matcher vi dig med virksomheder')}
         style={[styles.describe, { backgroundColor: colors.brandStrong }]}>
         <View style={styles.describeIcon}>
           <Icon name="wand" size={20} color={colors.onBrand} weight="semibold" />
         </View>
         <View style={styles.flex}>
           <AppText variant="headline" tone="onBrand">
-            Beskriv dit problem
+            {t('Beskriv dit problem')}
           </AppText>
           <AppText variant="footnote" tone="onBrand">
-            Skriv hvad der er galt og dit budget – vi finder dem, der passer.
+            {t('Skriv hvad der er galt og dit budget – vi finder dem, der passer.')}
           </AppText>
         </View>
         <Icon name="chevronRight" size={16} color={colors.onBrand} weight="semibold" />
@@ -137,11 +146,37 @@ export default function HomeScreen() {
         <View style={[styles.notice, { backgroundColor: colors.infoSoft }]}>
           <Icon name="info" size={16} color={colors.info} weight="semibold" />
           <AppText variant="footnote" style={[styles.flex, { color: colors.text }]}>
-            Afstande regnes fra {state.location.label}. Brug din placering for at se de nærmeste.
+            {t('Afstande regnes fra {label}. Brug din placering for at se de nærmeste.', {
+              label: state.location.label,
+            })}
           </AppText>
-          <Tappable onPress={useMyLocation} disabled={busy} accessibilityLabel="Brug min placering" style={styles.noticeAction}>
+          <Tappable
+            onPress={useMyLocation}
+            disabled={busy}
+            accessibilityLabel={t('Brug min placering')}
+            style={styles.noticeAction}>
             <AppText variant="footnote" weight="700" style={{ color: colors.info }}>
-              {busy ? 'Finder…' : 'Brug placering'}
+              {busy ? t('Finder…') : t('Brug placering')}
+            </AppText>
+          </Tappable>
+        </View>
+      ) : null}
+
+      {!supported ? (
+        <View style={[styles.notice, { backgroundColor: colors.brandSoft }]}>
+          <Icon name="globe" size={16} color={colors.brandText} weight="semibold" />
+          <AppText variant="footnote" style={[styles.flex, { color: colors.text }]}>
+            {t('FixMatch er endnu ikke i {country}. Vi er i {countries}.', {
+              country: countryName(state.location.country ?? ''),
+              countries: COUNTRY_CODES.map(countryName).join(', '),
+            })}
+          </AppText>
+          <Tappable
+            onPress={() => router.push('/placering')}
+            accessibilityLabel={t('Vælg en by')}
+            style={styles.noticeAction}>
+            <AppText variant="footnote" weight="700" tone="brandText">
+              {t('Vælg by')}
             </AppText>
           </Tappable>
         </View>
@@ -151,12 +186,12 @@ export default function HomeScreen() {
         <View style={[styles.notice, { backgroundColor: colors.warningSoft }]}>
           <Icon name="info" size={16} color={colors.warning} weight="semibold" />
           <AppText variant="footnote" style={[styles.flex, { color: colors.text }]}>
-            Demoversion: virksomhederne er fiktive eksempler, indtil de rigtige har givet samtykke.
+            {t('Demoversion: virksomhederne er fiktive eksempler, indtil de rigtige har givet samtykke.')}
           </AppText>
         </View>
       ) : null}
 
-      <Section title="Vælg fag">
+      <Section title={t('Vælg fag')}>
         <View style={styles.grid}>
           {chunk(CATEGORIES, 2).map((row) => (
             <View key={row[0].id} style={styles.gridRow}>
@@ -168,15 +203,15 @@ export default function HomeScreen() {
         </View>
       </Section>
 
-      <Section title="Akut hjælp – døgnvagt" subtitle="Ved fare for liv eller brand: ring 112.">
+      <Section
+        title={t('Akut hjælp – døgnvagt')}
+        subtitle={t('Ved fare for liv eller brand: ring {number}.', { number: market.emergencyNumber })}>
         <View style={styles.urgentRow}>
           {URGENT.map((item) => (
             <Tappable
               key={item.label}
-              onPress={() =>
-                router.push({ pathname: '/kategori/[id]', params: { id: item.category, akut: '1' } })
-              }
-              accessibilityLabel={`${item.label}: vis virksomheder med døgnvagt`}
+              onPress={() => router.push({ pathname: '/kategori/[id]', params: { id: item.category, akut: '1' } })}
+              accessibilityLabel={t('{label}: vis virksomheder med døgnvagt', { label: item.label })}
               style={[styles.urgent, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               <View style={[styles.urgentIcon, { backgroundColor: colors.warningSoft }]}>
                 <Icon name={item.icon} size={18} color={colors.warning} weight="semibold" />
@@ -189,18 +224,24 @@ export default function HomeScreen() {
         </View>
       </Section>
 
-      <Section title="Hvad koster det typisk?" subtitle="Prisintervaller inkl. moms fra virksomhederne i appen">
+      <Section
+        title={t('Hvad koster det typisk?')}
+        subtitle={t('Prisintervaller {tax} fra virksomhederne i appen', { tax: taxNote(market) })}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
           {POPULAR_JOBS.map(([categoryId, jobId]) => {
             const category = getCategory(categoryId);
             const job = category?.jobs.find((j) => j.id === jobId);
             if (!category || !job) return null;
-            const price = summarizeJobPrice(job, state.businesses);
+            const price = summarizeJobPrice(job, local, market);
             return (
               <Tappable
                 key={jobId}
                 onPress={() => router.push({ pathname: '/kategori/[id]', params: { id: categoryId, job: jobId } })}
-                accessibilityLabel={`${job.name}, typisk ${formatPriceRange(price.min, price.max, price.unit)}. Vis ${category.plural}`}
+                accessibilityLabel={t('{name}, typisk {priceRange}. Vis {plural}', {
+                  name: job.name,
+                  priceRange: formatPriceRange(price.min, price.max, price.unit, price.currency),
+                  plural: category.plural,
+                })}
                 style={[styles.jobCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
                 <View style={[styles.jobIcon, { backgroundColor: colors.brandSoft }]}>
                   <Icon name={categoryId} size={16} color={colors.brand} weight="semibold" />
@@ -209,7 +250,7 @@ export default function HomeScreen() {
                   {job.name}
                 </AppText>
                 <AppText variant="footnote" tone="brandText" weight="700" numberOfLines={1}>
-                  {formatPriceRange(price.min, price.max, price.unit)}
+                  {formatPriceRange(price.min, price.max, price.unit, price.currency)}
                 </AppText>
                 <AppText variant="caption" tone="textSecondary" numberOfLines={1}>
                   {category.name}
@@ -221,17 +262,25 @@ export default function HomeScreen() {
       </Section>
 
       {promoted.length > 0 ? (
-        <Section title="Fremhævet" subtitle="Betalt annonce – påvirker ikke rækkefølgen i søgeresultater">
+        <Section title={t('Fremhævet')} subtitle={t('Betalt annonce – påvirker ikke rækkefølgen i søgeresultater')}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
             {promoted.map(({ business, score, km }) => (
               <Tappable
                 key={business.id}
                 onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
-                accessibilityLabel={`Annonce: ${business.name}, ${formatDistance(km)} væk`}
+                accessibilityLabel={t('Annonce: {name}, {distance} væk', {
+                  name: business.name,
+                  distance: formatDistance(km),
+                })}
                 style={[styles.featured, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                <Photo photo={business.photo} category={business.categories[0]} width={600} style={styles.featuredPhoto} />
+                <Photo
+                  photo={business.photo}
+                  category={business.categories[0]}
+                  width={600}
+                  style={styles.featuredPhoto}
+                />
                 <View style={styles.adLabel}>
-                  <Badge label="Annonce" tone="neutral" />
+                  <Badge label={t('Annonce')} tone="neutral" />
                 </View>
                 <View style={styles.featuredBody}>
                   <View style={styles.rowBetween}>
@@ -242,7 +291,8 @@ export default function HomeScreen() {
                   </View>
                   <TrustpilotRating trustpilot={business.trustpilot} />
                   <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
-                    {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax)} · {formatDistance(km)}
+                    {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business))} ·{' '}
+                    {formatDistance(km)}
                   </AppText>
                 </View>
               </Tappable>
@@ -252,13 +302,19 @@ export default function HomeScreen() {
       ) : null}
 
       {TRUSTPILOT_ENABLED && topRated.length > 0 ? (
-        <Section title="Bedst anmeldt nær dig" subtitle="Højeste TrustScore inden for 10 km">
+        <Section
+          title={t('Bedst anmeldt nær dig')}
+          subtitle={t('Højeste TrustScore inden for {distance}', { distance: formatDistance(10) })}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
             {topRated.map(({ business, km }) => (
               <Tappable
                 key={business.id}
                 onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
-                accessibilityLabel={`${business.name}, ${getCategory(business.categories[0])?.name}, ${formatDistance(km)} væk`}
+                accessibilityLabel={t('{name}, {name2}, {distance} væk', {
+                  name: business.name,
+                  name2: getCategory(business.categories[0])?.name,
+                  distance: formatDistance(km),
+                })}
                 style={[styles.topCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
                 <Photo photo={business.photo} category={business.categories[0]} width={500} style={styles.topPhoto} />
                 <View style={styles.topBody}>
@@ -279,18 +335,26 @@ export default function HomeScreen() {
         </Section>
       ) : null}
 
-      <Section title="Sådan virker FixMatch">
+      <Section title={t('Sådan virker FixMatch')}>
         <View style={[styles.steps, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <Step number={1} title="Vælg fag eller opgave" text="VVS, el, tømrer, murer, mekaniker og flere." />
-          <Step number={2} title="Sammenlign" text="Pris inkl. moms, afstand og TrustScore – side om side." />
-          <Step number={3} title="Ring direkte" text="Ingen mellemled og ingen gebyrer. Du aftaler prisen direkte." />
+          <Step number={1} title={t('Vælg fag eller opgave')} text={t('VVS, el, tømrer, murer, mekaniker og flere.')} />
+          <Step
+            number={2}
+            title={t('Sammenlign')}
+            text={t('Pris {tax}, afstand og TrustScore – side om side.', { tax: taxNote(market) })}
+          />
+          <Step
+            number={3}
+            title={t('Ring direkte')}
+            text={t('Ingen mellemled og ingen gebyrer. Du aftaler prisen direkte.')}
+          />
         </View>
       </Section>
 
       <View style={styles.footerLinks}>
-        <FooterLink label="Sådan rangerer vi" slug="rangering" />
-        <FooterLink label="Om priserne" slug="priser" />
-        <FooterLink label="Om anmeldelser" slug="anmeldelser" />
+        <FooterLink label={t('Sådan rangerer vi')} slug="rangering" />
+        <FooterLink label={t('Om priserne')} slug="priser" />
+        <FooterLink label={t('Om anmeldelser')} slug="anmeldelser" />
       </View>
     </ScrollView>
   );

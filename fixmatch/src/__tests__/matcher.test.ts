@@ -166,3 +166,29 @@ describe('matchBudget', () => {
     expect(fitForPrice({ min: 2500, max: 3000 }, 2000).fit).toBe('over');
   });
 });
+
+describe('English descriptions', () => {
+  it.each([
+    ["The kitchen sink is blocked and won't drain", 'vvs', 'stoppet-afloeb'],
+    ['EV charger for my car – budget 1,200', 'elektriker', 'ladestander'],
+    ['My car needs a full service, max 450', 'mekaniker', 'stort-service'],
+    ["I'm locked out, it's urgent", 'laasesmed', 'doeroplukning'],
+    ['New wooden floor in the living room, about 25 m²', 'toemrer', 'gulv'],
+    ['The fuse keeps tripping', 'elektriker', 'fejlsoegning'],
+    ['Water through the ceiling when it rains, roof leak', 'tagdaekker', 'tagreparation'],
+  ])('reads "%s"', (text, category, job) => {
+    const result = analyzeProblem(text);
+    expect(result.category?.id).toBe(category);
+    expect(result.job?.id).toBe(job);
+  });
+
+  it('reads English budgets and sizes', () => {
+    expect(parseBudget('budget £500')).toBe(500);
+    expect(parseBudget('up to $1,200')).toBe(1200);
+    expect(parseBudget('around 300 euros')).toBe(300);
+    expect(parseBudget('max 2k')).toBe(2000);
+    expect(parseQuantity('about 30 sqm', 'm2')).toBe(30);
+    expect(parseQuantity('two new windows', 'stk')).toBe(2);
+    expect(analyzeProblem("I'm locked out, it's urgent").urgent).toBe(true);
+  });
+});

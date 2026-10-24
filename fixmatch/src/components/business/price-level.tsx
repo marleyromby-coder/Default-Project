@@ -4,12 +4,16 @@ import { AppText } from '@/components/ui/text';
 import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { PRICE_LEVEL_LABELS, type PriceLevel as Level } from '@/lib/ranking';
+import { t } from '@/i18n';
 
 /** Three segments, filled up to the level, plus the level in words. */
 export function PriceLevel({ level, trade }: { level: Level; trade: string }) {
   const colors = useTheme();
   return (
-    <View style={styles.row} accessible accessibilityLabel={`${PRICE_LEVEL_LABELS[level]} sammenlignet med andre ${trade}`}>
+    <View
+      style={styles.row}
+      accessible
+      accessibilityLabel={t('{value} sammenlignet med andre {trade}', { value: PRICE_LEVEL_LABELS[level], trade })}>
       <View style={styles.segments}>
         {[1, 2, 3].map((step) => (
           <View
@@ -19,7 +23,7 @@ export function PriceLevel({ level, trade }: { level: Level; trade: string }) {
         ))}
       </View>
       <AppText variant="footnote" tone="textSecondary">
-        {PRICE_LEVEL_LABELS[level]} blandt {trade}
+        {t('{value} blandt {trade}', { value: PRICE_LEVEL_LABELS[level], trade })}
       </AppText>
     </View>
   );

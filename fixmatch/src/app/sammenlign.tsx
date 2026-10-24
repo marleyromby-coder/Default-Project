@@ -16,10 +16,13 @@ import { useScored } from '@/hooks/use-results';
 import { useTheme } from '@/hooks/use-theme';
 import { callBusiness } from '@/lib/contact';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
-import { formatDistance, formatHourly, formatNumber, formatPrice, formatPriceRange, formatRating } from '@/lib/format';
+import { formatDistance, formatNumber, formatPrice, formatPriceRange, formatRating } from '@/lib/format';
 import { getOpenStatus } from '@/lib/opening-hours';
 import { priceIndex, reviewValue, type ScoredBusiness } from '@/lib/ranking';
-import { useApp } from '@/state/app-state';
+import { t } from '@/i18n';
+import { businessText, currencyOf } from '@/lib/business-text';
+import { taxNote } from '@/lib/markets';
+import { useApp, useMarket } from '@/state/app-state';
 
 type Best = (items: ScoredBusiness[]) => string | undefined;
 
@@ -40,6 +43,7 @@ export default function CompareScreen() {
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { state, toggleCompare, clearCompare } = useApp();
+  const { market } = useMarket();
   const items = useScored(state.compare);
 
   if (items.length === 0) {
@@ -47,9 +51,9 @@ export default function CompareScreen() {
       <View style={[styles.flex, { backgroundColor: colors.background }]}>
         <EmptyState
           icon="compare"
-          title="Intet at sammenligne endnu"
-          message="Tryk på “Sammenlign” ved op til tre virksomheder i et fag, så vises de her side om side."
-          action={<Button title="Find virksomheder" onPress={() => router.dismissTo('/')} />}
+          title={t('Intet at sammenligne endnu')}
+          message={t('Tryk på “Sammenlign” ved op til tre virksomheder i et fag, så vises de her side om side.')}
+          action={<Button title={t('Find virksomheder')} onPress={() => router.dismissTo('/')} />}
         />
       </View>
     );
@@ -71,9 +75,9 @@ export default function CompareScreen() {
       <Stack.Screen
         options={{
           headerRight: () => (
-            <Tappable onPress={clearCompare} accessibilityLabel="Ryd sammenligning" style={styles.headerButton}>
+            <Tappable onPress={clearCompare} accessibilityLabel={t('Ryd sammenligning')} style={styles.headerButton}>
               <AppText variant="body" tone="brandText">
-                Ryd
+                {t('Ryd')}
               </AppText>
             </Tappable>
           ),
@@ -88,7 +92,7 @@ export default function CompareScreen() {
               <Photo photo={business.photo} category={business.categories[0]} width={400} style={styles.photo} />
               <Tappable
                 onPress={() => toggleCompare(business.id)}
-                accessibilityLabel={`Fjern ${business.name} fra sammenligning`}
+                accessibilityLabel={t('Fjern {name} fra sammenligning', { name: business.name })}
                 style={styles.remove}>
                 <Icon name="close" size={12} color="#0E1726" weight="bold" />
               </Tappable>
@@ -104,53 +108,64 @@ export default function CompareScreen() {
           ))}
         </View>
 
-        <Row label="Match-score">
+        <Row label={t('Match-score')}>
           {items.map((s) => (
-            <Value key={s.business.id} best={winners.match === s.business.id} bestLabel="Bedste match">
+            <Value key={s.business.id} best={winners.match === s.business.id} bestLabel={t('Bedste match')}>
               <AppText variant="title3" rounded tabular>
                 {s.score}
               </AppText>
             </Value>
           ))}
         </Row>
-        <Row label="Timepris inkl. moms">
+        <Row label={t('Timepris {tax}', { tax: taxNote(market) })}>
           {items.map((s) => (
-            <Value key={s.business.id} best={winners.price === s.business.id} bestLabel="Billigst">
+            <Value key={s.business.id} best={winners.price === s.business.id} bestLabel={t('Billigst')}>
               <AppText variant="subhead" weight="600">
-                {formatHourly(s.business.pricing.hourlyMin, s.business.pricing.hourlyMax).replace(' kr./time', '')}
+                {formatPriceRange(
+                  s.business.pricing.hourlyMin,
+                  s.business.pricing.hourlyMax,
+                  'opgave',
+                  currencyOf(s.business),
+                )}
               </AppText>
               <AppText variant="caption" tone="textSecondary">
-                kr./time
+                {t('pr. time')}
               </AppText>
             </Value>
           ))}
         </Row>
         {sharedJob?.job ? (
-          <Row label={sharedJob.label}>
+          <Row
+            label={
+              getCategory(items[0].business.categories[0])?.jobs.find((j) => j.id === sharedJob.job)?.name ??
+              sharedJob.label
+            }>
             {items.map((s) => {
               const example = s.business.pricing.examples.find((e) => e.job === sharedJob.job);
               return (
                 <Value key={s.business.id}>
                   <AppText variant="subhead" weight="600">
-                    {example ? formatPriceRange(example.min, example.max, example.unit) : '–'}
+                    {example ? formatPriceRange(example.min, example.max, example.unit, currencyOf(s.business)) : '–'}
                   </AppText>
                 </Value>
               );
             })}
           </Row>
         ) : null}
-        <Row label="Kørsel/opstart">
+        <Row label={t('Kørsel/opstart')}>
           {items.map((s) => (
             <Value key={s.business.id}>
               <AppText variant="subhead">
-                {s.business.pricing.calloutFee ? formatPrice(s.business.pricing.calloutFee) : 'Ingen'}
+                {s.business.pricing.calloutFee
+                  ? formatPrice(s.business.pricing.calloutFee, currencyOf(s.business))
+                  : t('Ingen')}
               </AppText>
             </Value>
           ))}
         </Row>
-        <Row label="Afstand">
+        <Row label={t('Afstand')}>
           {items.map((s) => (
-            <Value key={s.business.id} best={winners.distance === s.business.id} bestLabel="Nærmest">
+            <Value key={s.business.id} best={winners.distance === s.business.id} bestLabel={t('Nærmest')}>
               <AppText variant="subhead" weight="600">
                 {formatDistance(s.distanceKm)}
               </AppText>
@@ -158,9 +173,9 @@ export default function CompareScreen() {
           ))}
         </Row>
         {TRUSTPILOT_ENABLED ? (
-          <Row label="Trustpilot">
+          <Row label={t('Trustpilot')}>
             {items.map((s) => (
-              <Value key={s.business.id} best={winners.rating === s.business.id} bestLabel="Bedst anmeldt">
+              <Value key={s.business.id} best={winners.rating === s.business.id} bestLabel={t('Bedst anmeldt')}>
                 {s.business.trustpilot ? (
                   <>
                     <AppText variant="subhead" weight="600">
@@ -168,25 +183,25 @@ export default function CompareScreen() {
                     </AppText>
                     <Stars value={s.business.trustpilot.score} size={11} />
                     <AppText variant="caption" tone="textSecondary">
-                      {formatNumber(s.business.trustpilot.reviews)} anm.
+                      {t('{number} anm.', { number: formatNumber(s.business.trustpilot.reviews) })}
                     </AppText>
                   </>
                 ) : (
                   <AppText variant="footnote" tone="textSecondary">
-                    Ingen profil
+                    {t('Ingen profil')}
                   </AppText>
                 )}
               </Value>
             ))}
           </Row>
         ) : null}
-        <Row label="Åben nu">
+        <Row label={t('Åben nu')}>
           {items.map((s) => {
             const status = getOpenStatus(s.business.hours);
             return (
               <Value key={s.business.id}>
                 <AppText variant="footnote" tone={status.open ? 'success' : 'textSecondary'} weight="600">
-                  {status.open ? 'Ja' : 'Nej'}
+                  {status.open ? t('Ja') : t('Nej')}
                 </AppText>
                 <AppText variant="caption" tone="textSecondary">
                   {status.label}
@@ -195,24 +210,26 @@ export default function CompareScreen() {
             );
           })}
         </Row>
-        <Row label="Døgnvagt">
+        <Row label={t('Døgnvagt')}>
           {items.map((s) => (
             <Value key={s.business.id}>
               <YesNo value={s.business.emergency} />
             </Value>
           ))}
         </Row>
-        <Row label="Autorisation">
+        <Row label={t('Autorisation')}>
           {items.map((s) => (
             <Value key={s.business.id}>
               <YesNo value={s.business.authorizations.length > 0} />
             </Value>
           ))}
         </Row>
-        <Row label="Svartid">
+        <Row label={t('Svartid')}>
           {items.map((s) => (
             <Value key={s.business.id}>
-              <AppText variant="caption">{s.business.responseTime?.replace('Svarer typisk ', '') ?? '–'}</AppText>
+              <AppText variant="caption">
+                {businessText(s.business).responseTime?.replace(t('Svarer typisk '), '') ?? '–'}
+              </AppText>
             </Value>
           ))}
         </Row>
@@ -221,27 +238,29 @@ export default function CompareScreen() {
           {items.map(({ business }) => (
             <View key={business.id} style={styles.actionCell}>
               <Button
-                title="Ring"
+                title={t('Ring')}
                 icon="phone"
                 size="small"
                 onPress={() => callBusiness(business)}
                 block
-                accessibilityLabel={`Ring til ${business.name}`}
+                accessibilityLabel={t('Ring til {name}', { name: business.name })}
               />
               <Button
-                title="Se side"
+                title={t('Se side')}
                 variant="secondary"
                 size="small"
                 block
                 onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
-                accessibilityLabel={`Se ${business.name}`}
+                accessibilityLabel={t('Se {name}', { name: business.name })}
               />
             </View>
           ))}
         </View>
 
         <AppText variant="caption" tone="textSecondary" align="center" style={styles.note}>
-          Priserne er vejledende og oplyst af virksomhederne. Afstand er i luftlinje fra {state.location.label}.
+          {t('Priserne er vejledende og oplyst af virksomhederne. Afstand er i luftlinje fra {label}.', {
+            label: state.location.label,
+          })}
         </AppText>
       </ScrollView>
     </View>
@@ -297,7 +316,7 @@ function YesNo({ value }: { value: boolean }) {
         weight="bold"
       />
       <AppText variant="footnote" tone={value ? 'success' : 'textSecondary'}>
-        {value ? 'Ja' : 'Nej'}
+        {value ? t('Ja') : t('Nej')}
       </AppText>
     </View>
   );

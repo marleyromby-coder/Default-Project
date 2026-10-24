@@ -8,6 +8,7 @@ import { AppText } from '@/components/ui/text';
 import { Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import type { Category } from '@/lib/types';
+import { t } from '@/i18n';
 
 interface Props {
   category: Category;
@@ -16,11 +17,15 @@ interface Props {
 
 export function CategoryTile({ category, nearby }: Props) {
   const colors = useTheme();
-  const count = nearby === 1 ? '1 i nærheden' : `${nearby} i nærheden`;
+  const count = nearby === 1 ? t('1 i nærheden') : t('{nearby} i nærheden', { nearby });
   return (
     <Tappable
       onPress={() => router.push({ pathname: '/kategori/[id]', params: { id: category.id } })}
-      accessibilityLabel={`${category.plural}. ${category.description}. ${count}`}
+      accessibilityLabel={t('{plural}. {description}. {count}', {
+        plural: category.plural,
+        description: category.description,
+        count,
+      })}
       pressedOpacity={0.8}
       style={styles.tile}>
       <Photo photo={category.photo} category={category.id} width={600} scrim style={StyleSheet.absoluteFill} alt="" />

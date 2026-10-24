@@ -1,4 +1,5 @@
 import { CATEGORIES } from '@/data/categories';
+import { pick, t } from '@/i18n';
 
 import type { ScoredBusiness } from './ranking';
 import { SYNONYMS } from './search';
@@ -48,6 +49,31 @@ const PROBLEM_PHRASES: {
   { phrase: 'nedløbsrør', category: 'tagdaekker', job: 'tagrender' },
   { phrase: 'revner i muren', category: 'murer' },
   { phrase: 'male', category: 'maler' },
+  // English
+  { phrase: 'not draining', category: 'vvs', job: 'stoppet-afloeb' },
+  { phrase: "won't drain", category: 'vvs', job: 'stoppet-afloeb' },
+  { phrase: 'smells', category: 'vvs', job: 'stoppet-afloeb' },
+  { phrase: 'dripping', category: 'vvs', job: 'blandingsbatteri' },
+  { phrase: 'running toilet', category: 'vvs', job: 'skift-toilet' },
+  { phrase: 'no hot water', category: 'vvs', job: 'service-fyr' },
+  { phrase: 'radiator is cold', category: 'vvs', job: 'radiator' },
+  { phrase: 'flooded', category: 'vvs', job: 'vandskade' },
+  { phrase: 'burst pipe', category: 'vvs', job: 'vandskade' },
+  { phrase: 'power is out', category: 'elektriker', job: 'fejlsoegning' },
+  { phrase: 'no power', category: 'elektriker', job: 'fejlsoegning' },
+  { phrase: 'keeps tripping', category: 'elektriker', job: 'fejlsoegning' },
+  { phrase: 'engine light', category: 'mekaniker', job: 'fejlkode' },
+  { phrase: 'warning light', category: 'mekaniker', job: 'fejlkode' },
+  { phrase: 'brakes squeal', category: 'mekaniker', job: 'bremser' },
+  { phrase: 'squeaky brakes', category: 'mekaniker', job: 'bremser' },
+  { phrase: 'change tyres', category: 'mekaniker', job: 'hjulskift' },
+  { phrase: 'change tires', category: 'mekaniker', job: 'hjulskift' },
+  { phrase: 'locked myself out', category: 'laasesmed', job: 'doeroplukning' },
+  { phrase: 'lost my keys', category: 'laasesmed', job: 'doeroplukning' },
+  { phrase: 'key broke', category: 'laasesmed', job: 'cylinder' },
+  { phrase: 'water through the ceiling', category: 'tagdaekker', job: 'tagreparation' },
+  { phrase: 'cracks in the wall', category: 'murer' },
+  { phrase: 'paint', category: 'maler' },
 ];
 
 const URGENT_WORDS = [
@@ -58,12 +84,20 @@ const URGENT_WORDS = [
   'i nat',
   'i aften',
   'oversvømmet',
+  'urgent',
+  'emergency',
+  'asap',
+  'right now',
+  'tonight',
+  'immediately',
+  'flooding',
+  'locked out',
   'sprunget',
   'låst ude',
 ];
 
 /** Endings that may follow a short keyword: "dør" → "døren", "syn" → "synet". */
-const ENDINGS = ['', 'e', 'en', 'et', 'er', 'ere', 'erne', 'ene', 's', 'ens', 'ets', 'n', 't'];
+const ENDINGS = ['', 'e', 'en', 'et', 'er', 'ere', 'erne', 'ene', 's', 'ens', 'ets', 'n', 't', 'ed', 'ing'];
 
 const WEIGHT = {
   categoryWord: 1,
@@ -106,7 +140,7 @@ const INDEX: IndexEntry[] = (() => {
 
 /**
  * Does a word in the text match a keyword? Short keywords must match the whole
- * word (plus a Danish ending), so "el" does not match "elsker" and "syn" not
+ * word (plus a Danish or English ending), so "el" does not match "elsker" and "syn" not
  * "synes". Longer keywords also match inside compounds ("køkkenvasken").
  */
 export function wordMatches(word: string, keyword: string): boolean {
@@ -133,28 +167,39 @@ function phraseMatches(words: string[], phrase: string[]): boolean {
   return false;
 }
 
-/** Reads a Danish amount: "3.500", "3500", "3 500" or "3,5" with "k"/"tusind". */
+/**
+ * Reads an amount: "3.500" or "3 500" (Danish), "3,500" (English), "3500",
+ * "3,5"/"3.5" with "k", "tusind" or "thousand".
+ */
 function parseAmount(raw: string, thousands?: string): number | undefined {
-  const value = Number(raw.replace(/[.\s](?=\d{3}\b)/g, '').replace(',', '.'));
+  let text = raw.replace(/\s/g, '');
+  if (/^\d{1,3}([.,]\d{3})+$/.test(text)) text = text.replace(/[.,]/g, '');
+  else text = text.replace(',', '.');
+  const value = Number(text);
   if (!Number.isFinite(value) || value <= 0) return undefined;
   return Math.round(thousands ? value * 1000 : value);
 }
 
-const AMOUNT = String.raw`(\d{1,3}(?:[.\s]\d{3})+|\d+(?:,\d+)?)\s*(k\b|tusind)?`;
-/** "budget 5.000", "max 3500", "højst 8k" – but not "under 25 m²". */
+const AMOUNT = String.raw`(\d{1,3}(?:[.,\s]\d{3})+|\d+(?:[.,]\d+)?)\s*(k\b|tusind\b|thousand\b|grand\b)?`;
+const NOT_A_PRICE = String.raw`(?!\d|[.,]\d|\s*(?:m2|m²|kvm|sqm|sq|km|mi\b|miles|stk|timer|hours|min|år|years|dage|days))`;
+/** "budget 5.000", "max 3500", "højst 8k", "up to 400" – but not "under 25 m²". */
 const BUDGET_BEFORE = new RegExp(
-  String.raw`(?:budget(?:tet)?|max(?:imum)?|maks|højst|under|op til|råd til)\s*(?:er\s+|på\s+|:\s*)?${AMOUNT}(?!\d|[.,]\d|\s*(?:m2|m²|kvm|km|stk|timer|år|dage))`,
+  String.raw`(?:budget(?:tet)?|max(?:imum)?|maks|højst|under|op til|råd til|up to|no more than|afford)\s*(?:er\s+|på\s+|is\s+|of\s+|:\s*)?(?:[£$€]\s?)?${AMOUNT}${NOT_A_PRICE}`,
 );
-/** "5.000 kr.", "2.000,-", "8000 kroner". */
-const BUDGET_AFTER = new RegExp(String.raw`${AMOUNT}\s*(?:kr\b|kr\.|kroner|dkk|,-)`);
+/** "£500", "$1,200", "€300". */
+const BUDGET_SYMBOL = new RegExp(String.raw`[£$€]\s?${AMOUNT}`);
+/** "5.000 kr.", "2.000,-", "8000 kroner", "300 euros", "500 pounds". */
+const BUDGET_AFTER = new RegExp(
+  String.raw`${AMOUNT}\s*(?:kr\b|kr\.|kroner|dkk|sek|nok|eur\b|euros?|€|gbp|pounds|usd|dollars|,-)`,
+);
 
-/** Finds a budget like "budget 5.000 kr.", "max 3500", "under 2.000,-" or "8k". */
+/** Finds a budget like "budget 5.000 kr.", "max 3500", "under £200" or "8k". */
 export function parseBudget(text: string): number | undefined {
   const t = text.toLowerCase();
-  for (const pattern of [BUDGET_BEFORE, BUDGET_AFTER]) {
+  for (const pattern of [BUDGET_BEFORE, BUDGET_SYMBOL, BUDGET_AFTER]) {
     const match = t.match(pattern);
     const amount = match ? parseAmount(match[1], match[2]) : undefined;
-    if (amount !== undefined && amount >= 100) return amount;
+    if (amount !== undefined && amount >= 20) return amount;
   }
   return undefined;
 }
@@ -171,18 +216,27 @@ const NUMBER_WORDS: Record<string, number> = {
   seks: 6,
   syv: 7,
   otte: 8,
+  one: 1,
+  a: 1,
+  two: 2,
+  three: 3,
+  four: 4,
+  five: 5,
+  six: 6,
+  seven: 7,
+  eight: 8,
 };
 
-/** Finds "25 m²", "25 kvm" or "3 vinduer" for jobs priced per m² or per piece. */
+/** Finds "25 m²", "25 kvm", "25 sqm" or "3 vinduer"/"three windows" for jobs priced per m² or per piece. */
 export function parseQuantity(text: string, unit: JobType['unit']): number | undefined {
   const t = text.toLowerCase();
   if (unit === 'm2') {
-    const match = t.match(/(\d+(?:[.,]\d+)?)\s*(?:m2|m²|kvm|kvadratmeter|kvadrat)/);
+    const match = t.match(/(\d+(?:[.,]\d+)?)\s*(?:m2|m²|kvm|kvadratmeter|kvadrat|sqm|sq\.? ?m|square met)/);
     return match ? Math.round(Number(match[1].replace(',', '.'))) || undefined : undefined;
   }
   if (unit === 'stk') {
     const match = t.match(
-      /(?:^|\s)(\d+|en|et|én|ét|to|tre|fire|fem|seks|syv|otte)\s+(?:nye?t?\s+)?(?:stk|vinduer|vindue|døre|dør)/,
+      /(?:^|\s)(\d+|en|et|én|ét|to|tre|fire|fem|seks|syv|otte|one|a|two|three|four|five|six|seven|eight)\s+(?:nye?t?\s+|new\s+)?(?:stk|vinduer|vindue|døre|dør|windows|window|doors|door)/,
     );
     if (!match) return undefined;
     return NUMBER_WORDS[match[1]] ?? (Number(match[1]) || undefined);
@@ -343,17 +397,27 @@ export function matchBudget(input: BudgetMatchInput, scored: ScoredBusiness[]): 
 }
 
 export const FIT_LABELS: Record<BudgetFit, string> = {
-  within: 'Inden for budget',
-  maybe: 'Kan passe',
-  close: 'Tæt på budget',
-  unknown: 'Pris på forespørgsel',
-  over: 'Over budget',
+  within: t('Inden for budget'),
+  maybe: t('Kan passe'),
+  close: t('Tæt på budget'),
+  unknown: t('Pris på forespørgsel'),
+  over: t('Over budget'),
 };
 
-export const PROBLEM_EXAMPLES = [
-  'Køkkenvasken er stoppet, og vandet løber ikke ud',
-  'Ladestander til elbilen – budget 8.000 kr.',
-  'Bilen skal have stort service, max 3.500 kr.',
-  'Jeg er låst ude, det haster',
-  'Nyt trægulv i stuen, ca. 25 m²',
-];
+/** Examples shown on "Beskriv dit problem", in the app's language. */
+export const PROBLEM_EXAMPLES = pick({
+  da: [
+    'Køkkenvasken er stoppet, og vandet løber ikke ud',
+    'Ladestander til elbilen – budget 8.000 kr.',
+    'Bilen skal have stort service, max 3.500 kr.',
+    'Jeg er låst ude, det haster',
+    'Nyt trægulv i stuen, ca. 25 m²',
+  ],
+  en: [
+    "The kitchen sink is blocked and won't drain",
+    'EV charger for my car – budget 1,200',
+    'My car needs a full service, max 450',
+    "I'm locked out, it's urgent",
+    'New wooden floor in the living room, about 25 m²',
+  ],
+});

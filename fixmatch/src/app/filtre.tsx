@@ -15,12 +15,13 @@ import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { DEFAULT_FILTERS, DISTANCE_OPTIONS, RATING_OPTIONS } from '@/lib/filters';
 import type { Filters } from '@/lib/types';
 import { useApp } from '@/state/app-state';
+import { t } from '@/i18n';
 
 const PRICE_OPTIONS: { value: Filters['priceLevel']; label: string }[] = [
-  { value: null, label: 'Alle' },
-  { value: 1, label: 'Lavt' },
-  { value: 2, label: 'Middel' },
-  { value: 3, label: 'Højt' },
+  { value: null, label: t('Alle') },
+  { value: 1, label: t('Lavt') },
+  { value: 2, label: t('Middel') },
+  { value: 3, label: t('Højt') },
 ];
 
 export default function FiltersScreen() {
@@ -41,7 +42,7 @@ export default function FiltersScreen() {
   return (
     <View style={[styles.flex, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Group title="Maks. afstand">
+        <Group title={t('Maks. afstand')}>
           <View style={styles.options}>
             {DISTANCE_OPTIONS.map((o) => (
               <Chip
@@ -54,7 +55,7 @@ export default function FiltersScreen() {
           </View>
         </Group>
         {TRUSTPILOT_ENABLED ? (
-          <Group title="Mindst TrustScore">
+          <Group title={t('Mindst TrustScore')}>
             <View style={styles.options}>
               {RATING_OPTIONS.map((o) => (
                 <Chip
@@ -67,7 +68,7 @@ export default function FiltersScreen() {
             </View>
           </Group>
         ) : null}
-        <Group title="Prisniveau">
+        <Group title={t('Prisniveau')}>
           <View style={styles.options}>
             {PRICE_OPTIONS.map((o) => (
               <Chip
@@ -79,27 +80,27 @@ export default function FiltersScreen() {
             ))}
           </View>
           <AppText variant="caption" tone="textSecondary">
-            Sammenlignet med den typiske timepris i faget.
+            {t('Sammenlignet med den typiske timepris i faget.')}
           </AppText>
         </Group>
         <View style={[styles.switches, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <SwitchRow
-            label="Åben nu"
-            hint="Virksomheder med døgnvagt tæller med"
+            label={t('Åben nu')}
+            hint={t('Virksomheder med døgnvagt tæller med')}
             value={draft.openNow}
             onChange={(v) => update({ openNow: v })}
           />
           <Divider inset={Spacing.lg} />
           <SwitchRow
-            label="Døgnvagt"
-            hint="Kan ringes op uden for åbningstid"
+            label={t('Døgnvagt')}
+            hint={t('Kan ringes op uden for åbningstid')}
             value={draft.emergency}
             onChange={(v) => update({ emergency: v })}
           />
           <Divider inset={Spacing.lg} />
           <SwitchRow
-            label="Kun autoriserede"
-            hint="Autorisation fra Sikkerhedsstyrelsen"
+            label={t('Kun autoriserede')}
+            hint={t('Fx autoriseret til el, VVS eller gas')}
             value={draft.authorizedOnly}
             onChange={(v) => update({ authorizedOnly: v })}
           />
@@ -107,7 +108,7 @@ export default function FiltersScreen() {
             <>
               <Divider inset={Spacing.lg} />
               <SwitchRow
-                label="Kun med Trustpilot-profil"
+                label={t('Kun med Trustpilot-profil')}
                 value={draft.trustpilotOnly}
                 onChange={(v) => update({ trustpilotOnly: v })}
               />
@@ -124,8 +125,12 @@ export default function FiltersScreen() {
             backgroundColor: colors.surface,
           },
         ]}>
-        <Button title="Nulstil" variant="secondary" onPress={() => setDraft(DEFAULT_FILTERS)} />
-        <Button title={`Vis ${preview.items.length} resultater`} onPress={apply} style={styles.flex} />
+        <Button title={t('Nulstil')} variant="secondary" onPress={() => setDraft(DEFAULT_FILTERS)} />
+        <Button
+          title={t('Vis {count} resultater', { count: preview.items.length })}
+          onPress={apply}
+          style={styles.flex}
+        />
       </View>
     </View>
   );

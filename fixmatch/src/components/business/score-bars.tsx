@@ -5,11 +5,12 @@ import { Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDecimal } from '@/lib/format';
 import type { ScoreParts, Weights } from '@/lib/ranking';
+import { t } from '@/i18n';
 
 const ROWS: { key: keyof ScoreParts; label: string }[] = [
-  { key: 'price', label: 'Pris' },
-  { key: 'distance', label: 'Afstand' },
-  { key: 'reviews', label: 'Anmeldelser' },
+  { key: 'price', label: t('Pris') },
+  { key: 'distance', label: t('Afstand') },
+  { key: 'reviews', label: t('Anmeldelser') },
 ];
 
 /** Shows each part score out of 10 and the user's weight for it. */
@@ -24,7 +25,11 @@ export function ScoreBars({ parts, weights }: { parts: ScoreParts; weights: Weig
             key={key}
             style={styles.row}
             accessible
-            accessibilityLabel={`${label}: ${formatDecimal(value * 10)} ud af 10, vægt ${Math.round(weights[key] * 100)} procent`}>
+            accessibilityLabel={t('{label}: {decimal} ud af 10, vægt {value} procent', {
+              label,
+              decimal: formatDecimal(value * 10),
+              value: Math.round(weights[key] * 100),
+            })}>
             <AppText variant="subhead" style={styles.label}>
               {label}
             </AppText>

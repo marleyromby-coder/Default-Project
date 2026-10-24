@@ -1,7 +1,9 @@
+import { getLanguage, t } from '@/i18n';
+
 import type { WeekHours } from './types';
 
-export const WEEKDAYS = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag'];
-export const WEEKDAYS_SHORT = ['man', 'tir', 'ons', 'tor', 'fre', 'lør', 'søn'];
+export const WEEKDAYS = [t('Mandag'), t('Tirsdag'), t('Onsdag'), t('Torsdag'), t('Fredag'), t('Lørdag'), t('Søndag')];
+export const WEEKDAYS_SHORT = [t('man'), t('tir'), t('ons'), t('tor'), t('fre'), t('lør'), t('søn')];
 
 /** JavaScript's Sunday-first day index to our Monday-first index. */
 export function mondayIndex(date: Date): number {
@@ -19,10 +21,10 @@ export interface OpenStatus {
   label: string;
 }
 
-/** Danish clock style: "07:00" → "7.00". */
+/** Danish clock style "07:00" → "7.00"; English "07:00" → "7:00". */
 export function formatTime(time: string): string {
   const [hours, minutes] = time.split(':');
-  return `${Number(hours)}.${minutes ?? '00'}`;
+  return `${Number(hours)}${getLanguage() === 'da' ? '.' : ':'}${minutes ?? '00'}`;
 }
 
 export function getOpenStatus(hours: WeekHours, now: Date = new Date()): OpenStatus {
@@ -33,10 +35,10 @@ export function getOpenStatus(hours: WeekHours, now: Date = new Date()): OpenSta
   if (todays) {
     const [from, to] = todays;
     if (minutesNow >= toMinutes(from) && minutesNow < toMinutes(to)) {
-      return { open: true, label: `Åben til ${formatTime(to)}` };
+      return { open: true, label: t('Åben til {time}', { time: formatTime(to) }) };
     }
     if (minutesNow < toMinutes(from)) {
-      return { open: false, label: `Åbner kl. ${formatTime(from)}` };
+      return { open: false, label: t('Åbner kl. {time}', { time: formatTime(from) }) };
     }
   }
 
@@ -44,12 +46,12 @@ export function getOpenStatus(hours: WeekHours, now: Date = new Date()): OpenSta
     const day = (today + offset) % 7;
     const slot = hours[day];
     if (slot) {
-      const when = offset === 1 ? 'i morgen' : WEEKDAYS_SHORT[day] + '.';
-      return { open: false, label: `Åbner ${when} kl. ${formatTime(slot[0])}` };
+      const when = offset === 1 ? t('i morgen') : WEEKDAYS_SHORT[day] + (getLanguage() === 'da' ? '.' : '');
+      return { open: false, label: t('Åbner {when} kl. {time}', { when, time: formatTime(slot[0]) }) };
     }
   }
 
-  return { open: false, label: 'Lukket' };
+  return { open: false, label: t('Lukket') };
 }
 
 export function isOpenNow(hours: WeekHours, now: Date = new Date()): boolean {
@@ -73,7 +75,7 @@ export function summarizeHours(hours: WeekHours): { days: string; time: string }
     const first = WEEKDAYS_SHORT[start];
     const label = start === end ? first : `${first}–${WEEKDAYS_SHORT[end]}`;
     const days = label.charAt(0).toUpperCase() + label.slice(1);
-    if (key === 'closed') return { days, time: 'Lukket' };
+    if (key === 'closed') return { days, time: t('Lukket') };
     const [from, to] = key.split('-');
     return { days, time: `${formatTime(from)}–${formatTime(to)}` };
   });

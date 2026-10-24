@@ -22,13 +22,16 @@ import { formatDistance, formatPriceRange } from '@/lib/format';
 import { summarizeJobPrice } from '@/lib/prices';
 import { weightsFromPriorities } from '@/lib/ranking';
 import type { SortMode } from '@/lib/types';
-import { MAX_COMPARE, useApp } from '@/state/app-state';
+import { t } from '@/i18n';
+import { countryOf } from '@/lib/business-text';
+import { taxNote } from '@/lib/markets';
+import { MAX_COMPARE, useApp, useMarket } from '@/state/app-state';
 
 const ALL_SORT_OPTIONS: { value: SortMode; label: string; accessibilityLabel: string }[] = [
-  { value: 'match', label: 'Match', accessibilityLabel: 'Sortér efter bedste match' },
-  { value: 'price', label: 'Pris', accessibilityLabel: 'Sortér efter laveste pris' },
-  { value: 'distance', label: 'Afstand', accessibilityLabel: 'Sortér efter korteste afstand' },
-  { value: 'rating', label: 'Anmeldelser', accessibilityLabel: 'Sortér efter bedste anmeldelser' },
+  { value: 'match', label: 'Match', accessibilityLabel: t('Sortér efter bedste match') },
+  { value: 'price', label: t('Pris'), accessibilityLabel: t('Sortér efter laveste pris') },
+  { value: 'distance', label: t('Afstand'), accessibilityLabel: t('Sortér efter korteste afstand') },
+  { value: 'rating', label: t('Anmeldelser'), accessibilityLabel: t('Sortér efter bedste anmeldelser') },
 ];
 /** "Elektrikere" → "elektrikere", but "VVS'ere" keeps its capitals. */
 const lowerTrade = (word: string) => (word.startsWith('VVS') ? word : word.toLowerCase());
@@ -41,6 +44,7 @@ export default function CategoryScreen() {
   const category = getCategory(id);
   const job = category?.jobs.find((j) => j.id === jobId);
   const { state, setFilters } = useApp();
+  const { country, market } = useMarket();
   const [sort, setSort] = useState<SortMode>('match');
   const filters = state.filters;
 
@@ -58,27 +62,30 @@ export default function CategoryScreen() {
       job && category
         ? summarizeJobPrice(
             job,
-            state.businesses.filter((b) => b.categories.includes(category.id)),
+            state.businesses.filter((b) => countryOf(b) === country && b.categories.includes(category.id)),
+            market,
           )
         : null,
-    [job, category, state.businesses],
+    [job, category, state.businesses, country, market],
   );
 
   if (!category) {
     return (
       <EmptyState
         icon="help"
-        title="Faget findes ikke"
-        message="Linket virker ikke længere."
-        action={<Button title="Til forsiden" onPress={() => router.replace('/')} />}
+        title={t('Faget findes ikke')}
+        message={t('Linket virker ikke længere.')}
+        action={<Button title={t('Til forsiden')} onPress={() => router.replace('/')} />}
       />
     );
   }
 
+  const tradeWord = lowerTrade(results.items.length === 1 ? category.name : category.plural);
+
   const onCompareLimit = () =>
     showDialog(
-      'Højst 3 ad gangen',
-      `Du kan sammenligne op til ${MAX_COMPARE} virksomheder. Fjern en for at vælge en ny.`,
+      t('Højst 3 ad gangen'),
+      t('Du kan sammenligne op til {MAX_COMPARE} virksomheder. Fjern en for at vælge en ny.', { MAX_COMPARE }),
     );
 
   const toggle = (key: 'openNow' | 'emergency' | 'authorizedOnly') => setFilters({ ...filters, [key]: !filters[key] });
@@ -87,18 +94,23 @@ export default function CategoryScreen() {
     <View style={styles.header}>
       <View style={styles.summaryRow}>
         <AppText variant="subhead" tone="textSecondary" style={styles.flex}>
-          {results.items.length} {lowerTrade(results.items.length === 1 ? category.name : category.plural)}{' '}
-          {filters.maxDistanceKm === null ? 'i hele landet' : `inden for ${filters.maxDistanceKm} km`} af{' '}
-          {state.location.label}
+          {filters.maxDistanceKm === null
+            ? t('{count} {trade} i hele landet', { count: results.items.length, trade: tradeWord })
+            : t('{count} {trade} inden for {distance} af {place}', {
+                count: results.items.length,
+                trade: tradeWord,
+                distance: formatDistance(filters.maxDistanceKm),
+                place: state.location.label,
+              })}
         </AppText>
         <Tappable
           onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'rangering' } })}
           accessibilityRole="link"
-          accessibilityLabel="Sådan rangerer vi"
+          accessibilityLabel={t('Sådan rangerer vi')}
           style={styles.inlineLink}>
           <Icon name="info" size={14} color={colors.brandText} weight="semibold" />
           <AppText variant="footnote" tone="brandText" weight="600">
-            Sådan rangerer vi
+            {t('Sådan rangerer vi')}
           </AppText>
         </Tappable>
       </View>
@@ -109,27 +121,29 @@ export default function CategoryScreen() {
             {job.name}
           </AppText>
           <AppText variant="footnote" tone="textSecondary">
-            Typisk pris her: {formatPriceRange(jobPrice.min, jobPrice.max, jobPrice.unit)} inkl. moms. Vejledende – bed
-            om et skriftligt tilbud.
+            {t('Typisk pris her: {priceRange} {tax}. Vejledende – bed om et skriftligt tilbud.', {
+              priceRange: formatPriceRange(jobPrice.min, jobPrice.max, jobPrice.unit, jobPrice.currency),
+              tax: taxNote(market),
+            })}
           </AppText>
         </View>
       ) : null}
 
-      <Segmented options={SORT_OPTIONS} value={sort} onChange={setSort} accessibilityLabel="Sortering" />
+      <Segmented options={SORT_OPTIONS} value={sort} onChange={setSort} accessibilityLabel={t('Sortering')} />
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
         <Chip
-          label="Filtre"
+          label={t('Filtre')}
           icon="filter"
           count={filterCount}
           onPress={() => router.push({ pathname: '/filtre', params: { kategori: category.id } })}
-          accessibilityLabel={filterCount ? `Filtre, ${filterCount} aktive` : 'Filtre'}
+          accessibilityLabel={filterCount ? t('Filtre, {count} aktive', { count: filterCount }) : t('Filtre')}
         />
-        <Chip label="Åben nu" selected={filters.openNow} onPress={() => toggle('openNow')} />
-        <Chip label="Døgnvagt" icon="bolt" selected={filters.emergency} onPress={() => toggle('emergency')} />
+        <Chip label={t('Åben nu')} selected={filters.openNow} onPress={() => toggle('openNow')} />
+        <Chip label={t('Døgnvagt')} icon="bolt" selected={filters.emergency} onPress={() => toggle('emergency')} />
         {category.authorization ? (
           <Chip
-            label="Autoriseret"
+            label={t('Autoriseret')}
             icon="shield"
             selected={filters.authorizedOnly}
             onPress={() => toggle('authorizedOnly')}
@@ -137,7 +151,7 @@ export default function CategoryScreen() {
         ) : null}
         {TRUSTPILOT_ENABLED ? (
           <Chip
-            label="4+ på Trustpilot"
+            label={t('4+ på Trustpilot')}
             selected={filters.minRating === 4}
             onPress={() => setFilters({ ...filters, minRating: filters.minRating === 4 ? null : 4 })}
           />
@@ -146,25 +160,39 @@ export default function CategoryScreen() {
 
       <Tappable
         onPress={() => router.push('/prioriteter')}
-        accessibilityLabel={`Din vægtning: pris ${Math.round(weights.price * 100)} procent, afstand ${Math.round(weights.distance * 100)} procent, anmeldelser ${Math.round(weights.reviews * 100)} procent. Juster`}
+        accessibilityLabel={t(
+          'Din vægtning: pris {price} procent, afstand {distance} procent, anmeldelser {reviews} procent. Juster',
+          {
+            price: Math.round(weights.price * 100),
+            distance: Math.round(weights.distance * 100),
+            reviews: Math.round(weights.reviews * 100),
+          },
+        )}
         style={[styles.weights, { backgroundColor: colors.surface, borderColor: colors.border }]}>
         <Icon name="sliders" size={16} color={colors.brand} weight="semibold" />
         <AppText variant="footnote" style={styles.flex} numberOfLines={2}>
           <AppText variant="footnote" weight="600">
-            Din vægtning:{' '}
+            {t('Din vægtning:')}{' '}
           </AppText>
-          Pris {Math.round(weights.price * 100)} % · Afstand {Math.round(weights.distance * 100)} % · Anmeldelser{' '}
-          {Math.round(weights.reviews * 100)} %
+          {t('Pris {price} % · Afstand {distance} % · Anmeldelser {reviews} %', {
+            price: Math.round(weights.price * 100),
+            distance: Math.round(weights.distance * 100),
+            reviews: Math.round(weights.reviews * 100),
+          })}
         </AppText>
         <AppText variant="footnote" tone="brandText" weight="700">
-          Justér
+          {t('Justér')}
         </AppText>
       </Tappable>
 
       {category.authorization ? (
         <AppText variant="caption" tone="textSecondary">
-          Arbejde med {category.authorization === 'el' ? 'el-installationer' : 'vand og afløb'} kræver ifølge loven en{' '}
-          {AUTHORIZATION_LABELS[category.authorization].toLowerCase()}.
+          {country === 'DK'
+            ? t('Arbejde med {work} kræver ifølge loven en {licence}.', {
+                work: category.authorization === 'el' ? t('el-installationer') : t('vand og afløb'),
+                licence: AUTHORIZATION_LABELS[category.authorization].toLowerCase(),
+              })
+            : t(market.licenceNote)}
         </AppText>
       ) : null}
     </View>
@@ -179,7 +207,7 @@ export default function CategoryScreen() {
             <IconButton
               icon="map"
               onPress={() => router.navigate({ pathname: '/kort', params: { kategori: category.id } })}
-              accessibilityLabel={`Vis ${category.plural.toLowerCase()} på kort`}
+              accessibilityLabel={t('Vis {plural} på kort', { plural: category.plural.toLowerCase() })}
               background="transparent"
               color={colors.brandText}
             />
@@ -201,16 +229,21 @@ export default function CategoryScreen() {
         ListEmptyComponent={
           <EmptyState
             icon="search"
-            title="Ingen resultater"
+            title={t('Ingen resultater')}
             message={
               results.nearestOutside
-                ? `Ingen matcher dine filtre. Den nærmeste ${category.name.toLowerCase()} ligger ${formatDistance(results.nearestOutside.distanceKm)} væk.`
-                : `Der er endnu ingen ${category.plural.toLowerCase()} på FixMatch her. Vi arbejder på at få flere med.`
+                ? t('Ingen matcher dine filtre. Den nærmeste {name} ligger {distance} væk.', {
+                    name: category.name.toLowerCase(),
+                    distance: formatDistance(results.nearestOutside.distanceKm),
+                  })
+                : t('Der er endnu ingen {plural} på FixMatch her. Vi arbejder på at få flere med.', {
+                    plural: category.plural.toLowerCase(),
+                  })
             }
             action={
               filterCount > 0 ? (
                 <Button
-                  title={results.nearestOutside ? 'Vis hele landet' : 'Nulstil filtre'}
+                  title={results.nearestOutside ? t('Vis hele landet') : t('Nulstil filtre')}
                   variant="tinted"
                   onPress={() =>
                     setFilters({

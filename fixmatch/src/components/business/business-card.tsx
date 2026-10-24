@@ -8,7 +8,8 @@ import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { MinTouchSize, Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
-import { formatDistance, formatHourly, formatPriceRange, formatRating } from '@/lib/format';
+import { businessText, currencyOf } from '@/lib/business-text';
+import { formatDistance, formatHourly, formatPriceRange, formatRating, speakablePrice } from '@/lib/format';
 import { getOpenStatus } from '@/lib/opening-hours';
 import type { ScoredBusiness } from '@/lib/ranking';
 import type { JobType } from '@/lib/types';
@@ -17,6 +18,7 @@ import { useApp } from '@/state/app-state';
 import { MatchBadge } from './match-badge';
 import { OpenStatus } from './open-status';
 import { TrustpilotRating } from './trustpilot-rating';
+import { t } from '@/i18n';
 
 interface Props {
   item: ScoredBusiness;
@@ -40,8 +42,8 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
   const priceText =
     priceOverride ??
     (jobPrice
-      ? `${job?.name}: ${formatPriceRange(jobPrice.min, jobPrice.max, jobPrice.unit)}`
-      : formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax));
+      ? `${job?.name}: ${formatPriceRange(jobPrice.min, jobPrice.max, jobPrice.unit, currencyOf(business))}`
+      : formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business)));
   const authorized = business.authorizations.length > 0;
   const open = getOpenStatus(business.hours);
 
@@ -50,18 +52,18 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
   };
 
   const summary = [
-    rank ? `Nummer ${rank}` : undefined,
+    rank ? t('Nummer {rank}', { rank }) : undefined,
     business.name,
     highlight?.label,
-    `match ${score} ud af 100`,
+    t('match {score} ud af 100', { score }),
     business.trustpilot
-      ? `TrustScore ${formatRating(business.trustpilot.score)} på Trustpilot`
-      : 'ingen Trustpilot-profil',
-    priceText.replace('–', ' til ').replace('kr./time', 'kroner i timen').replace('kr.', 'kroner'),
-    `${formatDistance(distanceKm)} væk`,
+      ? t('TrustScore {rating} på Trustpilot', { rating: formatRating(business.trustpilot.score) })
+      : t('ingen Trustpilot-profil'),
+    speakablePrice(priceText),
+    t('{distance} væk', { distance: formatDistance(distanceKm) }),
     open.label,
-    authorized ? 'autoriseret' : undefined,
-    business.demo ? 'eksempelvirksomhed' : undefined,
+    authorized ? t('autoriseret') : undefined,
+    business.demo ? t('eksempelvirksomhed') : undefined,
   ]
     .filter(Boolean)
     .join(', ');
@@ -72,10 +74,10 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
       <Tappable
         onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
         accessibilityLabel={summary}
-        accessibilityHint="Åbner virksomhedens side med telefonnummer og hjemmeside"
+        accessibilityHint={t('Åbner virksomhedens side med telefonnummer og hjemmeside')}
         accessibilityActions={[
-          { name: 'favorite', label: favorite ? 'Fjern fra gemte' : 'Gem' },
-          { name: 'compare', label: comparing ? 'Fjern fra sammenligning' : 'Sammenlign' },
+          { name: 'favorite', label: favorite ? t('Fjern fra gemte') : t('Gem') },
+          { name: 'compare', label: comparing ? t('Fjern fra sammenligning') : t('Sammenlign') },
         ]}
         onAccessibilityAction={(event) => {
           if (event.nativeEvent.actionName === 'favorite') toggleFavorite(business.id);
@@ -91,7 +93,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
                 {business.name}
               </AppText>
               <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
-                {business.tagline}
+                {businessText(business).tagline}
               </AppText>
             </View>
             <MatchBadge score={score} />
@@ -118,12 +120,14 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
       <View style={[styles.footer, { borderTopColor: colors.border }]}>
         <View style={styles.badges}>
           {highlight ? <Badge label={highlight.label} tone={highlight.tone} icon={highlight.icon} /> : null}
-          {authorized ? <Badge label="Autoriseret" tone="success" icon="shield" /> : null}
-          {business.emergency ? <Badge label="Døgnvagt" tone="warning" icon="bolt" /> : null}
+          {authorized ? <Badge label={t('Autoriseret')} tone="success" icon="shield" /> : null}
+          {business.emergency ? <Badge label={t('Døgnvagt')} tone="warning" icon="bolt" /> : null}
         </View>
         <Tappable
           onPress={() => toggleFavorite(business.id)}
-          accessibilityLabel={favorite ? `Fjern ${business.name} fra gemte` : `Gem ${business.name}`}
+          accessibilityLabel={
+            favorite ? t('Fjern {name} fra gemte', { name: business.name }) : t('Gem {name}', { name: business.name })
+          }
           accessibilityState={{ selected: favorite }}
           style={styles.footerButton}>
           <Icon
@@ -135,7 +139,11 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
         </Tappable>
         <Tappable
           onPress={onCompare}
-          accessibilityLabel={comparing ? `Fjern ${business.name} fra sammenligning` : `Sammenlign ${business.name}`}
+          accessibilityLabel={
+            comparing
+              ? t('Fjern {name} fra sammenligning', { name: business.name })
+              : t('Sammenlign {name}', { name: business.name })
+          }
           accessibilityState={{ selected: comparing }}
           style={[
             styles.compareButton,
@@ -152,7 +160,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
             weight="600"
             style={{ color: comparing ? colors.onBrand : colors.brandText }}
             maxFontSizeMultiplier={1.3}>
-            {comparing ? 'Valgt' : 'Sammenlign'}
+            {comparing ? t('Valgt') : t('Sammenlign')}
           </AppText>
         </Tappable>
       </View>

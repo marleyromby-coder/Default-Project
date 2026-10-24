@@ -7,6 +7,7 @@ import { useTheme } from '@/hooks/use-theme';
 import type { CategoryId } from '@/lib/types';
 
 import { Icon } from './icon';
+import { t } from '@/i18n';
 
 interface Props {
   photo: string;
@@ -42,7 +43,7 @@ export function Photo({ photo, category, style, width = 800, scrim, alt }: Props
         transition={250}
         cachePolicy="memory-disk"
         recyclingKey={photo}
-        accessibilityLabel={alt ?? photoAlt(photo, 'Foto')}
+        accessibilityLabel={alt ?? photoAlt(photo, t('Foto'))}
       />
       {scrim ? (
         <LinearGradient
@@ -58,5 +59,14 @@ export function Photo({ photo, category, style, width = 800, scrim, alt }: Props
 
 const styles = StyleSheet.create({
   container: { overflow: 'hidden' },
-  placeholderIcon: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center', opacity: 0.55 },
+  placeholderIcon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: 0.55,
+  },
 });

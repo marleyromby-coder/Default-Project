@@ -1,9 +1,17 @@
 import { CATEGORIES } from '@/data/categories';
 import demo from '@/data/demo-businesses.json';
-import { findPlaceByPostalCode, nearestPlace, PLACES, searchPlaces } from '@/data/places';
+import {
+  DANISH_PLACES,
+  INTERNATIONAL_PLACES,
+  PLACES,
+  findPlaceByPostalCode,
+  nearestPlace,
+  searchPlaces,
+} from '@/data/places';
 import { isPhotoKey } from '@/data/photos';
 import { isValidBusiness, parseBusinesses } from '@/lib/data-source';
 import { isInDenmark } from '@/lib/geo';
+import { MARKETS } from '@/lib/markets';
 import { summarizeJobPrice } from '@/lib/prices';
 import { search } from '@/lib/search';
 
@@ -62,20 +70,32 @@ describe('categories', () => {
   it('summarise job prices from the businesses', () => {
     const vvs = CATEGORIES.find((c) => c.id === 'vvs')!;
     const job = vvs.jobs[0];
-    const summary = summarizeJobPrice(job, businesses);
+    const danish = businesses.filter((b) => (b.country ?? 'DK') === 'DK');
+    const summary = summarizeJobPrice(job, danish, MARKETS.DK);
     expect(summary.count).toBeGreaterThan(0);
+    expect(summary.currency).toBe('DKK');
     expect(summary.max).toBeGreaterThanOrEqual(summary.min);
-    expect(summarizeJobPrice(job, []).count).toBe(0);
+    const fallback = summarizeJobPrice(job, [], MARKETS.GB);
+    expect(fallback.count).toBe(0);
+    expect(fallback.currency).toBe('GBP');
+    expect(fallback.max).toBeLessThan(job.max);
   });
 });
 
 describe('places', () => {
   it('covers Danish postal codes', () => {
-    expect(PLACES.length).toBeGreaterThan(550);
+    expect(DANISH_PLACES.length).toBeGreaterThan(550);
     expect(findPlaceByPostalCode('1310')?.name).toBe('København K');
     expect(findPlaceByPostalCode('8000')?.name).toBe('Aarhus C');
     expect(findPlaceByPostalCode('0000')).toBeUndefined();
-    for (const p of PLACES) expect(isInDenmark(p)).toBe(true);
+    for (const p of DANISH_PLACES) expect(isInDenmark(p)).toBe(true);
+  });
+
+  it('has cities abroad too', () => {
+    expect(PLACES.length).toBeGreaterThan(3000);
+    expect(searchPlaces('london')[0]).toMatchObject({ name: 'London', country: 'GB' });
+    expect(nearestPlace({ lat: 52.52, lon: 13.4 }).country).toBe('DE');
+    expect(INTERNATIONAL_PLACES.map((p) => p.country)).toEqual(['SE', 'NO', 'DE', 'GB', 'US']);
   });
 
   it('searches by name and number', () => {

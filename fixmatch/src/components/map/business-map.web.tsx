@@ -6,7 +6,7 @@ import { IconButton } from '@/components/ui/button';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { getCategory } from '@/data/categories';
-import outline from '@/data/denmark-outline.json';
+import outline from '@/data/map-outline.json';
 import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { clusterPoints, regionForPoints, type Region } from '@/lib/cluster';
 import { formatDistance } from '@/lib/format';
@@ -14,12 +14,23 @@ import type { Coords } from '@/lib/types';
 
 import { clusterSize, ClusterBubble, MapPin, OriginDot, PIN_MARGIN, PIN_SELECTED_SIZE, PIN_SIZE } from './map-pin';
 import type { BusinessMapProps } from './types';
+import { t } from '@/i18n';
 
-const RINGS = outline as [number, number][][];
+const RINGS = (outline as [number, number][][]).map((ring) => {
+  const lons = ring.map((p) => p[0]);
+  const lats = ring.map((p) => p[1]);
+  return {
+    ring,
+    minLon: Math.min(...lons),
+    maxLon: Math.max(...lons),
+    minLat: Math.min(...lats),
+    maxLat: Math.max(...lats),
+  };
+});
 
 /**
  * Web stand-in for Apple Maps (MapKit JS would need a key from the Apple
- * Developer account): Denmark's coastline from Natural Earth with the same
+ * Developer account): country outlines from Natural Earth with the same
  * pins and clusters as the app. Drag to pan, use the buttons to zoom.
  */
 export function BusinessMap({
@@ -106,18 +117,29 @@ export function BusinessMap({
 
   const paths = useMemo(() => {
     if (width === 0) return '';
-    return RINGS.map(
-      (ring) =>
-        ring
-          .map(([lon, lat], i) => {
-            const p = project({ lat, lon });
-            return `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`;
-          })
-          .join('') + 'Z',
-    ).join('');
+    // Only the countries that are on screen.
+    const lonSpan = visible.longitudeDelta / 2 + 1;
+    const latSpan = visible.latitudeDelta / 2 + 1;
+    return RINGS.filter(
+      (r) =>
+        r.maxLon >= visible.longitude - lonSpan &&
+        r.minLon <= visible.longitude + lonSpan &&
+        r.maxLat >= visible.latitude - latSpan &&
+        r.minLat <= visible.latitude + latSpan,
+    )
+      .map(
+        ({ ring }) =>
+          ring
+            .map(([lon, lat], i) => {
+              const p = project({ lat, lon });
+              return `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+            })
+            .join('') + 'Z',
+      )
+      .join('');
     // project depends on these values only
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [width, height, view, scale, cosLat, padding.top, padding.bottom]);
+  }, [width, height, view, visible, scale, cosLat, padding.top, padding.bottom]);
 
   const water = dark ? '#0F1B27' : '#CFE2F0';
   const land = dark ? '#1F2835' : '#F3F0E8';
@@ -157,7 +179,11 @@ export function BusinessMap({
                 <Tappable
                   key={business.id}
                   onPress={() => onSelect(business.id)}
-                  accessibilityLabel={`${business.name}, ${getCategory(business.categories[0])?.name}, ${formatDistance(distanceKm)} væk`}
+                  accessibilityLabel={t('{name}, {name2}, {distance} væk', {
+                    name: business.name,
+                    name2: getCategory(business.categories[0])?.name,
+                    distance: formatDistance(distanceKm),
+                  })}
                   style={[
                     styles.marker,
                     {
@@ -181,7 +207,7 @@ export function BusinessMap({
                   );
                   if (next) setView(next);
                 }}
-                accessibilityLabel={`${cluster.items.length} virksomheder. Zoom ind`}
+                accessibilityLabel={t('{count} virksomheder. Zoom ind', { count: cluster.items.length })}
                 style={[styles.marker, { left: p.x - half, top: p.y - half, zIndex: 2 }]}>
                 <ClusterBubble count={cluster.items.length} />
               </Tappable>
@@ -190,12 +216,22 @@ export function BusinessMap({
         : null}
 
       <View style={[styles.zoom, { bottom: padding.bottom + 8 }]}>
-        <IconButton icon="plus" onPress={() => zoom(0.5)} accessibilityLabel="Zoom ind" background={colors.surface} />
-        <IconButton icon="minus" onPress={() => zoom(2)} accessibilityLabel="Zoom ud" background={colors.surface} />
+        <IconButton
+          icon="plus"
+          onPress={() => zoom(0.5)}
+          accessibilityLabel={t('Zoom ind')}
+          background={colors.surface}
+        />
+        <IconButton
+          icon="minus"
+          onPress={() => zoom(2)}
+          accessibilityLabel={t('Zoom ud')}
+          background={colors.surface}
+        />
       </View>
       <View style={[styles.credit, { bottom: padding.bottom + 8 }]} pointerEvents="none">
         <AppText variant="caption2" tone="textSecondary">
-          Kystlinje: Natural Earth
+          {t('Kystlinje: Natural Earth')}
         </AppText>
       </View>
     </View>

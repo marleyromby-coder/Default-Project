@@ -7,6 +7,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { MaxContentWidth } from '@/constants/theme';
 import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { AppStateProvider, useApp } from '@/state/app-state';
+import { t } from '@/i18n';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
@@ -60,14 +61,19 @@ function RootNavigator() {
         contentStyle: { backgroundColor: colors.background },
       }}>
       <Stack.Protected guard={state.onboarded}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false, title: 'Find' }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false, title: t('Find') }} />
         <Stack.Screen name="kategori/[id]" options={{ title: '' }} />
-        <Stack.Screen name="virksomhed/[id]" options={{ headerShown: false, title: 'Virksomhed' }} />
-        <Stack.Screen name="sammenlign" options={{ presentation: 'modal', title: 'Sammenlign' }} />
-        <Stack.Screen name="soeg" options={{ presentation: 'modal', headerShown: false, title: 'Søg' }} />
+        <Stack.Screen name="virksomhed/[id]" options={{ headerShown: false, title: t('Virksomhed') }} />
+        <Stack.Screen name="sammenlign" options={{ presentation: 'modal', title: t('Sammenlign') }} />
+        <Stack.Screen name="soeg" options={{ presentation: 'modal', headerShown: false, title: t('Søg') }} />
         <Stack.Screen
           name="filtre"
-          options={{ presentation: 'formSheet', sheetAllowedDetents: [0.8, 1], sheetGrabberVisible: true, title: 'Filtre' }}
+          options={{
+            presentation: 'formSheet',
+            sheetAllowedDetents: [0.8, 1],
+            sheetGrabberVisible: true,
+            title: t('Filtre'),
+          }}
         />
         <Stack.Screen
           name="prioriteter"
@@ -75,12 +81,12 @@ function RootNavigator() {
             presentation: 'formSheet',
             sheetAllowedDetents: [0.75, 1],
             sheetGrabberVisible: true,
-            title: 'Dine prioriteter',
+            title: t('Dine prioriteter'),
           }}
         />
-        <Stack.Screen name="beskriv" options={{ title: 'Beskriv dit problem' }} />
-        <Stack.Screen name="match" options={{ title: 'Dit match' }} />
-        <Stack.Screen name="placering" options={{ presentation: 'modal', title: 'Vælg placering' }} />
+        <Stack.Screen name="beskriv" options={{ title: t('Beskriv dit problem') }} />
+        <Stack.Screen name="match" options={{ title: t('Dit match') }} />
+        <Stack.Screen name="placering" options={{ presentation: 'modal', title: t('Vælg placering') }} />
         <Stack.Screen name="info/[slug]" options={{ title: '' }} />
       </Stack.Protected>
       <Stack.Protected guard={!state.onboarded}>
@@ -96,7 +102,9 @@ function WebFrame({ children }: PropsWithChildren) {
   if (Platform.OS !== 'web') return children;
   return (
     <View style={styles.webBackdrop}>
-      <View style={[styles.webColumn, { backgroundColor: colors.background, borderColor: colors.border }]}>{children}</View>
+      <View style={[styles.webColumn, { backgroundColor: colors.background, borderColor: colors.border }]}>
+        {children}
+      </View>
     </View>
   );
 }

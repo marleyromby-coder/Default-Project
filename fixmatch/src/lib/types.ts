@@ -1,3 +1,7 @@
+import type { CountryCode, Currency } from './markets';
+
+export type { CountryCode, Currency } from './markets';
+
 export type CategoryId =
   | 'vvs'
   | 'elektriker'
@@ -51,6 +55,8 @@ export interface Pricing {
   /** Fixed fee per visit (kørsel/opstart) in DKK incl. VAT, if any. */
   calloutFee?: number;
   examples: PriceExample[];
+  /** Currency of every price above. Defaults to DKK. */
+  currency?: Currency;
   note?: string;
   updatedAt: string;
 }
@@ -70,9 +76,19 @@ export interface Authorization {
 /** Opening hours from Monday (index 0) to Sunday (index 6). `null` means closed. */
 export type WeekHours = ([string, string] | null)[];
 
+/** The business's own texts in another language. */
+export interface BusinessTranslation {
+  tagline?: string;
+  description?: string;
+  services?: string[];
+  responseTime?: string;
+}
+
 export interface Business {
   id: string;
   name: string;
+  /** Defaults to DK. */
+  country?: CountryCode;
   categories: CategoryId[];
   tagline: string;
   description: string;
@@ -98,6 +114,8 @@ export interface Business {
   promoted?: boolean;
   /** The written consent FixMatch holds to show this listing. */
   consent: { date: string; contact?: string };
+  /** Texts in other languages, keyed by language code ("en", "da"). */
+  translations?: Partial<Record<'da' | 'en', BusinessTranslation>>;
   /** Fictional business used for demos. Contact actions are disabled. */
   demo?: boolean;
   updatedAt: string;
@@ -115,6 +133,8 @@ export interface UserLocation {
   coords: Coords;
   label: string;
   postalCode?: string;
+  /** ISO 3166-1 alpha-2, e.g. "DK" or "FR". Defaults to DK. Countries without a market show no results. */
+  country?: string;
 }
 
 /** How important each factor is to the user, from 1 (not important) to 5 (very important). */

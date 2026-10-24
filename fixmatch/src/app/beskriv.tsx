@@ -12,18 +12,22 @@ import { MinTouchSize, Radius, ScreenPadding, Spacing } from '@/constants/theme'
 import { CATEGORIES, getCategory } from '@/data/categories';
 import { useBudgetMatch } from '@/hooks/use-budget-match';
 import { useTheme } from '@/hooks/use-theme';
-import { formatNumber, formatPrice, formatPriceRange, pluralize } from '@/lib/format';
+import { currencySymbol, formatNumber, formatPrice, formatPriceRange, pluralize } from '@/lib/format';
 import { analyzeProblem, defaultQuantity, PROBLEM_EXAMPLES } from '@/lib/matcher';
 import { summarizeJobPrice } from '@/lib/prices';
 import type { CategoryId } from '@/lib/types';
-import { useApp } from '@/state/app-state';
+import { t } from '@/i18n';
+import { countryOf } from '@/lib/business-text';
+import { taxNote } from '@/lib/markets';
+import { useApp, useMarket } from '@/state/app-state';
 
-const BUDGET_PRESETS = [1000, 2500, 5000, 10000, 25000];
+/** Budget suggestions in DKK; scaled to the local currency with Market.fromDkk. */
+const BUDGET_PRESETS_DKK = [1000, 2500, 5000, 10000, 25000];
 const MAX_TEXT = 500;
 
 /** Rounds a price to a friendly budget step: 1.250 → 1.300, 12.400 → 12.500. */
 function niceBudget(value: number): number {
-  const step = value >= 10000 ? 500 : value >= 2000 ? 250 : 100;
+  const step = value >= 10000 ? 500 : value >= 2000 ? 250 : value >= 500 ? 50 : value >= 100 ? 10 : 5;
   return Math.ceil(value / step) * step;
 }
 
@@ -31,6 +35,7 @@ export default function DescribeProblemScreen() {
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { state } = useApp();
+  const { country, market } = useMarket();
   const params = useLocalSearchParams<{ tekst?: string }>();
   const [text, setText] = useState(params.tekst ?? '');
   const [pickedCategory, setPickedCategory] = useState<CategoryId>();
@@ -61,10 +66,11 @@ export default function DescribeProblemScreen() {
       job && category
         ? summarizeJobPrice(
             job,
-            state.businesses.filter((b) => b.categories.includes(category.id)),
+            state.businesses.filter((b) => countryOf(b) === country && b.categories.includes(category.id)),
+            market,
           )
         : undefined,
-    [job, category, state.businesses],
+    [job, category, state.businesses, country, market],
   );
   const factor = job && job.unit !== 'opgave' ? (quantity ?? 1) : 1;
   const presets = typical
@@ -73,7 +79,7 @@ export default function DescribeProblemScreen() {
           [typical.min * factor, ((typical.min + typical.max) / 2) * factor, typical.max * factor].map(niceBudget),
         ),
       ]
-    : BUDGET_PRESETS;
+    : BUDGET_PRESETS_DKK.map((value) => niceBudget(value * market.fromDkk));
 
   const { items } = useBudgetMatch(category ? { category: category.id, job, quantity, budget, urgent } : undefined);
   const fitting = items.filter((m) => m.fit === 'within' || m.fit === 'maybe' || m.fit === 'close').length;
@@ -114,8 +120,9 @@ export default function DescribeProblemScreen() {
         contentContainerStyle={[styles.content, { paddingBottom: 120 + insets.bottom }]}>
         <View style={styles.intro}>
           <AppText variant="callout" tone="textSecondary">
-            Skriv med dine egne ord, hvad der er galt, og hvad du vil give. Så finder vi dem, der passer – også dem, der
-            ligger tæt på dit budget.
+            {t(
+              'Skriv med dine egne ord, hvad der er galt, og hvad du vil give. Så finder vi dem, der passer – også dem, der ligger tæt på dit budget.',
+            )}
           </AppText>
         </View>
 
@@ -123,12 +130,12 @@ export default function DescribeProblemScreen() {
           <TextInput
             value={text}
             onChangeText={(value) => setText(value.slice(0, MAX_TEXT))}
-            placeholder="Fx: Køkkenvasken er stoppet, og vandet løber ikke ud"
+            placeholder={t('Fx: Køkkenvasken er stoppet, og vandet løber ikke ud')}
             placeholderTextColor={colors.textTertiary}
             multiline
             autoFocus={!params.tekst}
             textAlignVertical="top"
-            accessibilityLabel="Beskriv dit problem"
+            accessibilityLabel={t('Beskriv dit problem')}
             style={[styles.textArea, { color: colors.text }]}
           />
           <AppText variant="caption" tone="textTertiary" style={styles.counter}>
@@ -139,14 +146,14 @@ export default function DescribeProblemScreen() {
         {text.trim().length === 0 ? (
           <View style={styles.block}>
             <AppText variant="footnote" tone="textSecondary" weight="600">
-              PRØV FX
+              {t('PRØV FX')}
             </AppText>
             <View style={styles.examples}>
               {PROBLEM_EXAMPLES.map((example) => (
                 <Tappable
                   key={example}
                   onPress={() => setText(example)}
-                  accessibilityLabel={`Brug eksempel: ${example}`}
+                  accessibilityLabel={t('Brug eksempel: {example}', { example })}
                   style={[
                     styles.example,
                     {
@@ -190,14 +197,17 @@ export default function DescribeProblemScreen() {
               </View>
               <View style={styles.flex} accessible accessibilityLiveRegion="polite">
                 <AppText variant="caption" tone="textSecondary" weight="600">
-                  {category ? 'VI FORSTÅR DET SÅDAN' : 'VÆLG FAG'}
+                  {category ? t('VI FORSTÅR DET SÅDAN') : t('VÆLG FAG')}
                 </AppText>
                 <AppText variant="headline">
-                  {category ? `${category.name}${job ? ` · ${job.name}` : ''}` : 'Vi er ikke sikre på faget endnu'}
+                  {category ? `${category.name}${job ? ` · ${job.name}` : ''}` : t('Vi er ikke sikre på faget endnu')}
                 </AppText>
                 {typical ? (
                   <AppText variant="footnote" tone="textSecondary">
-                    Typisk pris: {formatPriceRange(typical.min, typical.max, typical.unit)} inkl. moms
+                    {t('Typisk pris: {priceRange} {tax}', {
+                      priceRange: formatPriceRange(typical.min, typical.max, typical.unit, typical.currency),
+                      tax: taxNote(market),
+                    })}
                   </AppText>
                 ) : null}
               </View>
@@ -213,13 +223,13 @@ export default function DescribeProblemScreen() {
                     onPress={() => setPickedJob(job?.id === j.id ? null : j.id)}
                   />
                 ))}
-                <Chip label="Ved ikke" selected={!job} onPress={() => setPickedJob(null)} />
+                <Chip label={t('Ved ikke')} selected={!job} onPress={() => setPickedJob(null)} />
               </ScrollView>
             ) : null}
 
             <View style={styles.block}>
               <AppText variant="caption" tone="textSecondary" weight="600">
-                {category ? 'ANDET FAG?' : 'HVILKET FAG?'}
+                {category ? t('ANDET FAG?') : t('HVILKET FAG?')}
               </AppText>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
                 {otherCategories.map((c) => (
@@ -234,26 +244,29 @@ export default function DescribeProblemScreen() {
           <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <View style={styles.row}>
               <View style={styles.flex}>
-                <AppText variant="headline">{job.unit === 'm2' ? 'Hvor mange m²?' : 'Hvor mange?'}</AppText>
+                <AppText variant="headline">{job.unit === 'm2' ? t('Hvor mange m²?') : t('Hvor mange?')}</AppText>
                 <AppText variant="footnote" tone="textSecondary">
-                  Prisen ganges med antallet
+                  {t('Prisen ganges med antallet')}
                 </AppText>
               </View>
               <Tappable
                 onPress={() => setQuantityValue(Math.max(1, quantity - (job.unit === 'm2' ? 5 : 1)))}
-                accessibilityLabel="Færre"
+                accessibilityLabel={t('Færre')}
                 style={[styles.stepper, { backgroundColor: colors.surfaceAlt }]}>
                 <Icon name="minus" size={16} color={colors.text} weight="bold" />
               </Tappable>
               <AppText
                 variant="headline"
                 style={styles.quantity}
-                accessibilityLabel={`${quantity} ${job.unit === 'm2' ? 'kvadratmeter' : 'stk'}`}>
-                {quantity} {job.unit === 'm2' ? 'm²' : 'stk.'}
+                accessibilityLabel={t('{quantity} {value}', {
+                  quantity,
+                  value: job.unit === 'm2' ? t('kvadratmeter') : t('stk.'),
+                })}>
+                {quantity} {job.unit === 'm2' ? 'm²' : t('stk.')}
               </AppText>
               <Tappable
                 onPress={() => setQuantityValue(quantity + (job.unit === 'm2' ? 5 : 1))}
-                accessibilityLabel="Flere"
+                accessibilityLabel={t('Flere')}
                 style={[styles.stepper, { backgroundColor: colors.surfaceAlt }]}>
                 <Icon name="plus" size={16} color={colors.text} weight="bold" />
               </Tappable>
@@ -262,7 +275,7 @@ export default function DescribeProblemScreen() {
         ) : null}
 
         <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <AppText variant="headline">Dit budget</AppText>
+          <AppText variant="headline">{t('Dit budget')}</AppText>
           <View
             style={[
               styles.budgetField,
@@ -275,22 +288,22 @@ export default function DescribeProblemScreen() {
             <TextInput
               value={budgetDigits ? formatNumber(Number(budgetDigits)) : ''}
               onChangeText={(value) => setBudgetText(value.replace(/\D/g, '').slice(0, 7))}
-              placeholder="Ved ikke"
+              placeholder={t('Ved ikke')}
               placeholderTextColor={colors.textTertiary}
               keyboardType="number-pad"
               returnKeyType="done"
-              accessibilityLabel="Budget i kroner inklusive moms"
+              accessibilityLabel={t('Budget i {currency} {tax}', { currency: market.currency, tax: taxNote(market) })}
               style={[styles.budgetInput, { color: colors.text }]}
             />
             <AppText variant="body" tone="textSecondary">
-              kr. inkl. moms
+              {`${currencySymbol(market.currency)} ${taxNote(market)}`}
             </AppText>
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
             {presets.map((value) => (
               <Chip
                 key={value}
-                label={formatPrice(value)}
+                label={formatPrice(value, market.currency)}
                 selected={budget === value}
                 onPress={() => setBudgetText(budget === value ? '' : String(value))}
               />
@@ -303,24 +316,25 @@ export default function DescribeProblemScreen() {
             <Icon name="bolt" size={18} color={colors.warning} weight="semibold" />
           </View>
           <View style={styles.flex}>
-            <AppText variant="headline">Det haster</AppText>
+            <AppText variant="headline">{t('Det haster')}</AppText>
             <AppText variant="footnote" tone="textSecondary">
-              Virksomheder med døgnvagt vises først
+              {t('Virksomheder med døgnvagt vises først')}
             </AppText>
           </View>
           <Switch
             value={urgent}
             onValueChange={setUrgentValue}
             trackColor={{ true: colors.brandStrong }}
-            accessibilityLabel="Det haster"
+            accessibilityLabel={t('Det haster')}
           />
         </View>
 
         <View style={styles.privacy}>
           <Icon name="privacy" size={14} color={colors.textSecondary} />
           <AppText variant="caption" tone="textSecondary" style={styles.flexShrink}>
-            Din beskrivelse bliver på telefonen. Den sendes ikke til FixMatch eller til virksomhederne – du bestemmer
-            selv, om du vil dele den, når du kontakter dem.
+            {t(
+              'Din beskrivelse bliver på telefonen. Den sendes ikke til FixMatch eller til virksomhederne – du bestemmer selv, om du vil dele den, når du kontakter dem.',
+            )}
           </AppText>
         </View>
       </ScrollView>
@@ -337,11 +351,16 @@ export default function DescribeProblemScreen() {
         {category ? (
           <AppText variant="footnote" tone="textSecondary" style={styles.center}>
             {budget
-              ? `${fitting} af ${pluralize(items.length, 'virksomhed', 'virksomheder')} passer eller ligger tæt på dit budget`
-              : `${pluralize(items.length, 'virksomhed', 'virksomheder')} kører ud til dig`}
+              ? t('{fitting} af {countText} passer eller ligger tæt på dit budget', {
+                  fitting,
+                  countText: pluralize(items.length, t('virksomhed'), t('virksomheder')),
+                })
+              : t('{countText} kører ud til dig', {
+                  countText: pluralize(items.length, t('virksomhed'), t('virksomheder')),
+                })}
           </AppText>
         ) : null}
-        <Button title="Find match" icon="wand" size="large" disabled={!category} onPress={submit} />
+        <Button title={t('Find match')} icon="wand" size="large" disabled={!category} onPress={submit} />
       </View>
     </KeyboardAvoidingView>
   );

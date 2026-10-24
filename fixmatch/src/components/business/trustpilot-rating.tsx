@@ -6,6 +6,7 @@ import { Spacing } from '@/constants/theme';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { formatNumber, formatRating, pluralize } from '@/lib/format';
 import type { TrustpilotInfo } from '@/lib/types';
+import { t } from '@/i18n';
 
 interface Props {
   trustpilot?: TrustpilotInfo;
@@ -21,12 +22,15 @@ export function TrustpilotRating({ trustpilot, size = 'small' }: Props) {
   if (!trustpilot) {
     return (
       <AppText variant={size === 'large' ? 'subhead' : 'footnote'} tone="textSecondary">
-        Ingen Trustpilot-profil endnu
+        {t('Ingen Trustpilot-profil endnu')}
       </AppText>
     );
   }
 
-  const label = `TrustScore ${formatRating(trustpilot.score)} ud af 5 på Trustpilot, baseret på ${pluralize(trustpilot.reviews, 'anmeldelse', 'anmeldelser')}`;
+  const label = t('TrustScore {rating} ud af 5 på Trustpilot, baseret på {countText}', {
+    rating: formatRating(trustpilot.score),
+    countText: pluralize(trustpilot.reviews, 'anmeldelse', 'anmeldelser'),
+  });
 
   if (size === 'large') {
     return (
@@ -37,7 +41,9 @@ export function TrustpilotRating({ trustpilot, size = 'small' }: Props) {
         <View style={styles.largeText}>
           <Stars value={trustpilot.score} size={20} />
           <AppText variant="subhead" tone="textSecondary">
-            TrustScore på Trustpilot · {pluralize(trustpilot.reviews, 'anmeldelse', 'anmeldelser')}
+            {t('TrustScore på Trustpilot · {countText}', {
+              countText: pluralize(trustpilot.reviews, 'anmeldelse', 'anmeldelser'),
+            })}
           </AppText>
         </View>
       </View>
@@ -51,7 +57,7 @@ export function TrustpilotRating({ trustpilot, size = 'small' }: Props) {
         {formatRating(trustpilot.score)}
       </AppText>
       <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
-        Trustpilot ({formatNumber(trustpilot.reviews)})
+        {t('Trustpilot ({number})', { number: formatNumber(trustpilot.reviews) })}
       </AppText>
     </View>
   );

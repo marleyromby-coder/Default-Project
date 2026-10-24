@@ -6,6 +6,7 @@ import { Icon, type IconName } from '@/components/ui/icon';
 import { AppText } from '@/components/ui/text';
 import { useTheme } from '@/hooks/use-theme';
 import { useApp } from '@/state/app-state';
+import { t } from '@/i18n';
 
 /** Bottom tab bar for the web demo, styled like the iOS tab bar. */
 export default function AppTabs() {
@@ -23,16 +24,16 @@ export default function AppTabs() {
           { backgroundColor: colors.surface, borderTopColor: colors.border, paddingBottom: Math.max(insets.bottom, 6) },
         ]}>
         <TabTrigger name="index" href="/" asChild>
-          <TabButton icon="search" label="Find" />
+          <TabButton icon="search" label={t('Find')} />
         </TabTrigger>
         <TabTrigger name="kort" href="/kort" asChild>
-          <TabButton icon="map" label="Kort" />
+          <TabButton icon="map" label={t('Kort')} />
         </TabTrigger>
         <TabTrigger name="gemte" href="/gemte" asChild>
-          <TabButton icon="heartFill" label="Gemte" badge={state.favorites.length} />
+          <TabButton icon="heartFill" label={t('Gemte')} badge={state.favorites.length} />
         </TabTrigger>
         <TabTrigger name="mere" href="/mere" asChild>
-          <TabButton icon="list" label="Mere" />
+          <TabButton icon="list" label={t('Mere')} />
         </TabTrigger>
       </TabList>
     </Tabs>

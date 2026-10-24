@@ -1,6 +1,7 @@
 import { TRUSTPILOT_ENABLED } from './features';
 import { distanceKm } from './geo';
 import type { Business, CategoryId, Coords, Priorities, SortMode } from './types';
+import { t } from '@/i18n';
 
 /**
  * The FixMatch score.
@@ -28,10 +29,10 @@ export const NO_REVIEWS_SCORE = 3.6;
 export const DEFAULT_PRIORITIES: Priorities = { price: 4, distance: 3, reviews: 5 };
 
 export const PRIORITY_PRESETS: { id: string; label: string; priorities: Priorities }[] = [
-  { id: 'balanced', label: 'Balanceret', priorities: DEFAULT_PRIORITIES },
-  { id: 'cheap', label: 'Lavest pris', priorities: { price: 5, distance: 2, reviews: 2 } },
-  { id: 'near', label: 'Tættest på', priorities: { price: 2, distance: 5, reviews: 2 } },
-  { id: 'quality', label: 'Bedst anmeldt', priorities: { price: 2, distance: 2, reviews: 5 } },
+  { id: 'balanced', label: t('Balanceret'), priorities: DEFAULT_PRIORITIES },
+  { id: 'cheap', label: t('Lavest pris'), priorities: { price: 5, distance: 2, reviews: 2 } },
+  { id: 'near', label: t('Tættest på'), priorities: { price: 2, distance: 5, reviews: 2 } },
+  { id: 'quality', label: t('Bedst anmeldt'), priorities: { price: 2, distance: 2, reviews: 5 } },
 ];
 
 export interface Weights {
@@ -80,11 +81,7 @@ export interface ScoredBusiness {
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
-export function scoreBusinesses(
-  businesses: Business[],
-  origin: Coords,
-  priorities: Priorities,
-): ScoredBusiness[] {
+export function scoreBusinesses(businesses: Business[], origin: Coords, priorities: Priorities): ScoredBusiness[] {
   const weights = weightsFromPriorities(priorities);
   const prices = businesses.map(priceIndex);
   const cheapest = Math.min(...prices);
@@ -127,9 +124,9 @@ export function sortScored(list: ScoredBusiness[], mode: SortMode): ScoredBusine
 export type PriceLevel = 1 | 2 | 3;
 
 export const PRICE_LEVEL_LABELS: Record<PriceLevel, string> = {
-  1: 'Lavt prisniveau',
-  2: 'Middel prisniveau',
-  3: 'Højt prisniveau',
+  1: t('Lavt prisniveau'),
+  2: t('Middel prisniveau'),
+  3: t('Højt prisniveau'),
 };
 
 function median(values: number[]): number {
@@ -141,7 +138,9 @@ function median(values: number[]): number {
 /** Price level compared with the median hourly rate of the trade (±6 %). */
 export function priceLevel(business: Business, all: Business[], category?: CategoryId): PriceLevel {
   const trade = category ?? business.categories[0];
-  const peers = all.filter((b) => b.categories.includes(trade)).map(priceIndex);
+  const country = business.country ?? 'DK';
+  // Peers in the same country only: their prices are in the same currency.
+  const peers = all.filter((b) => (b.country ?? 'DK') === country && b.categories.includes(trade)).map(priceIndex);
   if (peers.length < 3) return 2;
   const ratio = priceIndex(business) / median(peers);
   if (ratio < 0.94) return 1;
@@ -150,8 +149,8 @@ export function priceLevel(business: Business, all: Business[], category?: Categ
 }
 
 export function matchLabel(score: number): string {
-  if (score >= 85) return 'Fremragende match';
-  if (score >= 70) return 'Stærkt match';
-  if (score >= 55) return 'Godt match';
-  return 'Muligt match';
+  if (score >= 85) return t('Fremragende match');
+  if (score >= 70) return t('Stærkt match');
+  if (score >= 55) return t('Godt match');
+  return t('Muligt match');
 }

@@ -1,6 +1,7 @@
 import { isOpenNow } from './opening-hours';
 import { priceLevel, type ScoredBusiness } from './ranking';
 import type { Business, CategoryId, Filters } from './types';
+import { t } from '@/i18n';
 
 export const DEFAULT_FILTERS: Filters = {
   maxDistanceKm: 25,
@@ -13,15 +14,15 @@ export const DEFAULT_FILTERS: Filters = {
 };
 
 export const DISTANCE_OPTIONS: { value: number | null; label: string }[] = [
-  { value: 5, label: '5 km' },
-  { value: 10, label: '10 km' },
-  { value: 25, label: '25 km' },
-  { value: 50, label: '50 km' },
-  { value: null, label: 'Hele landet' },
+  { value: 5, label: t('5 km') },
+  { value: 10, label: t('10 km') },
+  { value: 25, label: t('25 km') },
+  { value: 50, label: t('50 km') },
+  { value: null, label: t('Hele landet') },
 ];
 
 export const RATING_OPTIONS: { value: number | null; label: string }[] = [
-  { value: null, label: 'Alle' },
+  { value: null, label: t('Alle') },
   { value: 3.5, label: '3,5+' },
   { value: 4, label: '4,0+' },
   { value: 4.5, label: '4,5+' },

@@ -1,6 +1,9 @@
 import { APP_INFO } from '@/constants/app-info';
-import { DISTANCE_SCALE_KM, NO_REVIEWS_SCORE, REVIEW_PRIOR_COUNT, REVIEW_PRIOR_MEAN } from '@/lib/ranking';
+import { getLanguage } from '@/i18n';
 import { CLOSE_MARGIN, WORKSHOP_RADIUS_KM } from '@/lib/matcher';
+import { DISTANCE_SCALE_KM, NO_REVIEWS_SCORE, REVIEW_PRIOR_COUNT, REVIEW_PRIOR_MEAN } from '@/lib/ranking';
+
+import { INFO_PAGES_EN } from './content-en';
 
 export interface InfoSection {
   heading?: string;
@@ -22,7 +25,8 @@ export interface InfoPage {
 
 const n = (value: number) => String(value).replace('.', ',');
 
-export const INFO_PAGES = {
+/** Danish pages. The English ones in content-en.ts have the same slugs and structure. */
+export const INFO_PAGES_DA = {
   rangering: {
     title: 'Sådan rangerer vi',
     intro:
@@ -31,7 +35,7 @@ export const INFO_PAGES = {
       {
         heading: 'De tre parametre',
         bullets: [
-          'Pris: virksomhedens timepris inkl. moms sammenlignet med de andre virksomheder i samme fag. Den billigste får fuld score, den dyreste ingen.',
+          'Pris: virksomhedens timepris sammenlignet med de andre virksomheder i samme fag og samme land. Den billigste får fuld score, den dyreste ingen. Priser sammenlignes aldrig på tværs af lande og valutaer.',
           `Afstand: afstanden i luftlinje fra din placering. Scoren falder jævnt med afstanden – ved ${DISTANCE_SCALE_KM} km er den ca. en tredjedel af scoren ved 0 km.`,
           `Anmeldelser: TrustScore på Trustpilot, vægtet efter antallet af anmeldelser. Vi lægger ${REVIEW_PRIOR_COUNT} "neutrale" anmeldelser på ${n(REVIEW_PRIOR_MEAN)} til, så få anmeldelser ikke giver en urimelig høj eller lav score. Virksomheder uden Trustpilot-profil regnes som ${n(NO_REVIEWS_SCORE)}.`,
         ],
@@ -45,7 +49,7 @@ export const INFO_PAGES = {
       {
         heading: 'Når du beskriver dit problem',
         paragraphs: [
-          `Under "Beskriv dit problem" finder appen faget og opgaven ud fra dine ord. Virksomhedernes egen pris for opgaven (inkl. moms, gange antal m² eller stk.) sammenlignes med dit budget, og de deles i fire grupper i denne rækkefølge: "Inden for budget" og "Kan passe", "Tæt på budget" (højst ${Math.round(CLOSE_MARGIN * 100)} % over), "Pris på forespørgsel" (virksomheden har ikke oplyst en pris for opgaven) og "Over budget". Inden for hver gruppe afgør FixMatch-scoren rækkefølgen. Haster det, kommer virksomheder med døgnvagt først.`,
+          `Under "Beskriv dit problem" finder appen faget og opgaven ud fra dine ord. Virksomhedernes egen pris for opgaven (gange antal m² eller stk.) sammenlignes med dit budget, og de deles i fire grupper i denne rækkefølge: "Inden for budget" og "Kan passe", "Tæt på budget" (højst ${Math.round(CLOSE_MARGIN * 100)} % over), "Pris på forespørgsel" (virksomheden har ikke oplyst en pris for opgaven) og "Over budget". Inden for hver gruppe afgør FixMatch-scoren rækkefølgen. Haster det, kommer virksomheder med døgnvagt først.`,
           `Vi viser kun virksomheder, der kører ud til din adresse (inden for deres eget område). Mekanikere vises inden for ${WORKSHOP_RADIUS_KM} km, fordi du selv kører derhen. Din beskrivelse bliver på telefonen og sendes ikke til FixMatch eller virksomhederne.`,
         ],
       },
@@ -92,7 +96,7 @@ export const INFO_PAGES = {
   priser: {
     title: 'Om priserne',
     intro:
-      'Alle priser er oplyst af virksomhederne selv og er inklusive moms. De er vejledende – den endelige pris aftaler du med virksomheden.',
+      'Alle priser er oplyst af virksomhederne selv. I Europa er de inklusive moms, i USA før salgsskat. De er vejledende – den endelige pris aftaler du med virksomheden.',
     sections: [
       {
         heading: 'Timepris og eksempler',
@@ -109,7 +113,7 @@ export const INFO_PAGES = {
         ],
       },
       {
-        heading: 'Håndværker- og servicefradrag 2026',
+        heading: 'Håndværker- og servicefradrag 2026 (Danmark)',
         paragraphs: [
           'Du kan trække arbejdslønnen (ikke materialer) fra i skat for en række opgaver i dit hjem. I 2026 er grænsen 9.000 kr. pr. person for grøn istandsættelse (håndværkerfradrag) og 18.300 kr. pr. person for servicefradrag. Fradraget er ca. 26 % værd. Tjek på skat.dk, om netop din opgave er omfattet.',
         ],
@@ -183,6 +187,12 @@ export const INFO_PAGES = {
         ],
       },
       {
+        heading: 'Kortet og "Beskriv dit problem"',
+        paragraphs: [
+          'Kortet er Apple Kort. For at vise det henter din iPhone kortbilleder direkte fra Apple efter Apples privatlivspolitik. Det, du skriver under "Beskriv dit problem", behandles kun på telefonen og sendes ikke til FixMatch eller virksomhederne.',
+        ],
+      },
+      {
         heading: 'Gemt på din telefon',
         paragraphs: [
           'Dine gemte virksomheder, din valgte by og dine prioriteter gemmes lokalt på telefonen, så de er der næste gang. Du kan slette det hele under Mere → Nulstil app-data, eller ved at slette appen.',
@@ -241,18 +251,25 @@ export const INFO_PAGES = {
         ],
       },
       {
-        heading: 'Fotos',
-        paragraphs: ['Fotos fra Pexels (pexels.com), brugt under Pexels-licensen. Tak til fotograferne.'],
+        heading: 'Fotos og data',
+        paragraphs: [
+          'Fotos fra Pexels (pexels.com), brugt under Pexels-licensen. Tak til fotograferne.',
+          'Bynavne fra GeoNames (geonames.org, CC BY 4.0). Kystlinjer på webkortet fra Natural Earth (public domain).',
+        ],
       },
     ],
     links: [
       { label: 'Pexels-licensen', url: 'https://www.pexels.com/license/' },
+      { label: 'GeoNames', url: 'https://www.geonames.org' },
       { label: 'FixMatch på nettet', url: APP_INFO.website },
     ],
   },
 } satisfies Record<string, InfoPage>;
 
-export type InfoSlug = keyof typeof INFO_PAGES;
+export type InfoSlug = keyof typeof INFO_PAGES_DA;
+
+/** The pages in the app's language. */
+export const INFO_PAGES: Record<InfoSlug, InfoPage> = getLanguage() === 'da' ? INFO_PAGES_DA : INFO_PAGES_EN;
 
 export function isInfoSlug(value: string): value is InfoSlug {
   return value in INFO_PAGES;

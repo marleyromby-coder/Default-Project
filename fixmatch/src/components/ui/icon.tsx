@@ -13,6 +13,7 @@ const ICONS = {
   heartFill: { ios: 'heart.fill', web: 'favorite' },
   phone: { ios: 'phone.fill', web: 'call' },
   globe: { ios: 'safari', web: 'language' },
+  world: { ios: 'globe.europe.africa', web: 'public' },
   directions: { ios: 'arrow.triangle.turn.up.right.diamond.fill', web: 'directions' },
   share: { ios: 'square.and.arrow.up', web: 'share' },
   verified: { ios: 'checkmark.seal.fill', web: 'verified' },
@@ -70,7 +71,13 @@ const ICONS = {
   maler: { ios: 'paintbrush.fill', web: 'format_paint' },
   tagdaekker: { ios: 'house.fill', web: 'roofing' },
   laasesmed: { ios: 'key.fill', web: 'key' },
-} as const satisfies Record<string, { ios: NonNullable<Extract<SymbolViewProps['name'], object>['ios']>; web: NonNullable<Extract<SymbolViewProps['name'], object>['web']> }>;
+} as const satisfies Record<
+  string,
+  {
+    ios: NonNullable<Extract<SymbolViewProps['name'], object>['ios']>;
+    web: NonNullable<Extract<SymbolViewProps['name'], object>['web']>;
+  }
+>;
 
 export type IconName = keyof typeof ICONS;
 

@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/ui/text';
 import { Radius } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { t } from '@/i18n';
 
 interface Props {
   score: number;
@@ -21,17 +22,22 @@ export function MatchBadge({ score, size = 'small', onPhoto }: Props) {
   return (
     <View
       accessible
-      accessibilityLabel={`Match-score ${score} ud af 100`}
+      accessibilityLabel={t('Match-score {score} ud af 100', { score })}
       style={[
         styles.badge,
         large ? styles.large : styles.small,
         { backgroundColor: background, borderColor: onPhoto ? 'transparent' : colors.border },
       ]}>
-      <AppText variant={large ? 'title2' : 'headline'} rounded tabular style={{ color: foreground }} maxFontSizeMultiplier={1.2}>
+      <AppText
+        variant={large ? 'title2' : 'headline'}
+        rounded
+        tabular
+        style={{ color: foreground }}
+        maxFontSizeMultiplier={1.2}>
         {score}
       </AppText>
       <AppText variant="caption2" style={{ color: foreground, marginTop: -2 }} maxFontSizeMultiplier={1.2}>
-        MATCH
+        {t('MATCH')}
       </AppText>
     </View>
   );

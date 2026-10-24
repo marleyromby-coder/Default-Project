@@ -7,6 +7,7 @@ import { AppText } from '@/components/ui/text';
 import { Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { useApp } from '@/state/app-state';
+import { t } from '@/i18n';
 
 /** Shows where results are measured from; tap to change. */
 export function LocationPill() {
@@ -16,7 +17,7 @@ export function LocationPill() {
   return (
     <Tappable
       onPress={() => router.push('/placering')}
-      accessibilityLabel={`Placering: ${location.label}. Skift placering`}
+      accessibilityLabel={t('Placering: {label}. Skift placering', { label: location.label })}
       style={[styles.pill, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <Icon name={location.source === 'gps' ? 'location' : 'pin'} size={14} color={colors.brand} weight="semibold" />
       <AppText variant="subhead" weight="600" numberOfLines={1} style={styles.label} maxFontSizeMultiplier={1.3}>

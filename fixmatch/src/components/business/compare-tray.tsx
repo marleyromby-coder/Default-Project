@@ -8,6 +8,7 @@ import { AppText } from '@/components/ui/text';
 import { MinTouchSize, Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { MAX_COMPARE, useApp } from '@/state/app-state';
+import { t } from '@/i18n';
 
 /** Floating bar that appears when businesses are picked for comparison. */
 export function CompareTray({ bottomOffset = 0 }: { bottomOffset?: number }) {
@@ -22,28 +23,25 @@ export function CompareTray({ bottomOffset = 0 }: { bottomOffset?: number }) {
       pointerEvents="box-none"
       style={[styles.wrapper, { bottom: Math.max(insets.bottom, Spacing.md) + bottomOffset }]}>
       <View style={[styles.tray, { backgroundColor: colors.text, shadowColor: colors.shadow }]}>
-        <Tappable
-          onPress={clearCompare}
-          accessibilityLabel="Ryd sammenligning"
-          style={styles.clear}>
+        <Tappable onPress={clearCompare} accessibilityLabel={t('Ryd sammenligning')} style={styles.clear}>
           <Icon name="close" size={16} color={colors.background} weight="bold" />
         </Tappable>
         <View style={styles.text}>
           <AppText variant="subhead" weight="600" style={{ color: colors.background }}>
-            {count} af {MAX_COMPARE} valgt
+            {t('{count} af {MAX_COMPARE} valgt', { count, MAX_COMPARE })}
           </AppText>
           <AppText variant="caption" style={{ color: colors.background, opacity: 0.75 }}>
-            {count < 2 ? 'Vælg mindst én mere' : 'Pris, afstand og anmeldelser side om side'}
+            {count < 2 ? t('Vælg mindst én mere') : t('Pris, afstand og anmeldelser side om side')}
           </AppText>
         </View>
         <Tappable
           onPress={() => router.push('/sammenlign')}
           disabled={count < 2}
-          accessibilityLabel={`Sammenlign ${count} virksomheder`}
+          accessibilityLabel={t('Sammenlign {count} virksomheder', { count })}
           style={[styles.go, { backgroundColor: colors.brandStrong }]}>
           <Icon name="compare" size={16} color={colors.onBrand} weight="semibold" />
           <AppText variant="subhead" weight="700" style={{ color: colors.onBrand }} maxFontSizeMultiplier={1.3}>
-            Sammenlign
+            {t('Sammenlign')}
           </AppText>
         </Tappable>
       </View>
