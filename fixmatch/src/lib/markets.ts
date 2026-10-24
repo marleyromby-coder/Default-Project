@@ -1,4 +1,4 @@
-import { msg, t } from '@/i18n';
+import { getLanguage, msg, t } from '@/i18n';
 
 import type { Region } from './cluster';
 
@@ -132,7 +132,12 @@ export const WORLD_REGION: Region = { latitude: 45, longitude: -20, latitudeDelt
 
 export function countryName(country: string): string {
   if (isCountryCode(country)) return t(MARKETS[country].name);
-  return country;
+  // Other countries: the platform's own name for them, when it has the data.
+  try {
+    return new Intl.DisplayNames([getLanguage()], { type: 'region' }).of(country) ?? country;
+  } catch {
+    return country;
+  }
 }
 
 /** "inkl. moms" / "incl. VAT", or "ekskl. skat" / "before tax" in the US. */

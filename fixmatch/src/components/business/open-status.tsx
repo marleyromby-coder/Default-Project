@@ -4,14 +4,14 @@ import { AppText } from '@/components/ui/text';
 import { useTheme } from '@/hooks/use-theme';
 import { getOpenStatus } from '@/lib/opening-hours';
 import type { Business } from '@/lib/types';
-import { t } from '@/i18n';
+import { getLanguage, t } from '@/i18n';
 
 /** "Åben til 15.30" in green, or when it opens next. Døgnvagt is mentioned when closed. */
 export function OpenStatus({ business }: { business: Business }) {
   const colors = useTheme();
   const status = getOpenStatus(business.hours);
   const text =
-    !status.open && business.emergency ? t('Døgnvagt · {label}', { label: status.label.toLowerCase() }) : status.label;
+    !status.open && business.emergency ? t('Døgnvagt · {label}', { label: getLanguage() === 'da' ? status.label.toLowerCase() : status.label }) : status.label;
   const color = status.open ? colors.success : business.emergency ? colors.warning : colors.textSecondary;
   return (
     <View style={styles.row}>

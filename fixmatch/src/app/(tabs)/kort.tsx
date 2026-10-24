@@ -107,7 +107,8 @@ export default function MapScreen() {
     [],
   );
 
-  const tradeCount = (id: CategoryId) => state.businesses.filter((b) => b.categories.includes(id)).length;
+  const tradeCount = (id: CategoryId) =>
+    state.businesses.filter((b) => countryOf(b) === country && b.categories.includes(id)).length;
   const showsUserLocation = state.location.source === 'gps' && Platform.OS !== 'web';
 
   return (

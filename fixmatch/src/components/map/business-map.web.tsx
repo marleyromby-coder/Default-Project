@@ -132,7 +132,9 @@ export function BusinessMap({
           ring
             .map(([lon, lat], i) => {
               const p = project({ lat, lon });
-              return `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+              // A jump across the date line starts a new segment instead of a line across the map.
+              const jump = i > 0 && Math.abs(lon - ring[i - 1][0]) > 180;
+              return `${i === 0 || jump ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`;
             })
             .join('') + 'Z',
       )
