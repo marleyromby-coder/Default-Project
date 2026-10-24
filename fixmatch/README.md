@@ -2,14 +2,15 @@
 
 **Find den rette håndværker eller mekaniker – sammenlign pris, afstand og Trustpilot-anmeldelser, og ring direkte.**
 
-FixMatch er en iPhone-app (Expo / React Native) til det danske marked. Brugeren vælger et fag eller en opgave og får lokale virksomheder rangeret efter en gennemsigtig FixMatch-score. Hver virksomhed har en side med telefonnummer, hjemmeside, prisinterval inkl. moms, TrustScore, CVR, autorisation og åbningstider.
+FixMatch er en iPhone-app (Expo / React Native) på dansk og engelsk til Danmark, Sverige, Norge, Tyskland, Storbritannien og USA. Brugeren vælger et fag eller en opgave og får lokale virksomheder rangeret efter en gennemsigtig FixMatch-score. Hver virksomhed har en side med telefonnummer, hjemmeside, prisinterval i landets valuta, TrustScore, registreringsnummer (fx CVR), autorisation og åbningstider.
 
 | Fag | VVS'er · Elektriker · Tømrer · Murer · Mekaniker · Maler · Tagdækker · Låsesmed |
 | --- | --- |
 | Sammenligning | Pris (timepris + eksempelpriser), afstand (luftlinje) og Trustpilot (TrustScore, antal anmeldelser) |
 | Kontakt | Ring op, hjemmeside, rutevejledning, del |
 | Beskriv dit problem | Fritekst + budget → fag og opgave genkendes på telefonen, og virksomhederne grupperes efter, om deres egen pris passer til budgettet |
-| Kort | Apple Kort (MapKit) med alle virksomheder i Danmark, farvet efter fag, klynger og swipe-kort. Se `docs/jura/apple-kort.md` |
+| Kort | Apple Kort (MapKit) med alle virksomheder, farvet efter fag, klynger og swipe-kort. Se `docs/jura/apple-kort.md` |
+| Sprog og lande | Dansk og engelsk (følger telefonen). Priser sammenlignes kun inden for ét land og vises i landets valuta. Miles i UK og USA. Byer i hele verden kan vælges |
 | Andet | Personlige prioriteter, filtre, sammenlign op til 3, gemte, søgning, akut/døgnvagt, mørk tilstand, VoiceOver |
 | Jura indbygget | "Sådan rangerer vi" (mfl. § 6 a), "Om anmeldelser" (mfl. § 6 b), annoncer altid markeret, priser inkl. moms, "Rapportér fejl" (DSA art. 16) |
 
@@ -28,9 +29,12 @@ npx expo start
 Scan QR-koden med iPhonens kamera → appen åbner i Expo Go. Alt du ændrer i koden, vises med det samme.
 
 - **Web-demo** (til projektor eller jury på bærbar): `npx expo start --web`, eller `npm run export:web` og læg mappen `dist/` på fx Netlify, Vercel eller GitHub Pages.
-- **Tjek koden**: `npm run check` (TypeScript, lint og 38 tests).
+- **Tjek koden**: `npm run check` (TypeScript, lint og 86 tests).
+- **Engelsk version**: på iPhone under Indstillinger → FixMatch → Sprog. På web: tilføj `?lang=en` til adressen.
 
-> Appen starter i **demotilstand** med 104 fiktive virksomheder i København, Aarhus, Odense og Aalborg. De er tydeligt markeret, telefonnumre er i en ubrugt nummerserie, CVR-numre er ugyldige, og opkald er slået fra.
+> Appen starter i **demotilstand** med 224 fiktive virksomheder: 104 i København, Aarhus, Odense og Aalborg og 24 i hver af Stockholm, Oslo, Berlin, London og New York. De er tydeligt markeret, telefonnumre er i nummerserier til fiktion eller ugyldige, registreringsnumre er ugyldige, og opkald er slået fra.
+
+**Fremvisning og lancering uden CVR:** se `docs/lancering/global-lancering.md`. Kort fortalt: vis appen via TestFlight (demodata er tilladt der), Expo Go, iOS-simulatoren eller webdemoen. App Store kræver rigtige virksomheder, men ikke et CVR-nummer.
 
 ## Fotos
 
@@ -41,6 +45,12 @@ npm run photos:bundle   # kræver internet; henter alle fotos til assets/photos/
 ```
 
 Fotos til de rigtige virksomheder: brug virksomhedens egne billeder (med deres tilladelse – det står i samtykket) og angiv en https-adresse i kolonnen `billede`.
+
+## Kortdata og byer
+
+- Byer i hele verden: [GeoNames](https://www.geonames.org) (CC BY 4.0) via `all-the-cities`. Genbyg med `npm run data:cities`.
+- Kystlinjer på webkortet: [Natural Earth](https://www.naturalearthdata.com) (public domain) via `world-atlas`. Genbyg med `npm run data:map`.
+- På iPhone bruges Apple Kort. Der gemmes ingen data fra Apple i appen.
 
 ## Rigtige virksomheder: fra regneark til app
 
@@ -73,9 +83,9 @@ Formater i regnearket:
 
 Du behøver **ikke** en Mac – EAS bygger appen i skyen.
 
-1. Opret en Apple Developer-konto (99 USD/år). Som virksomhed kræver det et D-U-N-S-nummer (gratis, tager nogle dage).
+1. Opret en Apple Developer-konto (99 USD/år). En personlig konto er nok, og der kræves intet CVR-nummer. Jeres navn står så som udgiver. Som virksomhed kræver det et D-U-N-S-nummer (gratis, tager nogle dage).
 2. Opret appen i [App Store Connect](https://appstoreconnect.apple.com) med bundle id `dk.fixmatch.app`. Kopiér App ID ind i `eas.json` (`ascAppId`).
-3. Udfyld virksomhedsoplysningerne i `src/constants/app-info.ts` (navn, CVR, e-mail, hjemmeside, privatlivs-URL).
+3. Udfyld udgiveroplysningerne i `src/constants/app-info.ts` (navn som på Apple-kontoen, e-mail, hjemmeside, privatlivs-URL). CVR kan stå tomt.
 4. Byg og upload:
 
    ```bash
@@ -97,13 +107,15 @@ Du behøver **ikke** en Mac – EAS bygger appen i skyen.
 ```
 src/app/            Skærme (Expo Router): faner, kategori, virksomhed, sammenlign, søg, filtre …
 src/components/     UI-komponenter (kort, knapper, Trustpilot-visning, Apple Kort og webkort)
-src/lib/            Logik: rangering, filtre, åbningstider, søgning, formatering, kontakt
+src/lib/            Logik: rangering, filtre, åbningstider, søgning, formatering, kontakt, lande
+src/i18n/           Sprog: dansk tekst er nøglen, `en.ts` er den engelske ordbog
 src/data/           Fag, fotos, postnumre, demodata, live-data og tekster
 src/state/          App-tilstand (gemmes kun på telefonen)
-scripts/            Import af regneark, fotos, postnumre, demodata og ikoner
+scripts/            Import af regneark, fotos, postnumre, verdensbyer, kortkonturer, demodata og ikoner
 templates/          Regnearksskabelon til virksomheder
 docs/app-store/     App Store-tekster, privatlivs-svar og tjekliste
-docs/jura/          Samtykke, privatlivspolitik, vilkår, Trustpilot og kontakt-regler
+docs/jura/          Samtykke, privatlivspolitik, vilkår, Trustpilot, Apple Kort og kontakt-regler
+docs/lancering/     Global lancering, udgivelse uden CVR og fremvisning
 ```
 
 ## Sådan virker FixMatch-scoren

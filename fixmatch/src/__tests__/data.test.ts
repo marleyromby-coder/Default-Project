@@ -9,6 +9,7 @@ import {
   searchPlaces,
 } from '@/data/places';
 import { isPhotoKey } from '@/data/photos';
+import { openCountries } from '@/lib/business-text';
 import { isValidBusiness, parseBusinesses } from '@/lib/data-source';
 import { isInDenmark } from '@/lib/geo';
 import { getMarket, MARKETS } from '@/lib/markets';
@@ -22,9 +23,13 @@ describe('demo data', () => {
     expect(businesses).toHaveLength(demo.length);
     expect(new Set(businesses.map((b) => b.id)).size).toBe(businesses.length);
     for (const category of CATEGORIES) {
-      expect(businesses.filter((b) => !b.country && b.categories.includes(category.id)).length).toBeGreaterThanOrEqual(10);
+      expect(businesses.filter((b) => !b.country && b.categories.includes(category.id)).length).toBeGreaterThanOrEqual(
+        10,
+      );
       for (const country of ['SE', 'NO', 'DE', 'GB', 'US']) {
-        expect(businesses.filter((b) => b.country === country && b.categories.includes(category.id)).length).toBeGreaterThanOrEqual(3);
+        expect(
+          businesses.filter((b) => b.country === country && b.categories.includes(category.id)).length,
+        ).toBeGreaterThanOrEqual(3);
       }
     }
   });
@@ -79,6 +84,14 @@ describe('demo data', () => {
     expect(parseBusinesses('nope')).toEqual([]);
     const withoutConsent = { ...demo[0], consent: {} };
     expect(isValidBusiness(withoutConsent)).toBe(false);
+  });
+});
+
+describe('markets', () => {
+  it('opens only the countries that have businesses', () => {
+    expect(openCountries(businesses)).toEqual(['DK', 'SE', 'NO', 'DE', 'GB', 'US']);
+    expect(openCountries(businesses.filter((b) => !b.country))).toEqual(['DK']);
+    expect(openCountries([])).toHaveLength(Object.keys(MARKETS).length);
   });
 });
 

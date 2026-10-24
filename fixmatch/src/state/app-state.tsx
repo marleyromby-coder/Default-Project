@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, type PropsWithChildren, useContext, useEffect, useMemo, useReducer } from 'react';
 
 import { DEFAULT_LOCATION } from '@/data/places';
+import { openCountries } from '@/lib/business-text';
 import { bundledBusinesses, parseBusinesses, REMOTE_DATA_URL } from '@/lib/data-source';
 import { DEFAULT_FILTERS } from '@/lib/filters';
 import { setDistanceUnit } from '@/lib/format';
@@ -229,11 +230,20 @@ export function useApp(): AppContextValue {
   return value;
 }
 
-/** Where the user is: the market to compare within, or `supported: false` outside FixMatch's countries. */
-export function useMarket(): { country: CountryCode | undefined; market: Market; supported: boolean } {
+/**
+ * Where the user is: the market to compare within, and whether FixMatch has businesses there
+ * (`supported: false` outside FixMatch's countries or in a market without data yet).
+ */
+export function useMarket(): {
+  country: CountryCode | undefined;
+  market: Market;
+  supported: boolean;
+  open: CountryCode[];
+} {
   const { state } = useApp();
   const country = userCountry(state.location);
-  return { country, market: getMarket(country), supported: country !== undefined };
+  const open = useMemo(() => openCountries(state.businesses), [state.businesses]);
+  return { country, market: getMarket(country), supported: country !== undefined && open.includes(country), open };
 }
 
 export function useBusiness(id: string | undefined): Business | undefined {

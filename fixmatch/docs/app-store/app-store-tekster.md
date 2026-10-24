@@ -104,19 +104,28 @@ Tilføjer I senere analyse (fx Firebase, PostHog) eller login, skal svaret opdat
 
 ## Noter til Apples review-team (på engelsk)
 
+Udfyld byen i firkantede parenteser med den by, hvor I har rigtige virksomheder.
+
 ```
-FixMatch helps people in Denmark find and compare local tradespeople (plumbers, electricians, carpenters, bricklayers, mechanics, painters, roofers, locksmiths) by price range, distance and Trustpilot TrustScore, and contact them directly by phone or website.
+FixMatch helps people find and compare local tradespeople (plumbers, electricians, carpenters, bricklayers, mechanics, painters, roofers, locksmiths) by price range and distance, and contact them directly by phone or website.
 
 • No account or login is required.
-• Location permission is optional. Without it, the user picks a town manually (Mere → Placering). Location is processed on the device only.
+• The app is in English and Danish and follows the device language (Settings → FixMatch → Language).
+• Businesses are currently listed in [Copenhagen, Denmark]. If you review from another country, open More → Location and search for "[København]" to see the listings. Elsewhere the app says that FixMatch is not in that country yet.
+• Location permission is optional. Without it, the user picks a city manually (More → Location). Location is processed on the device only.
 • All listed businesses have given written consent to be listed. Prices are provided by the businesses.
 • The map uses Apple MapKit. The pins are the businesses' own addresses; the app does not store any map data.
-• "Beskriv dit problem" matches the user's text and budget on the device; the text is not sent anywhere.
-• Trustpilot content is displayed under our partner agreement with Trustpilot A/S (agreement available on request).
-• The app is in Danish. To test: open the app → tap "VVS'er" → tap a business → "Ring" opens the phone dialer. Or tap "Beskriv dit problem" → tap an example → "Find match".
+• "Describe your problem" matches the user's text and budget on the device; the text is not sent anywhere.
+• To test: tap "Plumber" → tap a business → "Call" opens the phone dialer. Or tap "Describe your problem" → tap an example → "Find a match".
 ```
 
-*Fjern Trustpilot-linjen, hvis aftalen ikke er på plads – og vis i så fald ikke TrustScores i den version.*
+Kun hvis Trustpilot-aftalen er underskrevet og Trustpilot er slået til i buildet, tilføjes:
+
+```
+• Trustpilot content is displayed under our partner agreement with Trustpilot A/S (agreement available on request).
+```
+
+**Uden Trustpilot-aftale** (standard i `production`): brug undertitlen `Sammenlign pris og afstand` (26 / 30), og fjern Trustpilot-punktet under "TJEKKET OG GENNEMSIGTIGT" i beskrivelsen. Appen viser så ingen anmeldelser, og App Store-teksten må ikke love dem.
 
 ## Skærmbilleder
 

@@ -4,7 +4,9 @@
 
 ## 1. Dataansvarlig
 
-[Virksomhedsnavn], CVR [nummer], [adresse]. E-mail: [e-mail].
+[Navn som på Apple Developer-kontoen], [adresse]. E-mail: [e-mail].
+
+*Uden firma er det personen bag Apple Developer-kontoen, der er dataansvarlig. Når der er et firma: skriv firmanavn og CVR-nummer i stedet. Appen bruger samme navn (`src/constants/app-info.ts`). Til andre lande end Danmark: læg også en engelsk udgave online. Appen har den allerede (Mere → Privatlivspolitik på engelsk).*
 
 ## 2. Kort fortalt
 

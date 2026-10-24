@@ -1,10 +1,20 @@
 import { getLanguage } from '@/i18n';
 
-import { getMarket } from './markets';
+import { COUNTRY_CODES, getMarket } from './markets';
 import type { Business, CountryCode, Currency } from './types';
 
 export function countryOf(business: Business): CountryCode {
   return business.country ?? 'DK';
+}
+
+/**
+ * Countries FixMatch has businesses in. The live data may cover only some of the markets,
+ * e.g. Denmark at launch; with no data at all, every market counts as open.
+ */
+export function openCountries(businesses: Business[]): CountryCode[] {
+  const present = new Set(businesses.map(countryOf));
+  const open = COUNTRY_CODES.filter((c) => present.has(c));
+  return open.length > 0 ? open : COUNTRY_CODES;
 }
 
 export function currencyOf(business: Business): Currency {

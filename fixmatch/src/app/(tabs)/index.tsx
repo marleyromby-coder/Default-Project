@@ -27,7 +27,7 @@ import { reviewValue, scoreBusinesses } from '@/lib/ranking';
 import type { CategoryId } from '@/lib/types';
 import { t } from '@/i18n';
 import { countryOf, currencyOf } from '@/lib/business-text';
-import { COUNTRY_CODES, countryName, taxNote } from '@/lib/markets';
+import { countryName, taxNote } from '@/lib/markets';
 import { useApp, useMarket } from '@/state/app-state';
 
 const POPULAR_JOBS: [CategoryId, string][] = [
@@ -53,7 +53,7 @@ export default function HomeScreen() {
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { state } = useApp();
-  const { country, market, supported } = useMarket();
+  const { country, market, supported, open } = useMarket();
   const { locate, busy } = useGps();
   const origin = state.location.coords;
   // Only this country's businesses: prices are never compared across currencies.
@@ -168,7 +168,7 @@ export default function HomeScreen() {
           <AppText variant="footnote" style={[styles.flex, { color: colors.text }]}>
             {t('FixMatch er endnu ikke i {country}. Vi er i {countries}.', {
               country: countryName(state.location.country ?? ''),
-              countries: COUNTRY_CODES.map(countryName).join(', '),
+              countries: open.map(countryName).join(', '),
             })}
           </AppText>
           <Tappable

@@ -2,14 +2,16 @@
 
 Kryds af i rækkefølge. ✅ = allerede klaret i koden.
 
-## 1. Konto og virksomhed
+## 1. Konto og udgiver
 
-- [ ] Stift virksomheden (fx enkeltmandsvirksomhed eller ApS) og få et CVR-nummer.
-- [ ] Hent et gratis D-U-N-S-nummer til virksomheden (kræves for at tilmelde en organisation).
-- [ ] Tilmeld Apple Developer Program som **organisation** (99 USD/år). Som privatperson står jeres personlige navn som udgiver.
-- [ ] Accepter Apple Developer Program License Agreement. Det er tilladelsen til Apple Kort (bilag 6). Gem dato og version (`docs/jura/apple-kort.md`).
-- [ ] Angiv **trader-status** i App Store Connect (krav i EU efter Digital Services Act). Som erhvervsdrivende vises adresse, telefon og e-mail på App Store-siden i EU.
-- [ ] Registrér domænet `fixmatch.dk` (punktum.dk) og overvej varemærkeregistrering af "FixMatch" hos Patent- og Varemærkestyrelsen.
+Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
+
+- ✅ Apple Developer Program (personlig konto, 99 USD/år). Jeres navn står som udgiver i App Store.
+- [ ] Accepter den nyeste Apple Developer Program License Agreement. Det er tilladelsen til Apple Kort (bilag 6). Gem dato og version (`docs/jura/apple-kort.md`).
+- [ ] Angiv **trader-status** i App Store Connect (Business → Compliance → Digital Services Act). Gratis app uden indtægter: ikke erhvervsdrivende. Tjener I penge: erhvervsdrivende, og så vises adresse, telefon og e-mail på App Store-siden i EU.
+- [ ] Vælg kun de lande i App Store Connect (Pricing and Availability), hvor der er rigtige virksomheder.
+- [ ] Registrér domænet `fixmatch.dk` (punktum.dk) til privatlivspolitik og support.
+- [ ] Senere, når der kommer indtægter: stift en enkeltmandsvirksomhed (gratis på virk.dk), momsregistrér ved over 50.000 kr. i momspligtigt salg, og overvej varemærkeregistrering af "FixMatch".
 
 ## 2. Indhold og rettigheder
 
@@ -18,7 +20,7 @@ Kryds af i rækkefølge. ✅ = allerede klaret i koden.
 - [ ] Virksomhedernes egne billeder og logoer er med i samtykket.
 - [ ] `npm run import:businesses` kører uden fejl.
 - [ ] `npm run photos:bundle` er kørt, så fotos ligger i appen.
-- [ ] Udfyld `src/constants/app-info.ts` (virksomhedsnavn, CVR, e-mail, URL'er).
+- [ ] Udfyld `src/constants/app-info.ts` (navn som på Apple-kontoen, e-mail, URL'er). CVR kan stå tomt.
 - [ ] Privatlivspolitik og vilkår ligger på offentlige URL'er.
 
 ## 3. Teknik
@@ -40,7 +42,7 @@ Kryds af i rækkefølge. ✅ = allerede klaret i koden.
 
 ## 4. App Store Connect
 
-- [ ] Tekster, søgeord og noter fra `app-store-tekster.md`.
+- [ ] Tekster, søgeord og noter fra `app-store-tekster.md` (dansk) og `app-store-texts-en.md` (engelsk, til alle andre lande).
 - [ ] App Privacy: "Indsamler ikke data".
 - [ ] Aldersgrænse 4+.
 - [ ] Skærmbilleder (6,9").
@@ -52,6 +54,8 @@ Kryds af i rækkefølge. ✅ = allerede klaret i koden.
 | Retningslinje | Risiko | Sådan undgår I den |
 | --- | --- | --- |
 | 2.1 App Completeness | Demodata eller tomme lister | Indsend kun med rigtige, samtykkede virksomheder |
+| 2.2 Beta Testing | Demoversion i App Store | Demoer og betaversioner hører hjemme på TestFlight |
+| 2.1 Review fra USA | Apple tester ofte fra USA og ser en tom app | Skriv i review-noterne, hvilken by de skal vælge (Mere → Placering), og vælg kun lande med virksomheder |
 | 4.2 Minimum Functionality | "Bare en hjemmeside" | Appen har native kort, sammenligning, filtre, placering – fremhæv det i review-noterne |
 | 5.1.1 Privacy | Manglende privatlivspolitik | Link i appen ✅ og i App Store Connect |
 | 5.2.2 Tredjepartsindhold | Trustpilot-data uden tilladelse | Partneraftale med Trustpilot – Apple kan bede om dokumentation |
