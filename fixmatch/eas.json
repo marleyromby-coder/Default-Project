@@ -4,6 +4,15 @@
     "appVersionSource": "remote"
   },
   "build": {
+    "simulator": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_FIXMATCH_DATA": "demo"
+      },
+      "ios": {
+        "simulator": true
+      }
+    },
     "demo": {
       "distribution": "internal",
       "env": {

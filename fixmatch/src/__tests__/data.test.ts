@@ -11,7 +11,7 @@ import {
 import { isPhotoKey } from '@/data/photos';
 import { isValidBusiness, parseBusinesses } from '@/lib/data-source';
 import { isInDenmark } from '@/lib/geo';
-import { MARKETS } from '@/lib/markets';
+import { getMarket, MARKETS } from '@/lib/markets';
 import { summarizeJobPrice } from '@/lib/prices';
 import { search } from '@/lib/search';
 
@@ -22,33 +22,55 @@ describe('demo data', () => {
     expect(businesses).toHaveLength(demo.length);
     expect(new Set(businesses.map((b) => b.id)).size).toBe(businesses.length);
     for (const category of CATEGORIES) {
-      expect(businesses.filter((b) => b.categories.includes(category.id)).length).toBeGreaterThanOrEqual(10);
+      expect(businesses.filter((b) => !b.country && b.categories.includes(category.id)).length).toBeGreaterThanOrEqual(10);
+      for (const country of ['SE', 'NO', 'DE', 'GB', 'US']) {
+        expect(businesses.filter((b) => b.country === country && b.categories.includes(category.id)).length).toBeGreaterThanOrEqual(3);
+      }
     }
   });
 
   it('can never be mistaken for real businesses', () => {
     const weights = [2, 7, 6, 5, 4, 3, 2, 1];
+    // Number ranges reserved for fiction or impossible numbers, per country.
+    const fakePhone: Record<string, RegExp> = {
+      DK: /^\+4510\d{6}$/,
+      SE: /^\+46701746\d{2}$/,
+      NO: /^\+4700\d{6}$/,
+      DE: /^\+490\d+$/,
+      GB: /^\+447700900\d{3}$/,
+      US: /^\+121255501\d{2}$/,
+    };
     for (const b of businesses) {
+      const country = b.country ?? 'DK';
       expect(b.demo).toBe(true);
-      const sum = b.cvr.split('').reduce((acc, d, i) => acc + Number(d) * weights[i], 0);
-      expect(sum % 11).not.toBe(0); // fails the CVR check digit on purpose
-      expect(b.contact.phone.startsWith('+4510')).toBe(true); // unassigned number series
+      expect(b.contact.phone).toMatch(fakePhone[country]);
       expect(b.contact.website?.endsWith('.example') ?? true).toBe(true); // reserved domain
+      if (country === 'DK') {
+        const sum = b.cvr.split('').reduce((acc, d, i) => acc + Number(d) * weights[i], 0);
+        expect(sum % 11).not.toBe(0); // fails the CVR check digit on purpose
+      }
     }
   });
 
-  it('has sane prices, places and photos', () => {
+  it('has sane prices, places, photos and texts in both languages', () => {
     for (const b of businesses) {
-      expect(isInDenmark(b.coords)).toBe(true);
+      const market = getMarket(b.country);
+      expect(nearestPlace(b.coords).country).toBe(market.country);
+      expect(b.pricing.currency ?? 'DKK').toBe(market.currency);
       expect(isPhotoKey(b.photo)).toBe(true);
-      expect(b.pricing.hourlyMin).toBeGreaterThanOrEqual(300);
+      expect(b.pricing.hourlyMin).toBeGreaterThanOrEqual(300 * market.fromDkk);
       expect(b.pricing.hourlyMax).toBeGreaterThanOrEqual(b.pricing.hourlyMin);
       for (const e of b.pricing.examples) expect(e.max).toBeGreaterThan(e.min);
       if (b.trustpilot) {
         expect(b.trustpilot.score).toBeGreaterThanOrEqual(1);
         expect(b.trustpilot.score).toBeLessThanOrEqual(5);
       }
+      const other = b.country ? b.translations?.da : b.translations?.en;
+      expect(other?.tagline).toBeTruthy();
+      expect(other?.services?.length).toBe(b.services.length);
     }
+    expect(new Set(businesses.map((b) => b.country ?? 'DK')).size).toBe(6);
+    for (const b of businesses.filter((x) => !x.country)) expect(isInDenmark(b.coords)).toBe(true);
   });
 
   it('rejects malformed records', () => {

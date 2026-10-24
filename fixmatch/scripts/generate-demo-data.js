@@ -165,6 +165,52 @@ const CATEGORY_SETUP = {
   },
 };
 
+/** English texts for each trade, in the same order as the Danish ones above. */
+const ENGLISH = {
+  vvs: {
+    taglines: ['Bathrooms and emergency plumbing', 'Water, heating and drains', 'Heat pumps and gas boilers', 'Fixed prices on bathrooms', '24/7 help with water leaks'],
+    services: ['Bathrooms', 'Drains and sewers', 'Heating systems', 'Gas boilers', 'Heat pumps', 'Water damage', 'Kitchen plumbing', 'Underfloor heating'],
+    about: 'plumbing firm that fixes everything from dripping taps to new bathrooms. We are happy to give a fixed price, and we always clean up after ourselves.',
+  },
+  elektriker: {
+    taglines: ['EV chargers and home electrics', 'New fuse boards and fault finding', 'Lighting and smart home', 'Licensed electricians for homes', 'Electrics for renovations and new builds'],
+    services: ['Electrical installations', 'EV chargers', 'Fuse boards', 'Lighting', 'Fault finding', 'Solar panels', 'Smart home', 'Appliances'],
+    about: 'licensed electrical firm focused on homes: EV chargers, new fuse boards, lighting and fault finding. We tell you the price before we start.',
+  },
+  toemrer: {
+    taglines: ['Windows, doors and floors', 'Decks and conservatories', 'Kitchen fitting and joinery', 'Extensions and renovation', 'Roof work and dormers'],
+    services: ['Windows and doors', 'Floors', 'Decks', 'Kitchen fitting', 'Roof work', 'Insulation', 'Ceilings', 'Carports'],
+    about: 'carpentry firm with experienced carpenters and apprentices. We do small repairs and big renovations, and you have one contact all the way.',
+  },
+  murer: {
+    taglines: ['Bathrooms from floor to tiles', 'Facades and repointing', 'Brickwork and chimneys', 'Tiles and paving', 'Renovating older houses'],
+    services: ['Brickwork', 'Tiles', 'Bathrooms', 'Facade renovation', 'Chimneys', 'Repointing', 'Concrete floors', 'Rendering'],
+    about: 'bricklaying firm that mostly does bathrooms, facades and older houses. We are happy to coordinate with plumbers and electricians, so you only have one number to call.',
+  },
+  mekaniker: {
+    taglines: ['Servicing for all makes', 'Tyres, brakes and inspections', 'Electric and hybrid specialists', 'Quick service while you wait', 'Fault finding and repairs'],
+    services: ['Servicing', 'Brakes', 'Tyres and wheel changes', 'Inspections', 'Fault finding', 'Air conditioning', 'Electric and hybrid cars', 'Clutches'],
+    about: 'independent garage that services all makes to the manufacturer’s schedule, so your warranty is kept. You always get an estimate before we start.',
+  },
+  maler: {
+    taglines: ['Interior painting and filling', 'Facades and windows', 'End-of-tenancy decorating', 'Painting at a fixed price', 'Flats and houses'],
+    services: ['Interior painting', 'Exterior painting', 'Filling', 'Wallpapering', 'Floor finishing', 'Windows and doors', 'Facades', 'End of tenancy'],
+    about: 'painting firm with trained painters. We cover up, paint and tidy, so you can use your home again the day the job is done.',
+  },
+  tagdaekker: {
+    taglines: ['Felt roofs, gutters and skylights', 'Roof repairs after storms', 'New roofs and flashing', 'Green roofs and felt', 'Gutters and downpipes'],
+    services: ['Felt roofs', 'Gutters', 'Roof repairs', 'Skylights', 'Green roofs', 'Drone inspections', 'Flashing'],
+    about: 'roofing firm that lays new roofs and repairs old ones. We are happy to inspect the roof with a drone, so you can see the damage before you accept a quote.',
+  },
+  laasesmed: {
+    taglines: ['Locked out? We come fast', 'Burglary protection', 'Locks, cylinders and keys', '24/7 across the city', 'Access control for homes'],
+    services: ['Lockouts', 'Locks and cylinders', 'Security doors', 'Access control', 'Keys and copies', 'Burglary protection', 'Safes'],
+    about: 'locksmith firm with vans ready across the area. We open doors without breaking the lock whenever we can, and we secure your home against burglary.',
+  },
+};
+
+const RESPONSE_TIMES_EN = ['Usually replies within 1 hour', 'Usually replies the same day', 'Usually replies within 24 hours'];
+
 // Kept in sync with src/data/categories.ts (job id, unit, fallback min, max).
 const JOBS = {
   vvs: [['stoppet-afloeb', 'Stoppet afløb', 'opgave', 1200, 2800], ['skift-toilet', 'Udskiftning af toilet', 'opgave', 3500, 7000], ['blandingsbatteri', 'Nyt blandingsbatteri', 'opgave', 1200, 2400], ['service-fyr', 'Service af gasfyr', 'opgave', 1300, 1900], ['radiator', 'Udskiftning af radiator', 'opgave', 2500, 5000], ['vandskade', 'Akut vandskade', 'opgave', 1800, 4000]],
@@ -180,18 +226,18 @@ const JOBS = {
 const RESPONSE_TIMES = ['Svarer typisk inden for 1 time', 'Svarer typisk samme dag', 'Svarer typisk inden for 24 timer'];
 const EMPLOYEES = ['1–4', '5–9', '10–19', '20–49'];
 
-function slugify(name) {
+function slugify(name, and = 'og') {
   return name
     .toLowerCase()
-    .replace(/æ/g, 'ae').replace(/ø/g, 'oe').replace(/å/g, 'aa')
-    .replace(/&/g, 'og')
+    .replace(/æ/g, 'ae').replace(/ø/g, 'oe').replace(/å/g, 'aa').replace(/ß/g, 'ss')
+    .replace(/&/g, and)
     .normalize('NFD').replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 }
 
 /** An 8-digit number that fails the CVR modulus-11 check, so it can never be a real CVR. */
-function fakeCvr() {
+function fakeCvr(int) {
   const weights = [2, 7, 6, 5, 4, 3, 2, 1];
   for (;;) {
     const digits = String(int(10000000, 99999999)).split('').map(Number);
@@ -201,11 +247,11 @@ function fakeCvr() {
 }
 
 /** Danish numbers starting with 1 are short codes, so 8-digit 10-numbers are never assigned. */
-function fakePhone() {
+function fakePhone(int) {
   return `+4510${String(int(0, 999999)).padStart(6, '0')}`;
 }
 
-function hoursFor(category) {
+function hoursFor(category, chance) {
   const workday = chance(0.5) ? ['07:00', '15:30'] : ['07:00', '16:00'];
   const friday = chance(0.6) ? ['07:00', '14:00'] : workday;
   if (category === 'mekaniker') {
@@ -222,71 +268,218 @@ function isoDay(month, day) {
   return `2026-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 }
 
-function buildBusiness(category, name, area, quality, photo, index) {
+/** A price in DKK converted to a market's currency and rounded to a believable step. */
+function localPrice(dkk, market) {
+  const value = dkk * market.fromDkk;
+  const step = value >= 5000 ? 100 : value >= 1000 ? 50 : value >= 100 ? (market.fromDkk < 0.5 ? 5 : 10) : 1;
+  return Math.max(step, Math.round(value / step) * step);
+}
+
+const DANISH_MARKET = { country: 'DK', currency: 'DKK', fromDkk: 1 };
+
+function buildBusiness(category, name, area, quality, photo, index, market = DANISH_MARKET, rng = random) {
+  const r = () => rng();
+  const between = (min, max) => min + (max - min) * r();
+  const int = (min, max) => Math.floor(between(min, max + 1));
+  const chance = (p) => r() < p;
+  const shuffleIndices = (n) => {
+    const copy = [...Array(n).keys()];
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(r() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  };
+  const pickIndex = (n) => Math.floor(r() * n);
+
   const setup = CATEGORY_SETUP[category];
+  const english = ENGLISH[category];
+  const danish = market.country === 'DK';
   const [city, postalCode, lat, lon] = area;
   const priceFactor = clamp(0.6 * (quality - 0.5) * 2 + 0.4 * between(-1, 1), -1, 1);
-  const hourlyMin = round(setup.hourly[0] + ((priceFactor + 1) / 2) * (setup.hourly[1] - setup.hourly[0]), 5);
-  const hourlyMax = round(hourlyMin + between(...setup.spread), 5);
-  const callout = setup.callout[1] > 0 && chance(0.75) ? round(between(...setup.callout), 5) : undefined;
+  const hourlyMinDkk = round(setup.hourly[0] + ((priceFactor + 1) / 2) * (setup.hourly[1] - setup.hourly[0]), 5);
+  const hourlyMaxDkk = round(hourlyMinDkk + between(...setup.spread), 5);
+  const calloutDkk = setup.callout[1] > 0 && chance(0.75) ? round(between(...setup.callout), 5) : undefined;
+  const hourlyMin = danish ? hourlyMinDkk : localPrice(hourlyMinDkk, market);
+  const hourlyMax = danish ? hourlyMaxDkk : Math.max(hourlyMin + 1, localPrice(hourlyMaxDkk, market));
+  const callout = calloutDkk === undefined ? undefined : danish ? calloutDkk : localPrice(calloutDkk, market);
 
-  const jobs = shuffle(JOBS[category]).slice(0, Math.min(4, JOBS[category].length));
-  const examples = jobs.map(([job, label, unit, min, max]) => {
+  const jobOrder = shuffleIndices(JOBS[category].length).slice(0, Math.min(4, JOBS[category].length));
+  const examples = jobOrder.map((i) => {
+    const [job, label, unit, min, max] = JOBS[category][i];
     const factor = 1 + 0.18 * priceFactor;
     const step = max >= 5000 ? 100 : max >= 1000 ? 50 : 10;
-    const low = round(min * factor * between(0.94, 1.04), step);
-    const high = Math.max(low + step, round(max * factor * between(0.94, 1.04), step));
-    return { job, label, min: low, max: high, unit };
+    const lowDkk = round(min * factor * between(0.94, 1.04), step);
+    const highDkk = Math.max(lowDkk + step, round(max * factor * between(0.94, 1.04), step));
+    if (danish) return { job, label, min: lowDkk, max: highDkk, unit };
+    const low = localPrice(lowDkk, market);
+    return { job, label, min: low, max: Math.max(low + 1, localPrice(highDkk, market)), unit };
   });
 
   const hasTrustpilot = chance(0.9);
   const score = Math.round((3.6 + 1.3 * quality) * 10) / 10;
   const reviews = Math.round(Math.exp(between(Math.log(6), Math.log(900))));
-  const slug = slugify(name);
+  const slug = slugify(name, danish ? 'og' : 'and');
   const founded = int(1978, 2022);
-  const auth = setup.auth.map((kind) => ({ kind, number: String(int(10000, 99999)) }));
-  if (category === 'vvs') {
+  const auth = danish ? setup.auth.map((kind) => ({ kind, number: String(int(10000, 99999)) })) : market.auth(category, int);
+  if (danish && category === 'vvs') {
     if (chance(0.4)) auth.push({ kind: 'kloak', number: String(int(10000, 99999)) });
     if (chance(0.3)) auth.push({ kind: 'gas', number: String(int(10000, 99999)) });
   }
-  const [membership, membershipChance] = setup.membership;
+  const [membership, membershipChance] = danish ? setup.membership : [market.memberships[category] ?? '', 0.6];
   const consentDay = int(1, 30);
+  // Same order of random draws as before the English texts were added, so the Danish data does not change.
+  const taglineIndex = pickIndex(setup.taglines.length);
+  const cvr = danish ? fakeCvr(int) : market.registry(int);
+  const streets = danish ? STREETS : market.streets;
+  const streetName = streets[pickIndex(streets.length)];
+  const houseNumber = int(2, 88);
+  const coords = { lat: Number((lat + between(-0.012, 0.012)).toFixed(5)), lon: Number((lon + between(-0.02, 0.02)).toFixed(5)) };
+  const serviceRadiusKm = [15, 20, 25, 30, 40][pickIndex(5)];
+  const phone = danish ? fakePhone(int) : market.phone(int);
+  const updatedPricing = isoDay(10, int(1, 15));
+  const trustpilotDay = hasTrustpilot ? isoDay(10, int(10, 18)) : undefined;
+  const memberships = membership && chance(membershipChance) ? [membership] : [];
+  const serviceOrder = shuffleIndices(setup.services.length).slice(0, int(4, 6));
+  const hours = hoursFor(category, chance);
+  const emergency = chance(setup.emergency);
+  const responseIndex = pickIndex(RESPONSE_TIMES.length);
+  const employees = EMPLOYEES[pickIndex(EMPLOYEES.length)];
+  const updatedAt = isoDay(10, int(10, 18));
+
+  const da = {
+    tagline: setup.taglines[taglineIndex],
+    description: `${name} er et ${setup.about} Etableret i ${founded}.`,
+    services: serviceOrder.map((i) => setup.services[i]),
+    responseTime: RESPONSE_TIMES[responseIndex],
+  };
+  const en = {
+    tagline: english.taglines[taglineIndex],
+    description: `${name} is a ${english.about} Founded in ${founded}.`,
+    services: serviceOrder.map((i) => english.services[i]),
+    responseTime: RESPONSE_TIMES_EN[responseIndex],
+  };
+  // Danish businesses write in Danish, the others in English; both get the other language as a translation.
+  const own = danish ? da : en;
 
   return {
     id: slug,
     name,
+    ...(danish ? {} : { country: market.country }),
     categories: category === 'toemrer' && index % 5 === 4 ? ['toemrer', 'tagdaekker'] : [category],
-    tagline: pick(setup.taglines),
-    description: `${name} er et ${setup.about} Etableret i ${founded}.`,
-    cvr: fakeCvr(),
-    address: { street: `${pick(STREETS)} ${int(2, 88)}`, postalCode, city },
-    coords: { lat: Number((lat + between(-0.012, 0.012)).toFixed(5)), lon: Number((lon + between(-0.02, 0.02)).toFixed(5)) },
-    serviceRadiusKm: pick([15, 20, 25, 30, 40]),
-    contact: { phone: fakePhone(), website: `https://${slug}.example` },
+    tagline: own.tagline,
+    description: own.description,
+    cvr,
+    address: { street: market.streetFirst ? `${houseNumber} ${streetName}` : `${streetName} ${houseNumber}`, postalCode, city },
+    coords,
+    serviceRadiusKm,
+    contact: { phone, website: `https://${slug}.example` },
     pricing: {
       hourlyMin,
       hourlyMax,
       ...(callout ? { calloutFee: callout } : {}),
       examples,
-      updatedAt: isoDay(10, int(1, 15)),
+      ...(danish ? {} : { currency: market.currency }),
+      updatedAt: updatedPricing,
     },
     ...(hasTrustpilot
-      ? { trustpilot: { score, reviews, url: `https://dk.trustpilot.com/review/${slug}.example`, updatedAt: isoDay(10, int(10, 18)) } }
+      ? {
+          trustpilot: {
+            score,
+            reviews,
+            url: `https://${danish ? 'dk' : market.trustpilot}.trustpilot.com/review/${slug}.example`,
+            updatedAt: trustpilotDay,
+          },
+        }
       : {}),
     authorizations: auth,
-    memberships: membership && chance(membershipChance) ? [membership] : [],
-    services: shuffle(setup.services).slice(0, int(4, 6)),
-    hours: hoursFor(category),
-    emergency: chance(setup.emergency),
-    responseTime: pick(RESPONSE_TIMES),
+    memberships,
+    services: own.services,
+    hours,
+    emergency,
+    responseTime: own.responseTime,
     founded,
-    employees: pick(EMPLOYEES),
+    employees,
     photo,
     consent: { date: isoDay(9, consentDay), contact: 'Demo' },
+    translations: danish ? { en } : { da },
     demo: true,
-    updatedAt: isoDay(10, int(10, 18)),
+    updatedAt,
   };
 }
+
+/**
+ * Demo cities abroad. Everything is fictional: phone numbers come from ranges
+ * reserved for drama and examples (UK 07700 900xxx, US 555-01xx, Sweden
+ * 070-1740 6xx) or are invalid (Norway and Germany starting with 0), and company
+ * numbers are made up. Prices are the Danish ones converted with fromDkk
+ * (kept in sync with src/lib/markets.ts).
+ */
+const TRADE_WORDS = {
+  en: { vvs: 'Plumbing & Heating', elektriker: 'Electrical', toemrer: 'Carpentry', murer: 'Brickwork & Tiling', mekaniker: 'Motors', maler: 'Decorators', tagdaekker: 'Roofing', laasesmed: 'Locksmiths' },
+  us: { vvs: 'Plumbing', elektriker: 'Electric', toemrer: 'Carpentry', murer: 'Masonry', mekaniker: 'Auto Repair', maler: 'Painting', tagdaekker: 'Roofing', laasesmed: 'Locksmiths' },
+  de: { vvs: 'Haustechnik', elektriker: 'Elektrotechnik', toemrer: 'Zimmerei', murer: 'Maurerbetrieb', mekaniker: 'Kfz-Werkstatt', maler: 'Malerbetrieb', tagdaekker: 'Dachdeckerei', laasesmed: 'Schlüsseldienst' },
+  se: { vvs: 'VVS', elektriker: 'El', toemrer: 'Snickeri', murer: 'Mureri', mekaniker: 'Bilverkstad', maler: 'Måleri', tagdaekker: 'Tak', laasesmed: 'Lås' },
+  no: { vvs: 'Rør', elektriker: 'Elektro', toemrer: 'Snekkeri', murer: 'Mur', mekaniker: 'Bilverksted', maler: 'Maler', tagdaekker: 'Tak', laasesmed: 'Låsservice' },
+};
+
+const digits = (int, n) => Array.from({ length: n }, () => int(0, 9)).join('');
+
+const ABROAD = [
+  {
+    country: 'SE', currency: 'SEK', fromDkk: 1.45, trustpilot: 'se', words: TRADE_WORDS.se,
+    prefixes: ['Kopparkällan', 'Ljusgnistan', 'Ekspånet', 'Tegelröd', 'Kolvverket', 'Färgklicken', 'Skifferhatten', 'Låskolven', 'Vattenfallet', 'Strömkretsen', 'Hyvelbänken', 'Kalkstenen', 'Kugghjulet', 'Penseldraget', 'Taknocken', 'Nyckelknippan', 'Rörverket', 'Gnistan', 'Bjälklaget', 'Fogmästaren', 'Vevaxeln', 'Färgglad', 'Hängrännan', 'Regelfast'],
+    areas: [['Södermalm, Stockholm', '118 20', 59.315, 18.07], ['Vasastan, Stockholm', '113 21', 59.345, 18.05], ['Östermalm, Stockholm', '114 39', 59.338, 18.09], ['Kungsholmen, Stockholm', '112 21', 59.332, 18.03], ['Solna', '171 45', 59.36, 18.0], ['Nacka', '131 40', 59.31, 18.16]],
+    streets: ['Industrigatan', 'Verkstadsvägen', 'Hantverkargatan', 'Smedjegatan'],
+    phone: (int) => `+4670174${int(605, 699)}`,
+    registry: (int) => `556${digits(int, 3)}-${digits(int, 4)}`,
+    memberships: { vvs: 'Säker Vatten', elektriker: 'Installatörsföretagen', toemrer: 'Byggföretagen', murer: 'Byggföretagen', mekaniker: 'Motorbranschens Riksförbund', maler: 'Måleriföretagen', tagdaekker: 'Plåt & Ventföretagen', laasesmed: 'Sveriges Låssmeders Riksförening' },
+    auth: (category, int) => (category === 'elektriker' ? [{ kind: 'el', number: `A${digits(int, 5)}` }] : []),
+  },
+  {
+    country: 'NO', currency: 'NOK', fromDkk: 1.7, trustpilot: 'no', words: TRADE_WORDS.no,
+    prefixes: ['Kobberbekken', 'Lysgnisten', 'Eikesponet', 'Teglrød', 'Stempelverket', 'Fargeklatten', 'Skiferhatten', 'Låsbolten', 'Fossefallet', 'Strømkretsen', 'Høvelbenken', 'Kalksteinen', 'Tannhjulet', 'Penselstrøket', 'Takmønet', 'Nøkkelknippet', 'Rørverket', 'Gnisten', 'Bjelkelaget', 'Fugemesteren', 'Veivakselen', 'Fargeglad', 'Takrenna', 'Regelfast'],
+    areas: [['Grünerløkka, Oslo', '0552', 59.925, 10.76], ['Frogner, Oslo', '0263', 59.92, 10.71], ['Majorstuen, Oslo', '0367', 59.93, 10.715], ['Gamle Oslo', '0656', 59.905, 10.78], ['Nordstrand, Oslo', '1170', 59.86, 10.8], ['Sagene, Oslo', '0461', 59.94, 10.755]],
+    streets: ['Industriveien', 'Verkstedveien', 'Håndverkerveien', 'Smiegata'],
+    phone: (int) => `+4700${digits(int, 6)}`,
+    registry: (int) => `9${digits(int, 2)} ${digits(int, 3)} ${digits(int, 3)}`,
+    memberships: { vvs: 'Rørentreprenørene Norge', elektriker: 'Nelfo', toemrer: 'Mesterbrev', murer: 'Mesterbrev', mekaniker: 'Norges Bilbransjeforbund', maler: 'Mesterbrev', tagdaekker: 'Mesterbrev', laasesmed: 'Mesterbrev' },
+    auth: (category, int) => (category === 'elektriker' ? [{ kind: 'el', number: `DSB-${digits(int, 6)}` }] : []),
+  },
+  {
+    country: 'DE', currency: 'EUR', fromDkk: 0.13, trustpilot: 'de', words: TRADE_WORDS.de,
+    prefixes: ['Kupferquelle', 'Lichtfunke', 'Eichenspan', 'Ziegelrot', 'Kolbenwerk', 'Farbtupfer', 'Schieferhut', 'Riegelfest', 'Wasserlauf', 'Stromkreis', 'Hobelbank', 'Kalkstein', 'Zahnrad', 'Pinselstrich', 'Dachfirst', 'Schlüsselbund', 'Rohrwerk', 'Funkenflug', 'Balkenwerk', 'Fugenmeister', 'Kurbelwelle', 'Farbenfroh', 'Regenrinne', 'Schließwerk'],
+    areas: [['Mitte, Berlin', '10117', 52.52, 13.405], ['Prenzlauer Berg, Berlin', '10437', 52.54, 13.42], ['Kreuzberg, Berlin', '10997', 52.497, 13.41], ['Neukölln, Berlin', '12043', 52.48, 13.435], ['Charlottenburg, Berlin', '10585', 52.505, 13.3], ['Friedrichshain, Berlin', '10245', 52.515, 13.454]],
+    streets: ['Gewerbestraße', 'Handwerkerweg', 'Werkstattstraße', 'Industriestraße'],
+    phone: (int) => `+49030${digits(int, 7)}`,
+    registry: (int) => `HRB ${digits(int, 6)} B`,
+    memberships: { vvs: 'Handwerkskammer Berlin', elektriker: 'Handwerkskammer Berlin', toemrer: 'Handwerkskammer Berlin', murer: 'Handwerkskammer Berlin', mekaniker: 'Kfz-Innung Berlin', maler: 'Handwerkskammer Berlin', tagdaekker: 'Handwerkskammer Berlin', laasesmed: 'Handwerkskammer Berlin' },
+    auth: () => [],
+  },
+  {
+    country: 'GB', currency: 'GBP', fromDkk: 0.115, trustpilot: 'uk', words: TRADE_WORDS.en,
+    prefixes: ['Copperleaf', 'Brightwire', 'Oakgrain', 'Redkiln', 'Torquelane', 'Freshcoat', 'Slatecrest', 'Keyhaven', 'Tidewell', 'Ambervolt', 'Larchwood', 'Flintmoor', 'Gearwright', 'Hueberry', 'Ridgeline', 'Latchley', 'Millbrook', 'Sparkhill', 'Timberline', 'Mortarby', 'Pistonbay', 'Brushfield', 'Eavesford', 'Boltwise'],
+    areas: [['Islington, London', 'N1 8', 51.538, -0.103], ['Camden, London', 'NW1 7', 51.539, -0.143], ['Hackney, London', 'E8 1', 51.545, -0.055], ['Brixton, London', 'SW2 1', 51.462, -0.115], ['Clapham, London', 'SW4 7', 51.462, -0.138], ['Fulham, London', 'SW6 3', 51.473, -0.2], ['Greenwich, London', 'SE10 9', 51.483, 0.0]],
+    streets: ['Station Road', 'Mill Lane', 'Works Yard', 'Foundry Street'],
+    streetFirst: true,
+    phone: (int) => `+447700900${digits(int, 3)}`,
+    registry: (int) => `1${digits(int, 7)}`,
+    memberships: { vvs: 'Gas Safe Register', elektriker: 'NICEIC', toemrer: 'Federation of Master Builders', murer: 'Federation of Master Builders', mekaniker: 'The Motor Ombudsman', maler: 'Painting & Decorating Association', tagdaekker: 'National Federation of Roofing Contractors', laasesmed: 'Master Locksmiths Association' },
+    auth: (category, int) => (category === 'vvs' ? [{ kind: 'gas', number: digits(int, 6) }] : []),
+  },
+  {
+    country: 'US', currency: 'USD', fromDkk: 0.17, trustpilot: 'www', words: TRADE_WORDS.us,
+    prefixes: ['Hudsonflow', 'Brightline', 'Brownstone', 'Bluestone', 'Gotham Gear', 'Fresh Brush', 'Skyline', 'Keystone', 'Riverside', 'Liberty Volt', 'Pinecraft', 'Granite Row', 'Bridgeway', 'Palette', 'Summit', 'Deadbolt', 'Waterline', 'Empire Spark', 'Oakfield', 'Cornerstone', 'Piston & Co.', 'Colorwise', 'Highpoint', 'Latchkey'],
+    areas: [['Park Slope, Brooklyn', 'NY 11215', 40.672, -73.977], ['Williamsburg, Brooklyn', 'NY 11211', 40.708, -73.957], ['Upper West Side, New York', 'NY 10024', 40.787, -73.975], ['Harlem, New York', 'NY 10027', 40.81, -73.946], ['Chelsea, New York', 'NY 10011', 40.746, -74.0], ['Astoria, Queens', 'NY 11102', 40.764, -73.923]],
+    streets: ['Atlantic Avenue', 'Bedford Avenue', 'Amsterdam Avenue', 'Steinway Street'],
+    streetFirst: true,
+    phone: (int) => `+1212555${String(int(100, 199)).padStart(4, '0')}`,
+    registry: () => '',
+    memberships: {},
+    auth: (category, int) => (category === 'elektriker' || category === 'vvs' ? [{ kind: category === 'vvs' ? 'vvs' : 'el', number: `NYC-${digits(int, 6)}` }] : []),
+  },
+];
+const PER_TRADE_ABROAD = 3;
 
 function main() {
   const businesses = [];
@@ -308,9 +501,25 @@ function main() {
     }
   }
 
+  // Abroad: a separate random stream, so the Danish data stays the same.
+  const abroadRandom = mulberry32(20261023);
+  for (const market of ABROAD) {
+    // Prefixes come in rounds of one per trade, in the order of CATEGORY_SETUP.
+    Object.keys(CATEGORY_SETUP).forEach((category, tradeIndex) => {
+      const setup = CATEGORY_SETUP[category];
+      for (let i = 0; i < PER_TRADE_ABROAD; i += 1) {
+        const name = `${market.prefixes[tradeIndex + 8 * i]} ${market.words[category]}`;
+        const area = market.areas[Math.floor(abroadRandom() * market.areas.length)];
+        const quality = clamp(abroadRandom() ** 0.8, 0, 1);
+        const photo = setup.photos[Math.floor(abroadRandom() * setup.photos.length)];
+        businesses.push(buildBusiness(category, name, area, quality, photo, i, market, abroadRandom));
+      }
+    });
+  }
+
   // One clearly labelled advertisement per trade in the Copenhagen demo area.
   for (const category of ['vvs', 'elektriker', 'mekaniker']) {
-    const candidate = businesses.find((b) => b.categories[0] === category && b.address.postalCode < '3000' && b.trustpilot);
+    const candidate = businesses.find((b) => !b.country && b.categories[0] === category && b.address.postalCode < '3000' && b.trustpilot);
     if (candidate) candidate.promoted = true;
   }
 

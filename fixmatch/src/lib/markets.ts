@@ -1,7 +1,6 @@
 import { msg, t } from '@/i18n';
 
 import type { Region } from './cluster';
-import type { Coords } from './types';
 
 /**
  * The countries FixMatch lists businesses in, in launch order:
@@ -139,18 +138,4 @@ export function countryName(country: string): string {
 /** "inkl. moms" / "incl. VAT", or "ekskl. skat" / "before tax" in the US. */
 export function taxNote(market: Market): string {
   return market.taxIncluded ? t('inkl. moms') : t('ekskl. skat');
-}
-
-/** Rough check that coordinates are inside one of the markets' map regions. */
-export function marketAt(coords: Coords): CountryCode | undefined {
-  for (const market of Object.values(MARKETS)) {
-    const r = market.region;
-    if (
-      Math.abs(coords.lat - r.latitude) <= r.latitudeDelta / 2 &&
-      Math.abs(coords.lon - r.longitude) <= r.longitudeDelta / 2
-    ) {
-      return market.country;
-    }
-  }
-  return undefined;
 }

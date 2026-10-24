@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "FixMatch",
+    "NSLocationWhenInUseUsageDescription": "FixMatch uses your location while the app is open to show tradespeople and garages near you and work out the distance to them. Your location stays on your phone."
+  }
+}

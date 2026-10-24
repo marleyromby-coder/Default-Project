@@ -7,9 +7,12 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { MaxContentWidth } from '@/constants/theme';
 import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { AppStateProvider, useApp } from '@/state/app-state';
-import { t } from '@/i18n';
+import { getLanguage, t } from '@/i18n';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
+
+// Tell browsers and screen readers on the web demo which language the page is in.
+if (Platform.OS === 'web' && typeof document !== 'undefined') document.documentElement.lang = getLanguage();
 
 export default function RootLayout() {
   const dark = useIsDark();

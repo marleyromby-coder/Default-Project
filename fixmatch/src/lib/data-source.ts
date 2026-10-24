@@ -1,6 +1,7 @@
 import demoJson from '@/data/demo-businesses.json';
 import liveJson from '@/data/live-businesses.json';
 
+import { isCountryCode } from './markets';
 import type { Business } from './types';
 
 /**
@@ -35,7 +36,8 @@ export function isValidBusiness(value: unknown): value is Business {
     isString(b.name) &&
     Array.isArray(b.categories) &&
     b.categories.length > 0 &&
-    isString(b.cvr) &&
+    typeof b.cvr === 'string' &&
+    (b.country === undefined || isCountryCode(b.country)) &&
     typeof b.coords === 'object' &&
     isNumber(b.coords?.lat) &&
     isNumber(b.coords?.lon) &&
