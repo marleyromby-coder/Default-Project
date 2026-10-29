@@ -20,6 +20,7 @@ import {
   lineLimit,
   minimumScaleFactor,
   padding,
+  resizable,
   shapes,
   widgetURL,
 } from '@expo/ui/swift-ui/modifiers';
@@ -30,11 +31,12 @@ import type { QuickHelpProps } from './types';
 
 /**
  * "Hurtig hjælp": describe a problem or jump to a trade. Every widget family is supported:
- * small, medium and large on the home screen (and StandBy), and circular, rectangular and
- * inline on the lock screen.
+ * small, medium, large and (iOS 27) extra-large portrait on the home screen and in StandBy,
+ * and circular, rectangular and inline on the lock screen.
  *
  * The layout is serialised by the 'widget' directive and runs inside the widget extension,
  * so it may only use its props, the environment and the SwiftUI components and modifiers.
+ * The logo images come from the extension's asset catalog (plugins/with-fixmatch-widgets.js).
  * The app's Fraunces is not in the extension, so titles use the system serif (New York).
  */
 function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
@@ -56,22 +58,15 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
   };
   const serif = (size: number) => font({ size, weight: 'bold', design: 'serif' });
 
-  // The FixMatch "f." – the letter with the ochre dot on its baseline.
-  const glyph = (size: number, color: string, dot: string) => (
-    <HStack alignment="lastTextBaseline" spacing={size * 0.04}>
-      <Text modifiers={[font({ size, weight: 'black', design: 'serif' }), foregroundStyle(color)]}>f</Text>
-      <Ellipse modifiers={[foregroundStyle(dot), frame({ width: size * 0.19, height: size * 0.19 })]} />
-    </HStack>
-  );
-
+  // The FixMatch mark, and the letter with its dot alone (2:3) for pine and the lock screen.
   const mark = (size: number) => (
-    <ZStack>
-      <RoundedRectangle
-        cornerRadius={size * 0.234}
-        modifiers={[foregroundStyle(c.pine), frame({ width: size, height: size })]}
-      />
-      {glyph(size * 0.72, c.cream, c.ochre)}
-    </ZStack>
+    <Image assetName="FixMatchMark" modifiers={[resizable(), frame({ width: size, height: size })]} />
+  );
+  const glyph = (height: number, mono = false) => (
+    <Image
+      assetName={mono ? 'FixMatchGlyphMono' : 'FixMatchGlyph'}
+      modifiers={[resizable(), frame({ width: height * 0.667, height })]}
+    />
   );
 
   const wordmark = (size: number) => (
@@ -129,7 +124,8 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
     );
   };
 
-  const family = env.widgetFamily ?? 'systemSmall';
+  // A string, because iOS 27's systemExtraLargePortrait is newer than expo-widgets' types.
+  const family: string = env.widgetFamily ?? 'systemSmall';
 
   if (family === 'accessoryInline') {
     return (
@@ -145,7 +141,7 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
     return (
       <ZStack modifiers={[widgetURL(props.describeUrl)]}>
         <AccessoryWidgetBackground />
-        {glyph(30, '#FFFFFF', '#FFFFFF')}
+        {glyph(30, true)}
       </ZStack>
     );
   }
@@ -154,7 +150,10 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
     const first = props.saved[0];
     return (
       <VStack alignment="leading" spacing={1} modifiers={[widgetURL(first ? first.url : props.describeUrl)]}>
-        <Text modifiers={[serif(13)]}>fixmatch.</Text>
+        <HStack spacing={4}>
+          {glyph(13, true)}
+          <Text modifiers={[serif(13)]}>FixMatch</Text>
+        </HStack>
         <Text modifiers={[font({ textStyle: 'headline' }), lineLimit(1), minimumScaleFactor(0.8)]}>
           {first ? first.name : props.describe}
         </Text>
@@ -183,7 +182,7 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
           widgetURL(props.describeUrl),
         ]}>
         <HStack>
-          {glyph(34, c.cream, c.ochre)}
+          {glyph(38)}
           <Spacer />
           <Image systemName="wand.and.stars" size={15} color={c.ochre} />
         </HStack>
@@ -209,6 +208,104 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
           {tradeTile(2, 44)}
           {tradeTile(3, 44)}
         </HStack>
+      </VStack>
+    );
+  }
+
+  // iOS 27's 4 × 6 size: the large layout with bigger trades, four saved businesses and their
+  // prices, and urgent help always at the bottom.
+  if (family === 'systemExtraLargePortrait') {
+    return (
+      <VStack alignment="leading" spacing={12} modifiers={[containerBackground(c.bg, 'widget')]}>
+        {header}
+        <Link destination={props.describeUrl}>
+          <HStack
+            spacing={12}
+            modifiers={[
+              padding({ all: 14 }),
+              frame({ maxWidth: 1000 }),
+              background(c.pine, shapes.roundedRectangle({ cornerRadius: 18 })),
+            ]}>
+            <ZStack>
+              <Ellipse modifiers={[foregroundStyle(c.ochre), frame({ width: 40, height: 40 })]} />
+              <Image systemName="wand.and.stars" size={17} color={c.pine} />
+            </ZStack>
+            <VStack alignment="leading" spacing={2}>
+              <Text modifiers={[serif(19), foregroundStyle(c.cream)]}>{props.describe}</Text>
+              <Text modifiers={[font({ textStyle: 'footnote' }), foregroundStyle(c.onPineSoft), lineLimit(2)]}>
+                {props.describeHint}
+              </Text>
+            </VStack>
+            <Spacer />
+            <Image systemName="chevron.right" size={13} color={c.onPineSoft} />
+          </HStack>
+        </Link>
+        <Text modifiers={[serif(16), foregroundStyle(c.text)]}>{props.tradesTitle}</Text>
+        <HStack spacing={6}>
+          {tradeTile(0, 50)}
+          {tradeTile(1, 50)}
+          {tradeTile(2, 50)}
+          {tradeTile(3, 50)}
+        </HStack>
+        <HStack spacing={6}>
+          {tradeTile(4, 50)}
+          {tradeTile(5, 50)}
+          {tradeTile(6, 50)}
+          {tradeTile(7, 50)}
+        </HStack>
+        <Divider />
+        {props.saved.length > 0 ? (
+          <VStack alignment="leading" spacing={8}>
+            <Text modifiers={[serif(16), foregroundStyle(c.text)]}>{props.savedTitle}</Text>
+            {props.saved.slice(0, 4).map((business) => {
+              const tone = dark ? business.mark.dark : business.mark.light;
+              return (
+                <Link key={business.id} destination={business.url}>
+                  <HStack spacing={10}>
+                    <ZStack>
+                      <RoundedRectangle
+                        cornerRadius={9}
+                        modifiers={[foregroundStyle(tone.background), frame({ width: 34, height: 34 })]}
+                      />
+                      <Text modifiers={[serif(14), foregroundStyle(tone.letters)]}>{business.initials}</Text>
+                    </ZStack>
+                    <VStack alignment="leading" spacing={0}>
+                      <Text modifiers={[font({ size: 15, weight: 'semibold' }), foregroundStyle(c.text), lineLimit(1)]}>
+                        {business.name}
+                      </Text>
+                      <Text
+                        modifiers={[
+                          font({ textStyle: 'caption' }),
+                          foregroundStyle(business.open ? c.open : c.muted),
+                          lineLimit(1),
+                        ]}>
+                        {business.status}
+                      </Text>
+                    </VStack>
+                    <Spacer />
+                    <Text modifiers={[font({ textStyle: 'caption' }), foregroundStyle(c.muted), lineLimit(1)]}>
+                      {business.price}
+                    </Text>
+                  </HStack>
+                </Link>
+              );
+            })}
+          </VStack>
+        ) : null}
+        <Spacer />
+        <Link destination={props.urgentUrl}>
+          <HStack spacing={10}>
+            <Image systemName="bolt.fill" size={15} color={c.warning} />
+            <VStack alignment="leading" spacing={0}>
+              <Text modifiers={[font({ size: 15, weight: 'semibold' }), foregroundStyle(c.text)]}>{props.urgent}</Text>
+              <Text modifiers={[font({ textStyle: 'caption' }), foregroundStyle(c.muted), lineLimit(1)]}>
+                {props.urgentHint}
+              </Text>
+            </VStack>
+            <Spacer />
+            <Image systemName="chevron.right" size={12} color={c.muted} />
+          </HStack>
+        </Link>
       </VStack>
     );
   }

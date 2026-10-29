@@ -17,6 +17,7 @@ import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { CATEGORIES, getCategory } from '@/data/categories';
 import { useGps, GPS_MESSAGES } from '@/hooks/use-gps';
 import { useTheme } from '@/hooks/use-theme';
+import { useLayout } from '@/hooks/use-layout';
 import { DATA_MODE } from '@/lib/data-source';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { showDialog } from '@/lib/dialog';
@@ -50,6 +51,7 @@ const URGENT: { label: string; category: CategoryId; icon: IconName }[] = [
 const NEARBY_KM = 25;
 
 export default function HomeScreen() {
+  const { column } = useLayout();
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { state } = useApp();
@@ -98,6 +100,7 @@ export default function HomeScreen() {
       style={{ backgroundColor: colors.background }}
       contentContainerStyle={[
         styles.content,
+        column,
         { paddingTop: insets.top + Spacing.sm, paddingBottom: insets.bottom + 96 },
       ]}
       contentInsetAdjustmentBehavior="never">

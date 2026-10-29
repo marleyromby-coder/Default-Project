@@ -10,6 +10,7 @@ import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { CATEGORIES } from '@/data/categories';
 import { GPS_MESSAGES, useGps } from '@/hooks/use-gps';
 import { useTheme } from '@/hooks/use-theme';
+import { useLayout } from '@/hooks/use-layout';
 import { showDialog } from '@/lib/dialog';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { taxNote } from '@/lib/markets';
@@ -20,6 +21,7 @@ const STEPS = 3;
 
 /** First-launch onboarding. Location is asked for only on the last step, after explaining why. */
 export default function WelcomeScreen() {
+  const { column } = useLayout();
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { setOnboarded } = useApp();
@@ -36,7 +38,7 @@ export default function WelcomeScreen() {
 
   return (
     <View style={[styles.flex, { backgroundColor: colors.background }]}>
-      <ScrollView contentContainerStyle={[styles.scroll, { paddingTop: insets.top + Spacing.md }]} bounces={false}>
+      <ScrollView contentContainerStyle={[styles.scroll, column, { paddingTop: insets.top + Spacing.md }]} bounces={false}>
         {step === 0 ? (
           <>
             <View
@@ -115,7 +117,7 @@ export default function WelcomeScreen() {
         ) : null}
       </ScrollView>
 
-      <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, Spacing.lg) }]}>
+      <View style={[styles.footer, column, { paddingBottom: Math.max(insets.bottom, Spacing.lg) }]}>
         <View
           style={styles.dots}
           accessible

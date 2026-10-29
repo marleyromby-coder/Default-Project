@@ -6,10 +6,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LogoMark } from '@/components/logo';
 import { ScreenHeader } from '@/components/screen-header';
 import { ListRow, ListSection } from '@/components/ui/list';
+import { Segmented } from '@/components/ui/segmented';
 import { AppText } from '@/components/ui/text';
 import { APP_INFO } from '@/constants/app-info';
 import { ScreenPadding, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { useLayout } from '@/hooks/use-layout';
 import { reportProblem } from '@/lib/contact';
 import { DATA_MODE } from '@/lib/data-source';
 import { showDialog } from '@/lib/dialog';
@@ -18,6 +20,7 @@ import { weightsFromPriorities } from '@/lib/ranking';
 import { getLanguage, LANGUAGES, t } from '@/i18n';
 import { countryName } from '@/lib/markets';
 import { useApp } from '@/state/app-state';
+import { setAppearance, useAppearance } from '@/state/appearance';
 
 /**
  * The app follows the phone's language. On iOS each app has its own language
@@ -42,9 +45,11 @@ function changeLanguage() {
 }
 
 export default function MoreScreen() {
+  const { column } = useLayout();
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { state, resetAll } = useApp();
+  const appearance = useAppearance();
   const weights = weightsFromPriorities(state.priorities);
   const info = (slug: string) => () => router.push({ pathname: '/info/[slug]', params: { slug } });
 
@@ -59,6 +64,7 @@ export default function MoreScreen() {
       style={{ backgroundColor: colors.background }}
       contentContainerStyle={[
         styles.content,
+        column,
         { paddingTop: insets.top + Spacing.md, paddingBottom: insets.bottom + 110 },
       ]}
       contentInsetAdjustmentBehavior="never">
@@ -92,6 +98,21 @@ export default function MoreScreen() {
               TRUSTPILOT_ENABLED ? t('Pris, afstand og anmeldelser i procent') : t('Pris og afstand i procent')
             }
           />
+        </ListSection>
+
+        <ListSection title={t('Udseende')} footer={t('Automatisk følger telefonens indstilling.')}>
+          <View style={styles.appearance}>
+            <Segmented
+              options={[
+                { value: 'system', label: t('Automatisk') },
+                { value: 'light', label: t('Lys') },
+                { value: 'dark', label: t('Mørk') },
+              ]}
+              value={appearance}
+              onChange={setAppearance}
+              accessibilityLabel={t('Udseende')}
+            />
+          </View>
         </ListSection>
 
         <ListSection
@@ -138,5 +159,6 @@ export default function MoreScreen() {
 const styles = StyleSheet.create({
   content: {},
   sections: { paddingHorizontal: ScreenPadding, gap: Spacing.xxl },
+  appearance: { padding: Spacing.md },
   about: { alignItems: 'center', gap: Spacing.xs, paddingTop: Spacing.sm },
 });

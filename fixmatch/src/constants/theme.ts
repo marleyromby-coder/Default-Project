@@ -47,6 +47,8 @@ export const Colors = {
     starEmpty: '#E6E0D4',
     overlay: 'rgba(28, 26, 23, 0.5)',
     shadow: '#2B2418',
+    /** Behind the phone-sized column of the web demo. */
+    backdrop: '#EBE7DE',
   },
   dark: {
     background: '#11130F',
@@ -79,6 +81,7 @@ export const Colors = {
     starEmpty: '#353A31',
     overlay: 'rgba(0, 0, 0, 0.6)',
     shadow: '#000000',
+    backdrop: '#0A0B09',
   },
 } as const;
 
@@ -113,6 +116,17 @@ export const MinTouchSize = 44;
 
 /** Web builds are shown in a phone-sized column on large screens. */
 export const MaxContentWidth = 480;
+
+/**
+ * From this width screens put things side by side, like the list beside the map. The open
+ * iPhone Duo is about 626 × 890 pt and turns freely (its inner display ignores orientation
+ * locks), so it gets this when held sideways; iPad and wide windows get it too. Lay out by
+ * width, never by orientation.
+ */
+export const WideLayout = 800;
+
+/** Widest a column of text and cards gets; wider screens centre it (see useLayout). */
+export const ReadableWidth = 680;
 
 export const Fonts = Platform.select({
   ios: { sans: 'system-ui', rounded: 'ui-rounded', mono: 'ui-monospace' },

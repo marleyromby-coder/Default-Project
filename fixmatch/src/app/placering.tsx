@@ -12,12 +12,14 @@ import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { INTERNATIONAL_PLACES, placeToLocation, POPULAR_PLACES, searchPlaces, type Place } from '@/data/places';
 import { GPS_MESSAGES, useGps } from '@/hooks/use-gps';
 import { useTheme } from '@/hooks/use-theme';
+import { useLayout } from '@/hooks/use-layout';
 import { showDialog } from '@/lib/dialog';
 import { countryName } from '@/lib/markets';
 import { useApp } from '@/state/app-state';
 import { t } from '@/i18n';
 
 export default function LocationScreen() {
+  const { column } = useLayout();
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { state, setLocation } = useApp();
@@ -77,7 +79,7 @@ export default function LocationScreen() {
         keyExtractor={(p) => `${p.country}-${p.code ?? ''}-${p.name}`}
         keyboardShouldPersistTaps="handled"
         stickySectionHeadersEnabled={false}
-        contentContainerStyle={{ paddingHorizontal: ScreenPadding, paddingBottom: insets.bottom + Spacing.xl }}
+        contentContainerStyle={[column, { paddingHorizontal: ScreenPadding, paddingBottom: insets.bottom + Spacing.xl }]}
         renderSectionHeader={({ section }) => (
           <AppText variant="subhead" weight="600" tone="textSecondary" style={styles.label} accessibilityRole="header">
             {section.title}

@@ -15,7 +15,7 @@
 | --- | --- | --- |
 | Fiktive demovirksomheder | ❌ Blokerer | App Store-retningslinje 2.2: demoer hører hjemme på TestFlight. Udgiv i App Store, når I har rigtige virksomheder |
 | Rigtige virksomheder med samtykke og priser | ⏳ Mangler | Få 20–30 virksomheder i én by med (skabelon: `docs/jura/samtykke-virksomhed.md`), og importér dem (`npm run import:businesses`) |
-| Trustpilot | ✅ Løst | Slået fra i App Store- og TestFlight-versionen (`production` og `testflight`), indtil der er en partneraftale. Så nævner appen og App Store-teksten ingen anmeldelser |
+| Trustpilot | ✅ Løst | Slået fra i alle builds (App Store, TestFlight, Xcode og webdemoen), indtil der er en partneraftale. Så nævner appen og App Store-teksten ingen anmeldelser |
 | Spærre mod fejl-builds | ✅ Løst | `scripts/check-release.js` stopper et App Store-build uden rigtige virksomheder, med demodata eller manglende samtykke, eller med TODO-felter i `app-info.ts` |
 | Apple Kort | ✅ Løst | Godkendt via udvikleraftalen. Se `docs/jura/apple-kort.md` |
 | Privatlivspolitik og vilkår på en hjemmeside | ⏳ Klar til at lægge online | `npm run website:build` bygger forside, privatlivspolitik, vilkår og support på dansk og engelsk. Læg `dist-website/` på fx Netlify. Apple kræver et link til privatlivspolitikken og en support-side |
@@ -30,7 +30,7 @@ Selve appen overtræder ikke noget. Det, der mangler, er rigtige data og et par 
 
 | Metode | Kræver | Fordele | Ulemper |
 | --- | --- | --- | --- |
-| **TestFlight** (anbefalet) | Jeres Apple Developer-konto. Én kommando: `npx eas-cli@latest build -p ios --profile testflight --auto-submit` – se `docs/lancering/testflight.md` | Juryen installerer appen på sin egen iPhone. Op til 100 interne testere uden gennemgang og op til 10.000 eksterne via et offentligt link efter en kort Beta App Review. Apple Kort virker | Hver build kan bruges i 90 dage |
+| **TestFlight** (anbefalet) | Jeres Apple Developer-konto. Én kommando: `npx eas-cli@latest build -p ios --profile testflight --auto-submit` – se `docs/lancering/testflight.md`. Med en Mac kan I også bygge i Xcode: `docs/lancering/xcode.md` | Juryen installerer appen på sin egen iPhone. Op til 100 interne testere uden gennemgang og op til 10.000 eksterne via et offentligt link efter en kort Beta App Review. Apple Kort virker | Hver build kan bruges i 90 dage |
 | **Expo Go** | Gratis Expo Go-app fra App Store. `npx expo start` på en computer | Ingen build. Virker med det samme på jeres egen iPhone, også med Apple Kort (`react-native-maps` er inkluderet i Expo Go) | Kun på telefoner på samme netværk, eller med `--tunnel`. Ikons- og app-navn er Expo Go's |
 | **iOS-simulator** | En Mac med Xcode. `npx eas-cli@latest build -p ios --profile simulator` | God til at vise på en storskærm | Kræver en Mac |
 | **Webdemo** | En browser. `npm run export:web` | Virker overalt, også på en projektor | Ikke Apple Kort, men et forenklet kort. `?lang=en` viser den engelske version |

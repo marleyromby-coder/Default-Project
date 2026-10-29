@@ -19,6 +19,7 @@ import { MinTouchSize, Radius, ScreenPadding, Spacing } from '@/constants/theme'
 import { AUTHORIZATION_LABELS, getCategory } from '@/data/categories';
 import { useScored } from '@/hooks/use-results';
 import { useTheme } from '@/hooks/use-theme';
+import { useLayout } from '@/hooks/use-layout';
 import {
   AUTHORIZATION_REGISTER_URL,
   callBusiness,
@@ -56,6 +57,7 @@ import { MAX_COMPARE, useApp, useBusiness } from '@/state/app-state';
 const HEADER_SCROLL = 150;
 
 export default function BusinessScreen() {
+  const { column, gutter } = useLayout();
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -106,7 +108,7 @@ export default function BusinessScreen() {
   return (
     <View style={[styles.flex, { backgroundColor: colors.background }]}>
       <ScrollView
-        contentContainerStyle={{ paddingBottom: insets.bottom + 110 }}
+        contentContainerStyle={[column, { paddingBottom: insets.bottom + 110 }]}
         contentInsetAdjustmentBehavior="never"
         scrollEventThrottle={32}
         onScroll={(event) => {
@@ -454,6 +456,7 @@ export default function BusinessScreen() {
         style={[
           styles.contactBar,
           {
+            paddingHorizontal: gutter,
             paddingBottom: Math.max(insets.bottom, Spacing.md),
             backgroundColor: colors.surface,
             borderTopColor: colors.border,

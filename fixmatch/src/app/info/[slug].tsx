@@ -10,6 +10,7 @@ import { APP_INFO } from '@/constants/app-info';
 import { ScreenPadding, Spacing } from '@/constants/theme';
 import { INFO_PAGES, type InfoPage, isInfoSlug } from '@/data/content';
 import { useTheme } from '@/hooks/use-theme';
+import { useLayout } from '@/hooks/use-layout';
 import { openLink } from '@/lib/contact';
 import { formatDate } from '@/lib/format';
 import { weightsFromPriorities, weightsText } from '@/lib/ranking';
@@ -17,6 +18,7 @@ import { useApp } from '@/state/app-state';
 import { t } from '@/i18n';
 
 export default function InfoScreen() {
+  const { column } = useLayout();
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { slug } = useLocalSearchParams<{ slug: string }>();
@@ -39,7 +41,7 @@ export default function InfoScreen() {
   return (
     <ScrollView
       style={{ backgroundColor: colors.background }}
-      contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + Spacing.xxl }]}
+      contentContainerStyle={[styles.content, column, { paddingBottom: insets.bottom + Spacing.xxl }]}
       contentInsetAdjustmentBehavior="automatic">
       <Stack.Screen options={{ title: page.title }} />
       <AppText variant="body">{page.intro}</AppText>

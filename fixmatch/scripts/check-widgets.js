@@ -18,8 +18,15 @@ const vm = require('node:vm');
 const ROOT = path.join(__dirname, '..');
 const out = fs.mkdtempSync(path.join(os.tmpdir(), 'fixmatch-widgets-'));
 
-const plugin = require(path.join(ROOT, 'app.json')).expo.plugins.find((p) => Array.isArray(p) && p[0] === 'expo-widgets');
-const widgets = plugin[1].widgets;
+const plugins = require(path.join(ROOT, 'app.json')).expo.plugins;
+const option = (name) => plugins.find((p) => Array.isArray(p) && p[0] === name)?.[1] ?? {};
+const widgets = option('expo-widgets').widgets;
+// iOS 27's extra-large portrait size, added by plugins/with-fixmatch-widgets.js.
+const extraLarge = new Set(option('./plugins/with-fixmatch-widgets').extraLargePortrait ?? []);
+const familiesOf = (widget) => [
+  ...widget.ios.supportedFamilies,
+  ...(extraLarge.has(widget.name) ? ['systemExtraLargePortrait'] : []),
+];
 
 function run(script, args) {
   const result = spawnSync(process.execPath, [require.resolve(`expo-widgets/scripts/${script}`), ...args], {
@@ -66,7 +73,7 @@ for (const widget of widgets) {
   context.__expoWidgetLayout = vm.runInContext(`(${entry.layout})`, context);
   const variants = [entry.initialProps, { ...entry.initialProps, saved }];
   for (const props of variants)
-    for (const widgetFamily of widget.ios.supportedFamilies)
+    for (const widgetFamily of familiesOf(widget))
       for (const colorScheme of ['light', 'dark']) {
         try {
           const tree = context.__expoWidgetRender(props, {

@@ -12,6 +12,7 @@ import { AppText } from '@/components/ui/text';
 import { MinTouchSize, Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { CATEGORIES, getCategory } from '@/data/categories';
 import { useTheme } from '@/hooks/use-theme';
+import { useLayout } from '@/hooks/use-layout';
 import { formatPriceRange } from '@/lib/format';
 import { summarizeJobPrice } from '@/lib/prices';
 import { search, SEARCH_SUGGESTIONS } from '@/lib/search';
@@ -20,6 +21,7 @@ import { countryOf } from '@/lib/business-text';
 import { useApp, useMarket } from '@/state/app-state';
 
 export default function SearchScreen() {
+  const { column } = useLayout();
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { state } = useApp();
@@ -63,7 +65,7 @@ export default function SearchScreen() {
 
       <ScrollView
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + 40 }]}>
+        contentContainerStyle={[styles.content, column, { paddingBottom: insets.bottom + 40 }]}>
         {!hasQuery ? (
           <>
             <AppText variant="footnote" tone="textSecondary" style={styles.label}>

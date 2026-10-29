@@ -28,8 +28,8 @@ import type { SavedProps } from './types';
 /**
  * "Gemte håndværkere": the businesses the user saved, with whether they are open right now.
  * The app sends a timeline, so "Åben til 16.00" turns into "Lukket" without opening the app.
- * Supports small, medium and large on the home screen, and rectangular and inline on the
- * lock screen.
+ * Supports small, medium, large and (iOS 27) extra-large portrait on the home screen, and
+ * rectangular and inline on the lock screen.
  */
 function SavedWidget(props: SavedProps, env: WidgetEnvironment) {
   'widget';
@@ -41,7 +41,8 @@ function SavedWidget(props: SavedProps, env: WidgetEnvironment) {
     brand: dark ? '#8CC5A8' : '#2A6150',
     open: dark ? '#6FD08F' : '#25733F',
   };
-  const family = env.widgetFamily ?? 'systemSmall';
+  // A string, because iOS 27's systemExtraLargePortrait is newer than expo-widgets' types.
+  const family: string = env.widgetFamily ?? 'systemSmall';
   const first = props.saved[0];
 
   // The business's initials on a tint of its trade colour, like the marks in the app.
@@ -152,12 +153,11 @@ function SavedWidget(props: SavedProps, env: WidgetEnvironment) {
     );
   }
 
-  const rows = props.saved.slice(0, family === 'systemLarge' ? 6 : 3);
+  // Large and extra-large (iOS 27) get the roomy list with dividers.
+  const tall = family === 'systemLarge' || family === 'systemExtraLargePortrait';
+  const rows = props.saved.slice(0, family === 'systemExtraLargePortrait' ? 9 : tall ? 6 : 3);
   return (
-    <VStack
-      alignment="leading"
-      spacing={family === 'systemLarge' ? 10 : 7}
-      modifiers={[containerBackground(c.bg, 'widget')]}>
+    <VStack alignment="leading" spacing={tall ? 10 : 7} modifiers={[containerBackground(c.bg, 'widget')]}>
       <HStack spacing={6}>
         <Image systemName="heart.fill" size={13} color={c.brand} />
         <Text modifiers={[font({ size: 15, weight: 'bold', design: 'serif' }), foregroundStyle(c.text)]}>
@@ -169,11 +169,11 @@ function SavedWidget(props: SavedProps, env: WidgetEnvironment) {
         ) : null}
       </HStack>
       {rows.map((business, index) => (
-        <VStack key={business.id} alignment="leading" spacing={family === 'systemLarge' ? 10 : 7}>
-          {index > 0 && family === 'systemLarge' ? <Divider /> : null}
+        <VStack key={business.id} alignment="leading" spacing={tall ? 10 : 7}>
+          {index > 0 && tall ? <Divider /> : null}
           <Link destination={business.url}>
             <HStack spacing={10}>
-              {markOf(business, family === 'systemLarge' ? 36 : 30)}
+              {markOf(business, tall ? 36 : 30)}
               <VStack alignment="leading" spacing={1}>
                 <Text modifiers={[font({ size: 14, weight: 'semibold' }), foregroundStyle(c.text), lineLimit(1)]}>
                   {business.name}

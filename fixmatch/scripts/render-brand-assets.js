@@ -5,9 +5,9 @@
  *
  * Usage: node scripts/render-brand-assets.js
  *
- * The mark – a lowercase "f" from Fraunces ExtraBold with the ochre dot of the wordmark
- * "fixmatch." – lives in assets/brand/mark.json on a 64-unit tile, so the app's LogoMark
- * (src/components/logo.tsx) and every icon are drawn from the same outline.
+ * The mark – a lowercase "f" from Fraunces ExtraBold with the ochre dot over its hook –
+ * lives in assets/brand/mark.json on a 64-unit tile, so the app's LogoMark
+ * (src/components/logo.tsx), every icon and the widget images are drawn from the same outline.
  */
 const fs = require('node:fs');
 const path = require('node:path');
@@ -18,14 +18,37 @@ const MARK = require('../assets/brand/mark.json');
 
 const { tileTop, tile, letter, dot } = MARK.colors;
 
-/** The letter and the dot on the 64-unit grid. `parts` picks what to draw, `color` overrides both fills. */
+/**
+ * The letter and the dot on the 64-unit grid. `parts` picks what to draw, `color` draws both
+ * in one colour. With only the letter, the dot is cut out of it, so the two iOS 26 icon
+ * layers look right whichever order Liquid Glass stacks them in.
+ */
 function glyph({ parts = ['f', 'dot'], color } = {}) {
+  const circle = (fill, grow = 0) =>
+    `<circle cx="${MARK.dot.cx}" cy="${MARK.dot.cy}" r="${MARK.dot.r + grow}" fill="${fill}"/>`;
+  // In one colour the dot would melt into the hook, so a thin gap is cut around it.
+  const knockout = !parts.includes('dot') || color !== undefined;
+  const gap = color !== undefined ? 1.3 : 0;
   return [
-    parts.includes('f') ? `<path d="${MARK.f}" fill="${color ?? letter}"/>` : '',
-    parts.includes('dot')
-      ? `<circle cx="${MARK.dot.cx}" cy="${MARK.dot.cy}" r="${MARK.dot.r}" fill="${color ?? dot}"/>`
+    knockout
+      ? `<mask id="no-dot" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64"><rect width="64" height="64" fill="white"/>${circle('black', gap)}</mask>`
       : '',
+    parts.includes('f')
+      ? `<path d="${MARK.f}" fill="${color ?? letter}"${knockout ? ' mask="url(#no-dot)"' : ''}/>`
+      : '',
+    parts.includes('dot') ? circle(color ?? dot) : '',
   ].join('');
+}
+
+/** Just the letter and dot, cropped to their bounds, for the widgets (src/widgets/). */
+function cropped(height, options) {
+  const { x, y, width, height: h } = MARK.bounds;
+  const scale = height / h;
+  const canvasWidth = Math.ceil(width * scale);
+  return {
+    width: canvasWidth,
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" width="${canvasWidth}" height="${height}" viewBox="${x} ${y} ${width} ${h}">${glyph(options)}</svg>`,
+  };
 }
 
 /** Scales the 64-unit drawing to the canvas; `zoom` < 1 shrinks it around the centre (Android safe zone). */
@@ -79,6 +102,34 @@ const ASSETS = [
   { file: 'assets/brand/fixmatch-logo.png', size: 1024, svg: (s) => svg(s, placed(s), rounded(s)) },
 ];
 
+/**
+ * Images for the widget extension's asset catalog (plugins/with-fixmatch-widgets.js): the
+ * mark on its tile, the letter and dot for the pine widget, and a one-colour version that
+ * iOS tints on the lock screen. Rendered at @2x and @3x of the point size.
+ */
+const WIDGET_IMAGES = [
+  { name: 'FixMatchMark', points: 60, square: true },
+  { name: 'FixMatchGlyph', points: 60 },
+  { name: 'FixMatchGlyphMono', points: 60, color: '#FFFFFF' },
+];
+
+async function renderWidgetImages(page, root) {
+  for (const image of WIDGET_IMAGES) {
+    for (const scale of [2, 3]) {
+      const size = image.points * scale;
+      const { svg: markup, width } = image.square
+        ? { svg: svg(size, placed(size), rounded(size)), width: size }
+        : cropped(size, { color: image.color });
+      const file = `assets/brand/widget/${image.name}@${scale}x.png`;
+      fs.mkdirSync(path.join(root, path.dirname(file)), { recursive: true });
+      await page.setViewportSize({ width, height: size });
+      await page.setContent(`<html><body style="margin:0;background:transparent">${markup}</body></html>`);
+      await page.locator('svg').screenshot({ path: path.join(root, file), omitBackground: true });
+      console.log(`✓ ${file} (${width}×${size})`);
+    }
+  }
+}
+
 async function main() {
   const root = path.join(__dirname, '..');
   const browser = await chromium.launch();
@@ -95,6 +146,7 @@ async function main() {
     }
     console.log(`✓ ${asset.file} (${asset.size}×${asset.size})`);
   }
+  await renderWidgetImages(page, root);
   fs.writeFileSync(path.join(root, 'assets/brand/fixmatch-mark.svg'), svg(64, placed(64), rounded(64)));
   await browser.close();
 }

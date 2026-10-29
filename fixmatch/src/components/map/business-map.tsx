@@ -1,23 +1,24 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 import { getCategory } from '@/data/categories';
 import { useIsDark } from '@/hooks/use-theme';
+import { currencyOf } from '@/lib/business-text';
 import { clusterPoints, regionForPoints, type Region } from '@/lib/cluster';
-import { formatDistance } from '@/lib/format';
+import { formatDistance, formatHourly, formatPrice, speakablePrice } from '@/lib/format';
 
-import { ClusterBubble, MapPin, OriginDot } from './map-pin';
+import { ClusterBubble, OriginDot, PIN_SPACING, PricePin } from './map-pin';
 import type { BusinessMapProps } from './types';
 import { t } from '@/i18n';
 
 /**
  * Apple Maps through MapKit (react-native-maps' default provider on iOS, no
- * API key). Our own business pins are drawn on top of the Apple map, which
- * the Apple Developer Program License Agreement, Attachment 6, allows. The
- * Apple Maps logo and "Legal" link must stay visible, so overlays pass their
- * height in `padding` and the label is moved above them. The web build uses
- * business-map.web.tsx.
+ * API key), in Apple's muted style so the price pins stand out. Our own pins
+ * are drawn on top of the Apple map, which the Apple Developer Program License
+ * Agreement, Attachment 6, allows. The Apple Maps logo and "Legal" link must
+ * stay visible, so overlays pass their size in `padding` and the label is moved
+ * clear of them. The web build uses business-map.web.tsx.
  */
 export function BusinessMap({
   items,
@@ -46,6 +47,7 @@ export function BusinessMap({
     () =>
       clusterPoints(items, (s) => s.business.coords, region, {
         keepSeparate: (s) => s.business.id === selectedId,
+        spacing: PIN_SPACING,
       }),
     [items, region, selectedId],
   );
@@ -59,6 +61,7 @@ export function BusinessMap({
         setRegion(next);
         onRegionChange(next);
       }}
+      mapType={Platform.OS === 'ios' ? 'mutedStandard' : 'standard'}
       showsUserLocation={showsUserLocation}
       showsPointsOfInterests={false}
       showsCompass={false}
@@ -92,12 +95,19 @@ export function BusinessMap({
               }}
               onPress={() => onSelect(business.id)}
               zIndex={selected ? 10 : 1}
-              accessibilityLabel={t('{name}, {name2}, {distance} væk', {
+              accessibilityLabel={t('{name}, {name2}, {distance} væk, {hourly}', {
                 name: business.name,
                 name2: getCategory(business.categories[0])?.name,
                 distance: formatDistance(distanceKm),
+                hourly: speakablePrice(
+                  formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business)),
+                ),
               })}>
-              <MapPin category={business.categories[0]} selected={selected} />
+              <PricePin
+                category={business.categories[0]}
+                price={formatPrice(business.pricing.hourlyMin, currencyOf(business))}
+                selected={selected}
+              />
             </Marker>
           );
         }

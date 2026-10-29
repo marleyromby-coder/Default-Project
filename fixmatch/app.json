@@ -102,6 +102,12 @@
         }
       ],
       [
+        "./plugins/with-fixmatch-widgets",
+        {
+          "extraLargePortrait": ["FixMatchQuickHelp", "FixMatchSaved"]
+        }
+      ],
+      [
         "expo-widgets",
         {
           "bundleIdentifier": "dk.fixmatch.app.widgets",

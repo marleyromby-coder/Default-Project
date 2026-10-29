@@ -76,14 +76,26 @@ export function clusterPoints<T>(
   items: T[],
   coordsOf: (item: T) => Coords,
   region: Region,
-  options: { keepSeparate?: (item: T) => boolean } = {},
+  options: {
+    keepSeparate?: (item: T) => boolean;
+    /**
+     * For pins wider than they are tall (the price pills): merge when they are closer than
+     * this share of the map width across and down, instead of the round default.
+     */
+    spacing?: { x: number; y: number };
+  } = {},
 ): Cluster<T>[] {
   if (region.longitudeDelta < NO_CLUSTER_BELOW) {
     return items.map((item, i) => ({ key: `p${i}`, coords: coordsOf(item), items: [item] }));
   }
   const zoom = Math.round(Math.log2(360 / region.longitudeDelta));
-  const radius = (360 / 2 ** zoom) * MERGE_DISTANCE;
-  const near = (a: Coords, b: Coords) => Math.hypot(a.lon - b.lon, (a.lat - b.lat) * LAT_STRETCH) < radius;
+  const width = 360 / 2 ** zoom;
+  const radius = width * MERGE_DISTANCE;
+  const { spacing } = options;
+  const near = spacing
+    ? (a: Coords, b: Coords) =>
+        Math.abs(a.lon - b.lon) < width * spacing.x && Math.abs(a.lat - b.lat) * LAT_STRETCH < width * spacing.y
+    : (a: Coords, b: Coords) => Math.hypot(a.lon - b.lon, (a.lat - b.lat) * LAT_STRETCH) < radius;
   const center = (points: Coords[]) => ({
     lat: points.reduce((sum, p) => sum + p.lat, 0) / points.length,
     lon: points.reduce((sum, p) => sum + p.lon, 0) / points.length,

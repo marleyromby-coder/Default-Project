@@ -1,0 +1,81 @@
+# FixMatch i Xcode → TestFlight
+
+Den anden vej til TestFlight (den første er EAS i skyen, se `testflight.md`). Du bygger selv på din Mac og uploader fra Xcode. Det tager ca. 15 minutter første gang.
+
+Buildet er demoversionen: fiktive virksomheder og ingen Trustpilot. Det er standard, så du skal ikke sætte noget op.
+
+## Det skal du have
+
+- En Mac med **Xcode 27.1** eller nyere (kræver macOS Tahoe 26.6). Xcode 27.1 er nødvendig, for at appen fylder hele den indre skærm på **iPhone Duo** og får den nye **ekstra store widget** fra iOS 27. Ældre Xcode virker også, men så kører appen med sorte kanter på den åbne Duo, og widgetten mangler.
+- [Node.js 20 eller nyere](https://nodejs.org) og CocoaPods (`brew install cocoapods`).
+- Din Apple Developer-konto, logget ind i Xcode → Settings → Accounts.
+
+## 1. Hent projektet og åbn det i Xcode
+
+```bash
+git clone https://github.com/marleyromby-coder/Default-Project.git
+cd Default-Project
+git checkout claude/nice-goodall-15i9e2
+cd fixmatch
+npm install
+npm run ios:xcode
+```
+
+`npm run ios:xcode` laver Xcode-projektet (mappen `ios/`) ud fra `app.json` og åbner det i Xcode. Mappen laves forfra hver gang, så ret aldrig i den direkte. Ret i `app.json` og kør kommandoen igen.
+
+## 2. Signering (første gang)
+
+I Xcode: klik på **FixMatch** øverst i venstre side → fanen **Signing & Capabilities**. Gør det for begge targets i listen:
+
+| Target | Hvad det er |
+| --- | --- |
+| **FixMatch** | Selve appen (`dk.fixmatch.app`) |
+| **ExpoWidgetsTarget** | Widgets til hjemmeskærm og låseskærm (`dk.fixmatch.app.widgets`) |
+
+For hvert target: sæt flueben i **Automatically manage signing**, og vælg dit team under **Team**. Xcode opretter selv app-id'erne og App Group'en `group.dk.fixmatch.app`, som widgets bruger.
+
+**Tip:** Skriv dit Team ID i `app.json` under `"ios"`, fx `"appleTeamId": "AB12CD34EF"`. Så er begge targets signeret automatisk, hver gang du kører `npm run ios:xcode`. Team ID står på [developer.apple.com/account](https://developer.apple.com/account) under Membership.
+
+## 3. Test på din egen iPhone (valgfrit)
+
+Slut din iPhone til, vælg den øverst i Xcode, og tryk ▶︎ (Run). Eller kør `npx expo run:ios --device` i terminalen.
+
+**iPhone Duo uden en Duo:** Vælg simulatoren **iPhone Duo** øverst i Xcode, og tryk ▶︎. Fold den ud og sammen fra menuen i simulatoren. Udfoldet bruger appen hele den indre skærm. Vender du den på tværs, står listen ved siden af kortet, og de andre skærme holder teksten i en læsevenlig bredde i midten.
+
+## 4. Opret appen i App Store Connect (første gang)
+
+[App Store Connect](https://appstoreconnect.apple.com) → Apps → **+** → Ny app:
+
+- Platform: iOS
+- Navn: fx "FixMatch: Find håndværker" (navnet "FixMatch" kan være optaget)
+- Primært sprog: Dansk
+- Bundle id: `dk.fixmatch.app`
+- SKU: `fixmatch-ios-1`
+
+## 5. Byg og upload
+
+1. Vælg **Any iOS Device (arm64)** øverst i Xcode.
+2. **Product → Archive**. Det tager 5–15 minutter.
+3. Organizer-vinduet åbner. Vælg arkivet → **Distribute App** → **App Store Connect** → **Upload**. Klik dig igennem med standardvalgene.
+4. Efter 5–30 minutter ligger buildet under **TestFlight** i App Store Connect. Spørgsmålet om kryptering er allerede besvaret i appen.
+
+Inviter testere og juryen som beskrevet i `testflight.md`, afsnit 4.
+
+## Nyt build efter ændringer
+
+Apple kræver et højere buildnummer for hver upload:
+
+1. Ret `"buildNumber"` i `app.json` (under `"ios"`) fra `"1"` til `"2"`, næste gang `"3"` osv.
+2. Kør `npm run ios:xcode` igen, og gentag trin 5.
+
+## Hvis noget går galt
+
+| Problem | Løsning |
+| --- | --- |
+| "No profiles for 'dk.fixmatch.app.widgets' were found" | Vælg dit team under Signing for **ExpoWidgetsTarget** også (trin 2) |
+| "The app identifier dk.fixmatch.app cannot be registered" | Id'et er taget af en anden konto. Skift `bundleIdentifier` i `app.json` (fx `dk.ditnavn.fixmatch`) og widgets' `bundleIdentifier` og `groupIdentifier` til det samme med `.widgets` og `group.` foran. Kør `npm run ios:xcode` igen |
+| `pod install` fejler | Kør `brew install cocoapods`, og så `npm run ios:xcode` igen |
+| "Redundant Binary Upload" / buildnummer er brugt | Tal `buildNumber` op i `app.json` (se ovenfor) |
+| Widgets vises ikke | Åbn appen én gang efter installation. Hold fingeren på hjemmeskærmen → **+** → søg "FixMatch" |
+
+Vil du hellere have, at Claude gør det for dig: kør `claude remote-control` i mappen `Default-Project` på din Mac. Så kan Claude køre kommandoerne, og du skal kun vælge dit team i Xcode og trykke Upload.

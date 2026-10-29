@@ -4,6 +4,8 @@ Mål: demoversionen (fiktive virksomheder) på jeres egne iPhones og juryens via
 
 Det hele bygges i skyen af Expo (EAS). Du behøver **ikke** en Mac – en Windows- eller Linux-pc virker også. Det tager ca. 20 minutter at sætte op og 30–60 minutter, før buildet ligger i TestFlight.
 
+**Har du en Mac med Xcode?** Så kan du også bygge og uploade selv fra Xcode: se `xcode.md`.
+
 ## Det skal du have
 
 - Din Apple Developer-konto (Apple-id og adgangskode, og din iPhone til to-faktor-koden).

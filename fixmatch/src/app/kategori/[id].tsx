@@ -15,6 +15,7 @@ import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { AUTHORIZATION_LABELS, getCategory } from '@/data/categories';
 import { useResults } from '@/hooks/use-results';
 import { useTheme } from '@/hooks/use-theme';
+import { useLayout } from '@/hooks/use-layout';
 import { showDialog } from '@/lib/dialog';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { activeFilterCount, DEFAULT_FILTERS } from '@/lib/filters';
@@ -39,6 +40,7 @@ const lowerTrade = (word: string) => (word.startsWith('VVS') ? word : word.toLow
 const SORT_OPTIONS = ALL_SORT_OPTIONS.filter((o) => TRUSTPILOT_ENABLED || o.value !== 'rating');
 
 export default function CategoryScreen() {
+  const { column } = useLayout();
   const colors = useTheme();
   const { id, job: jobId, akut } = useLocalSearchParams<{ id: string; job?: string; akut?: string }>();
   const category = getCategory(id);
@@ -245,7 +247,7 @@ export default function CategoryScreen() {
             }
           />
         }
-        contentContainerStyle={styles.list}
+        contentContainerStyle={[styles.list, column]}
         ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}
         contentInsetAdjustmentBehavior="automatic"
         initialNumToRender={6}

@@ -8,11 +8,12 @@ import { AppText } from '@/components/ui/text';
 import { getCategory } from '@/data/categories';
 import outline from '@/data/map-outline.json';
 import { useIsDark, useTheme } from '@/hooks/use-theme';
+import { currencyOf } from '@/lib/business-text';
 import { clusterPoints, regionForPoints, type Region } from '@/lib/cluster';
-import { formatDistance } from '@/lib/format';
+import { formatDistance, formatHourly, formatPrice, speakablePrice } from '@/lib/format';
 import type { Coords } from '@/lib/types';
 
-import { clusterSize, ClusterBubble, MapPin, OriginDot, PIN_MARGIN, PIN_SELECTED_SIZE, PIN_SIZE } from './map-pin';
+import { ClusterBubble, OriginDot, PIN_SPACING, PricePin } from './map-pin';
 import type { BusinessMapProps } from './types';
 import { t } from '@/i18n';
 
@@ -30,8 +31,9 @@ const RINGS = (outline as [number, number][][]).map((ring) => {
 
 /**
  * Web stand-in for Apple Maps (MapKit JS would need a key from the Apple
- * Developer account): country outlines from Natural Earth with the same
- * pins and clusters as the app. Drag to pan, use the buttons to zoom.
+ * Developer account): country outlines from Natural Earth in the colours of
+ * Apple's muted map, with the same price pins and clusters as the app. Drag to
+ * pan, use the buttons to zoom.
  */
 export function BusinessMap({
   items,
@@ -111,6 +113,7 @@ export function BusinessMap({
     () =>
       clusterPoints(items, (s) => s.business.coords, visible, {
         keepSeparate: (s) => s.business.id === selectedId,
+        spacing: PIN_SPACING,
       }),
     [items, visible, selectedId],
   );
@@ -165,7 +168,7 @@ export function BusinessMap({
         </Svg>
       ) : null}
 
-      <View pointerEvents="none" style={[styles.marker, { left: originPoint.x - 12, top: originPoint.y - 12 }]}>
+      <View pointerEvents="none" style={[styles.anchor, { left: originPoint.x, top: originPoint.y }]}>
         <OriginDot />
       </View>
 
@@ -176,43 +179,47 @@ export function BusinessMap({
             if (cluster.items.length === 1) {
               const { business, distanceKm } = cluster.items[0];
               const selected = business.id === selectedId;
-              const half = (selected ? PIN_SELECTED_SIZE : PIN_SIZE) / 2 + PIN_MARGIN;
               return (
-                <Tappable
+                <View
                   key={business.id}
-                  onPress={() => onSelect(business.id)}
-                  accessibilityLabel={t('{name}, {name2}, {distance} væk', {
-                    name: business.name,
-                    name2: getCategory(business.categories[0])?.name,
-                    distance: formatDistance(distanceKm),
-                  })}
-                  style={[
-                    styles.marker,
-                    {
-                      left: p.x - half,
-                      top: p.y - half,
-                      zIndex: selected ? 10 : 1,
-                    },
-                  ]}>
-                  <MapPin category={business.categories[0]} selected={selected} />
-                </Tappable>
+                  style={[styles.anchor, { left: p.x, top: p.y, zIndex: selected ? 10 : 1 }]}
+                  pointerEvents="box-none">
+                  <Tappable
+                    onPress={() => onSelect(business.id)}
+                    accessibilityLabel={t('{name}, {name2}, {distance} væk, {hourly}', {
+                      name: business.name,
+                      name2: getCategory(business.categories[0])?.name,
+                      distance: formatDistance(distanceKm),
+                      hourly: speakablePrice(
+                        formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business)),
+                      ),
+                    })}>
+                    <PricePin
+                      category={business.categories[0]}
+                      price={formatPrice(business.pricing.hourlyMin, currencyOf(business))}
+                      selected={selected}
+                    />
+                  </Tappable>
+                </View>
               );
             }
-            const half = clusterSize(cluster.items.length) / 2 + PIN_MARGIN;
             return (
-              <Tappable
+              <View
                 key={cluster.key}
-                onPress={() => {
-                  const next = regionForPoints(
-                    cluster.items.map((s) => s.business.coords),
-                    1.8,
-                  );
-                  if (next) setView(next);
-                }}
-                accessibilityLabel={t('{count} virksomheder. Zoom ind', { count: cluster.items.length })}
-                style={[styles.marker, { left: p.x - half, top: p.y - half, zIndex: 2 }]}>
-                <ClusterBubble count={cluster.items.length} />
-              </Tappable>
+                style={[styles.anchor, { left: p.x, top: p.y, zIndex: 2 }]}
+                pointerEvents="box-none">
+                <Tappable
+                  onPress={() => {
+                    const next = regionForPoints(
+                      cluster.items.map((s) => s.business.coords),
+                      1.8,
+                    );
+                    if (next) setView(next);
+                  }}
+                  accessibilityLabel={t('{count} virksomheder. Zoom ind', { count: cluster.items.length })}>
+                  <ClusterBubble count={cluster.items.length} />
+                </Tappable>
+              </View>
             );
           })
         : null}
@@ -241,7 +248,16 @@ export function BusinessMap({
 }
 
 const styles = StyleSheet.create({
-  marker: { position: 'absolute' },
-  zoom: { position: 'absolute', right: 12, gap: 8 },
-  credit: { position: 'absolute', left: 12 },
+  // A point with no size: the pin inside is centred on it, whatever its width.
+  anchor: {
+    position: 'absolute',
+    width: 0,
+    height: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'visible',
+  },
+  // Above the pins (zIndex up to 10), like MapKit's own controls.
+  zoom: { position: 'absolute', right: 12, gap: 8, zIndex: 20 },
+  credit: { position: 'absolute', left: 12, zIndex: 20 },
 });

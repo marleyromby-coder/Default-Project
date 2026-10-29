@@ -10,11 +10,13 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { ScreenPadding, Spacing } from '@/constants/theme';
 import { useScored } from '@/hooks/use-results';
 import { useTheme } from '@/hooks/use-theme';
+import { useLayout } from '@/hooks/use-layout';
 import { showDialog } from '@/lib/dialog';
 import { MAX_COMPARE, useApp } from '@/state/app-state';
 import { t } from '@/i18n';
 
 export default function SavedScreen() {
+  const { column } = useLayout();
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { state } = useApp();
@@ -55,7 +57,7 @@ export default function SavedScreen() {
           />
         }
         ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}
-        contentContainerStyle={[styles.list, { paddingBottom: insets.bottom + 160 }]}
+        contentContainerStyle={[styles.list, column, { paddingBottom: insets.bottom + 160 }]}
         contentInsetAdjustmentBehavior="never"
       />
       <CompareTray bottomOffset={60} />

@@ -12,6 +12,7 @@ import { MinTouchSize, Radius, ScreenPadding, Spacing } from '@/constants/theme'
 import { CATEGORIES, getCategory } from '@/data/categories';
 import { useBudgetMatch } from '@/hooks/use-budget-match';
 import { useTheme } from '@/hooks/use-theme';
+import { useLayout } from '@/hooks/use-layout';
 import { currencySymbol, formatNumber, formatPrice, formatPriceRange, pluralize } from '@/lib/format';
 import { analyzeProblem, defaultQuantity, PROBLEM_EXAMPLES } from '@/lib/matcher';
 import { summarizeJobPrice } from '@/lib/prices';
@@ -32,6 +33,7 @@ function niceBudget(value: number): number {
 }
 
 export default function DescribeProblemScreen() {
+  const { column, gutter } = useLayout();
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { state } = useApp();
@@ -118,7 +120,7 @@ export default function DescribeProblemScreen() {
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={[styles.content, { paddingBottom: 120 + insets.bottom }]}>
+        contentContainerStyle={[styles.content, column, { paddingBottom: 120 + insets.bottom }]}>
         <View style={styles.intro}>
           <AppText variant="callout" tone="textSecondary">
             {t(
@@ -352,6 +354,7 @@ export default function DescribeProblemScreen() {
         style={[
           styles.bottomBar,
           {
+            paddingHorizontal: gutter,
             paddingBottom: insets.bottom + Spacing.md,
             backgroundColor: colors.background,
             borderTopColor: colors.border,

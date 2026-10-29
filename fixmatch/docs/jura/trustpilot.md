@@ -18,7 +18,7 @@ Apple kan også bede om dokumentation for, at I må vise indholdet (App Store-re
 ## Sådan er appen sat op
 
 - **Demo og TestFlight**: Trustpilot-visning er slået til, så juryen ser idéen.
-- **App Store (`production`)**: slået fra (`EXPO_PUBLIC_FIXMATCH_TRUSTPILOT=off`). Slå til, når aftalen er underskrevet.
+- **Alle builds** (App Store, TestFlight, Xcode, Expo Go og webdemoen): slået fra som standard. Slå til med `EXPO_PUBLIC_FIXMATCH_TRUSTPILOT=on`, når aftalen er underskrevet.
 - Appen kalder TrustScore for "TrustScore" og nævner Trustpilot som kilde, viser opdateringsdato og linker til profilen.
 
 ## Plan B, hvis Trustpilot siger nej

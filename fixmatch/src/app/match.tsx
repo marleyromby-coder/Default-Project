@@ -14,6 +14,7 @@ import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { getCategory } from '@/data/categories';
 import { useBudgetMatch } from '@/hooks/use-budget-match';
 import { useTheme } from '@/hooks/use-theme';
+import { useLayout } from '@/hooks/use-layout';
 import { showDialog } from '@/lib/dialog';
 import { formatPrice, formatPriceRange, pluralize } from '@/lib/format';
 import { CLOSE_MARGIN, FIT_LABELS, type BudgetFit, type BudgetMatch } from '@/lib/matcher';
@@ -58,6 +59,7 @@ const FIT_BADGE: Record<BudgetFit, { tone: BadgeTone; icon?: IconName }> = {
 };
 
 export default function MatchScreen() {
+  const { column } = useLayout();
   const colors = useTheme();
   const params = useLocalSearchParams<{
     kategori: string;
@@ -145,7 +147,7 @@ export default function MatchScreen() {
   return (
     <View style={[styles.flex, { backgroundColor: colors.background }]}>
       <Stack.Screen options={{ title: t('Dit match') }} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
+      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={[styles.content, column]}>
         <View style={[styles.summary, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <View style={styles.row}>
             <View style={[styles.tradeIcon, { backgroundColor: colors.brandSoft }]}>

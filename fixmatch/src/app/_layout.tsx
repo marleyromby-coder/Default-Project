@@ -10,6 +10,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { MaxContentWidth, SerifFonts } from '@/constants/theme';
 import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { AppStateProvider, useApp } from '@/state/app-state';
+import { useAppearanceLoaded } from '@/state/appearance';
 import { getLanguage, t } from '@/i18n';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
@@ -53,8 +54,10 @@ function RootNavigator() {
     [SerifFonts.regular]: Fraunces_600SemiBold,
     [SerifFonts.bold]: Fraunces_700Bold,
   });
+  // The saved light/dark choice is read first, so the app never flashes the wrong theme.
+  const appearanceLoaded = useAppearanceLoaded();
   // If the fonts cannot load, the titles fall back to the system font instead of hanging.
-  const ready = state.ready && (fontsLoaded || !!fontError);
+  const ready = state.ready && appearanceLoaded && (fontsLoaded || !!fontError);
 
   useEffect(() => {
     if (ready) SplashScreen.hideAsync().catch(() => undefined);
@@ -113,7 +116,7 @@ function WebFrame({ children }: PropsWithChildren) {
   const colors = useTheme();
   if (Platform.OS !== 'web') return children;
   return (
-    <View style={styles.webBackdrop}>
+    <View style={[styles.webBackdrop, { backgroundColor: colors.backdrop }]}>
       <View style={[styles.webColumn, { backgroundColor: colors.background, borderColor: colors.border }]}>
         {children}
       </View>

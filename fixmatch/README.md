@@ -40,7 +40,10 @@ Scan QR-koden med iPhonens kamera → appen åbner i Expo Go. Alt du ændrer i k
 
 - **Retning – "Nordisk håndværk":** varmt papirhvidt, skovgrønt (pine) og en okkergul accent, i stedet for de kolde grå og blå farver, mange apps har. Alle farver står i `src/constants/theme.ts` og er tjekket efter WCAG 2.2 (al tekst mindst 4,5:1). Okker bruges kun til pynt, aldrig til tekst.
 - **Skrift:** overskrifter i [Fraunces](https://github.com/undercasetype/Fraunces) (SIL Open Font License), resten i systemets skrift (SF Pro på iPhone). `AppText` sætter selv titlerne i Fraunces; brug `serif` for andre tekster. Widgets bruger systemets serif (New York), fordi Fraunces ikke er med i widget-udvidelsen.
-- **Logo:** et lille "f" fra Fraunces med okkerprikken fra ordmærket "fixmatch.". Tegningen ligger ét sted, `assets/brand/mark.json`, og både `LogoMark` i appen og alle ikoner (iOS 26 Liquid Glass-ikon med bogstav og prik som to lag, Android, splash, favicon) laves ud fra den med `npm run brand:render` (`scripts/render-brand-assets.js`).
+- **Logo:** et lille "f" fra Fraunces med en okkergul prik ned over krogen, som prikken over i'et i "fi". Tegningen ligger ét sted, `assets/brand/mark.json`, og både `LogoMark` i appen, alle ikoner (iOS 26 Liquid Glass-ikon med bogstav og prik som to lag, Android, splash, favicon) og logobillederne til widgets laves ud fra den med `npm run brand:render` (`scripts/render-brand-assets.js`).
+- **Lys og mørk tilstand:** følger telefonen, men kan vælges under Mere → Udseende (Automatisk, Lys, Mørk). Valget gælder hele appen, også fanelinjen, Apple Kort og dialoger (`src/state/appearance.ts`).
+- **Kortet:** Apple Kort i Apples dæmpede stil, så FixMatch' egne nåle står frem. Hver virksomhed er et prismærke med fag og laveste timepris – man kan sammenligne priser, før man ringer, i stedet for at slå en opgave op og vente på bud. Kortene i bunden viser pris, åbningstid og "Ring". Webdemoen har samme nåle på et tegnet kort.
+- **iPhone Duo og iPad:** skærmene lægger sig efter bredden, ikke efter retningen (`src/hooks/use-layout.ts`). På en bred skærm (den åbne Duo vendt på tværs, iPad) står listen ved siden af kortet, og tekst og kort holdes i en læsevenlig bredde i midten. Byg med Xcode 27.1, så appen fylder hele Duo'ens indre skærm.
 - **Virksomheder** vises med deres eget billede (en https-adresse i kolonnen `billede`, med deres tilladelse – det står i samtykket) eller ellers med deres initialer i Fraunces på en lys tone af fagets farve, som et stempel. Appen viser ingen stockfotos, så en liste aldrig gentager det samme billede.
 - **Fagfarver** (`src/constants/trade-colors.ts`) er dæmpede jordfarver og bruges på kortet og på virksomhedernes mærker. Fagoversigten på forsiden er ensfarvet grøn, så den er rolig at se på.
 
@@ -50,13 +53,14 @@ To widgets, bygget med [expo-widgets](https://docs.expo.dev/versions/v58.0.0/sdk
 
 | Widget | Størrelser | Viser |
 | --- | --- | --- |
-| **Hurtig hjælp** (`src/widgets/quick-help.tsx`) | Lille, mellem, stor, låseskærm rund, rektangulær og i linje | "Beskriv dit problem", de 8 fag med ét tryk, akut hjælp og gemte |
-| **Gemte håndværkere** (`src/widgets/saved.tsx`) | Lille, mellem, stor, låseskærm rektangulær og i linje | Gemte virksomheder med pris, og om de har åbent lige nu |
+| **Hurtig hjælp** (`src/widgets/quick-help.tsx`) | Lille, mellem, stor, ekstra stor (iOS 27), låseskærm rund, rektangulær og i linje | "Beskriv dit problem", de 8 fag med ét tryk, akut hjælp og gemte |
+| **Gemte håndværkere** (`src/widgets/saved.tsx`) | Lille, mellem, stor, ekstra stor (iOS 27), låseskærm rektangulær og i linje | Gemte virksomheder med pris, og om de har åbent lige nu |
 
 - Appen sender tekster, by og gemte virksomheder til widgets (`src/widgets/props.ts` og `sync.ts`) med en tidslinje hver halve time 12 timer frem, så "Åben til 16.00" skifter uden at appen er åben. Lille widget bruges også i StandBy.
 - Widgets findes kun i rigtige iOS-builds (TestFlight og App Store) – ikke i Expo Go eller på web, hvor koden springes over.
 - `npm run widgets:check` bygger widget-runtime'en og renderer alle widgets i alle størrelser i lys og mørk tilstand. Kør den, når du ændrer en widget.
 - Widget-filerne må kun importere relativt (fx `./types`) og fra `@expo/ui` og `expo-widgets`: funktionen med `'widget'` kører i widget-udvidelsen uden appens kode.
+- `plugins/with-fixmatch-widgets.js` giver widgets det rigtige logo (et billedkatalog i widget-udvidelsen) og iOS 27's nye ekstra store widget (4 × 6), som expo-widgets endnu ikke kender. Den bygges kun med Xcode 27 eller nyere; ældre Xcode og ældre iPhones får bare de andre størrelser.
 
 ## Kortdata og byer
 
@@ -130,7 +134,7 @@ Til App Store, når de rigtige virksomheder er på plads:
 
 5. Følg `docs/app-store/tjekliste.md` og brug teksterne i `docs/app-store/app-store-tekster.md`.
 
-> **Trustpilot er slået fra i `production` og `testflight`** (`EXPO_PUBLIC_FIXMATCH_TRUSTPILOT=off` i `eas.json`). Så skjules TrustScores, anmeldelsesfiltre og anmeldelsesvægt. Skift til `on`, når partneraftalen med Trustpilot er underskrevet.
+> **Trustpilot er slået fra i alle builds** – EAS, Xcode, Expo Go og webdemoen – indtil partneraftalen med Trustpilot er underskrevet. Så skjules TrustScores, anmeldelsesfiltre og anmeldelsesvægt. Byg med `EXPO_PUBLIC_FIXMATCH_TRUSTPILOT=on` (fx i `eas.json`), når aftalen er på plads.
 >
 > **Byg aldrig production med demodata.** Apple afviser apps med pladsholder-indhold (retningslinje 2.1), og Trustpilot-scorer må først vises, når der er en aftale med Trustpilot (se `docs/jura/`).
 
