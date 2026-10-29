@@ -30,7 +30,7 @@ Selve appen overtræder ikke noget. Det, der mangler, er rigtige data og et par 
 
 | Metode | Kræver | Fordele | Ulemper |
 | --- | --- | --- | --- |
-| **TestFlight** (anbefalet) | Jeres Apple Developer-konto. `npx eas-cli@latest build -p ios --profile testflight` og derefter `submit` | Juryen installerer appen på sin egen iPhone. Op til 100 interne testere uden gennemgang og op til 10.000 eksterne via et offentligt link efter en kort Beta App Review. Apple Kort virker | Hver build kan bruges i 90 dage |
+| **TestFlight** (anbefalet) | Jeres Apple Developer-konto. Én kommando: `npx eas-cli@latest build -p ios --profile testflight --auto-submit` – se `docs/lancering/testflight.md` | Juryen installerer appen på sin egen iPhone. Op til 100 interne testere uden gennemgang og op til 10.000 eksterne via et offentligt link efter en kort Beta App Review. Apple Kort virker | Hver build kan bruges i 90 dage |
 | **Expo Go** | Gratis Expo Go-app fra App Store. `npx expo start` på en computer | Ingen build. Virker med det samme på jeres egen iPhone, også med Apple Kort (`react-native-maps` er inkluderet i Expo Go) | Kun på telefoner på samme netværk, eller med `--tunnel`. Ikons- og app-navn er Expo Go's |
 | **iOS-simulator** | En Mac med Xcode. `npx eas-cli@latest build -p ios --profile simulator` | God til at vise på en storskærm | Kræver en Mac |
 | **Webdemo** | En browser. `npm run export:web` | Virker overalt, også på en projektor | Ikke Apple Kort, men et forenklet kort. `?lang=en` viser den engelske version |

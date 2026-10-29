@@ -105,8 +105,16 @@ Formater i regnearket:
 
 Du behøver **ikke** en Mac – EAS bygger appen i skyen.
 
+**Demoen på TestFlight** er én kommando – se `docs/lancering/testflight.md` for hele forløbet:
+
+```bash
+npx eas-cli@latest build --platform ios --profile testflight --auto-submit
+```
+
+Til App Store, når de rigtige virksomheder er på plads:
+
 1. Opret en Apple Developer-konto (99 USD/år). En personlig konto er nok, og der kræves intet CVR-nummer. Jeres navn står så som udgiver. Som virksomhed kræver det et D-U-N-S-nummer (gratis, tager nogle dage).
-2. Opret appen i [App Store Connect](https://appstoreconnect.apple.com) med bundle id `dk.fixmatch.app`. Kopiér App ID ind i `eas.json` (`ascAppId`).
+2. Lad EAS oprette appen i App Store Connect første gang, du sender et build (eller opret den selv med bundle id `dk.fixmatch.app`). Vil du køre EAS uden spørgsmål, så sæt appens App ID som `ascAppId` i `eas.json`.
 3. Udfyld udgiveroplysningerne i `src/constants/app-info.ts` (navn som på Apple-kontoen, e-mail, hjemmeside, privatlivs-URL). CVR kan stå tomt.
 4. Byg og upload:
 

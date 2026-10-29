@@ -40,14 +40,10 @@
   },
   "submit": {
     "testflight": {
-      "ios": {
-        "ascAppId": "UDFYLD_MED_APP_ID_FRA_APP_STORE_CONNECT"
-      }
+      "ios": {}
     },
     "production": {
-      "ios": {
-        "ascAppId": "UDFYLD_MED_APP_ID_FRA_APP_STORE_CONNECT"
-      }
+      "ios": {}
     }
   }
 }
