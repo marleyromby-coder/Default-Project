@@ -128,7 +128,7 @@ Til App Store, når de rigtige virksomheder er på plads:
 
 5. Følg `docs/app-store/tjekliste.md` og brug teksterne i `docs/app-store/app-store-tekster.md`.
 
-> **Trustpilot er slået fra i `production`** (`EXPO_PUBLIC_FIXMATCH_TRUSTPILOT=off` i `eas.json`). Så skjules TrustScores, anmeldelsesfiltre og anmeldelsesvægt. Skift til `on`, når partneraftalen med Trustpilot er underskrevet.
+> **Trustpilot er slået fra i `production` og `testflight`** (`EXPO_PUBLIC_FIXMATCH_TRUSTPILOT=off` i `eas.json`). Så skjules TrustScores, anmeldelsesfiltre og anmeldelsesvægt. Skift til `on`, når partneraftalen med Trustpilot er underskrevet.
 >
 > **Byg aldrig production med demodata.** Apple afviser apps med pladsholder-indhold (retningslinje 2.1), og Trustpilot-scorer må først vises, når der er en aftale med Trustpilot (se `docs/jura/`).
 

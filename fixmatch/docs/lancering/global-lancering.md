@@ -15,7 +15,7 @@
 | --- | --- | --- |
 | Fiktive demovirksomheder | ❌ Blokerer | App Store-retningslinje 2.2: demoer hører hjemme på TestFlight. Udgiv i App Store, når I har rigtige virksomheder |
 | Rigtige virksomheder med samtykke og priser | ⏳ Mangler | Få 20–30 virksomheder i én by med (skabelon: `docs/jura/samtykke-virksomhed.md`), og importér dem (`npm run import:businesses`) |
-| Trustpilot | ✅ Løst | Slået fra i App Store-versionen (`production`), indtil der er en partneraftale. Så nævner appen og App Store-teksten ingen anmeldelser |
+| Trustpilot | ✅ Løst | Slået fra i App Store- og TestFlight-versionen (`production` og `testflight`), indtil der er en partneraftale. Så nævner appen og App Store-teksten ingen anmeldelser |
 | Spærre mod fejl-builds | ✅ Løst | `scripts/check-release.js` stopper et App Store-build uden rigtige virksomheder, med demodata eller manglende samtykke, eller med TODO-felter i `app-info.ts` |
 | Apple Kort | ✅ Løst | Godkendt via udvikleraftalen. Se `docs/jura/apple-kort.md` |
 | Privatlivspolitik og vilkår på en hjemmeside | ⏳ Klar til at lægge online | `npm run website:build` bygger forside, privatlivspolitik, vilkår og support på dansk og engelsk. Læg `dist-website/` på fx Netlify. Apple kræver et link til privatlivspolitikken og en support-side |

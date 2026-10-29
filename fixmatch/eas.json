@@ -26,7 +26,8 @@
       "distribution": "store",
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_FIXMATCH_DATA": "demo"
+        "EXPO_PUBLIC_FIXMATCH_DATA": "demo",
+        "EXPO_PUBLIC_FIXMATCH_TRUSTPILOT": "off"
       }
     },
     "production": {
