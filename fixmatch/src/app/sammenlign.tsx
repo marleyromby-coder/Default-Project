@@ -20,7 +20,7 @@ import { formatDistance, formatNumber, formatPrice, formatPriceRange, formatRati
 import { getOpenStatus } from '@/lib/opening-hours';
 import { priceIndex, reviewValue, type ScoredBusiness } from '@/lib/ranking';
 import { t } from '@/i18n';
-import { businessText, currencyOf } from '@/lib/business-text';
+import { businessText, currencyOf, timeZoneOf } from '@/lib/business-text';
 import { taxNote } from '@/lib/markets';
 import { useApp, useMarket } from '@/state/app-state';
 
@@ -197,7 +197,7 @@ export default function CompareScreen() {
         ) : null}
         <Row label={t('Åben nu')}>
           {items.map((s) => {
-            const status = getOpenStatus(s.business.hours);
+            const status = getOpenStatus(s.business.hours, undefined, timeZoneOf(s.business));
             return (
               <Value key={s.business.id}>
                 <AppText variant="footnote" tone={status.open ? 'success' : 'textSecondary'} weight="600">

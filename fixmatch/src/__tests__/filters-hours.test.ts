@@ -1,5 +1,5 @@
-import { activeFilterCount, applyFilters, DEFAULT_FILTERS } from '@/lib/filters';
-import { getOpenStatus, summarizeHours } from '@/lib/opening-hours';
+import { activeFilterCount, applyFilters, DEFAULT_FILTERS, distanceOptions, isSameDistance } from '@/lib/filters';
+import { clockAt, getOpenStatus, summarizeHours } from '@/lib/opening-hours';
 import { scoreBusinesses } from '@/lib/ranking';
 import type { WeekHours } from '@/lib/types';
 
@@ -32,6 +32,16 @@ describe('opening hours', () => {
     expect(getOpenStatus(HOURS, at(12, 0, 25)).label).toBe('Åbner i morgen kl. 7.00');
   });
 
+  it('reads the hours in the time zone of the business', () => {
+    // Thursday 29 October 2026, 13:00 UTC: 14:00 in Copenhagen, 13:00 in London, 9:00 in New York.
+    const now = new Date('2026-10-29T13:00:00Z');
+    expect(clockAt(now, 'Europe/Copenhagen')).toEqual({ day: 3, minutes: 14 * 60 });
+    expect(clockAt(now, 'America/New_York')).toEqual({ day: 3, minutes: 9 * 60 });
+    const nineToFive: WeekHours = [null, null, null, ['10:00', '17:00'], null, null, null];
+    expect(getOpenStatus(nineToFive, now, 'America/New_York').open).toBe(false);
+    expect(getOpenStatus(nineToFive, now, 'Europe/London').open).toBe(true);
+  });
+
   it('summarises equal days', () => {
     expect(summarizeHours(HOURS)).toEqual([
       { days: 'Man–tor', time: '7.00–15.30' },
@@ -43,7 +53,11 @@ describe('opening hours', () => {
 
 describe('filters', () => {
   const origin = { lat: 55.6941, lon: 12.5486 };
-  const near = makeBusiness({ id: 'near', hours: HOURS, trustpilot: { score: 4.6, reviews: 50, url: 'x', updatedAt: '2026-10-01' } });
+  const near = makeBusiness({
+    id: 'near',
+    hours: HOURS,
+    trustpilot: { score: 4.6, reviews: 50, url: 'x', updatedAt: '2026-10-01' },
+  });
   const far = makeBusiness({ id: 'far', coords: { lat: 56.1567, lon: 10.2108 }, emergency: true, hours: HOURS });
   const all = [near, far];
   const scored = scoreBusinesses(all, origin, { price: 3, distance: 3, reviews: 3 });
@@ -60,6 +74,16 @@ describe('filters', () => {
     expect(ids(applyFilters(scored, { ...everywhere, emergency: true }, { all }))).toEqual(['far']);
     // Døgnvagt counts as open at night.
     expect(ids(applyFilters(scored, { ...everywhere, openNow: true }, { all, now: at(22) }))).toEqual(['far']);
+  });
+
+  it('offers distances in the unit of the market', () => {
+    expect(distanceOptions('km').map((o) => o.label)).toEqual(['5 km', '10 km', '25 km', '50 km', 'Hele landet']);
+    const miles = distanceOptions('mi');
+    expect(miles[2].label).toBe('15 mi');
+    // The default 25 km limit selects the 15 mi chip.
+    expect(isSameDistance(DEFAULT_FILTERS.maxDistanceKm, miles[2].value)).toBe(true);
+    expect(isSameDistance(DEFAULT_FILTERS.maxDistanceKm, miles[1].value)).toBe(false);
+    expect(isSameDistance(null, null)).toBe(true);
   });
 
   it('counts active filters', () => {

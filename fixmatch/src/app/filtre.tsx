@@ -12,9 +12,9 @@ import { isCategoryId } from '@/data/categories';
 import { useResults } from '@/hooks/use-results';
 import { useTheme } from '@/hooks/use-theme';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
-import { DEFAULT_FILTERS, DISTANCE_OPTIONS, RATING_OPTIONS } from '@/lib/filters';
+import { DEFAULT_FILTERS, distanceOptions, isSameDistance, RATING_OPTIONS } from '@/lib/filters';
 import type { Filters } from '@/lib/types';
-import { useApp } from '@/state/app-state';
+import { useApp, useMarket } from '@/state/app-state';
 import { t } from '@/i18n';
 
 const PRICE_OPTIONS: { value: Filters['priceLevel']; label: string }[] = [
@@ -26,6 +26,7 @@ const PRICE_OPTIONS: { value: Filters['priceLevel']; label: string }[] = [
 
 export default function FiltersScreen() {
   const colors = useTheme();
+  const { market } = useMarket();
   const insets = useSafeAreaInsets();
   const { kategori } = useLocalSearchParams<{ kategori?: string }>();
   const { state, setFilters } = useApp();
@@ -44,11 +45,11 @@ export default function FiltersScreen() {
       <ScrollView contentContainerStyle={styles.content}>
         <Group title={t('Maks. afstand')}>
           <View style={styles.options}>
-            {DISTANCE_OPTIONS.map((o) => (
+            {distanceOptions(market.distanceUnit).map((o) => (
               <Chip
                 key={o.label}
                 label={o.label}
-                selected={draft.maxDistanceKm === o.value}
+                selected={isSameDistance(draft.maxDistanceKm, o.value)}
                 onPress={() => update({ maxDistanceKm: o.value })}
               />
             ))}

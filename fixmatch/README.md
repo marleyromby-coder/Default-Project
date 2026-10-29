@@ -29,7 +29,7 @@ npx expo start
 Scan QR-koden med iPhonens kamera → appen åbner i Expo Go. Alt du ændrer i koden, vises med det samme.
 
 - **Web-demo** (til projektor eller jury på bærbar): `npx expo start --web`, eller `npm run export:web` og læg mappen `dist/` på fx Netlify, Vercel eller GitHub Pages.
-- **Tjek koden**: `npm run check` (TypeScript, lint og 96 tests).
+- **Tjek koden**: `npm run check` (TypeScript, lint og 102 tests).
 - **Engelsk version**: på iPhone under Indstillinger → FixMatch → Sprog. På web: tilføj `?lang=en` til adressen.
 
 > Appen starter i **demotilstand** med 224 fiktive virksomheder: 104 i København, Aarhus, Odense og Aalborg og 24 i hver af Stockholm, Oslo, Berlin, London og New York. De er tydeligt markeret, telefonnumre er i nummerserier til fiktion eller ugyldige, registreringsnumre er ugyldige, og opkald er slået fra.
@@ -74,7 +74,7 @@ npm run website:build   # → dist-website/ med forside, privatliv, vilkår og s
    npm run import:businesses -- ~/Downloads/virksomheder.csv
    ```
 
-   Scriptet tjekker CVR, telefonnummer, postnummer, priser, Trustpilot-link, åbningstider og autorisation og skriver fejl på dansk. Gyldige rækker gemmes i `src/data/live-businesses.json`.
+   Scriptet tjekker CVR, telefonnummer, postnummer, priser, Trustpilot-link, åbningstider og autorisation og skriver fejl på dansk. Rækkerne gemmes i `src/data/live-businesses.json` – men kun hvis alle er gyldige, så et regneark med fejl aldrig sletter virksomheder, der allerede er importeret. Vil du gemme de gyldige rækker alligevel, så tilføj `--spring-fejl-over`.
 
 4. Byg appen med `EXPO_PUBLIC_FIXMATCH_DATA=live` (er sat i `eas.json` under `production`).
 

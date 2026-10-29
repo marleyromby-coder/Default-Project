@@ -19,6 +19,8 @@ export interface Market {
   /** Whether listed prices include VAT. US prices are listed before sales tax. */
   taxIncluded: boolean;
   distanceUnit: 'km' | 'mi';
+  /** IANA time zone for opening hours. A business can override it, e.g. outside New York. */
+  timeZone: string;
   emergencyNumber: string;
   /** The whole country on the map. */
   region: Region;
@@ -40,6 +42,7 @@ export const MARKETS: Record<CountryCode, Market> = {
     currency: 'DKK',
     taxIncluded: true,
     distanceUnit: 'km',
+    timeZone: 'Europe/Copenhagen',
     emergencyNumber: '112',
     region: { latitude: 56.15, longitude: 11.6, latitudeDelta: 3.6, longitudeDelta: 7.4 },
     fromDkk: 1,
@@ -54,6 +57,7 @@ export const MARKETS: Record<CountryCode, Market> = {
     currency: 'SEK',
     taxIncluded: true,
     distanceUnit: 'km',
+    timeZone: 'Europe/Stockholm',
     emergencyNumber: '112',
     region: { latitude: 62.5, longitude: 16.5, latitudeDelta: 14, longitudeDelta: 20 },
     fromDkk: 1.45,
@@ -67,6 +71,7 @@ export const MARKETS: Record<CountryCode, Market> = {
     currency: 'NOK',
     taxIncluded: true,
     distanceUnit: 'km',
+    timeZone: 'Europe/Oslo',
     emergencyNumber: '112',
     region: { latitude: 64.5, longitude: 13, latitudeDelta: 15, longitudeDelta: 26 },
     fromDkk: 1.7,
@@ -81,6 +86,7 @@ export const MARKETS: Record<CountryCode, Market> = {
     currency: 'EUR',
     taxIncluded: true,
     distanceUnit: 'km',
+    timeZone: 'Europe/Berlin',
     emergencyNumber: '112',
     region: { latitude: 51.2, longitude: 10.4, latitudeDelta: 9, longitudeDelta: 12 },
     fromDkk: 0.13,
@@ -94,6 +100,7 @@ export const MARKETS: Record<CountryCode, Market> = {
     currency: 'GBP',
     taxIncluded: true,
     distanceUnit: 'mi',
+    timeZone: 'Europe/London',
     emergencyNumber: '999',
     region: { latitude: 54.6, longitude: -3.2, latitudeDelta: 11, longitudeDelta: 14 },
     fromDkk: 0.115,
@@ -108,6 +115,7 @@ export const MARKETS: Record<CountryCode, Market> = {
     currency: 'USD',
     taxIncluded: false,
     distanceUnit: 'mi',
+    timeZone: 'America/New_York',
     emergencyNumber: '911',
     region: { latitude: 39.5, longitude: -98.5, latitudeDelta: 30, longitudeDelta: 62 },
     fromDkk: 0.17,

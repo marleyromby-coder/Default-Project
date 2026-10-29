@@ -17,6 +17,11 @@ export function openCountries(businesses: Business[]): CountryCode[] {
   return open.length > 0 ? open : COUNTRY_CODES;
 }
 
+/** The time zone of the business's opening hours. */
+export function timeZoneOf(business: Business): string {
+  return business.timeZone ?? getMarket(countryOf(business)).timeZone;
+}
+
 export function currencyOf(business: Business): Currency {
   return business.pricing.currency ?? getMarket(business.country).currency;
 }

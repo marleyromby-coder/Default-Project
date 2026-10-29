@@ -13,11 +13,13 @@ import { useTheme } from '@/hooks/use-theme';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { PRIORITY_PRESETS, weightsFromPriorities } from '@/lib/ranking';
 import type { Priorities } from '@/lib/types';
-import { useApp } from '@/state/app-state';
+import { taxNote } from '@/lib/markets';
+import { useApp, useMarket } from '@/state/app-state';
 import { t } from '@/i18n';
 
 const FACTORS: { key: keyof Priorities; label: string; hint: string; icon: IconName }[] = [
-  { key: 'price', label: t('Lav pris'), hint: t('Timepris inkl. moms'), icon: 'tag' },
+  // The price hint depends on the market (incl. VAT or before tax), see below.
+  { key: 'price', label: t('Lav pris'), hint: '', icon: 'tag' },
   { key: 'distance', label: t('Kort afstand'), hint: t('Afstand fra din placering'), icon: 'pin' },
   { key: 'reviews', label: t('Gode anmeldelser'), hint: t('TrustScore på Trustpilot'), icon: 'star' },
 ];
@@ -28,6 +30,7 @@ export default function PrioritiesScreen() {
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { state, setPriorities } = useApp();
+  const { market } = useMarket();
   const [draft, setDraft] = useState<Priorities>(state.priorities);
   const weights = weightsFromPriorities(draft);
 
@@ -62,7 +65,7 @@ export default function PrioritiesScreen() {
               <View style={styles.flex}>
                 <AppText variant="headline">{factor.label}</AppText>
                 <AppText variant="footnote" tone="textSecondary">
-                  {factor.hint}
+                  {factor.key === 'price' ? t('Timepris {tax}', { tax: taxNote(market) }) : factor.hint}
                 </AppText>
               </View>
               <AppText variant="title3" rounded tabular tone="brandText">

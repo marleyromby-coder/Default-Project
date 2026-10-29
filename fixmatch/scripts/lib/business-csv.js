@@ -84,10 +84,16 @@ function parseCsv(text) {
   return nonEmpty.slice(1).map((cells) => Object.fromEntries(header.map((key, i) => [key, (cells[i] ?? '').trim()])));
 }
 
-function toNumber(value) {
+/**
+ * Danish spreadsheet numbers: "1.200 kr." is 1200 and "4,5" is 4.5. Coordinates and scores
+ * are never in the thousands, so for those (`decimal`) a dot is always a decimal point:
+ * "55.676" is 55.676, not 55676.
+ */
+function toNumber(value, { decimal = false } = {}) {
   if (value === undefined || value === '') return undefined;
-  const normalized = String(value).replace(/\s/g, '').replace(/kr\.?/i, '').replace(/\.(?=\d{3}\b)/g, '').replace(',', '.');
-  const number = Number(normalized);
+  let normalized = String(value).replace(/\s/g, '').replace(/kr\.?/i, '');
+  if (!decimal) normalized = normalized.replace(/\.(?=\d{3}\b)/g, '');
+  const number = Number(normalized.replace(',', '.'));
   return Number.isFinite(number) ? number : NaN;
 }
 
@@ -132,6 +138,16 @@ function parseHours(value, errors) {
       const times = match[3].match(/^(\d{1,2})(?:[:.](\d{2}))?\s*-\s*(\d{1,2})(?:[:.](\d{2}))?$/);
       if (!times) {
         errors.push(`Åbningstider: kan ikke læse tiden i "${part.trim()}"`);
+        continue;
+      }
+      const fromMinutes = Number(times[1]) * 60 + Number(times[2] ?? 0);
+      const toMinutes = Number(times[3]) * 60 + Number(times[4] ?? 0);
+      if (Number(times[2] ?? 0) > 59 || Number(times[4] ?? 0) > 59 || fromMinutes >= 24 * 60 || toMinutes > 24 * 60) {
+        errors.push(`Åbningstider: ugyldigt klokkeslæt i "${part.trim()}"`);
+        continue;
+      }
+      if (fromMinutes >= toMinutes) {
+        errors.push(`Åbningstider: lukketiden skal være efter åbningstiden i "${part.trim()}". Er der åbent om natten, så sæt doegnvagt=ja.`);
         continue;
       }
       const pad = (h, m) => `${String(Number(h)).padStart(2, '0')}:${m ?? '00'}`;
@@ -220,8 +236,8 @@ function rowToBusiness(row, context) {
   });
   if (!/^\d{4}$/.test(postalCode) || !place) errors.push('Postnummer skal være et gyldigt dansk postnummer');
 
-  let lat = toNumber(row.breddegrad);
-  let lon = toNumber(row.laengdegrad);
+  let lat = toNumber(row.breddegrad, { decimal: true });
+  let lon = toNumber(row.laengdegrad, { decimal: true });
   if (lat === undefined || lon === undefined) {
     if (place) {
       lat = place.lat;
@@ -234,7 +250,7 @@ function rowToBusiness(row, context) {
 
   let trustpilot;
   if (row.trustpilot_score || row.trustpilot_url) {
-    const score = toNumber(row.trustpilot_score);
+    const score = toNumber(row.trustpilot_score, { decimal: true });
     const reviews = toNumber(row.trustpilot_antal);
     const url = row.trustpilot_url;
     if (!(score >= 1 && score <= 5)) errors.push('Trustpilot-score skal være mellem 1 og 5');
@@ -313,4 +329,4 @@ function rowToBusiness(row, context) {
   return { business, errors, warnings };
 }
 
-module.exports = { parseCsv, rowToBusiness, parseHours, isValidCvr, normalizePhone, slugify, fold, CATEGORY_IDS };
+module.exports = { parseCsv, rowToBusiness, parseHours, isValidCvr, normalizePhone, slugify, fold, toNumber, CATEGORY_IDS };

@@ -78,6 +78,11 @@ describe('demo data', () => {
     for (const b of businesses.filter((x) => !x.country)) expect(isInDenmark(b.coords)).toBe(true);
   });
 
+  it('keeps demo records out of live data', () => {
+    expect(parseBusinesses(demo, false)).toHaveLength(0);
+    expect(parseBusinesses(demo, true)).toHaveLength(demo.length);
+  });
+
   it('rejects malformed records', () => {
     expect(isValidBusiness({ id: 'x' })).toBe(false);
     expect(isValidBusiness(null)).toBe(false);

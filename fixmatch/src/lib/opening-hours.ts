@@ -27,9 +27,44 @@ export function formatTime(time: string): string {
   return `${Number(hours)}${getLanguage() === 'da' ? '.' : ':'}${minutes ?? '00'}`;
 }
 
-export function getOpenStatus(hours: WeekHours, now: Date = new Date()): OpenStatus {
-  const today = mondayIndex(now);
-  const minutesNow = now.getHours() * 60 + now.getMinutes();
+const WEEKDAY_CODES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const clockFormats = new Map<string, Intl.DateTimeFormat>();
+
+/**
+ * The weekday (Monday = 0) and minutes past midnight at `now` in a time zone, so a London
+ * business shows London opening times to someone in Copenhagen. Without time zone support
+ * in the JS engine it falls back to the phone's clock, which is right in the user's own country.
+ */
+export function clockAt(now: Date, timeZone?: string): { day: number; minutes: number } {
+  if (timeZone) {
+    try {
+      let format = clockFormats.get(timeZone);
+      if (!format) {
+        format = new Intl.DateTimeFormat('en-US', {
+          timeZone,
+          weekday: 'short',
+          hour: 'numeric',
+          minute: 'numeric',
+          hourCycle: 'h23',
+        });
+        clockFormats.set(timeZone, format);
+      }
+      const parts = format.formatToParts(now);
+      const part = (type: string) => parts.find((p) => p.type === type)?.value;
+      const day = WEEKDAY_CODES.indexOf(part('weekday') ?? '');
+      const hour = Number(part('hour')) % 24;
+      const minute = Number(part('minute'));
+      if (day >= 0 && Number.isFinite(hour) && Number.isFinite(minute)) return { day, minutes: hour * 60 + minute };
+    } catch {
+      // Unknown time zone or no Intl support: use the phone's clock below.
+    }
+  }
+  return { day: mondayIndex(now), minutes: now.getHours() * 60 + now.getMinutes() };
+}
+
+/** Open or closed at `now`, read in the business's time zone. */
+export function getOpenStatus(hours: WeekHours, now: Date = new Date(), timeZone?: string): OpenStatus {
+  const { day: today, minutes: minutesNow } = clockAt(now, timeZone);
   const todays = hours[today];
 
   if (todays) {
@@ -54,8 +89,8 @@ export function getOpenStatus(hours: WeekHours, now: Date = new Date()): OpenSta
   return { open: false, label: t('Lukket') };
 }
 
-export function isOpenNow(hours: WeekHours, now: Date = new Date()): boolean {
-  return getOpenStatus(hours, now).open;
+export function isOpenNow(hours: WeekHours, now: Date = new Date(), timeZone?: string): boolean {
+  return getOpenStatus(hours, now, timeZone).open;
 }
 
 /** Groups equal consecutive days: "Man–tor 7.00–15.30", "Fre 7.00–14.00", "Lør–søn Lukket". */

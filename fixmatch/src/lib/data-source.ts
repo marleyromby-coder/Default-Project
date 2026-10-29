@@ -54,15 +54,19 @@ export function isValidBusiness(value: unknown): value is Business {
   );
 }
 
-export function parseBusinesses(value: unknown): Business[] {
+/** Valid listings only. Live builds also drop demo records, e.g. from a hosted feed. */
+export function parseBusinesses(value: unknown, allowDemo = DATA_MODE === 'demo'): Business[] {
   if (!Array.isArray(value)) return [];
-  return value.filter(isValidBusiness).map((business) => ({
-    ...business,
-    authorizations: business.authorizations ?? [],
-    memberships: business.memberships ?? [],
-    services: business.services ?? [],
-    emergency: business.emergency ?? false,
-  }));
+  return value
+    .filter(isValidBusiness)
+    .filter((business) => allowDemo || !business.demo)
+    .map((business) => ({
+      ...business,
+      authorizations: business.authorizations ?? [],
+      memberships: business.memberships ?? [],
+      services: business.services ?? [],
+      emergency: business.emergency ?? false,
+    }));
 }
 
 export function bundledBusinesses(): Business[] {

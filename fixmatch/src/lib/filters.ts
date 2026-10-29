@@ -1,3 +1,5 @@
+import { timeZoneOf } from './business-text';
+import { formatRating } from './format';
 import { isOpenNow } from './opening-hours';
 import { priceLevel, type ScoredBusiness } from './ranking';
 import type { Business, CategoryId, Filters } from './types';
@@ -13,19 +15,26 @@ export const DEFAULT_FILTERS: Filters = {
   trustpilotOnly: false,
 };
 
-export const DISTANCE_OPTIONS: { value: number | null; label: string }[] = [
-  { value: 5, label: t('5 km') },
-  { value: 10, label: t('10 km') },
-  { value: 25, label: t('25 km') },
-  { value: 50, label: t('50 km') },
-  { value: null, label: t('Hele landet') },
-];
+const KM_PER_MILE = 1.609344;
+
+/** Distance chips in the market's unit: round kilometres, or round miles in the UK and the US. */
+export function distanceOptions(unit: 'km' | 'mi'): { value: number | null; label: string }[] {
+  const steps = unit === 'mi' ? [3, 5, 15, 30] : [5, 10, 25, 50];
+  return [
+    ...steps.map((n) => ({ value: unit === 'mi' ? n * KM_PER_MILE : n, label: `${n} ${unit}` })),
+    { value: null, label: t('Hele landet') },
+  ];
+}
+
+/** Whether a stored limit is the chip's distance, allowing for km/mile rounding (25 km ≈ 15 mi). */
+export function isSameDistance(a: number | null, b: number | null): boolean {
+  if (a === null || b === null) return a === b;
+  return Math.abs(a - b) <= 0.1 * Math.max(a, b);
+}
 
 export const RATING_OPTIONS: { value: number | null; label: string }[] = [
   { value: null, label: t('Alle') },
-  { value: 3.5, label: '3,5+' },
-  { value: 4, label: '4,0+' },
-  { value: 4.5, label: '4,5+' },
+  ...[3.5, 4, 4.5].map((value) => ({ value, label: `${formatRating(value)}+` })),
 ];
 
 export function applyFilters(
@@ -40,7 +49,7 @@ export function applyFilters(
     if (filters.trustpilotOnly && !business.trustpilot) return false;
     if (filters.emergency && !business.emergency) return false;
     if (filters.authorizedOnly && business.authorizations.length === 0) return false;
-    if (filters.openNow && !isOpenNow(business.hours, now) && !business.emergency) return false;
+    if (filters.openNow && !isOpenNow(business.hours, now, timeZoneOf(business)) && !business.emergency) return false;
     if (filters.priceLevel !== null && priceLevel(business, context.all, context.category) !== filters.priceLevel) {
       return false;
     }

@@ -3,6 +3,8 @@ import places from '@/data/places.json';
 // The import script is plain Node.js (CommonJS) so the team can run it without a build step.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const csv = require('../../scripts/lib/business-csv');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { loadJobs } = require('../../scripts/import-businesses');
 
 const context = {
   places,
@@ -35,7 +37,9 @@ describe('CSV import', () => {
     );
     expect(errors).toEqual([]);
     expect(business.contact).toEqual({ phone: '+4522334455', website: 'https://www.test.dk' });
-    expect(business.pricing.examples).toEqual([{ job: 'stoppet-afloeb', label: 'Stoppet afløb', min: 1200, max: 2500, unit: 'opgave' }]);
+    expect(business.pricing.examples).toEqual([
+      { job: 'stoppet-afloeb', label: 'Stoppet afløb', min: 1200, max: 2500, unit: 'opgave' },
+    ]);
     expect(business.trustpilot.score).toBe(4.6);
     expect(business.hours[0]).toEqual(['07:00', '15:30']);
     expect(business.hours[4]).toEqual(['07:00', '14:00']);
@@ -50,7 +54,10 @@ describe('CSV import', () => {
   });
 
   it('explains bad data in Danish', () => {
-    const { errors } = csv.rowToBusiness(row(';snedker x;123;1234;ftp://x;9999;;50;40;;7;;http://evil.example;;;;2026-10-01'), context);
+    const { errors } = csv.rowToBusiness(
+      row(';snedker x;123;1234;ftp://x;9999;;50;40;;7;;http://evil.example;;;;2026-10-01'),
+      context,
+    );
     expect(errors).toEqual(
       expect.arrayContaining([
         'Navn mangler',
@@ -67,5 +74,25 @@ describe('CSV import', () => {
     expect(csv.isValidCvr('12345678')).toBe(false);
     expect(csv.normalizePhone('+45 70 12 34 56')).toBe('+4570123456');
     expect(csv.normalizePhone('10203040')).toBeUndefined();
+  });
+
+  it('reads every job from the categories file', () => {
+    const jobs = loadJobs();
+    expect(Object.keys(jobs)).toHaveLength(8);
+    expect(jobs.vvs.map((j: { id: string }) => j.id)).toContain('stoppet-afloeb');
+    expect(Object.values(jobs).flat()).toHaveLength(38);
+  });
+
+  it('keeps decimals in coordinates and scores', () => {
+    expect(csv.toNumber('55.676', { decimal: true })).toBe(55.676);
+    expect(csv.toNumber('4,5', { decimal: true })).toBe(4.5);
+    expect(csv.toNumber('1.200 kr.')).toBe(1200);
+  });
+
+  it('rejects impossible and overnight opening hours', () => {
+    const errors: string[] = [];
+    csv.parseHours('man 18-02; tir 25-30; ons 0-24', errors);
+    expect(errors).toHaveLength(2);
+    expect(errors[0]).toMatch(/doegnvagt/);
   });
 });

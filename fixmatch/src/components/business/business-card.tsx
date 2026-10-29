@@ -8,7 +8,7 @@ import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { MinTouchSize, Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
-import { businessText, currencyOf } from '@/lib/business-text';
+import { businessText, currencyOf, timeZoneOf } from '@/lib/business-text';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { formatDistance, formatHourly, formatPriceRange, formatRating, speakablePrice } from '@/lib/format';
 import { getOpenStatus } from '@/lib/opening-hours';
@@ -46,7 +46,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
       ? `${job?.name}: ${formatPriceRange(jobPrice.min, jobPrice.max, jobPrice.unit, currencyOf(business))}`
       : formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business)));
   const authorized = business.authorizations.length > 0;
-  const open = getOpenStatus(business.hours);
+  const open = getOpenStatus(business.hours, undefined, timeZoneOf(business));
 
   const onCompare = () => {
     if (!toggleCompare(business.id)) onCompareLimit?.();
