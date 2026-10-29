@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppState } from 'react-native';
 import { createContext, type PropsWithChildren, useContext, useEffect, useMemo, useReducer } from 'react';
 
 import { DEFAULT_LOCATION } from '@/data/places';
@@ -9,6 +10,7 @@ import { setDistanceUnit } from '@/lib/format';
 import { getMarket, isCountryCode, type CountryCode, type Market } from '@/lib/markets';
 import { DEFAULT_PRIORITIES } from '@/lib/ranking';
 import type { Business, Filters, Priorities, UserLocation } from '@/lib/types';
+import { syncWidgets } from '@/widgets/sync';
 
 const STORAGE_KEY = 'fixmatch:state:v1';
 const REMOTE_CACHE_KEY = 'fixmatch:remote-businesses:v1';
@@ -194,6 +196,18 @@ export function AppStateProvider({ children }: PropsWithChildren) {
     };
     AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(persisted)).catch(() => undefined);
   }, [state.ready, state.onboarded, state.location, state.priorities, state.favorites, state.compare]);
+
+  // Home and lock screen widgets: location, language and saved businesses, with a timeline of
+  // opening hours. Refreshed when the app comes back, so the timeline covers the next 12 hours.
+  useEffect(() => {
+    if (!state.ready) return;
+    const input = { location: state.location, favorites: state.favorites, businesses: state.businesses };
+    syncWidgets(input);
+    const subscription = AppState.addEventListener('change', (next) => {
+      if (next === 'active') syncWidgets(input);
+    });
+    return () => subscription.remove();
+  }, [state.ready, state.location, state.favorites, state.businesses]);
 
   const value = useMemo<AppContextValue>(
     () => ({

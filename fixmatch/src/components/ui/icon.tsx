@@ -1,6 +1,7 @@
 import { SymbolView, type SymbolViewProps } from 'expo-symbols';
 import type { ColorValue, StyleProp, ViewStyle } from 'react-native';
 
+import { TRADE_SYMBOLS } from '@/constants/trade-colors';
 import type { CategoryId } from '@/lib/types';
 
 /** One semantic icon name per concept: SF Symbols on iOS, Material Symbols elsewhere. */
@@ -63,14 +64,14 @@ const ICONS = {
   euro: { ios: 'creditcard', web: 'credit_card' },
   photo: { ios: 'photo', web: 'image' },
   // Trades
-  vvs: { ios: 'drop.fill', web: 'plumbing' },
-  elektriker: { ios: 'bolt.fill', web: 'electrical_services' },
-  toemrer: { ios: 'hammer.fill', web: 'carpenter' },
-  murer: { ios: 'square.stack.3d.up.fill', web: 'foundation' },
-  mekaniker: { ios: 'car.fill', web: 'car_repair' },
-  maler: { ios: 'paintbrush.fill', web: 'format_paint' },
-  tagdaekker: { ios: 'house.fill', web: 'roofing' },
-  laasesmed: { ios: 'key.fill', web: 'key' },
+  vvs: { ios: TRADE_SYMBOLS.vvs, web: 'plumbing' },
+  elektriker: { ios: TRADE_SYMBOLS.elektriker, web: 'electrical_services' },
+  toemrer: { ios: TRADE_SYMBOLS.toemrer, web: 'carpenter' },
+  murer: { ios: TRADE_SYMBOLS.murer, web: 'foundation' },
+  mekaniker: { ios: TRADE_SYMBOLS.mekaniker, web: 'car_repair' },
+  maler: { ios: TRADE_SYMBOLS.maler, web: 'format_paint' },
+  tagdaekker: { ios: TRADE_SYMBOLS.tagdaekker, web: 'roofing' },
+  laasesmed: { ios: TRADE_SYMBOLS.laasesmed, web: 'key' },
 } as const satisfies Record<
   string,
   {

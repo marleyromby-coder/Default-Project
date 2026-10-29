@@ -35,6 +35,8 @@ Selve appen overtræder ikke noget. Det, der mangler, er rigtige data og et par 
 | **iOS-simulator** | En Mac med Xcode. `npx eas-cli@latest build -p ios --profile simulator` | God til at vise på en storskærm | Kræver en Mac |
 | **Webdemo** | En browser. `npm run export:web` | Virker overalt, også på en projektor | Ikke Apple Kort, men et forenklet kort. `?lang=en` viser den engelske version |
 
+**Widgets** vises kun i TestFlight-buildet (ikke i Expo Go, simulatoren uden Mac eller webdemoen). Læg "Hurtig hjælp" på hjemmeskærmen og låseskærmen før fremvisningen.
+
 **Tip til juryen:** Vis appen på dansk i København. Skift så placering til London (Mere → Placering, søg "London") og sprog til engelsk (Mere → Sprog → Åbn Indstillinger). Så ser de pund, miles og engelske tekster. I webdemoen skifter Mere → Sprog med det samme.
 
 ## Udgivelse uden CVR

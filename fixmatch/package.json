@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "dependencies": {
-    "@expo/ui": "~58.0.21",
+    "@expo/ui": "~58.0.25",
     "@react-native-async-storage/async-storage": "2.2.0",
     "expo": "~58.0.16",
     "expo-clipboard": "~58.0.3",
@@ -23,6 +23,7 @@
     "expo-symbols": "~58.0.4",
     "expo-system-ui": "~58.0.6",
     "expo-web-browser": "~58.0.6",
+    "expo-widgets": "~58.0.21",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-native": "0.88.0",
@@ -65,7 +66,8 @@
     "brand:render": "node scripts/render-brand-assets.js",
     "data:cities": "node scripts/build-world-cities.js",
     "data:map": "node scripts/build-map-outline.js",
-    "website:build": "node scripts/build-website.js"
+    "website:build": "node scripts/build-website.js",
+    "widgets:check": "node scripts/check-widgets.js"
   },
   "private": true,
   "jest": {

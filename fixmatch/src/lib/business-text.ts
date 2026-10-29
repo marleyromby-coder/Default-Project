@@ -17,6 +17,16 @@ export function openCountries(businesses: Business[]): CountryCode[] {
   return open.length > 0 ? open : COUNTRY_CODES;
 }
 
+/** "Hjertevarme VVS & Blik" → "HV", "Rørfalken" → "R". */
+export function initials(name: string): string {
+  const words = name.split(/[\s\-–&/]+/).filter((w) => /\p{L}/u.test(w));
+  return words
+    .slice(0, 2)
+    .map((w) => w.match(/\p{L}/u)?.[0] ?? '')
+    .join('')
+    .toUpperCase();
+}
+
 /** The time zone of the business's opening hours. */
 export function timeZoneOf(business: Business): string {
   return business.timeZone ?? getMarket(countryOf(business)).timeZone;

@@ -16,6 +16,18 @@ export const TRADE_COLORS: Record<CategoryId, string> = {
   laasesmed: '#BE185D',
 };
 
+/** SF Symbol of each trade, shared by the app's icons and the widgets. */
+export const TRADE_SYMBOLS = {
+  vvs: 'drop.fill',
+  elektriker: 'bolt.fill',
+  toemrer: 'hammer.fill',
+  murer: 'square.stack.3d.up.fill',
+  mekaniker: 'car.fill',
+  maler: 'paintbrush.fill',
+  tagdaekker: 'house.fill',
+  laasesmed: 'key.fill',
+} as const satisfies Record<CategoryId, string>;
+
 function mix(hex: string, other: string, amount: number): string {
   const channel = (h: string, i: number) => parseInt(h.slice(1 + i * 2, 3 + i * 2), 16);
   const out = [0, 1, 2].map((i) => Math.round(channel(hex, i) * (1 - amount) + channel(other, i) * amount));

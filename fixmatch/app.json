@@ -100,6 +100,46 @@
           },
           "supportsRTL": false
         }
+      ],
+      [
+        "expo-widgets",
+        {
+          "bundleIdentifier": "dk.fixmatch.app.widgets",
+          "groupIdentifier": "group.dk.fixmatch.app",
+          "widgets": [
+            {
+              "name": "FixMatchQuickHelp",
+              "displayName": "Hurtig hjælp",
+              "description": "Beskriv dit problem, eller find VVS, el, låsesmed og mekaniker med ét tryk.",
+              "ios": {
+                "supportedFamilies": [
+                  "systemSmall",
+                  "systemMedium",
+                  "systemLarge",
+                  "accessoryCircular",
+                  "accessoryRectangular",
+                  "accessoryInline"
+                ],
+                "initialLayout": "src/widgets/quick-help.tsx"
+              }
+            },
+            {
+              "name": "FixMatchSaved",
+              "displayName": "Gemte håndværkere",
+              "description": "Dine gemte håndværkere, og om de har åbent lige nu.",
+              "ios": {
+                "supportedFamilies": [
+                  "systemSmall",
+                  "systemMedium",
+                  "systemLarge",
+                  "accessoryRectangular",
+                  "accessoryInline"
+                ],
+                "initialLayout": "src/widgets/saved.tsx"
+              }
+            }
+          ]
+        }
       ]
     ],
     "experiments": {

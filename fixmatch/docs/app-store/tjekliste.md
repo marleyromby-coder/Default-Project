@@ -40,6 +40,8 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 - [ ] Test på en rigtig iPhone via TestFlight: ring, hjemmeside, rute, del, placering til/fra, mørk tilstand, stor tekst.
 - [ ] Kortet: Apple-logo og "Legal" er synlige over kortene i bunden (lys/mørk, stor tekst). Klynger zoomer ind, "Hele DK" viser hele landet.
 - [ ] "Beskriv dit problem": prøv eksemplerne, og tjek at budgetgrupperne passer med virksomhedernes priser.
+- [ ] Widgets på en rigtig iPhone: tilføj "Hurtig hjælp" og "Gemte håndværkere" i alle størrelser på hjemmeskærmen og låseskærmen, gem en virksomhed, og tjek at et tryk åbner den rigtige side. Prøv lys, mørk og tonet (iOS 18+) tilstand.
+- ✅ `npm run widgets:check` renderer alle widgets uden fejl.
 
 ## 4. App Store Connect
 

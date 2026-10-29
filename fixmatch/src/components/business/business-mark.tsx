@@ -4,17 +4,8 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/ui/text';
 import { tradeShade } from '@/constants/trade-colors';
+import { initials } from '@/lib/business-text';
 import type { Business } from '@/lib/types';
-
-/** "Hjertevarme VVS & Blik" → "HV", "Rørfalken" → "R". */
-export function initials(name: string): string {
-  const words = name.split(/[\s\-–&/]+/).filter((w) => /\p{L}/u.test(w));
-  return words
-    .slice(0, 2)
-    .map((w) => w.match(/\p{L}/u)?.[0] ?? '')
-    .join('')
-    .toUpperCase();
-}
 
 /**
  * The business's own picture when it has one (an https URL from the import), otherwise

@@ -3,6 +3,15 @@
  * src/__tests__/i18n.test.ts fails if a key is missing or no longer used.
  */
 const en: Record<string, string> = {
+  døgnvagt: '24/7',
+  'Vi finder dem, der passer – også til dit budget.': 'We find the ones that fit – your budget too.',
+  Beskriv: 'Describe',
+  'Find et fag': 'Find a trade',
+  'Vandskade, låst ude, strømsvigt': 'Water damage, locked out, power cut',
+  'Gemte håndværkere': 'Saved tradespeople',
+  'Tryk på hjertet ved en virksomhed for at se den her.': 'Tap the heart on a business to see it here.',
+  '1 åben nu': '1 open now',
+  '{count} åbne nu': '{count} open now',
   match: 'match',
   Resultater: 'Results',
   'Vi forstår det sådan': "Here's what we understood",

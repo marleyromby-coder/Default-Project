@@ -11,6 +11,7 @@ This is FixMatch, an Expo/React Native iPhone app (Danish and English UI) for fi
 - Anything that mentions reviews or Trustpilot must be hidden when `TRUSTPILOT_ENABLED` is false (`src/lib/features.ts`), including accessibility labels and the info pages. `src/__tests__/trustpilot-off.test.ts` covers the shared texts.
 - `scripts/check-release.js` (`npm run check:release`, and `eas-build-pre-install` on EAS) blocks live builds without consented businesses or with TODOs in `src/constants/app-info.ts`.
 - The public website (`npm run website:build` → `dist-website/`) is built from `docs/jura/*.md` and `website/*.md`. Keep the Danish and English legal texts in step, use `{{publisher}}`, `{{email}}` and `{{updated}}` instead of hard-coded details, and start notes for the team with `>`.
+- Widgets live in `src/widgets/` (expo-widgets + `@expo/ui/swift-ui`). A function with the `'widget'` directive is serialised and runs in the widget extension: it may only use its props, the environment and SwiftUI components/modifiers – no closures over module constants, no `@/` imports, no `t()`. Translate and format in `src/widgets/props.ts`. Run `npm run widgets:check` after changing a widget.
 - Run `npm run check` (tsc, eslint, jest) before declaring a task done.
 
 ## Expo has changed — do not trust your training data

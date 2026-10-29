@@ -29,7 +29,7 @@ npx expo start
 Scan QR-koden med iPhonens kamera → appen åbner i Expo Go. Alt du ændrer i koden, vises med det samme.
 
 - **Web-demo** (til projektor eller jury på bærbar): `npx expo start --web`, eller `npm run export:web` og læg mappen `dist/` på fx Netlify, Vercel eller GitHub Pages.
-- **Tjek koden**: `npm run check` (TypeScript, lint og 102 tests).
+- **Tjek koden**: `npm run check` (TypeScript, lint og 106 tests). Widgets: `npm run widgets:check`.
 - **Engelsk version**: på iPhone under Indstillinger → FixMatch → Sprog. På web: tilføj `?lang=en` til adressen.
 
 > Appen starter i **demotilstand** med 224 fiktive virksomheder: 104 i København, Aarhus, Odense og Aalborg og 24 i hver af Stockholm, Oslo, Berlin, London og New York. De er tydeligt markeret, telefonnumre er i nummerserier til fiktion eller ugyldige, registreringsnumre er ugyldige, og opkald er slået fra.
@@ -41,6 +41,20 @@ Scan QR-koden med iPhonens kamera → appen åbner i Expo Go. Alt du ændrer i k
 - **Logo:** et vaterpas med boblen i midten – "i vater". Alle ikoner (iOS 26 Liquid Glass-ikon, Android, splash, favicon) laves ud fra samme vektortegning med `npm run brand:render` (`scripts/render-brand-assets.js`).
 - **Virksomheder** vises med deres eget billede (en https-adresse i kolonnen `billede`, med deres tilladelse – det står i samtykket) eller ellers med et mærke med deres initialer i fagets farve. Appen viser ingen stockfotos, så en liste aldrig gentager det samme billede.
 - **Fagfarver** (`src/constants/trade-colors.ts`) er de samme på kortet, i fagoversigten og på virksomhedernes mærker.
+
+## Widgets (hjemmeskærm og låseskærm)
+
+To widgets, bygget med [expo-widgets](https://docs.expo.dev/versions/v58.0.0/sdk/widgets/) og SwiftUI-komponenterne fra `@expo/ui`:
+
+| Widget | Størrelser | Viser |
+| --- | --- | --- |
+| **Hurtig hjælp** (`src/widgets/quick-help.tsx`) | Lille, mellem, stor, låseskærm rund, rektangulær og i linje | "Beskriv dit problem", de 8 fag med ét tryk, akut hjælp og gemte |
+| **Gemte håndværkere** (`src/widgets/saved.tsx`) | Lille, mellem, stor, låseskærm rektangulær og i linje | Gemte virksomheder med pris, og om de har åbent lige nu |
+
+- Appen sender tekster, by og gemte virksomheder til widgets (`src/widgets/props.ts` og `sync.ts`) med en tidslinje hver halve time 12 timer frem, så "Åben til 16.00" skifter uden at appen er åben. Lille widget bruges også i StandBy.
+- Widgets findes kun i rigtige iOS-builds (TestFlight og App Store) – ikke i Expo Go eller på web, hvor koden springes over.
+- `npm run widgets:check` bygger widget-runtime'en og renderer alle widgets i alle størrelser i lys og mørk tilstand. Kør den, når du ændrer en widget.
+- Widget-filerne må kun importere relativt (fx `./types`) og fra `@expo/ui` og `expo-widgets`: funktionen med `'widget'` kører i widget-udvidelsen uden appens kode.
 
 ## Kortdata og byer
 
