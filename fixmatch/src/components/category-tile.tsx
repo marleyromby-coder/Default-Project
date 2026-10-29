@@ -2,11 +2,11 @@ import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { Icon } from '@/components/ui/icon';
-import { Photo } from '@/components/ui/photo';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { Radius, Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { tradeTone } from '@/constants/trade-colors';
+import { useIsDark, useTheme } from '@/hooks/use-theme';
 import type { Category } from '@/lib/types';
 import { t } from '@/i18n';
 
@@ -15,8 +15,10 @@ interface Props {
   nearby: number;
 }
 
+/** A trade on the home screen: its icon in the trade colour (the same as on the map), name and count. */
 export function CategoryTile({ category, nearby }: Props) {
   const colors = useTheme();
+  const tone = tradeTone(category.id, useIsDark() ? 'dark' : 'light');
   const count = nearby === 1 ? t('1 i nærheden') : t('{nearby} i nærheden', { nearby });
   return (
     <Tappable
@@ -26,17 +28,16 @@ export function CategoryTile({ category, nearby }: Props) {
         description: category.description,
         count,
       })}
-      pressedOpacity={0.8}
-      style={styles.tile}>
-      <Photo photo={category.photo} category={category.id} width={600} scrim style={StyleSheet.absoluteFill} alt="" />
-      <View style={[styles.iconBadge, { backgroundColor: colors.surface }]}>
-        <Icon name={category.id} size={15} color={colors.brand} weight="semibold" />
+      pressedOpacity={0.7}
+      style={[styles.tile, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+      <View style={[styles.icon, { backgroundColor: tone.soft }]}>
+        <Icon name={category.id} size={22} color={tone.onSoft} weight="semibold" />
       </View>
       <View style={styles.text}>
-        <AppText variant="headline" style={styles.white} numberOfLines={1}>
+        <AppText variant="headline" numberOfLines={1}>
           {category.name}
         </AppText>
-        <AppText variant="caption" style={styles.whiteSoft} numberOfLines={1}>
+        <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
           {count}
         </AppText>
       </View>
@@ -47,22 +48,13 @@ export function CategoryTile({ category, nearby }: Props) {
 const styles = StyleSheet.create({
   tile: {
     flex: 1,
-    aspectRatio: 1.25,
+    minHeight: 112,
     borderRadius: Radius.lg,
-    overflow: 'hidden',
-    justifyContent: 'flex-end',
+    borderWidth: StyleSheet.hairlineWidth,
+    padding: Spacing.md,
+    justifyContent: 'space-between',
+    gap: Spacing.md,
   },
-  iconBadge: {
-    position: 'absolute',
-    top: Spacing.sm,
-    left: Spacing.sm,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: { padding: Spacing.md, gap: 1 },
-  white: { color: '#FFFFFF' },
-  whiteSoft: { color: 'rgba(255,255,255,0.88)' },
+  icon: { width: 42, height: 42, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  text: { gap: 1 },
 });

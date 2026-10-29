@@ -34,7 +34,7 @@ When you call, open a website or get directions, this happens in your phone's ow
 
 ## 8. Images and data from the internet
 
-The app loads images from Pexels and (if switched on) an updated list of businesses from our server. As is normal on the internet, the server sees your IP address for these requests. We do not store IP addresses when the business list is loaded.
+The app loads the businesses' own pictures and (if switched on) an updated list of businesses from the internet. As is normal on the internet, the server sees your IP address for these requests. We do not store IP addresses when the business list is loaded.
 
 ## 9. Information about businesses
 

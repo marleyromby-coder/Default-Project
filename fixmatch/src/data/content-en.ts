@@ -191,7 +191,7 @@ export function infoPagesEn(
         {
           heading: 'When you contact a business',
           paragraphs: [
-            'Calls and websites happen outside FixMatch, and the business’s own privacy policy applies. Photos are loaded from Pexels’ servers, which can therefore see your IP address.',
+            'Calls and websites happen outside FixMatch, and the business’s own privacy policy applies. If a business has its own picture on FixMatch, it is loaded from the internet, and that server can see your IP address.',
           ],
         },
         {
@@ -242,15 +242,13 @@ export function infoPagesEn(
           ],
         },
         {
-          heading: 'Photos and data',
+          heading: 'Data',
           paragraphs: [
-            'Photos from Pexels (pexels.com), used under the Pexels licence. Thanks to the photographers.',
-            'City names from GeoNames (geonames.org, CC BY 4.0). Coastlines on the web map from Natural Earth (public domain).',
+              'City names from GeoNames (geonames.org, CC BY 4.0). Coastlines on the web map from Natural Earth (public domain).',
           ],
         },
       ],
       links: [
-        { label: 'The Pexels licence', url: 'https://www.pexels.com/license/' },
         { label: 'GeoNames', url: 'https://www.geonames.org' },
         { label: 'FixMatch on the web', url: APP_INFO.website },
       ],

@@ -12,39 +12,57 @@ const { chromium } = require('playwright');
 
 const ORANGE_LIGHT = '#FF7433';
 const ORANGE = '#F2541B';
-const ORANGE_DARK = '#D9420C';
+const INK_TOP = '#243250';
+const INK = '#111A2B';
+const STEEL = '#4B5E84';
 
-// Direction of the check mark's long stroke, used to align the wrench jaw.
-const ANGLE = (Math.atan2(-21.5, 17.5) * 180) / Math.PI;
-
-/** White glyph on a 64-unit grid: a check mark whose end is an open-end wrench head. */
-function glyph(fill = '#FFFFFF') {
-  return `
+/**
+ * The FixMatch mark on a 64-unit grid: a spirit level with the bubble dead centre
+ * between the two marks – "i vater", everything is right. `mono` draws a single-colour
+ * silhouette (Android themed icons) with the bubble and marks cut out.
+ */
+function glyph({ mono = false } = {}) {
+  if (mono) {
+    return `
     <defs>
-      <mask id="jaw" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
-        <rect x="0" y="0" width="64" height="64" fill="white"/>
-        <rect x="0" y="-3.6" width="16" height="7.2" rx="1.2" fill="black"
-          transform="translate(49.4 18.6) rotate(${ANGLE.toFixed(2)})"/>
+      <mask id="cut" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+        <rect width="64" height="64" fill="white"/>
+        <line x1="25.6" y1="24.6" x2="25.6" y2="39.4" stroke="black" stroke-width="2.3" stroke-linecap="round"/>
+        <line x1="38.4" y1="24.6" x2="38.4" y2="39.4" stroke="black" stroke-width="2.3" stroke-linecap="round"/>
+        <ellipse cx="32" cy="32" rx="4.3" ry="3.9" fill="black"/>
       </mask>
     </defs>
-    <path d="M15.5 34.5 L27.5 46 L45.4 23.6" stroke="${fill}" stroke-width="7.6"
-      stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <circle cx="47.9" cy="20.5" r="9.2" fill="${fill}" mask="url(#jaw)"/>`;
+    <g mask="url(#cut)" fill="#FFFFFF">
+      <rect x="7" y="27.75" width="50" height="8.5" rx="2.5"/>
+      <rect x="17.5" y="20.5" width="29" height="23" rx="11.5"/>
+    </g>`;
+  }
+  return `
+    <defs>
+      <linearGradient id="vial" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="${ORANGE_LIGHT}"/>
+        <stop offset="1" stop-color="${ORANGE}"/>
+      </linearGradient>
+    </defs>
+    <rect x="7" y="27.75" width="50" height="8.5" rx="2.5" fill="${STEEL}"/>
+    <rect x="17.5" y="20.5" width="29" height="23" rx="11.5" fill="url(#vial)"/>
+    <line x1="25.6" y1="24.6" x2="25.6" y2="39.4" stroke="#FFFFFF" stroke-width="2.3" stroke-linecap="round"/>
+    <line x1="38.4" y1="24.6" x2="38.4" y2="39.4" stroke="#FFFFFF" stroke-width="2.3" stroke-linecap="round"/>
+    <ellipse cx="32" cy="32" rx="4.3" ry="3.9" fill="#FFFFFF"/>`;
 }
 
-/** Centres the glyph (bounding box ≈ x 11.7–57, y 11.3–49.8) in a canvas. */
-function placed(canvas, coverage, fill) {
-  const scale = (canvas * coverage) / 45.3;
-  return `<g transform="translate(${canvas / 2} ${canvas / 2}) scale(${scale}) translate(-34.35 -30.55)">${glyph(fill)}</g>`;
+/** Centres the glyph (bounding box x 7–57, y 20.5–43.5) in a canvas. */
+function placed(canvas, coverage, options) {
+  const scale = (canvas * coverage) / 50;
+  return `<g transform="translate(${canvas / 2} ${canvas / 2}) scale(${scale}) translate(-32 -32)">${glyph(options)}</g>`;
 }
 
 function svg(size, body, background = '') {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
     <defs>
-      <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="${ORANGE_LIGHT}"/>
-        <stop offset="0.55" stop-color="${ORANGE}"/>
-        <stop offset="1" stop-color="${ORANGE_DARK}"/>
+      <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="${INK_TOP}"/>
+        <stop offset="1" stop-color="${INK}"/>
       </linearGradient>
     </defs>
     ${background}
@@ -57,18 +75,18 @@ const rounded = (size) => `<rect width="${size}" height="${size}" rx="${size * 0
 
 const ASSETS = [
   // iOS App Store icon: full bleed, no transparency (iOS applies the mask).
-  { file: 'assets/images/icon.png', size: 1024, svg: (s) => svg(s, placed(s, 0.6), fullBleed(s)), opaque: true },
-  // iOS 26 Icon Composer layer: white glyph on transparent background.
-  { file: 'assets/fixmatch.icon/Assets/glyph.png', size: 1024, svg: (s) => svg(s, placed(s, 0.6)) },
+  { file: 'assets/images/icon.png', size: 1024, svg: (s) => svg(s, placed(s, 0.76), fullBleed(s)), opaque: true },
+  // iOS 26 Icon Composer layer: the level on a transparent background (the fill is in icon.json).
+  { file: 'assets/fixmatch.icon/Assets/glyph.png', size: 1024, svg: (s) => svg(s, placed(s, 0.76)) },
   // Android adaptive icon: content kept inside the 66 % safe zone.
   { file: 'assets/images/android-icon-foreground.png', size: 1024, svg: (s) => svg(s, placed(s, 0.4)) },
   { file: 'assets/images/android-icon-background.png', size: 1024, svg: (s) => svg(s, '', fullBleed(s)), opaque: true },
-  { file: 'assets/images/android-icon-monochrome.png', size: 1024, svg: (s) => svg(s, placed(s, 0.4)) },
+  { file: 'assets/images/android-icon-monochrome.png', size: 1024, svg: (s) => svg(s, placed(s, 0.4, { mono: true })) },
   // Splash screen logo and web favicon: rounded tile.
-  { file: 'assets/images/splash-icon.png', size: 512, svg: (s) => svg(s, placed(s, 0.6), rounded(s)) },
-  { file: 'assets/images/favicon.png', size: 96, svg: (s) => svg(s, placed(s, 0.62), rounded(s)) },
+  { file: 'assets/images/splash-icon.png', size: 512, svg: (s) => svg(s, placed(s, 0.7), rounded(s)) },
+  { file: 'assets/images/favicon.png', size: 96, svg: (s) => svg(s, placed(s, 0.82), rounded(s)) },
   // Square logo for the website, press and App Store Connect.
-  { file: 'assets/brand/fixmatch-logo.png', size: 1024, svg: (s) => svg(s, placed(s, 0.6), rounded(s)) },
+  { file: 'assets/brand/fixmatch-logo.png', size: 1024, svg: (s) => svg(s, placed(s, 0.7), rounded(s)) },
 ];
 
 async function main() {
@@ -87,7 +105,7 @@ async function main() {
     }
     console.log(`✓ ${asset.file} (${asset.size}×${asset.size})`);
   }
-  fs.writeFileSync(path.join(root, 'assets/brand/fixmatch-mark.svg'), svg(64, glyph(), rounded(64)));
+  fs.writeFileSync(path.join(root, 'assets/brand/fixmatch-mark.svg'), svg(64, placed(64, 0.76), rounded(64)));
   await browser.close();
 }
 

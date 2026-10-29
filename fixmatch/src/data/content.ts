@@ -212,7 +212,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
         {
           heading: 'Når du kontakter en virksomhed',
           paragraphs: [
-            'Når du ringer eller åbner en hjemmeside, foregår det uden om FixMatch, og virksomhedens egen privatlivspolitik gælder. Billeder hentes fra Pexels’ servere, som derfor kan se din IP-adresse.',
+            'Når du ringer eller åbner en hjemmeside, foregår det uden om FixMatch, og virksomhedens egen privatlivspolitik gælder. Har en virksomhed sit eget billede på FixMatch, hentes det fra internettet, og serveren kan se din IP-adresse.',
           ],
         },
         {
@@ -263,15 +263,13 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
           ],
         },
         {
-          heading: 'Fotos og data',
+          heading: 'Data',
           paragraphs: [
-            'Fotos fra Pexels (pexels.com), brugt under Pexels-licensen. Tak til fotograferne.',
-            'Bynavne fra GeoNames (geonames.org, CC BY 4.0). Kystlinjer på webkortet fra Natural Earth (public domain).',
+              'Bynavne fra GeoNames (geonames.org, CC BY 4.0). Kystlinjer på webkortet fra Natural Earth (public domain).',
           ],
         },
       ],
       links: [
-        { label: 'Pexels-licensen', url: 'https://www.pexels.com/license/' },
         { label: 'GeoNames', url: 'https://www.geonames.org' },
         { label: 'FixMatch på nettet', url: APP_INFO.website },
       ],

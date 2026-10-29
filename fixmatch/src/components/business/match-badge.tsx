@@ -37,7 +37,7 @@ export function MatchBadge({ score, size = 'small', onPhoto }: Props) {
         {score}
       </AppText>
       <AppText variant="caption2" style={{ color: foreground, marginTop: -2 }} maxFontSizeMultiplier={1.2}>
-        {t('MATCH')}
+        {t('match')}
       </AppText>
     </View>
   );

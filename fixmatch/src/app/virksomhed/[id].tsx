@@ -1,9 +1,9 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { MatchBadge } from '@/components/business/match-badge';
+import { BusinessMark } from '@/components/business/business-mark';
 import { OpenStatus } from '@/components/business/open-status';
 import { PriceLevel } from '@/components/business/price-level';
 import { ScoreBars } from '@/components/business/score-bars';
@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardTitle, Divider } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Icon, type IconName } from '@/components/ui/icon';
-import { Photo } from '@/components/ui/photo';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { MinTouchSize, Radius, ScreenPadding, Spacing } from '@/constants/theme';
@@ -39,9 +38,11 @@ import {
   formatDate,
   formatDistance,
   formatHourly,
+  formatNumber,
   formatPhone,
   formatPrice,
   formatPriceRange,
+  formatRating,
   formatRegistryNumber,
 } from '@/lib/format';
 import { formatTime, mondayIndex, WEEKDAYS } from '@/lib/opening-hours';
@@ -51,7 +52,8 @@ import { businessText, countryOf, currencyOf } from '@/lib/business-text';
 import { getMarket, taxNote } from '@/lib/markets';
 import { MAX_COMPARE, useApp, useBusiness } from '@/state/app-state';
 
-const HERO_HEIGHT = 300;
+/** How far the header scrolls before the compact title bar appears. */
+const HEADER_SCROLL = 150;
 
 export default function BusinessScreen() {
   const colors = useTheme();
@@ -108,33 +110,44 @@ export default function BusinessScreen() {
         contentInsetAdjustmentBehavior="never"
         scrollEventThrottle={32}
         onScroll={(event) => {
-          const past = event.nativeEvent.contentOffset.y > HERO_HEIGHT - 40;
+          const past = event.nativeEvent.contentOffset.y > HEADER_SCROLL;
           if (past !== scrolled) setScrolled(past);
         }}>
-        <View style={{ height: HERO_HEIGHT + insets.top }}>
-          <Photo
-            photo={business.photo}
-            category={business.categories[0]}
-            width={1200}
-            scrim
-            style={StyleSheet.absoluteFill}
-          />
-          <View style={styles.heroText}>
-            <View style={styles.heroBadges}>
-              {category ? <Badge label={category.name} tone="neutral" icon={category.id} /> : null}
-              {business.demo ? <Badge label={t('Eksempel')} tone="warning" /> : null}
+        <View
+          style={[
+            styles.header,
+            { paddingTop: insets.top + 64, backgroundColor: colors.surface, borderBottomColor: colors.border },
+          ]}>
+          <View style={styles.headerRow}>
+            <BusinessMark business={business} size={72} />
+            <View style={styles.flex}>
+              <AppText variant="title2" numberOfLines={2}>
+                {business.name}
+              </AppText>
+              <AppText variant="subhead" tone="textSecondary" numberOfLines={2}>
+                {text.tagline}
+              </AppText>
             </View>
-            <View style={styles.heroTitleRow}>
-              <View style={styles.flex}>
-                <AppText variant="title1" style={styles.white} numberOfLines={2}>
-                  {business.name}
-                </AppText>
-                <AppText variant="subhead" style={styles.whiteSoft} numberOfLines={2}>
-                  {text.tagline}
-                </AppText>
-              </View>
-              <MatchBadge score={scored.score} size="large" onPhoto />
-            </View>
+          </View>
+          <View style={styles.heroBadges}>
+            {category ? <Badge label={category.name} tone="neutral" icon={category.id} /> : null}
+            {business.demo ? <Badge label={t('Eksempel')} tone="warning" /> : null}
+          </View>
+          <View style={[styles.stats, { borderTopColor: colors.border }]}>
+            <Stat label={t('Match')} value={String(scored.score)} detail={matchLabel(scored.score)} />
+            {TRUSTPILOT_ENABLED && business.trustpilot ? (
+              <Stat
+                label="Trustpilot"
+                value={formatRating(business.trustpilot.score)}
+                detail={t('{number} anm.', { number: formatNumber(business.trustpilot.reviews) })}
+              />
+            ) : null}
+            <Stat
+              label={t('Timepris')}
+              value={formatPriceRange(business.pricing.hourlyMin, business.pricing.hourlyMax, 'opgave', currency)}
+              detail={taxNote(market)}
+            />
+            <Stat label={t('Afstand')} value={formatDistance(scored.distanceKm)} detail={t('i luftlinje')} />
           </View>
         </View>
 
@@ -454,16 +467,6 @@ export default function BusinessScreen() {
           style={styles.flex}
           accessibilityLabel={t('Ring til {name}', { name: business.name })}
         />
-        {business.contact.website ? (
-          <Button
-            title={t('Web')}
-            icon="globe"
-            variant="secondary"
-            size="large"
-            onPress={() => openWebsite(business)}
-            accessibilityLabel={t('Åbn {name}s hjemmeside', { name: business.name })}
-          />
-        ) : null}
       </View>
     </View>
   );
@@ -483,7 +486,9 @@ function QuickAction({
   selected?: boolean;
 }) {
   const colors = useTheme();
-  const filled = primary || selected;
+  // One filled button per screen (Ring). A selected toggle is tinted, not filled.
+  const background = primary ? colors.brandStrong : selected ? colors.brandSoft : colors.surface;
+  const foreground = primary ? colors.onBrand : selected ? colors.brandText : colors.text;
   return (
     <Tappable
       onPress={onPress}
@@ -491,16 +496,13 @@ function QuickAction({
       accessibilityState={selected === undefined ? undefined : { selected }}
       style={[
         styles.quickAction,
-        {
-          backgroundColor: filled ? colors.brandStrong : colors.surface,
-          borderColor: filled ? colors.brandStrong : colors.border,
-        },
+        { backgroundColor: background, borderColor: primary || selected ? background : colors.border },
       ]}>
-      <Icon name={icon} size={20} color={filled ? colors.onBrand : colors.brandText} weight="semibold" />
+      <Icon name={icon} size={20} color={primary ? colors.onBrand : colors.brandText} weight="semibold" />
       <AppText
         variant="caption"
         weight="600"
-        style={{ color: filled ? colors.onBrand : colors.text }}
+        style={{ color: foreground }}
         numberOfLines={1}
         maxFontSizeMultiplier={1.2}>
         {label}
@@ -589,19 +591,44 @@ function FloatingButton({
 }) {
   const colors = useTheme();
   return (
-    <Tappable onPress={onPress} accessibilityLabel={label} style={styles.floating}>
-      <Icon name={icon} size={18} color={active ? colors.brand : '#0E1726'} weight="bold" />
+    <Tappable
+      onPress={onPress}
+      accessibilityLabel={label}
+      style={[styles.floating, { backgroundColor: colors.surfaceAlt, borderColor: colors.border }]}>
+      <Icon name={icon} size={18} color={active ? colors.brand : colors.text} weight="bold" />
     </Tappable>
+  );
+}
+
+/** One column of the fact strip under the name, like the App Store's: label, value, detail. */
+function Stat({ label, value, detail }: { label: string; value: string; detail: string }) {
+  return (
+    <View style={styles.stat} accessible accessibilityLabel={`${label}: ${value}, ${detail}`}>
+      <AppText variant="caption" tone="textSecondary" numberOfLines={1} maxFontSizeMultiplier={1.3}>
+        {label}
+      </AppText>
+      <AppText variant="headline" rounded tabular numberOfLines={1} adjustsFontSizeToFit maxFontSizeMultiplier={1.3}>
+        {value}
+      </AppText>
+      <AppText variant="caption" tone="textSecondary" numberOfLines={1} maxFontSizeMultiplier={1.3}>
+        {detail}
+      </AppText>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  white: { color: '#FFFFFF' },
-  whiteSoft: { color: 'rgba(255,255,255,0.9)' },
-  heroText: { position: 'absolute', left: ScreenPadding, right: ScreenPadding, bottom: Spacing.lg, gap: Spacing.sm },
+  header: {
+    paddingHorizontal: ScreenPadding,
+    paddingBottom: Spacing.md,
+    gap: Spacing.md,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  headerRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   heroBadges: { flexDirection: 'row', gap: Spacing.xs },
-  heroTitleRow: { flexDirection: 'row', alignItems: 'flex-end', gap: Spacing.md },
+  stats: { flexDirection: 'row', borderTopWidth: StyleSheet.hairlineWidth, paddingTop: Spacing.md },
+  stat: { flex: 1, alignItems: 'center', gap: 1, paddingHorizontal: 2 },
   body: { padding: ScreenPadding, gap: Spacing.lg },
   notice: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md },
   quickActions: { flexDirection: 'row', gap: Spacing.sm },
@@ -663,13 +690,9 @@ const styles = StyleSheet.create({
     width: MinTouchSize,
     height: MinTouchSize,
     borderRadius: MinTouchSize / 2,
-    backgroundColor: 'rgba(255,255,255,0.92)',
+    borderWidth: StyleSheet.hairlineWidth,
     alignItems: 'center',
     justifyContent: 'center',
-    ...Platform.select({
-      web: { boxShadow: '0 2px 8px rgba(0,0,0,0.18)' },
-      default: { shadowColor: '#000', shadowOpacity: 0.18, shadowRadius: 6, shadowOffset: { width: 0, height: 2 } },
-    }),
   },
   contactBar: {
     position: 'absolute',

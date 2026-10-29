@@ -22,8 +22,13 @@ export function ListSection({ title, footer, children }: SectionProps) {
   return (
     <View style={styles.section}>
       {title ? (
-        <AppText variant="footnote" tone="textSecondary" style={styles.sectionTitle} accessibilityRole="header">
-          {title.toUpperCase()}
+        <AppText
+          variant="subhead"
+          weight="600"
+          tone="textSecondary"
+          style={styles.sectionTitle}
+          accessibilityRole="header">
+          {title}
         </AppText>
       ) : null}
       <View style={[styles.group, { backgroundColor: colors.surface, borderColor: colors.border }]}>
@@ -56,13 +61,29 @@ interface RowProps {
   external?: boolean;
 }
 
-export function ListRow({ title, subtitle, icon, iconColor, value, onPress, destructive, trailing, accessibilityHint, external }: RowProps) {
+export function ListRow({
+  title,
+  subtitle,
+  icon,
+  iconColor,
+  value,
+  onPress,
+  destructive,
+  trailing,
+  accessibilityHint,
+  external,
+}: RowProps) {
   const colors = useTheme();
   const content = (
     <View style={styles.row}>
       {icon ? (
         <View style={[styles.iconTile, { backgroundColor: destructive ? colors.dangerSoft : colors.brandSoft }]}>
-          <Icon name={icon} size={17} color={destructive ? colors.danger : (iconColor ?? colors.brandText)} weight="semibold" />
+          <Icon
+            name={icon}
+            size={17}
+            color={destructive ? colors.danger : (iconColor ?? colors.brandText)}
+            weight="semibold"
+          />
         </View>
       ) : null}
       <View style={styles.rowText}>
@@ -101,7 +122,7 @@ export function ListRow({ title, subtitle, icon, iconColor, value, onPress, dest
 
 const styles = StyleSheet.create({
   section: { gap: Spacing.sm },
-  sectionTitle: { paddingHorizontal: Spacing.lg, letterSpacing: 0.3 },
+  sectionTitle: { paddingHorizontal: Spacing.lg },
   group: { borderRadius: Radius.md, borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden' },
   footer: { paddingHorizontal: Spacing.lg },
   row: {

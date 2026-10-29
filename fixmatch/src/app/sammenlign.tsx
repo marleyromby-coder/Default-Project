@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Icon } from '@/components/ui/icon';
-import { Photo } from '@/components/ui/photo';
+import { BusinessMark } from '@/components/business/business-mark';
 import { Stars } from '@/components/ui/stars';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
@@ -89,12 +89,14 @@ export default function CompareScreen() {
             <View
               key={business.id}
               style={[styles.headerCell, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-              <Photo photo={business.photo} category={business.categories[0]} width={400} style={styles.photo} />
+              <View style={styles.photo}>
+                <BusinessMark business={business} size={52} />
+              </View>
               <Tappable
                 onPress={() => toggleCompare(business.id)}
                 accessibilityLabel={t('Fjern {name} fra sammenligning', { name: business.name })}
-                style={styles.remove}>
-                <Icon name="close" size={12} color="#0E1726" weight="bold" />
+                style={[styles.remove, { backgroundColor: colors.surfaceAlt }]}>
+                <Icon name="close" size={12} color={colors.textSecondary} weight="bold" />
               </Tappable>
               <View style={styles.headerText}>
                 <AppText variant="footnote" weight="700" numberOfLines={2}>
@@ -272,7 +274,7 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
     <View style={styles.row}>
       <AppText variant="caption" tone="textSecondary" weight="600" style={styles.rowLabel} accessibilityRole="header">
-        {label.toUpperCase()}
+        {label}
       </AppText>
       <View style={[styles.columns, styles.rowCells, { borderColor: colors.border, backgroundColor: colors.surface }]}>
         {Array.isArray(children)
@@ -334,7 +336,7 @@ const styles = StyleSheet.create({
   },
   columns: { flexDirection: 'row', gap: Spacing.sm },
   headerCell: { flex: 1, borderRadius: Radius.lg, borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden' },
-  photo: { height: 84 },
+  photo: { paddingTop: Spacing.md, paddingHorizontal: Spacing.sm },
   remove: {
     position: 'absolute',
     top: 4,
@@ -342,13 +344,12 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: 'rgba(255,255,255,0.92)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   headerText: { padding: Spacing.sm, gap: 1 },
   row: { gap: 6 },
-  rowLabel: { letterSpacing: 0.3, paddingHorizontal: Spacing.xs },
+  rowLabel: { paddingHorizontal: Spacing.xs },
   rowCells: { borderWidth: StyleSheet.hairlineWidth, borderRadius: Radius.md, gap: 0, overflow: 'hidden' },
   cell: {
     flex: 1,

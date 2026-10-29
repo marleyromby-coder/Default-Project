@@ -36,15 +36,11 @@ Scan QR-koden med iPhonens kamera → appen åbner i Expo Go. Alt du ændrer i k
 
 **Fremvisning og lancering uden CVR:** se `docs/lancering/global-lancering.md`. Kort fortalt: vis appen via TestFlight (demodata er tilladt der), Expo Go, iOS-simulatoren eller webdemoen. App Store kræver rigtige virksomheder, men ikke et CVR-nummer.
 
-## Fotos
+## Design og billeder
 
-Fotos er rigtige fotos fra [Pexels](https://www.pexels.com/license/) (gratis til kommerciel brug). De hentes fra Pexels' CDN og gemmes på telefonen. Før App Store-udgivelsen bør de lægges ind i appen, så den også virker offline:
-
-```bash
-npm run photos:bundle   # kræver internet; henter alle fotos til assets/photos/
-```
-
-Fotos til de rigtige virksomheder: brug virksomhedens egne billeder (med deres tilladelse – det står i samtykket) og angiv en https-adresse i kolonnen `billede`.
+- **Logo:** et vaterpas med boblen i midten – "i vater". Alle ikoner (iOS 26 Liquid Glass-ikon, Android, splash, favicon) laves ud fra samme vektortegning med `npm run brand:render` (`scripts/render-brand-assets.js`).
+- **Virksomheder** vises med deres eget billede (en https-adresse i kolonnen `billede`, med deres tilladelse – det står i samtykket) eller ellers med et mærke med deres initialer i fagets farve. Appen viser ingen stockfotos, så en liste aldrig gentager det samme billede.
+- **Fagfarver** (`src/constants/trade-colors.ts`) er de samme på kortet, i fagoversigten og på virksomhedernes mærker.
 
 ## Kortdata og byer
 

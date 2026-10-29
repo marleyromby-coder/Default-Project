@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { BusinessMark } from '@/components/business/business-mark';
 import { MatchBadge } from '@/components/business/match-badge';
 import { TrustpilotRating } from '@/components/business/trustpilot-rating';
 import { CategoryTile } from '@/components/category-tile';
@@ -10,13 +11,13 @@ import { LocationPill } from '@/components/location-pill';
 import { Logo } from '@/components/logo';
 import { Badge } from '@/components/ui/badge';
 import { Icon, type IconName } from '@/components/ui/icon';
-import { Photo } from '@/components/ui/photo';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
+import { tradeTone } from '@/constants/trade-colors';
 import { CATEGORIES, getCategory } from '@/data/categories';
 import { useGps, GPS_MESSAGES } from '@/hooks/use-gps';
-import { useTheme } from '@/hooks/use-theme';
+import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { DATA_MODE } from '@/lib/data-source';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { showDialog } from '@/lib/dialog';
@@ -51,6 +52,7 @@ const NEARBY_KM = 25;
 
 export default function HomeScreen() {
   const colors = useTheme();
+  const scheme = useIsDark() ? 'dark' : 'light';
   const insets = useSafeAreaInsets();
   const { state } = useApp();
   const { country, market, supported, open } = useMarket();
@@ -129,19 +131,19 @@ export default function HomeScreen() {
       <Tappable
         onPress={() => router.push('/beskriv')}
         accessibilityLabel={t('Beskriv dit problem og dit budget, så matcher vi dig med virksomheder')}
-        style={[styles.describe, { backgroundColor: colors.brandStrong }]}>
-        <View style={styles.describeIcon}>
+        style={[styles.describe, { backgroundColor: colors.ink }]}>
+        <View style={[styles.describeIcon, { backgroundColor: colors.brand }]}>
           <Icon name="wand" size={20} color={colors.onBrand} weight="semibold" />
         </View>
         <View style={styles.flex}>
-          <AppText variant="headline" tone="onBrand">
+          <AppText variant="headline" style={{ color: colors.onInk }}>
             {t('Beskriv dit problem')}
           </AppText>
-          <AppText variant="footnote" tone="onBrand">
+          <AppText variant="footnote" style={{ color: colors.onInkSoft }}>
             {t('Skriv hvad der er galt og dit budget – vi finder dem, der passer.')}
           </AppText>
         </View>
-        <Icon name="chevronRight" size={16} color={colors.onBrand} weight="semibold" />
+        <Icon name="chevronRight" size={16} color={colors.onInkSoft} weight="semibold" />
       </Tappable>
 
       {state.location.source === 'default' ? (
@@ -245,13 +247,13 @@ export default function HomeScreen() {
                   plural: category.plural,
                 })}
                 style={[styles.jobCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                <View style={[styles.jobIcon, { backgroundColor: colors.brandSoft }]}>
-                  <Icon name={categoryId} size={16} color={colors.brand} weight="semibold" />
+                <View style={[styles.jobIcon, { backgroundColor: tradeTone(categoryId, scheme).soft }]}>
+                  <Icon name={categoryId} size={16} color={tradeTone(categoryId, scheme).onSoft} weight="semibold" />
                 </View>
                 <AppText variant="subhead" weight="600" numberOfLines={2}>
                   {job.name}
                 </AppText>
-                <AppText variant="footnote" tone="brandText" weight="700" numberOfLines={1}>
+                <AppText variant="footnote" weight="700" tabular numberOfLines={1}>
                   {formatPriceRange(price.min, price.max, price.unit, price.currency)}
                 </AppText>
                 <AppText variant="caption" tone="textSecondary" numberOfLines={1}>
@@ -275,20 +277,15 @@ export default function HomeScreen() {
                   distance: formatDistance(km),
                 })}
                 style={[styles.featured, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                <Photo
-                  photo={business.photo}
-                  category={business.categories[0]}
-                  width={600}
-                  style={styles.featuredPhoto}
-                />
-                <View style={styles.adLabel}>
-                  <Badge label={t('Annonce')} tone="neutral" />
-                </View>
                 <View style={styles.featuredBody}>
                   <View style={styles.rowBetween}>
-                    <AppText variant="headline" numberOfLines={1} style={styles.flex}>
-                      {business.name}
-                    </AppText>
+                    <BusinessMark business={business} size={44} />
+                    <View style={styles.flex}>
+                      <AppText variant="headline" numberOfLines={1}>
+                        {business.name}
+                      </AppText>
+                      <Badge label={t('Annonce')} tone="neutral" />
+                    </View>
                     <MatchBadge score={score} />
                   </View>
                   <TrustpilotRating trustpilot={business.trustpilot} />
@@ -318,10 +315,10 @@ export default function HomeScreen() {
                   distance: formatDistance(km),
                 })}
                 style={[styles.topCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                <Photo photo={business.photo} category={business.categories[0]} width={500} style={styles.topPhoto} />
                 <View style={styles.topBody}>
-                  <AppText variant="caption" tone="brandText" weight="700">
-                    {getCategory(business.categories[0])?.name.toUpperCase()}
+                  <BusinessMark business={business} size={40} />
+                  <AppText variant="caption" tone="textSecondary" weight="600">
+                    {getCategory(business.categories[0])?.name}
                   </AppText>
                   <AppText variant="subhead" weight="600" numberOfLines={1}>
                     {business.name}
@@ -458,7 +455,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.18)',
   },
   notice: {
     marginHorizontal: ScreenPadding,
@@ -495,12 +491,9 @@ const styles = StyleSheet.create({
   },
   jobIcon: { width: 30, height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center', marginBottom: 2 },
   featured: { width: 290, borderRadius: Radius.lg, borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden' },
-  featuredPhoto: { height: 130 },
-  adLabel: { position: 'absolute', top: Spacing.sm, left: Spacing.sm },
   featuredBody: { padding: Spacing.md, gap: Spacing.xs },
   rowBetween: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   topCard: { width: 210, borderRadius: Radius.lg, borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden' },
-  topPhoto: { height: 110 },
   topBody: { padding: Spacing.md, gap: 3 },
   steps: {
     marginHorizontal: ScreenPadding,

@@ -1,15 +1,11 @@
 /**
- * Photo registry. Every photo is from Pexels (https://www.pexels.com/license/):
- * free for commercial use, no attribution required. We still credit the source
- * on the "Om FixMatch" page.
- *
- * Photos load from the Pexels CDN and are cached on the device by expo-image.
- * Run `npm run photos:bundle` to download them into the app bundle instead
- * (recommended before an App Store build, so the app also works offline).
+ * Photo keys used by the demo data. The app no longer shows stock photos: a business is
+ * shown with its own picture (an https URL) or with its mark (see components/business/
+ * business-mark.tsx). The keys stay valid so demo data and older imports still load.
+ * The photos are from Pexels (https://www.pexels.com/license/).
  */
 
-import { msg, t } from '@/i18n';
-import { LOCAL_PHOTOS } from './photo-assets.generated';
+import { msg } from '@/i18n';
 
 export interface PhotoInfo {
   /** Pexels photo id. */
@@ -65,28 +61,6 @@ export const PHOTOS = {
 
 export type PhotoKey = keyof typeof PHOTOS;
 
-export function pexelsUrl(id: number, width = 1200): string {
-  return `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${width}`;
-}
-
-export function pexelsPage(id: number): string {
-  return `https://www.pexels.com/photo/${id}/`;
-}
-
 export function isPhotoKey(value: string): value is PhotoKey {
   return value in PHOTOS;
-}
-
-/** Resolves a photo key or URL to an image source, preferring a bundled copy. */
-export function photoSource(photo: string, width = 1200): number | { uri: string } {
-  if (isPhotoKey(photo)) {
-    const local = LOCAL_PHOTOS[photo];
-    if (local !== undefined) return local;
-    return { uri: pexelsUrl(PHOTOS[photo].pexelsId, width) };
-  }
-  return { uri: photo };
-}
-
-export function photoAlt(photo: string, fallback: string): string {
-  return isPhotoKey(photo) ? t(PHOTOS[photo].alt) : fallback;
 }

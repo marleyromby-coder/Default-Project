@@ -5,9 +5,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LogoMark } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Icon, type IconName } from '@/components/ui/icon';
-import { Photo } from '@/components/ui/photo';
 import { AppText } from '@/components/ui/text';
 import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
+import { TRADE_COLORS } from '@/constants/trade-colors';
+import { CATEGORIES } from '@/data/categories';
 import { GPS_MESSAGES, useGps } from '@/hooks/use-gps';
 import { useTheme } from '@/hooks/use-theme';
 import { showDialog } from '@/lib/dialog';
@@ -39,7 +40,19 @@ export default function WelcomeScreen() {
       <ScrollView contentContainerStyle={[styles.scroll, { paddingTop: insets.top + Spacing.md }]} bounces={false}>
         {step === 0 ? (
           <>
-            <Photo photo="toemrer-2" category="toemrer" width={1200} scrim style={styles.hero} />
+            <View
+              style={[styles.hero, { backgroundColor: colors.ink }]}
+              importantForAccessibility="no-hide-descendants">
+              {[CATEGORIES.slice(0, 4), CATEGORIES.slice(4)].map((row, index) => (
+                <View key={index} style={[styles.mosaicRow, index === 1 ? styles.mosaicOffset : null]}>
+                  {row.map((category) => (
+                    <View key={category.id} style={[styles.mosaicTile, { backgroundColor: TRADE_COLORS[category.id] }]}>
+                      <Icon name={category.id} size={26} color="#FFFFFF" weight="semibold" />
+                    </View>
+                  ))}
+                </View>
+              ))}
+            </View>
             <View style={styles.textBlock}>
               <LogoMark size={44} />
               <AppText variant="largeTitle">{t('Find den rette håndværker – hurtigt')}</AppText>
@@ -150,7 +163,10 @@ function Feature({ icon, title, text }: { icon: IconName; title: string; text: s
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   scroll: { paddingHorizontal: ScreenPadding, gap: Spacing.xl, paddingBottom: Spacing.xl },
-  hero: { height: 300, borderRadius: Radius.xl },
+  hero: { height: 280, borderRadius: Radius.xl, alignItems: 'center', justifyContent: 'center', gap: Spacing.md },
+  mosaicRow: { flexDirection: 'row', gap: Spacing.md },
+  mosaicOffset: { transform: [{ translateX: 30 }] },
+  mosaicTile: { width: 60, height: 60, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
   textBlock: { gap: Spacing.lg },
   bigIcon: {
     width: 80,

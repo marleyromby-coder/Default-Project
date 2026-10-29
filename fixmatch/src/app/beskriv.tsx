@@ -145,8 +145,8 @@ export default function DescribeProblemScreen() {
 
         {text.trim().length === 0 ? (
           <View style={styles.block}>
-            <AppText variant="footnote" tone="textSecondary" weight="600">
-              {t('PRØV FX')}
+            <AppText variant="subhead" tone="textSecondary" weight="600" accessibilityRole="header">
+              {t('Prøv fx')}
             </AppText>
             <View style={styles.examples}>
               {PROBLEM_EXAMPLES.map((example) => (
@@ -197,7 +197,7 @@ export default function DescribeProblemScreen() {
               </View>
               <View style={styles.flex} accessible accessibilityLiveRegion="polite">
                 <AppText variant="caption" tone="textSecondary" weight="600">
-                  {category ? t('VI FORSTÅR DET SÅDAN') : t('VÆLG FAG')}
+                  {category ? t('Vi forstår det sådan') : t('Vælg fag')}
                 </AppText>
                 <AppText variant="headline">
                   {category ? `${category.name}${job ? ` · ${job.name}` : ''}` : t('Vi er ikke sikre på faget endnu')}

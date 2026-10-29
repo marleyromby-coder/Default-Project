@@ -23,15 +23,19 @@ export function CompareTray({ bottomOffset = 0 }: { bottomOffset?: number }) {
     <View
       pointerEvents="box-none"
       style={[styles.wrapper, { bottom: Math.max(insets.bottom, Spacing.md) + bottomOffset }]}>
-      <View style={[styles.tray, { backgroundColor: colors.text, shadowColor: colors.shadow }]}>
+      <View
+        style={[
+          styles.tray,
+          { backgroundColor: colors.ink, borderColor: colors.inkRaised, shadowColor: colors.shadow },
+        ]}>
         <Tappable onPress={clearCompare} accessibilityLabel={t('Ryd sammenligning')} style={styles.clear}>
-          <Icon name="close" size={16} color={colors.background} weight="bold" />
+          <Icon name="close" size={16} color={colors.onInkSoft} weight="bold" />
         </Tappable>
         <View style={styles.text}>
-          <AppText variant="subhead" weight="600" style={{ color: colors.background }}>
+          <AppText variant="subhead" weight="600" style={{ color: colors.onInk }}>
             {t('{count} af {MAX_COMPARE} valgt', { count, MAX_COMPARE })}
           </AppText>
-          <AppText variant="caption" style={{ color: colors.background, opacity: 0.75 }}>
+          <AppText variant="caption" style={{ color: colors.onInkSoft }}>
             {count < 2
               ? t('Vælg mindst én mere')
               : TRUSTPILOT_ENABLED
@@ -64,6 +68,7 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
     padding: Spacing.sm,
     borderRadius: Radius.xl,
+    borderWidth: StyleSheet.hairlineWidth,
     shadowOpacity: 0.25,
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 6 },

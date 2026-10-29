@@ -36,7 +36,7 @@ Når du ringer, åbner en hjemmeside eller får rutevejledning, sker det i telef
 
 ## 8. Billeder og data fra internettet
 
-Appen henter billeder fra Pexels og (hvis aktiveret) en opdateret virksomhedsliste fra vores server. Ved den slags forespørgsler ser serveren din IP-adresse, som det er normalt på internettet. Vi gemmer ikke IP-adresser i forbindelse med hentning af virksomhedslisten.
+Appen henter virksomhedernes egne billeder og (hvis aktiveret) en opdateret virksomhedsliste fra internettet. Ved den slags forespørgsler ser serveren din IP-adresse, som det er normalt på internettet. Vi gemmer ikke IP-adresser i forbindelse med hentning af virksomhedslisten.
 
 ## 9. Oplysninger om virksomheder
 

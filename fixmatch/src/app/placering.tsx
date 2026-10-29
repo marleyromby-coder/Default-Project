@@ -26,10 +26,10 @@ export default function LocationScreen() {
   const sections = useMemo(
     () =>
       query.trim()
-        ? [{ title: t('RESULTATER'), data: searchPlaces(query) }]
+        ? [{ title: t('Resultater'), data: searchPlaces(query) }]
         : [
-            { title: t('STORE BYER I DANMARK'), data: POPULAR_PLACES },
-            { title: t('FIXMATCH I UDLANDET'), data: INTERNATIONAL_PLACES },
+            { title: t('Store byer i Danmark'), data: POPULAR_PLACES },
+            { title: t('FixMatch i udlandet'), data: INTERNATIONAL_PLACES },
           ],
     [query],
   );
@@ -79,7 +79,7 @@ export default function LocationScreen() {
         stickySectionHeadersEnabled={false}
         contentContainerStyle={{ paddingHorizontal: ScreenPadding, paddingBottom: insets.bottom + Spacing.xl }}
         renderSectionHeader={({ section }) => (
-          <AppText variant="footnote" tone="textSecondary" style={styles.label}>
+          <AppText variant="subhead" weight="600" tone="textSecondary" style={styles.label} accessibilityRole="header">
             {section.title}
           </AppText>
         )}

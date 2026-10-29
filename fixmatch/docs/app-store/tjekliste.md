@@ -19,7 +19,6 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 - [ ] Skriftlig partneraftale med Trustpilot, før TrustScores vises (`docs/jura/trustpilot.md`). Indtil da: vis ikke Trustpilot-data i den offentlige version.
 - [ ] Virksomhedernes egne billeder og logoer er med i samtykket.
 - [ ] `npm run import:businesses` kører uden fejl.
-- [ ] `npm run photos:bundle` er kørt, så fotos ligger i appen.
 - [ ] Udfyld `src/constants/app-info.ts` (navn som på Apple-kontoen, e-mail, URL'er). CVR kan stå tomt.
 - [ ] Hjemmesiden er online: `npm run website:build`, og læg `dist-website/` på fx Netlify. Privatlivspolitik, vilkår og support findes på dansk og engelsk og kræver ikke login.
 

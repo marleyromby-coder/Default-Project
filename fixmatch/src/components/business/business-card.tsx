@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 
 import { Badge, type BadgeTone } from '@/components/ui/badge';
 import { Icon, type IconName } from '@/components/ui/icon';
-import { Photo } from '@/components/ui/photo';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { MinTouchSize, Radius, Spacing } from '@/constants/theme';
@@ -16,6 +15,7 @@ import type { ScoredBusiness } from '@/lib/ranking';
 import type { JobType } from '@/lib/types';
 import { useApp } from '@/state/app-state';
 
+import { BusinessMark } from './business-mark';
 import { MatchBadge } from './match-badge';
 import { OpenStatus } from './open-status';
 import { TrustpilotRating } from './trustpilot-rating';
@@ -88,7 +88,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
         }}
         pressedOpacity={0.75}
         style={styles.top}>
-        <Photo photo={business.photo} category={business.categories[0]} width={300} style={styles.photo} />
+        <BusinessMark business={business} size={56} />
         <View style={styles.body}>
           <View style={styles.titleRow}>
             <View style={styles.titleText}>
@@ -150,18 +150,20 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
           accessibilityState={{ selected: comparing }}
           style={[
             styles.compareButton,
-            comparing ? { backgroundColor: colors.brandStrong } : { backgroundColor: colors.brandSoft },
+            comparing
+              ? { backgroundColor: colors.brandSoft, borderColor: colors.brandSoft }
+              : { backgroundColor: colors.surface, borderColor: colors.border },
           ]}>
           <Icon
             name={comparing ? 'check' : 'plus'}
             size={13}
-            color={comparing ? colors.onBrand : colors.brandText}
+            color={comparing ? colors.brandText : colors.textSecondary}
             weight="bold"
           />
           <AppText
             variant="footnote"
             weight="600"
-            style={{ color: comparing ? colors.onBrand : colors.brandText }}
+            style={{ color: comparing ? colors.brandText : colors.text }}
             maxFontSizeMultiplier={1.3}>
             {comparing ? t('Valgt') : t('Sammenlign')}
           </AppText>
@@ -174,7 +176,6 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
 const styles = StyleSheet.create({
   card: { borderRadius: Radius.lg, borderWidth: 1, overflow: 'hidden' },
   top: { flexDirection: 'row', gap: Spacing.md, padding: Spacing.md },
-  photo: { width: 88, height: 88, borderRadius: Radius.md },
   body: { flex: 1, gap: 5 },
   titleRow: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.sm },
   titleText: { flex: 1, gap: 1 },
@@ -199,5 +200,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
     minHeight: 34,
     borderRadius: Radius.pill,
+    borderWidth: StyleSheet.hairlineWidth,
   },
 });

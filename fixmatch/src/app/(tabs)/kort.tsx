@@ -9,7 +9,7 @@ import { BusinessMap } from '@/components/map/business-map';
 import { Button } from '@/components/ui/button';
 import { Chip } from '@/components/ui/chip';
 import { Icon } from '@/components/ui/icon';
-import { Photo } from '@/components/ui/photo';
+import { BusinessMark } from '@/components/business/business-mark';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { MaxContentWidth, MinTouchSize, Radius, ScreenPadding, Spacing } from '@/constants/theme';
@@ -310,14 +310,16 @@ function MapCard({ item, width, selected }: { item: ScoredBusiness; width: numbe
           })}
           pressedOpacity={0.8}
           style={styles.cardMain}>
-          <Photo photo={business.photo} category={business.categories[0]} width={240} style={styles.photo} />
+          <View style={styles.photo}>
+            <BusinessMark business={business} size={56} />
+          </View>
           <View style={styles.cardBody}>
             <View style={styles.tradeRow}>
               <View style={[styles.tradeDot, { backgroundColor: TRADE_COLORS[business.categories[0]] }]}>
                 <Icon name={business.categories[0]} size={10} color="#FFFFFF" weight="bold" />
               </View>
               <AppText variant="caption" weight="700" tone="textSecondary" numberOfLines={1} style={styles.flexShrink}>
-                {trade?.name.toUpperCase()} · {formatDistance(distanceKm)}
+                {trade?.name} · {formatDistance(distanceKm)}
               </AppText>
             </View>
             <AppText variant="headline" numberOfLines={1}>
@@ -419,7 +421,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   cardMain: { flex: 1, flexDirection: 'row' },
-  photo: { width: 92 },
+  photo: { paddingLeft: Spacing.md, paddingVertical: Spacing.md },
   cardBody: {
     flex: 1,
     paddingHorizontal: Spacing.md,

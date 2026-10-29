@@ -67,7 +67,7 @@ export default function SearchScreen() {
         {!hasQuery ? (
           <>
             <AppText variant="footnote" tone="textSecondary" style={styles.label}>
-              {t('POPULÆRE SØGNINGER')}
+              {t('Populære søgninger')}
             </AppText>
             <View style={styles.suggestions}>
               {SEARCH_SUGGESTIONS.map((s) => (
@@ -75,7 +75,7 @@ export default function SearchScreen() {
               ))}
             </View>
             <AppText variant="footnote" tone="textSecondary" style={styles.label}>
-              {t('ALLE FAG')}
+              {t('Alle fag')}
             </AppText>
             <View style={[styles.group, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               {CATEGORIES.map((c, i) => (
@@ -159,8 +159,8 @@ function ResultGroup({ title, children }: { title: string; children: React.React
   const colors = useTheme();
   return (
     <View style={styles.resultGroup}>
-      <AppText variant="footnote" tone="textSecondary" style={styles.label} accessibilityRole="header">
-        {title.toUpperCase()}
+      <AppText variant="subhead" weight="600" tone="textSecondary" style={styles.label} accessibilityRole="header">
+        {title}
       </AppText>
       <View style={[styles.group, { backgroundColor: colors.surface, borderColor: colors.border }]}>
         {children.map((child, i) => (
