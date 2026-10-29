@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useMemo } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BusinessMark } from '@/components/business/business-mark';
@@ -14,10 +14,9 @@ import { Icon, type IconName } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
-import { tradeTone } from '@/constants/trade-colors';
 import { CATEGORIES, getCategory } from '@/data/categories';
 import { useGps, GPS_MESSAGES } from '@/hooks/use-gps';
-import { useIsDark, useTheme } from '@/hooks/use-theme';
+import { useTheme } from '@/hooks/use-theme';
 import { DATA_MODE } from '@/lib/data-source';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { showDialog } from '@/lib/dialog';
@@ -52,7 +51,6 @@ const NEARBY_KM = 25;
 
 export default function HomeScreen() {
   const colors = useTheme();
-  const scheme = useIsDark() ? 'dark' : 'light';
   const insets = useSafeAreaInsets();
   const { state } = useApp();
   const { country, market, supported, open } = useMarket();
@@ -109,7 +107,11 @@ export default function HomeScreen() {
       </View>
 
       <View style={styles.hero}>
-        <AppText variant="title1">{t('Find den rette håndværker')}</AppText>
+        <AppText variant="title1">
+          {t('Den rette håndværker.')}
+          {'\n'}
+          <Text style={{ color: colors.brandText }}>{t('Til den rette pris.')}</Text>
+        </AppText>
         <AppText variant="callout" tone="textSecondary">
           {TRUSTPILOT_ENABLED
             ? t('Sammenlign pris, afstand og Trustpilot-anmeldelser hos lokale virksomheder – og ring direkte.')
@@ -132,8 +134,8 @@ export default function HomeScreen() {
         onPress={() => router.push('/beskriv')}
         accessibilityLabel={t('Beskriv dit problem og dit budget, så matcher vi dig med virksomheder')}
         style={[styles.describe, { backgroundColor: colors.ink }]}>
-        <View style={[styles.describeIcon, { backgroundColor: colors.brand }]}>
-          <Icon name="wand" size={20} color={colors.onBrand} weight="semibold" />
+        <View style={[styles.describeIcon, { backgroundColor: colors.accent }]}>
+          <Icon name="wand" size={20} color={colors.ink} weight="semibold" />
         </View>
         <View style={styles.flex}>
           <AppText variant="headline" style={{ color: colors.onInk }}>
@@ -197,7 +199,7 @@ export default function HomeScreen() {
 
       <Section title={t('Vælg fag')}>
         <View style={styles.grid}>
-          {chunk(CATEGORIES, 2).map((row) => (
+          {chunk(CATEGORIES, 4).map((row) => (
             <View key={row[0].id} style={styles.gridRow}>
               {row.map((category) => (
                 <CategoryTile key={category.id} category={category} nearby={nearbyCount.get(category.id) ?? 0} />
@@ -247,8 +249,8 @@ export default function HomeScreen() {
                   plural: category.plural,
                 })}
                 style={[styles.jobCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                <View style={[styles.jobIcon, { backgroundColor: tradeTone(categoryId, scheme).soft }]}>
-                  <Icon name={categoryId} size={16} color={tradeTone(categoryId, scheme).onSoft} weight="semibold" />
+                <View style={[styles.jobIcon, { backgroundColor: colors.brandSoft }]}>
+                  <Icon name={categoryId} size={16} color={colors.brand} weight="semibold" />
                 </View>
                 <AppText variant="subhead" weight="600" numberOfLines={2}>
                   {job.name}
@@ -385,11 +387,9 @@ function Step({ number, title, text }: { number: number; title: string; text: st
   const colors = useTheme();
   return (
     <View style={styles.step}>
-      <View style={[styles.stepNumber, { backgroundColor: colors.brandStrong }]}>
-        <AppText variant="subhead" weight="700" tone="onBrand">
-          {number}
-        </AppText>
-      </View>
+      <AppText variant="title1" serif style={[styles.stepNumber, { color: colors.brand }]} accessibilityRole="none">
+        {number}
+      </AppText>
       <View style={styles.flex}>
         <AppText variant="headline">{title}</AppText>
         <AppText variant="subhead" tone="textSecondary">
@@ -469,8 +469,8 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   section: { gap: Spacing.md },
   sectionHeader: { paddingHorizontal: ScreenPadding, gap: 2 },
-  grid: { paddingHorizontal: ScreenPadding, gap: Spacing.md },
-  gridRow: { flexDirection: 'row', gap: Spacing.md },
+  grid: { paddingHorizontal: ScreenPadding, gap: Spacing.sm },
+  gridRow: { flexDirection: 'row', gap: Spacing.sm },
   urgentRow: { flexDirection: 'row', gap: Spacing.sm, paddingHorizontal: ScreenPadding },
   urgent: {
     flex: 1,
@@ -503,7 +503,7 @@ const styles = StyleSheet.create({
     gap: Spacing.lg,
   },
   step: { flexDirection: 'row', gap: Spacing.md, alignItems: 'flex-start' },
-  stepNumber: { width: 30, height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center' },
+  stepNumber: { width: 22, textAlign: 'center' },
   footerLinks: {
     flexDirection: 'row',
     flexWrap: 'wrap',

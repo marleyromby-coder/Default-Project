@@ -143,9 +143,9 @@ export function BusinessMap({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width, height, view, visible, scale, cosLat, padding.top, padding.bottom]);
 
-  const water = dark ? '#0F1B27' : '#CFE2F0';
-  const land = dark ? '#1F2835' : '#F3F0E8';
-  const coast = dark ? '#2D3A4B' : '#D7D1C2';
+  const water = dark ? '#121C1E' : '#D3E0E2';
+  const land = dark ? '#1F231D' : '#F7F4ED';
+  const coast = dark ? '#343A31' : '#D9D1C1';
   const originPoint = project(origin);
 
   return (

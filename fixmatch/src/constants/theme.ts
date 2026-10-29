@@ -1,8 +1,9 @@
 /**
  * FixMatch design tokens.
  *
- * Colors are checked against WCAG 2.2: body text pairs reach at least 4.5:1,
- * and the button fills reach at least 3:1 with their bold 17 pt labels.
+ * "Nordisk håndværk": warm paper, pine green and an ochre accent, with Fraunces titles.
+ * Colors are checked against WCAG 2.2: every text pair, the button labels included,
+ * reaches at least 4.5:1, and icons in `brand` at least 3:1.
  */
 
 import '@/global.css';
@@ -11,63 +12,71 @@ import { Platform } from 'react-native';
 
 export const Colors = {
   light: {
-    background: '#F3F4F6',
-    surface: '#FFFFFF',
-    surfaceAlt: '#F8F9FB',
-    border: '#E4E7EC',
-    text: '#0E1726',
-    textSecondary: '#556070',
-    textTertiary: '#6B7585',
-    brand: '#F2541B',
-    brandStrong: '#CC4A12',
-    brandText: '#C2410C',
-    brandSoft: '#FFF1EA',
-    onBrand: '#FFFFFF',
-    /** The navy of the logo: hero cards and floating bars. */
-    ink: '#16213A',
-    inkRaised: '#22304F',
-    onInk: '#FFFFFF',
-    onInkSoft: '#C6CFDF',
-    success: '#15803D',
-    successSoft: '#E8F6EE',
-    danger: '#B42318',
-    dangerSoft: '#FDECEA',
-    warning: '#B54708',
-    warningSoft: '#FFF4E5',
-    info: '#1D4ED8',
-    infoSoft: '#EAF1FF',
-    star: '#F59E0B',
-    starEmpty: '#E4E7EC',
-    overlay: 'rgba(14, 23, 38, 0.55)',
-    shadow: '#0E1726',
+    /** Warm paper, like a workshop drawing – never a cold app grey. */
+    background: '#F4F1EA',
+    surface: '#FFFDF9',
+    surfaceAlt: '#FAF7F1',
+    border: '#E6E0D4',
+    text: '#1C1A17',
+    textSecondary: '#5E574C',
+    textTertiary: '#6E665A',
+    /** Pine green: the FixMatch colour, for icons and accents. */
+    brand: '#2A6150',
+    /** Button and chip fills behind `onBrand`. */
+    brandStrong: '#1F4A3A',
+    brandText: '#1F5A46',
+    brandSoft: '#E2EBE4',
+    onBrand: '#FFFDF8',
+    /** Ochre, the dot in the logo. Decoration only – never text. */
+    accent: '#D09A2E',
+    accentSoft: '#F5EBD6',
+    /** Deep pine for hero cards and floating bars. */
+    ink: '#183A2E',
+    inkRaised: '#22493B',
+    onInk: '#FBF8F2',
+    onInkSoft: '#C5D3CA',
+    success: '#25733F',
+    successSoft: '#E5F1E8',
+    danger: '#B3261E',
+    dangerSoft: '#FBEAE7',
+    warning: '#8F5405',
+    warningSoft: '#FBF0DC',
+    info: '#2E5E8C',
+    infoSoft: '#E8EFF5',
+    star: '#D19A2E',
+    starEmpty: '#E6E0D4',
+    overlay: 'rgba(28, 26, 23, 0.5)',
+    shadow: '#2B2418',
   },
   dark: {
-    background: '#0B0F15',
-    surface: '#151B24',
-    surfaceAlt: '#1B2330',
-    border: '#283241',
-    text: '#F3F5F8',
-    textSecondary: '#A9B3C1',
-    textTertiary: '#8893A3',
-    brand: '#FF6B35',
-    brandStrong: '#C2410C',
-    brandText: '#FF7A47',
-    brandSoft: '#2A1A12',
+    background: '#11130F',
+    surface: '#1A1D18',
+    surfaceAlt: '#22261F',
+    border: '#30352D',
+    text: '#F2EEE5',
+    textSecondary: '#B8B1A4',
+    textTertiary: '#9C9584',
+    brand: '#8CC5A8',
+    brandStrong: '#2F6B53',
+    brandText: '#8FCBAD',
+    brandSoft: '#1D2C24',
     onBrand: '#FFFFFF',
-    ink: '#1C2740',
-    inkRaised: '#26344F',
-    onInk: '#FFFFFF',
-    onInkSoft: '#C6CFDF',
-    success: '#4ADE80',
-    successSoft: '#11261A',
-    danger: '#F87171',
-    dangerSoft: '#2B1414',
-    warning: '#FBBF24',
-    warningSoft: '#2A2110',
-    info: '#60A5FA',
-    infoSoft: '#132036',
-    star: '#FBBF24',
-    starEmpty: '#2F3A4A',
+    accent: '#E0AE4A',
+    accentSoft: '#2E2616',
+    ink: '#1C3A2E',
+    inkRaised: '#25473A',
+    onInk: '#F7F3EA',
+    onInkSoft: '#C2D1C7',
+    success: '#6FD08F',
+    successSoft: '#14261A',
+    danger: '#F28B82',
+    dangerSoft: '#2C1614',
+    warning: '#F0B95B',
+    warningSoft: '#2B2212',
+    info: '#8DB8E0',
+    infoSoft: '#162230',
+    star: '#E0AE4A',
+    starEmpty: '#353A31',
     overlay: 'rgba(0, 0, 0, 0.6)',
     shadow: '#000000',
   },
@@ -111,12 +120,18 @@ export const Fonts = Platform.select({
   default: { sans: 'normal', rounded: 'normal', mono: 'monospace' },
 });
 
-/** Type scale modelled on the iOS text styles. */
+/**
+ * Fraunces, the serif of the logo, for titles. Loaded by the root layout under these
+ * names; each weight is its own family, so never combine them with `fontWeight`.
+ */
+export const SerifFonts = { regular: 'Fraunces_600SemiBold', bold: 'Fraunces_700Bold' } as const;
+
+/** Type scale modelled on the iOS text styles. The titles are set in Fraunces. */
 export const Typography = {
-  largeTitle: { fontSize: 34, lineHeight: 41, fontWeight: '700' },
-  title1: { fontSize: 28, lineHeight: 34, fontWeight: '700' },
-  title2: { fontSize: 22, lineHeight: 28, fontWeight: '700' },
-  title3: { fontSize: 20, lineHeight: 25, fontWeight: '600' },
+  largeTitle: { fontSize: 34, lineHeight: 40, fontWeight: '700', letterSpacing: -0.6 },
+  title1: { fontSize: 28, lineHeight: 33, fontWeight: '700', letterSpacing: -0.5 },
+  title2: { fontSize: 22, lineHeight: 27, fontWeight: '700', letterSpacing: -0.3 },
+  title3: { fontSize: 20, lineHeight: 25, fontWeight: '600', letterSpacing: -0.2 },
   headline: { fontSize: 17, lineHeight: 22, fontWeight: '600' },
   body: { fontSize: 17, lineHeight: 22, fontWeight: '400' },
   callout: { fontSize: 16, lineHeight: 21, fontWeight: '400' },

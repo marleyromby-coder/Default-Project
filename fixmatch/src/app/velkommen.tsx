@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { AppText } from '@/components/ui/text';
 import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
-import { TRADE_COLORS } from '@/constants/trade-colors';
 import { CATEGORIES } from '@/data/categories';
 import { GPS_MESSAGES, useGps } from '@/hooks/use-gps';
 import { useTheme } from '@/hooks/use-theme';
@@ -45,11 +44,22 @@ export default function WelcomeScreen() {
               importantForAccessibility="no-hide-descendants">
               {[CATEGORIES.slice(0, 4), CATEGORIES.slice(4)].map((row, index) => (
                 <View key={index} style={[styles.mosaicRow, index === 1 ? styles.mosaicOffset : null]}>
-                  {row.map((category) => (
-                    <View key={category.id} style={[styles.mosaicTile, { backgroundColor: TRADE_COLORS[category.id] }]}>
-                      <Icon name={category.id} size={26} color="#FFFFFF" weight="semibold" />
-                    </View>
-                  ))}
+                  {row.map((category, column) => {
+                    // One ochre tile, like the dot in the logo; the rest in raised pine.
+                    const accent = index === 0 && column === 1;
+                    return (
+                      <View
+                        key={category.id}
+                        style={[styles.mosaicTile, { backgroundColor: accent ? colors.accent : colors.inkRaised }]}>
+                        <Icon
+                          name={category.id}
+                          size={26}
+                          color={accent ? colors.ink : colors.onInk}
+                          weight="semibold"
+                        />
+                      </View>
+                    );
+                  })}
                 </View>
               ))}
             </View>

@@ -46,7 +46,7 @@ const sampleBusiness = (id, name, open) => ({
   id,
   name,
   initials: name.slice(0, 2).toUpperCase(),
-  color: '#1D4ED8',
+  mark: { light: { background: '#E1E8EE', letters: '#2F5D84' }, dark: { background: '#232E33', letters: '#A9BDCF' } },
   trade: "VVS'er",
   status: open ? 'Åben til 16.00' : 'Åbner i morgen kl. 7.00',
   open,

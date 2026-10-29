@@ -5,8 +5,7 @@ import { Icon } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { Radius, Spacing } from '@/constants/theme';
-import { tradeTone } from '@/constants/trade-colors';
-import { useIsDark, useTheme } from '@/hooks/use-theme';
+import { useTheme } from '@/hooks/use-theme';
 import type { Category } from '@/lib/types';
 import { t } from '@/i18n';
 
@@ -15,10 +14,12 @@ interface Props {
   nearby: number;
 }
 
-/** A trade on the home screen: its icon in the trade colour (the same as on the map), name and count. */
+/**
+ * A trade on the home screen, four to a row: the icon in pine, the name, and how many
+ * businesses are nearby in the corner. One colour for all trades keeps the grid calm.
+ */
 export function CategoryTile({ category, nearby }: Props) {
   const colors = useTheme();
-  const tone = tradeTone(category.id, useIsDark() ? 'dark' : 'light');
   const count = nearby === 1 ? t('1 i nærheden') : t('{nearby} i nærheden', { nearby });
   return (
     <Tappable
@@ -30,17 +31,23 @@ export function CategoryTile({ category, nearby }: Props) {
       })}
       pressedOpacity={0.7}
       style={[styles.tile, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-      <View style={[styles.icon, { backgroundColor: tone.soft }]}>
-        <Icon name={category.id} size={22} color={tone.onSoft} weight="semibold" />
+      <View style={styles.top}>
+        <Icon name={category.id} size={22} color={colors.brand} weight="semibold" />
+        {nearby > 0 ? (
+          <AppText variant="caption2" tone="textTertiary" tabular maxFontSizeMultiplier={1.2}>
+            {nearby}
+          </AppText>
+        ) : null}
       </View>
-      <View style={styles.text}>
-        <AppText variant="headline" numberOfLines={1}>
-          {category.name}
-        </AppText>
-        <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
-          {count}
-        </AppText>
-      </View>
+      <AppText
+        variant="caption"
+        weight="600"
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.8}
+        maxFontSizeMultiplier={1.3}>
+        {category.name}
+      </AppText>
     </Tappable>
   );
 }
@@ -48,13 +55,13 @@ export function CategoryTile({ category, nearby }: Props) {
 const styles = StyleSheet.create({
   tile: {
     flex: 1,
-    minHeight: 112,
-    borderRadius: Radius.lg,
+    minHeight: 76,
+    borderRadius: Radius.md,
     borderWidth: StyleSheet.hairlineWidth,
-    padding: Spacing.md,
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: Spacing.sm + 2,
     justifyContent: 'space-between',
-    gap: Spacing.md,
+    gap: Spacing.sm,
   },
-  icon: { width: 42, height: 42, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
-  text: { gap: 1 },
+  top: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
 });

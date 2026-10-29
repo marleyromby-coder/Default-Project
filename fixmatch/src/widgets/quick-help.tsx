@@ -1,6 +1,5 @@
 import {
   AccessoryWidgetBackground,
-  Capsule,
   Divider,
   Ellipse,
   HStack,
@@ -36,63 +35,66 @@ import type { QuickHelpProps } from './types';
  *
  * The layout is serialised by the 'widget' directive and runs inside the widget extension,
  * so it may only use its props, the environment and the SwiftUI components and modifiers.
+ * The app's Fraunces is not in the extension, so titles use the system serif (New York).
  */
 function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
   'widget';
   const dark = env.colorScheme === 'dark';
   const c = {
-    bg: dark ? '#151B24' : '#FFFFFF',
-    text: dark ? '#F3F5F8' : '#0E1726',
-    muted: dark ? '#A9B3C1' : '#556070',
-    ink: '#16213A',
-    onInkSoft: '#C6CFDF',
-    brand: '#F2541B',
-    open: dark ? '#4ADE80' : '#15803D',
+    bg: dark ? '#1A1D18' : '#F7F4ED',
+    text: dark ? '#F2EEE5' : '#1C1A17',
+    muted: dark ? '#B8B1A4' : '#5E574C',
+    brand: dark ? '#8CC5A8' : '#2A6150',
+    brandSoft: dark ? '#1D2C24' : '#E2EBE4',
+    pine: '#1F4A3A',
+    pineTop: '#2A5E4A',
+    cream: '#F4EFE4',
+    onPineSoft: '#C5D3CA',
+    ochre: '#D09A2E',
+    open: dark ? '#6FD08F' : '#25733F',
+    warning: dark ? '#F0B95B' : '#8F5405',
   };
+  const serif = (size: number) => font({ size, weight: 'bold', design: 'serif' });
 
-  // The FixMatch spirit level, drawn with shapes so it stays sharp at every size.
-  const level = (width: number) => {
-    const s = width / 50;
-    return (
-      <ZStack>
-        <RoundedRectangle
-          cornerRadius={2.5 * s}
-          modifiers={[foregroundStyle('#4B5E84'), frame({ width: 50 * s, height: 8.5 * s })]}
-        />
-        <Capsule modifiers={[foregroundStyle(c.brand), frame({ width: 29 * s, height: 23 * s })]} />
-        <HStack spacing={0.95 * s}>
-          <Capsule modifiers={[foregroundStyle('#FFFFFF'), frame({ width: 2.3 * s, height: 14.8 * s })]} />
-          <Ellipse modifiers={[foregroundStyle('#FFFFFF'), frame({ width: 8.6 * s, height: 7.8 * s })]} />
-          <Capsule modifiers={[foregroundStyle('#FFFFFF'), frame({ width: 2.3 * s, height: 14.8 * s })]} />
-        </HStack>
-      </ZStack>
-    );
-  };
+  // The FixMatch "f." – the letter with the ochre dot on its baseline.
+  const glyph = (size: number, color: string, dot: string) => (
+    <HStack alignment="lastTextBaseline" spacing={size * 0.04}>
+      <Text modifiers={[font({ size, weight: 'black', design: 'serif' }), foregroundStyle(color)]}>f</Text>
+      <Ellipse modifiers={[foregroundStyle(dot), frame({ width: size * 0.19, height: size * 0.19 })]} />
+    </HStack>
+  );
 
   const mark = (size: number) => (
     <ZStack>
       <RoundedRectangle
-        cornerRadius={size * 0.24}
-        modifiers={[foregroundStyle(c.ink), frame({ width: size, height: size })]}
+        cornerRadius={size * 0.234}
+        modifiers={[foregroundStyle(c.pine), frame({ width: size, height: size })]}
       />
-      {level(size * 0.76)}
+      {glyph(size * 0.72, c.cream, c.ochre)}
     </ZStack>
+  );
+
+  const wordmark = (size: number) => (
+    <HStack alignment="lastTextBaseline" spacing={0}>
+      <Text modifiers={[serif(size), foregroundStyle(c.text)]}>fixmatch</Text>
+      <Text modifiers={[serif(size), foregroundStyle(c.ochre)]}>.</Text>
+    </HStack>
   );
 
   const header = (
     <HStack spacing={8}>
-      {mark(28)}
+      {mark(30)}
       <VStack alignment="leading" spacing={0}>
-        <Text modifiers={[font({ size: 15, weight: 'bold' }), foregroundStyle(c.text)]}>FixMatch</Text>
+        {wordmark(17)}
         <Text modifiers={[font({ textStyle: 'caption' }), foregroundStyle(c.muted), lineLimit(1)]}>{props.place}</Text>
       </VStack>
       <Spacer />
       <Link destination={props.describeUrl}>
         <HStack
           spacing={5}
-          modifiers={[padding({ horizontal: 10, vertical: 6 }), background(c.brand, shapes.capsule())]}>
-          <Image systemName="wand.and.stars" size={12} color="#FFFFFF" />
-          <Text modifiers={[font({ size: 13, weight: 'semibold' }), foregroundStyle('#FFFFFF')]}>
+          modifiers={[padding({ horizontal: 11, vertical: 6 }), background(c.pine, shapes.capsule())]}>
+          <Image systemName="wand.and.stars" size={12} color={c.ochre} />
+          <Text modifiers={[font({ size: 13, weight: 'semibold' }), foregroundStyle(c.cream)]}>
             {props.describeShort}
           </Text>
         </HStack>
@@ -109,9 +111,9 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
           <ZStack>
             <RoundedRectangle
               cornerRadius={size * 0.28}
-              modifiers={[foregroundStyle(trade.color), frame({ width: size, height: size })]}
+              modifiers={[foregroundStyle(c.brandSoft), frame({ width: size, height: size })]}
             />
-            <Image systemName={trade.symbol as 'drop.fill'} size={size * 0.44} color="#FFFFFF" />
+            <Image systemName={trade.symbol as 'drop.fill'} size={size * 0.42} color={c.brand} />
           </ZStack>
           <Text
             modifiers={[
@@ -132,17 +134,18 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
   if (family === 'accessoryInline') {
     return (
       <HStack modifiers={[widgetURL(props.describeUrl)]}>
-        <Image systemName="level.fill" />
+        <Image systemName="wrench.and.screwdriver.fill" />
         <Text>{`FixMatch · ${props.describe}`}</Text>
       </HStack>
     );
   }
 
+  // Lock screen: iOS tints everything in one colour, so the mark is drawn without its tile.
   if (family === 'accessoryCircular') {
     return (
       <ZStack modifiers={[widgetURL(props.describeUrl)]}>
         <AccessoryWidgetBackground />
-        <Image systemName="level.fill" size={24} />
+        {glyph(30, '#FFFFFF', '#FFFFFF')}
       </ZStack>
     );
   }
@@ -151,10 +154,7 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
     const first = props.saved[0];
     return (
       <VStack alignment="leading" spacing={1} modifiers={[widgetURL(first ? first.url : props.describeUrl)]}>
-        <HStack spacing={4}>
-          <Image systemName="level.fill" size={11} />
-          <Text modifiers={[font({ size: 12, weight: 'semibold' })]}>FixMatch</Text>
-        </HStack>
+        <Text modifiers={[serif(13)]}>fixmatch.</Text>
         <Text modifiers={[font({ textStyle: 'headline' }), lineLimit(1), minimumScaleFactor(0.8)]}>
           {first ? first.name : props.describe}
         </Text>
@@ -174,7 +174,7 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
           containerBackground(
             {
               type: 'linearGradient',
-              colors: ['#22304F', c.ink],
+              colors: [c.pineTop, c.pine],
               startPoint: { x: 0, y: 0 },
               endPoint: { x: 0, y: 1 },
             },
@@ -183,20 +183,15 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
           widgetURL(props.describeUrl),
         ]}>
         <HStack>
-          {level(46)}
+          {glyph(34, c.cream, c.ochre)}
           <Spacer />
+          <Image systemName="wand.and.stars" size={15} color={c.ochre} />
         </HStack>
         <Spacer />
-        <Text
-          modifiers={[
-            font({ size: 17, weight: 'bold' }),
-            foregroundStyle('#FFFFFF'),
-            lineLimit(2),
-            minimumScaleFactor(0.85),
-          ]}>
+        <Text modifiers={[serif(19), foregroundStyle(c.cream), lineLimit(2), minimumScaleFactor(0.85)]}>
           {props.describe}
         </Text>
-        <Text modifiers={[font({ textStyle: 'caption' }), foregroundStyle(c.onInkSoft), lineLimit(3)]}>
+        <Text modifiers={[font({ textStyle: 'caption' }), foregroundStyle(c.onPineSoft), lineLimit(3)]}>
           {props.describeHint}
         </Text>
       </VStack>
@@ -229,23 +224,23 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
           modifiers={[
             padding({ all: 10 }),
             frame({ maxWidth: 1000 }),
-            background(c.ink, shapes.roundedRectangle({ cornerRadius: 16 })),
+            background(c.pine, shapes.roundedRectangle({ cornerRadius: 16 })),
           ]}>
           <ZStack>
-            <Ellipse modifiers={[foregroundStyle(c.brand), frame({ width: 34, height: 34 })]} />
-            <Image systemName="wand.and.stars" size={15} color="#FFFFFF" />
+            <Ellipse modifiers={[foregroundStyle(c.ochre), frame({ width: 34, height: 34 })]} />
+            <Image systemName="wand.and.stars" size={15} color={c.pine} />
           </ZStack>
           <VStack alignment="leading" spacing={1}>
-            <Text modifiers={[font({ textStyle: 'headline' }), foregroundStyle('#FFFFFF')]}>{props.describe}</Text>
-            <Text modifiers={[font({ textStyle: 'caption' }), foregroundStyle(c.onInkSoft), lineLimit(1)]}>
+            <Text modifiers={[serif(17), foregroundStyle(c.cream)]}>{props.describe}</Text>
+            <Text modifiers={[font({ textStyle: 'caption' }), foregroundStyle(c.onPineSoft), lineLimit(1)]}>
               {props.describeHint}
             </Text>
           </VStack>
           <Spacer />
-          <Image systemName="chevron.right" size={12} color={c.onInkSoft} />
+          <Image systemName="chevron.right" size={12} color={c.onPineSoft} />
         </HStack>
       </Link>
-      <Text modifiers={[font({ size: 13, weight: 'semibold' }), foregroundStyle(c.muted)]}>{props.tradesTitle}</Text>
+      <Text modifiers={[serif(15), foregroundStyle(c.text)]}>{props.tradesTitle}</Text>
       <HStack spacing={6}>
         {tradeTile(0, 40)}
         {tradeTile(1, 40)}
@@ -261,40 +256,41 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
       <Divider />
       {savedRows.length > 0 ? (
         <VStack alignment="leading" spacing={6}>
-          {savedRows.map((business) => (
-            <Link key={business.id} destination={business.url}>
-              <HStack spacing={10}>
-                <ZStack>
-                  <RoundedRectangle
-                    cornerRadius={8}
-                    modifiers={[foregroundStyle(business.color), frame({ width: 30, height: 30 })]}
-                  />
-                  <Text modifiers={[font({ size: 12, weight: 'bold', design: 'rounded' }), foregroundStyle('#FFFFFF')]}>
-                    {business.initials}
-                  </Text>
-                </ZStack>
-                <VStack alignment="leading" spacing={0}>
-                  <Text modifiers={[font({ size: 14, weight: 'semibold' }), foregroundStyle(c.text), lineLimit(1)]}>
-                    {business.name}
-                  </Text>
-                  <Text
-                    modifiers={[
-                      font({ textStyle: 'caption' }),
-                      foregroundStyle(business.open ? c.open : c.muted),
-                      lineLimit(1),
-                    ]}>
-                    {business.status}
-                  </Text>
-                </VStack>
-                <Spacer />
-              </HStack>
-            </Link>
-          ))}
+          {savedRows.map((business) => {
+            const tone = dark ? business.mark.dark : business.mark.light;
+            return (
+              <Link key={business.id} destination={business.url}>
+                <HStack spacing={10}>
+                  <ZStack>
+                    <RoundedRectangle
+                      cornerRadius={8}
+                      modifiers={[foregroundStyle(tone.background), frame({ width: 30, height: 30 })]}
+                    />
+                    <Text modifiers={[serif(13), foregroundStyle(tone.letters)]}>{business.initials}</Text>
+                  </ZStack>
+                  <VStack alignment="leading" spacing={0}>
+                    <Text modifiers={[font({ size: 14, weight: 'semibold' }), foregroundStyle(c.text), lineLimit(1)]}>
+                      {business.name}
+                    </Text>
+                    <Text
+                      modifiers={[
+                        font({ textStyle: 'caption' }),
+                        foregroundStyle(business.open ? c.open : c.muted),
+                        lineLimit(1),
+                      ]}>
+                      {business.status}
+                    </Text>
+                  </VStack>
+                  <Spacer />
+                </HStack>
+              </Link>
+            );
+          })}
         </VStack>
       ) : (
         <Link destination={props.urgentUrl}>
           <HStack spacing={10}>
-            <Image systemName="bolt.fill" size={14} color="#B54708" />
+            <Image systemName="bolt.fill" size={14} color={c.warning} />
             <VStack alignment="leading" spacing={0}>
               <Text modifiers={[font({ size: 14, weight: 'semibold' }), foregroundStyle(c.text)]}>{props.urgent}</Text>
               <Text modifiers={[font({ textStyle: 'caption' }), foregroundStyle(c.muted), lineLimit(1)]}>

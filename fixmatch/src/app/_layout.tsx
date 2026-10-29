@@ -1,10 +1,13 @@
+import { Fraunces_600SemiBold } from '@expo-google-fonts/fraunces/600SemiBold';
+import { Fraunces_700Bold } from '@expo-google-fonts/fraunces/700Bold';
+import { useFonts } from 'expo-font';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { type PropsWithChildren, useEffect } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 
-import { MaxContentWidth } from '@/constants/theme';
+import { MaxContentWidth, SerifFonts } from '@/constants/theme';
 import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { AppStateProvider, useApp } from '@/state/app-state';
 import { getLanguage, t } from '@/i18n';
@@ -46,19 +49,25 @@ export default function RootLayout() {
 function RootNavigator() {
   const colors = useTheme();
   const { state } = useApp();
+  const [fontsLoaded, fontError] = useFonts({
+    [SerifFonts.regular]: Fraunces_600SemiBold,
+    [SerifFonts.bold]: Fraunces_700Bold,
+  });
+  // If the fonts cannot load, the titles fall back to the system font instead of hanging.
+  const ready = state.ready && (fontsLoaded || !!fontError);
 
   useEffect(() => {
-    if (state.ready) SplashScreen.hideAsync().catch(() => undefined);
-  }, [state.ready]);
+    if (ready) SplashScreen.hideAsync().catch(() => undefined);
+  }, [ready]);
 
-  if (!state.ready) return null;
+  if (!ready) return null;
 
   return (
     <Stack
       screenOptions={{
         headerBackButtonDisplayMode: 'minimal',
         headerTintColor: colors.brandText,
-        headerTitleStyle: { color: colors.text },
+        headerTitleStyle: { color: colors.text, fontFamily: SerifFonts.regular },
         headerShadowVisible: false,
         headerStyle: { backgroundColor: colors.background },
         contentStyle: { backgroundColor: colors.background },

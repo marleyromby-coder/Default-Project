@@ -38,9 +38,11 @@ Scan QR-koden med iPhonens kamera → appen åbner i Expo Go. Alt du ændrer i k
 
 ## Design og billeder
 
-- **Logo:** et vaterpas med boblen i midten – "i vater". Alle ikoner (iOS 26 Liquid Glass-ikon, Android, splash, favicon) laves ud fra samme vektortegning med `npm run brand:render` (`scripts/render-brand-assets.js`).
-- **Virksomheder** vises med deres eget billede (en https-adresse i kolonnen `billede`, med deres tilladelse – det står i samtykket) eller ellers med et mærke med deres initialer i fagets farve. Appen viser ingen stockfotos, så en liste aldrig gentager det samme billede.
-- **Fagfarver** (`src/constants/trade-colors.ts`) er de samme på kortet, i fagoversigten og på virksomhedernes mærker.
+- **Retning – "Nordisk håndværk":** varmt papirhvidt, skovgrønt (pine) og en okkergul accent, i stedet for de kolde grå og blå farver, mange apps har. Alle farver står i `src/constants/theme.ts` og er tjekket efter WCAG 2.2 (al tekst mindst 4,5:1). Okker bruges kun til pynt, aldrig til tekst.
+- **Skrift:** overskrifter i [Fraunces](https://github.com/undercasetype/Fraunces) (SIL Open Font License), resten i systemets skrift (SF Pro på iPhone). `AppText` sætter selv titlerne i Fraunces; brug `serif` for andre tekster. Widgets bruger systemets serif (New York), fordi Fraunces ikke er med i widget-udvidelsen.
+- **Logo:** et lille "f" fra Fraunces med okkerprikken fra ordmærket "fixmatch.". Tegningen ligger ét sted, `assets/brand/mark.json`, og både `LogoMark` i appen og alle ikoner (iOS 26 Liquid Glass-ikon med bogstav og prik som to lag, Android, splash, favicon) laves ud fra den med `npm run brand:render` (`scripts/render-brand-assets.js`).
+- **Virksomheder** vises med deres eget billede (en https-adresse i kolonnen `billede`, med deres tilladelse – det står i samtykket) eller ellers med deres initialer i Fraunces på en lys tone af fagets farve, som et stempel. Appen viser ingen stockfotos, så en liste aldrig gentager det samme billede.
+- **Fagfarver** (`src/constants/trade-colors.ts`) er dæmpede jordfarver og bruges på kortet og på virksomhedernes mærker. Fagoversigten på forsiden er ensfarvet grøn, så den er rolig at se på.
 
 ## Widgets (hjemmeskærm og låseskærm)
 

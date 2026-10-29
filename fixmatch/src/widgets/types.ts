@@ -9,16 +9,21 @@ export interface WidgetTrade {
   label: string;
   /** SF Symbol name. */
   symbol: string;
-  /** Trade colour, see src/constants/trade-colors.ts. */
-  color: string;
   url: string;
+}
+
+/** Colours of a business mark, see markTone in src/constants/trade-colors.ts. */
+export interface WidgetMarkTone {
+  background: string;
+  letters: string;
 }
 
 export interface WidgetBusiness {
   id: string;
   name: string;
   initials: string;
-  color: string;
+  /** The widget picks the tone for its own light or dark appearance. */
+  mark: { light: WidgetMarkTone; dark: WidgetMarkTone };
   trade: string;
   /** "Åben til 16.00", "Åbner i morgen kl. 7.00" … at the time of the timeline entry. */
   status: string;

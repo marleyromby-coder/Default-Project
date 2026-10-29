@@ -1,4 +1,4 @@
-import { TRADE_SYMBOLS, tradeShade, TRADE_COLORS } from '@/constants/trade-colors';
+import { markTone, TRADE_SYMBOLS } from '@/constants/trade-colors';
 import { getCategory } from '@/data/categories';
 import { t } from '@/i18n';
 import { currencyOf, initials, timeZoneOf } from '@/lib/business-text';
@@ -31,7 +31,6 @@ function trades(): WidgetTrade[] {
     id,
     label: getCategory(id)?.name ?? id,
     symbol: TRADE_SYMBOLS[id],
-    color: TRADE_COLORS[id],
     url: `fixmatch://kategori/${id}`,
   }));
 }
@@ -46,7 +45,10 @@ function saved(input: WidgetInput, date: Date): WidgetBusiness[] {
         id: business.id,
         name: business.name,
         initials: initials(business.name),
-        color: tradeShade(business.categories[0], business.id),
+        mark: {
+          light: markTone(business.categories[0], business.id, 'light'),
+          dark: markTone(business.categories[0], business.id, 'dark'),
+        },
         trade: getCategory(business.categories[0])?.name ?? '',
         status: !status.open && business.emergency ? `${status.label} · ${t('døgnvagt')}` : status.label,
         open: status.open,

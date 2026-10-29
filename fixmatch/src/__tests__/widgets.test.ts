@@ -15,7 +15,7 @@ const favorites = ['roerfalken', 'fjordvand-vvs', 'findes-ikke'];
 const now = new Date('2026-10-29T09:00:00Z');
 
 describe('widgets', () => {
-  it('offers every trade with its colour, symbol and a deep link', () => {
+  it('offers every trade with its symbol and a deep link', () => {
     const props = quickHelpProps({ location, favorites, businesses }, now);
     expect(props.trades).toHaveLength(8);
     expect(props.trades[0]).toMatchObject({
@@ -34,6 +34,9 @@ describe('widgets', () => {
     const [first] = props.saved;
     expect(first.url).toBe('fixmatch://virksomhed/roerfalken');
     expect(first.initials).toBe('R');
+    // Stamp colours for both appearances, because the widget, not the app, knows which one it shows.
+    expect(first.mark.light.letters).toMatch(/^#[0-9a-f]{6}$/i);
+    expect(first.mark.dark.background).toMatch(/^#[0-9a-f]{6}$/i);
     // Read in the business's own time zone, whatever the test machine's clock says.
     expect(first.status).toMatch(/^Åben til/);
     expect(props.openSummary).toBe('2 åbne nu');

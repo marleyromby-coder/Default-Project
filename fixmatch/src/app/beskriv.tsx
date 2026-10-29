@@ -43,6 +43,7 @@ export default function DescribeProblemScreen() {
   const [budgetText, setBudgetText] = useState<string>();
   const [quantityValue, setQuantityValue] = useState<number>();
   const [urgentValue, setUrgentValue] = useState<boolean>();
+  const [focused, setFocused] = useState<'text' | 'budget'>();
 
   const analysis = useMemo(() => analyzeProblem(text), [text]);
   const category = pickedCategory ? getCategory(pickedCategory) : analysis.category;
@@ -126,7 +127,11 @@ export default function DescribeProblemScreen() {
           </AppText>
         </View>
 
-        <View style={[styles.field, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View
+          style={[
+            styles.field,
+            { backgroundColor: colors.surface, borderColor: focused === 'text' ? colors.brand : colors.border },
+          ]}>
           <TextInput
             value={text}
             onChangeText={(value) => setText(value.slice(0, MAX_TEXT))}
@@ -136,6 +141,8 @@ export default function DescribeProblemScreen() {
             autoFocus={!params.tekst}
             textAlignVertical="top"
             accessibilityLabel={t('Beskriv dit problem')}
+            onFocus={() => setFocused('text')}
+            onBlur={() => setFocused(undefined)}
             style={[styles.textArea, { color: colors.text }]}
           />
           <AppText variant="caption" tone="textTertiary" style={styles.counter}>
@@ -281,7 +288,7 @@ export default function DescribeProblemScreen() {
               styles.budgetField,
               {
                 backgroundColor: colors.surfaceAlt,
-                borderColor: colors.border,
+                borderColor: focused === 'budget' ? colors.brand : colors.border,
               },
             ]}>
             <Icon name="money" size={18} color={colors.textSecondary} />
@@ -293,6 +300,8 @@ export default function DescribeProblemScreen() {
               keyboardType="number-pad"
               returnKeyType="done"
               accessibilityLabel={t('Budget i {currency} {tax}', { currency: market.currency, tax: taxNote(market) })}
+              onFocus={() => setFocused('budget')}
+              onBlur={() => setFocused(undefined)}
               style={[styles.budgetInput, { color: colors.text }]}
             />
             <AppText variant="body" tone="textSecondary">
@@ -374,10 +383,11 @@ const styles = StyleSheet.create({
   intro: { gap: Spacing.xs },
   field: {
     borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 1,
     padding: Spacing.md,
   },
-  textArea: { minHeight: 110, fontSize: 17, lineHeight: 23, padding: 0 },
+  // The field's border shows focus, so the browser's own ring is hidden (as in soeg.tsx).
+  textArea: { minHeight: 110, fontSize: 17, lineHeight: 23, padding: 0, outlineStyle: 'none' } as never,
   counter: { alignSelf: 'flex-end' },
   block: { gap: Spacing.sm },
   examples: { gap: Spacing.sm },
@@ -424,7 +434,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Spacing.sm,
     borderRadius: Radius.md,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 1,
     paddingHorizontal: Spacing.md,
     minHeight: 52,
   },
@@ -434,7 +444,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
     paddingVertical: Spacing.sm,
-  },
+    outlineStyle: 'none',
+  } as never,
   privacy: {
     flexDirection: 'row',
     gap: Spacing.sm,

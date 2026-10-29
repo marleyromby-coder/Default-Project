@@ -35,26 +35,30 @@ function SavedWidget(props: SavedProps, env: WidgetEnvironment) {
   'widget';
   const dark = env.colorScheme === 'dark';
   const c = {
-    bg: dark ? '#151B24' : '#FFFFFF',
-    text: dark ? '#F3F5F8' : '#0E1726',
-    muted: dark ? '#A9B3C1' : '#556070',
-    brand: '#F2541B',
-    open: dark ? '#4ADE80' : '#15803D',
+    bg: dark ? '#1A1D18' : '#F7F4ED',
+    text: dark ? '#F2EEE5' : '#1C1A17',
+    muted: dark ? '#B8B1A4' : '#5E574C',
+    brand: dark ? '#8CC5A8' : '#2A6150',
+    open: dark ? '#6FD08F' : '#25733F',
   };
   const family = env.widgetFamily ?? 'systemSmall';
   const first = props.saved[0];
 
-  const markOf = (business: SavedProps['saved'][number], size: number) => (
-    <ZStack>
-      <RoundedRectangle
-        cornerRadius={size * 0.26}
-        modifiers={[foregroundStyle(business.color), frame({ width: size, height: size })]}
-      />
-      <Text modifiers={[font({ size: size * 0.38, weight: 'bold', design: 'rounded' }), foregroundStyle('#FFFFFF')]}>
-        {business.initials}
-      </Text>
-    </ZStack>
-  );
+  // The business's initials on a tint of its trade colour, like the marks in the app.
+  const markOf = (business: SavedProps['saved'][number], size: number) => {
+    const tone = dark ? business.mark.dark : business.mark.light;
+    return (
+      <ZStack>
+        <RoundedRectangle
+          cornerRadius={size * 0.26}
+          modifiers={[foregroundStyle(tone.background), frame({ width: size, height: size })]}
+        />
+        <Text modifiers={[font({ size: size * 0.42, weight: 'bold', design: 'serif' }), foregroundStyle(tone.letters)]}>
+          {business.initials}
+        </Text>
+      </ZStack>
+    );
+  };
 
   const status = (business: SavedProps['saved'][number]) => (
     <HStack spacing={5}>
@@ -102,7 +106,12 @@ function SavedWidget(props: SavedProps, env: WidgetEnvironment) {
       <VStack spacing={6} modifiers={[containerBackground(c.bg, 'widget'), widgetURL(props.appUrl)]}>
         <Spacer />
         <Image systemName="heart.fill" size={26} color={c.brand} />
-        <Text modifiers={[font({ textStyle: 'headline' }), foregroundStyle(c.text), multilineTextAlignment('center')]}>
+        <Text
+          modifiers={[
+            font({ size: 17, weight: 'bold', design: 'serif' }),
+            foregroundStyle(c.text),
+            multilineTextAlignment('center'),
+          ]}>
           {props.empty}
         </Text>
         <Text
@@ -130,7 +139,7 @@ function SavedWidget(props: SavedProps, env: WidgetEnvironment) {
         <Spacer />
         <Text
           modifiers={[
-            font({ size: 16, weight: 'bold' }),
+            font({ size: 17, weight: 'bold', design: 'serif' }),
             foregroundStyle(c.text),
             lineLimit(2),
             minimumScaleFactor(0.85),
@@ -151,7 +160,9 @@ function SavedWidget(props: SavedProps, env: WidgetEnvironment) {
       modifiers={[containerBackground(c.bg, 'widget')]}>
       <HStack spacing={6}>
         <Image systemName="heart.fill" size={13} color={c.brand} />
-        <Text modifiers={[font({ size: 14, weight: 'semibold' }), foregroundStyle(c.text)]}>{props.title}</Text>
+        <Text modifiers={[font({ size: 15, weight: 'bold', design: 'serif' }), foregroundStyle(c.text)]}>
+          {props.title}
+        </Text>
         <Spacer />
         {props.openSummary ? (
           <Text modifiers={[font({ textStyle: 'caption' }), foregroundStyle(c.open)]}>{props.openSummary}</Text>

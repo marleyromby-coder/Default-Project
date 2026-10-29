@@ -1,38 +1,51 @@
-import { StyleSheet, View } from 'react-native';
-import Svg, { Ellipse, Line, Rect } from 'react-native-svg';
+import { StyleSheet, Text, View } from 'react-native';
+import Svg, { Circle, Defs, LinearGradient, Path, Rect, Stop } from 'react-native-svg';
 
 import { AppText } from '@/components/ui/text';
+import { useTheme } from '@/hooks/use-theme';
 
-/** Brand colours of the mark. Fixed, like the app icon, so the logo looks the same in light and dark mode. */
-const MARK = { tile: '#1A2640', steel: '#4B5E84', vial: '#F2541B', white: '#FFFFFF' };
+import MARK from '../../assets/brand/mark.json';
 
 /**
- * The FixMatch mark: a spirit level with the bubble dead centre – "i vater", everything is
- * right. Same drawing as the app icon (scripts/render-brand-assets.js).
+ * The FixMatch mark: a serif "f" with the ochre dot of the wordmark, on pine. Fixed colours,
+ * like the app icon, so it looks the same in light and dark mode. Same drawing as the icon
+ * (scripts/render-brand-assets.js reads the same assets/brand/mark.json).
  */
 export function LogoMark({ size = 32 }: { size?: number }) {
+  const { colors, dot } = MARK;
   return (
-    <Svg width={size} height={size} viewBox="0 0 64 64" accessibilityElementsHidden importantForAccessibility="no">
-      <Rect x="0" y="0" width="64" height="64" rx="15" fill={MARK.tile} />
-      {/* Same proportions as the app icon: the glyph spans 76 % of the tile. */}
-      <Rect x="7.68" y="27.87" width="48.64" height="8.27" rx="2.43" fill={MARK.steel} />
-      <Rect x="17.89" y="20.81" width="28.21" height="22.37" rx="11.19" fill={MARK.vial} />
-      <Line x1="25.77" y1="24.8" x2="25.77" y2="39.2" stroke={MARK.white} strokeWidth="2.24" strokeLinecap="round" />
-      <Line x1="38.23" y1="24.8" x2="38.23" y2="39.2" stroke={MARK.white} strokeWidth="2.24" strokeLinecap="round" />
-      <Ellipse cx="32" cy="32" rx="4.18" ry="3.79" fill={MARK.white} />
+    <Svg
+      width={size}
+      height={size}
+      viewBox={`0 0 ${MARK.size} ${MARK.size}`}
+      accessibilityElementsHidden
+      importantForAccessibility="no">
+      <Defs>
+        <LinearGradient id="fixmatch-tile" x1="0" y1="0" x2="0" y2="1">
+          <Stop offset="0" stopColor={colors.tileTop} />
+          <Stop offset="1" stopColor={colors.tile} />
+        </LinearGradient>
+      </Defs>
+      <Rect width={MARK.size} height={MARK.size} rx={MARK.size * 0.234} fill="url(#fixmatch-tile)" />
+      <Path d={MARK.f} fill={colors.letter} />
+      <Circle cx={dot.cx} cy={dot.cy} r={dot.r} fill={colors.dot} />
     </Svg>
   );
 }
 
-export function Logo({ size = 30 }: { size?: number }) {
+/** The wordmark "fixmatch." in Fraunces, with the ochre full stop of the mark. */
+export function Logo({ size = 26, mark = false }: { size?: number; mark?: boolean }) {
+  const colors = useTheme();
   return (
     <View style={styles.row} accessible accessibilityRole="header" accessibilityLabel="FixMatch">
-      <LogoMark size={size} />
-      <AppText variant="title2" style={[styles.word, { fontSize: size * 0.75, lineHeight: size }]}>
-        Fix
-        <AppText variant="title2" tone="brandText" style={[styles.word, { fontSize: size * 0.75, lineHeight: size }]}>
-          Match
-        </AppText>
+      {mark ? <LogoMark size={size * 1.15} /> : null}
+      <AppText
+        variant="title2"
+        weight="700"
+        allowFontScaling={false}
+        style={{ fontSize: size, lineHeight: size * 1.2, letterSpacing: -size * 0.03 }}>
+        fixmatch
+        <Text style={{ color: colors.accent }}>.</Text>
       </AppText>
     </View>
   );
@@ -40,5 +53,4 @@ export function Logo({ size = 30 }: { size?: number }) {
 
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  word: { letterSpacing: -0.4 },
 });

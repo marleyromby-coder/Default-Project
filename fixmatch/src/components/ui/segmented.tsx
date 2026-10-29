@@ -27,7 +27,7 @@ export function Segmented<T extends string>({ options, value, onChange, accessib
     <View
       accessibilityRole="tablist"
       accessibilityLabel={accessibilityLabel}
-      style={[styles.track, { backgroundColor: dark ? colors.surfaceAlt : '#E6E8EC' }]}>
+      style={[styles.track, { backgroundColor: dark ? colors.surfaceAlt : '#EAE5DA' }]}>
       {options.map((option) => {
         const selected = option.value === value;
         return (

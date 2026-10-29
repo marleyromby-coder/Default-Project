@@ -111,13 +111,17 @@ function formatDate(iso, locale) {
 }
 
 const STYLE = `
-:root { --bg: #F3F4F6; --surface: #FFFFFF; --border: #E4E7EC; --text: #0E1726; --muted: #556070; --brand: #C2410C; color-scheme: light dark; }
-@media (prefers-color-scheme: dark) { :root { --bg: #0B0F15; --surface: #151B24; --border: #283241; --text: #F3F5F8; --muted: #A9B3C1; --brand: #FF7A47; } }
+@font-face { font-family: Fraunces; font-weight: 600; font-display: swap; src: url("{{fonts}}Fraunces_600SemiBold.ttf") format("truetype"); }
+@font-face { font-family: Fraunces; font-weight: 700; font-display: swap; src: url("{{fonts}}Fraunces_700Bold.ttf") format("truetype"); }
+:root { --bg: #F4F1EA; --surface: #FFFDF9; --border: #E6E0D4; --text: #1C1A17; --muted: #5E574C; --brand: #1F5A46; --accent: #D09A2E; color-scheme: light dark; }
+@media (prefers-color-scheme: dark) { :root { --bg: #11130F; --surface: #1A1D18; --border: #30352D; --text: #F2EEE5; --muted: #B8B1A4; --brand: #8FCBAD; --accent: #E0AE4A; } }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+h1, h2, h3, .brand { font-family: Fraunces, Georgia, serif; font-weight: 600; letter-spacing: -0.01em; }
 header, main, footer { max-width: 760px; margin: 0 auto; padding: 0 20px; }
 header { display: flex; align-items: center; justify-content: space-between; padding-top: 20px; padding-bottom: 20px; }
-.brand { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 800; font-size: 20px; text-decoration: none; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 700; font-size: 24px; text-decoration: none; }
+.brand .dot { color: var(--accent); }
 .brand img { width: 36px; height: 36px; border-radius: 9px; }
 main { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 8px 28px 28px; }
 h1 { font-size: 34px; line-height: 1.2; margin: 24px 0 8px; }
@@ -146,11 +150,11 @@ function page({ lang, html, title, here, other, info }) {
 <title>${escape(title)} – ${escape(info.name)}</title>
 <link rel="alternate" hreflang="${lang === 'da' ? 'en' : 'da'}" href="${target(other)}">
 <link rel="icon" href="${rel('favicon.png')}">
-<style>${STYLE}</style>
+<style>${STYLE.replaceAll('{{fonts}}', rel('fonts') + '/')}</style>
 </head>
 <body>
 <header>
-<a class="brand" href="${target(lang === 'da' ? '' : 'en/')}"><img src="${rel('favicon.png')}" alt="">${escape(info.name)}</a>
+<a class="brand" href="${target(lang === 'da' ? '' : 'en/')}" aria-label="${escape(info.name)}"><img src="${rel('favicon.png')}" alt="">${escape(info.name.toLowerCase())}<span class="dot">.</span></a>
 <a href="${target(other)}" hreflang="${lang === 'da' ? 'en' : 'da'}">${ui.other}</a>
 </header>
 <main>
@@ -192,6 +196,16 @@ function buildWebsite(out = OUT, root = ROOT) {
     }
   }
   fs.copyFileSync(path.join(root, 'assets/images/favicon.png'), path.join(out, 'favicon.png'));
+  // Fraunces (SIL Open Font License), the serif of the logo, for the headings.
+  fs.mkdirSync(path.join(out, 'fonts'));
+  for (const weight of ['600SemiBold', '700Bold']) {
+    const font = require.resolve(`@expo-google-fonts/fraunces/${weight}/Fraunces_${weight}.ttf`, { paths: [root] });
+    fs.copyFileSync(font, path.join(out, 'fonts', path.basename(font)));
+  }
+  fs.copyFileSync(
+    require.resolve('@expo-google-fonts/fraunces/LICENSE_FONT', { paths: [root] }),
+    path.join(out, 'fonts', 'OFL.txt'),
+  );
   return { written, info };
 }
 

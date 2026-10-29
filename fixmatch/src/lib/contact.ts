@@ -26,7 +26,8 @@ export const AUTHORIZATION_REGISTER_URL = 'https://www.sik.dk/';
 
 export const SUPPORT_EMAIL = APP_INFO.email;
 
-const BRAND = '#CC4A12';
+/** Pine (`brandText` in the light theme) for the in-app browser's buttons. */
+const BRAND = '#1F5A46';
 
 function tap() {
   if (Platform.OS !== 'web') Haptics.selectionAsync().catch(() => undefined);

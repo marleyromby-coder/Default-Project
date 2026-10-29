@@ -242,9 +242,10 @@ export function infoPagesEn(
           ],
         },
         {
-          heading: 'Data',
+          heading: 'Data and typeface',
           paragraphs: [
               'City names from GeoNames (geonames.org, CC BY 4.0). Coastlines on the web map from Natural Earth (public domain).',
+              'Headings are set in Fraunces by Undercase Type (SIL Open Font License 1.1).',
           ],
         },
       ],

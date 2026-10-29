@@ -1,18 +1,19 @@
 import { Image } from 'expo-image';
-import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/ui/text';
-import { tradeShade } from '@/constants/trade-colors';
+import { markTone } from '@/constants/trade-colors';
+import { useIsDark } from '@/hooks/use-theme';
 import { initials } from '@/lib/business-text';
 import type { Business } from '@/lib/types';
 
 /**
  * The business's own picture when it has one (an https URL from the import), otherwise
- * a mark with its initials in the trade's colour – like a logo, so a list never repeats
- * the same stock photo.
+ * its initials in Fraunces on a tint of the trade colour – like a stamp, so a list never
+ * repeats the same stock photo.
  */
 export function BusinessMark({ business, size = 56 }: { business: Business; size?: number }) {
+  const scheme = useIsDark() ? 'dark' : 'light';
   const radius = size * 0.26;
   if (business.photo.startsWith('https://')) {
     return (
@@ -25,24 +26,23 @@ export function BusinessMark({ business, size = 56 }: { business: Business; size
       />
     );
   }
-  const color = tradeShade(business.categories[0], business.id);
+  const tone = markTone(business.categories[0], business.id, scheme);
   const letters = initials(business.name);
   return (
     <View
-      style={[styles.mark, { width: size, height: size, borderRadius: radius, backgroundColor: color }]}
+      style={[styles.mark, { width: size, height: size, borderRadius: radius, backgroundColor: tone.background }]}
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants">
-      <LinearGradient
-        colors={['rgba(255,255,255,0.18)', 'rgba(255,255,255,0)']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={StyleSheet.absoluteFill}
-      />
       <AppText
-        rounded
+        serif
         weight="700"
         allowFontScaling={false}
-        style={[styles.letters, { fontSize: size * (letters.length > 1 ? 0.36 : 0.44), lineHeight: size }]}>
+        style={{
+          color: tone.letters,
+          fontSize: size * (letters.length > 1 ? 0.4 : 0.5),
+          lineHeight: size,
+          textAlign: 'center',
+        }}>
         {letters}
       </AppText>
     </View>
@@ -51,5 +51,4 @@ export function BusinessMark({ business, size = 56 }: { business: Business; size
 
 const styles = StyleSheet.create({
   mark: { alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
-  letters: { color: '#FFFFFF', letterSpacing: 0.5, textAlign: 'center' },
 });

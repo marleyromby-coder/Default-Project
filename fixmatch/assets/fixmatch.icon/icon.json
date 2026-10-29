@@ -1,14 +1,19 @@
 {
   "fill": {
-    "automatic-gradient": "extended-srgb:0.06667,0.10196,0.16863,1.00000"
+    "automatic-gradient": "extended-srgb:0.12157,0.29020,0.22745,1.00000"
   },
   "groups": [
     {
       "layers": [
         {
           "glass": true,
-          "image-name": "glyph.png",
-          "name": "glyph"
+          "image-name": "letter.png",
+          "name": "letter"
+        },
+        {
+          "glass": true,
+          "image-name": "dot.png",
+          "name": "dot"
         }
       ],
       "shadow": {

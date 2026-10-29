@@ -17,7 +17,7 @@ export function MatchBadge({ score, size = 'small', onPhoto }: Props) {
   const colors = useTheme();
   const strong = score >= 70;
   const background = onPhoto ? 'rgba(255,255,255,0.94)' : strong ? colors.successSoft : colors.surfaceAlt;
-  const foreground = onPhoto ? '#0E1726' : strong ? colors.success : colors.textSecondary;
+  const foreground = onPhoto ? '#1C1A17' : strong ? colors.success : colors.textSecondary;
   const large = size === 'large';
   return (
     <View
