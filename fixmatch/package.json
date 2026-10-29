@@ -64,7 +64,7 @@
     "data:demo": "node scripts/generate-demo-data.js",
     "data:places": "node scripts/build-places.js",
     "brand:render": "node scripts/render-brand-assets.js",
-    "ios:xcode": "expo prebuild --platform ios --clean && xed ios",
+    "ios:xcode": "node scripts/open-xcode.js",
     "data:cities": "node scripts/build-world-cities.js",
     "data:map": "node scripts/build-map-outline.js",
     "website:build": "node scripts/build-website.js",

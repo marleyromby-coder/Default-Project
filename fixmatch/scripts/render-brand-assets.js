@@ -5,7 +5,7 @@
  *
  * Usage: node scripts/render-brand-assets.js
  *
- * The mark – a lowercase "f" from Fraunces ExtraBold with the ochre dot over its hook –
+ * The mark – a lowercase "f" from Fraunces ExtraBold with the ochre dot beside it at the baseline –
  * lives in assets/brand/mark.json on a 64-unit tile, so the app's LogoMark
  * (src/components/logo.tsx), every icon and the widget images are drawn from the same outline.
  */

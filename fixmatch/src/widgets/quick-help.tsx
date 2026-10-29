@@ -58,14 +58,14 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
   };
   const serif = (size: number) => font({ size, weight: 'bold', design: 'serif' });
 
-  // The FixMatch mark, and the letter with its dot alone (2:3) for pine and the lock screen.
+  // The FixMatch mark, and the letter with its dot alone (about 5:6) for pine and the lock screen.
   const mark = (size: number) => (
     <Image assetName="FixMatchMark" modifiers={[resizable(), frame({ width: size, height: size })]} />
   );
   const glyph = (height: number, mono = false) => (
     <Image
       assetName={mono ? 'FixMatchGlyphMono' : 'FixMatchGlyph'}
-      modifiers={[resizable(), frame({ width: height * 0.667, height })]}
+      modifiers={[resizable(), frame({ width: height * 0.842, height })]}
     />
   );
 
