@@ -4,22 +4,22 @@ import type { Region } from './cluster';
 
 /**
  * The countries FixMatch lists businesses in, in launch order:
- * 1 Denmark → 2 Sweden and Norway → 3 Germany and the UK → 4 the USA.
+ * 1 Denmark → 2 Sweden and Norway → 3 Germany and the UK (London first).
  * Prices are compared within one country only, never across currencies.
  */
 
-export type CountryCode = 'DK' | 'SE' | 'NO' | 'DE' | 'GB' | 'US';
-export type Currency = 'DKK' | 'SEK' | 'NOK' | 'EUR' | 'GBP' | 'USD';
+export type CountryCode = 'DK' | 'SE' | 'NO' | 'DE' | 'GB';
+export type Currency = 'DKK' | 'SEK' | 'NOK' | 'EUR' | 'GBP';
 
 export interface Market {
   country: CountryCode;
   /** Danish source text for t(). */
   name: string;
   currency: Currency;
-  /** Whether listed prices include VAT. US prices are listed before sales tax. */
+  /** Whether listed prices include VAT. */
   taxIncluded: boolean;
   distanceUnit: 'km' | 'mi';
-  /** IANA time zone for opening hours. A business can override it, e.g. outside New York. */
+  /** IANA time zone for opening hours. A business can override it. */
   timeZone: string;
   emergencyNumber: string;
   /** The whole country on the map. */
@@ -32,7 +32,7 @@ export interface Market {
   registryUrl?: (id: string) => string;
   /** Where trade authorisations can be checked, Danish source text for t(). */
   licenceNote: string;
-  phase: 1 | 2 | 3 | 4;
+  phase: 1 | 2 | 3;
 }
 
 export const MARKETS: Record<CountryCode, Market> = {
@@ -109,20 +109,6 @@ export const MARKETS: Record<CountryCode, Market> = {
     licenceNote: msg('Gasarbejde kræver registrering i Gas Safe Register.'),
     phase: 3,
   },
-  US: {
-    country: 'US',
-    name: msg('USA'),
-    currency: 'USD',
-    taxIncluded: false,
-    distanceUnit: 'mi',
-    timeZone: 'America/New_York',
-    emergencyNumber: '911',
-    region: { latitude: 39.5, longitude: -98.5, latitudeDelta: 30, longitudeDelta: 62 },
-    fromDkk: 0.17,
-    registryLabel: '',
-    licenceNote: msg('Krav til licens for håndværkere fastsættes af hver delstat.'),
-    phase: 4,
-  },
 };
 
 export const COUNTRY_CODES = Object.keys(MARKETS) as CountryCode[];
@@ -135,8 +121,8 @@ export function getMarket(country: CountryCode | undefined): Market {
   return MARKETS[country ?? 'DK'] ?? MARKETS.DK;
 }
 
-/** The whole world, for the map's world view. */
-export const WORLD_REGION: Region = { latitude: 45, longitude: -20, latitudeDelta: 70, longitudeDelta: 150 };
+/** Every country FixMatch is in, from the UK to Norway, for the map's "all countries" view. */
+export const MARKETS_REGION: Region = { latitude: 57, longitude: 9, latitudeDelta: 30, longitudeDelta: 44 };
 
 export function countryName(country: string): string {
   if (isCountryCode(country)) return t(MARKETS[country].name);
@@ -148,7 +134,7 @@ export function countryName(country: string): string {
   }
 }
 
-/** "inkl. moms" / "incl. VAT", or "ekskl. skat" / "before tax" in the US. */
+/** "inkl. moms" / "incl. VAT", or "ekskl. moms" / "excl. VAT" for prices listed before VAT. */
 export function taxNote(market: Market): string {
-  return market.taxIncluded ? t('inkl. moms') : t('ekskl. skat');
+  return market.taxIncluded ? t('inkl. moms') : t('ekskl. moms');
 }

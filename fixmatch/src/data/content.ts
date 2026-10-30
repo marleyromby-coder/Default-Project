@@ -105,7 +105,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
     priser: {
       title: 'Om priserne',
       intro:
-        'Alle priser er oplyst af virksomhederne selv. I Europa er de inklusive moms, i USA før salgsskat. De er vejledende – den endelige pris aftaler du med virksomheden.',
+        'Alle priser er oplyst af virksomhederne selv. De er inklusive moms og vejledende – den endelige pris aftaler du med virksomheden.',
       sections: [
         {
           heading: 'Timepris og eksempler',

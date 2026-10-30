@@ -410,14 +410,12 @@ function buildBusiness(category, name, area, quality, photo, index, market = DAN
 
 /**
  * Demo cities abroad. Everything is fictional: phone numbers come from ranges
- * reserved for drama and examples (UK 07700 900xxx, US 555-01xx, Sweden
- * 070-1740 6xx) or are invalid (Norway and Germany starting with 0), and company
+ * reserved for drama and examples (UK 07700 900xxx, Sweden 070-1740 6xx) or are invalid (Norway and Germany starting with 0), and company
  * numbers are made up. Prices are the Danish ones converted with fromDkk
  * (kept in sync with src/lib/markets.ts).
  */
 const TRADE_WORDS = {
   en: { vvs: 'Plumbing & Heating', elektriker: 'Electrical', toemrer: 'Carpentry', murer: 'Brickwork & Tiling', mekaniker: 'Motors', maler: 'Decorators', tagdaekker: 'Roofing', laasesmed: 'Locksmiths' },
-  us: { vvs: 'Plumbing', elektriker: 'Electric', toemrer: 'Carpentry', murer: 'Masonry', mekaniker: 'Auto Repair', maler: 'Painting', tagdaekker: 'Roofing', laasesmed: 'Locksmiths' },
   de: { vvs: 'Haustechnik', elektriker: 'Elektrotechnik', toemrer: 'Zimmerei', murer: 'Maurerbetrieb', mekaniker: 'Kfz-Werkstatt', maler: 'Malerbetrieb', tagdaekker: 'Dachdeckerei', laasesmed: 'Schlüsseldienst' },
   se: { vvs: 'VVS', elektriker: 'El', toemrer: 'Snickeri', murer: 'Mureri', mekaniker: 'Bilverkstad', maler: 'Måleri', tagdaekker: 'Tak', laasesmed: 'Lås' },
   no: { vvs: 'Rør', elektriker: 'Elektro', toemrer: 'Snekkeri', murer: 'Mur', mekaniker: 'Bilverksted', maler: 'Maler', tagdaekker: 'Tak', laasesmed: 'Låsservice' },
@@ -466,17 +464,6 @@ const ABROAD = [
     registry: (int) => `1${digits(int, 7)}`,
     memberships: { vvs: 'Gas Safe Register', elektriker: 'NICEIC', toemrer: 'Federation of Master Builders', murer: 'Federation of Master Builders', mekaniker: 'The Motor Ombudsman', maler: 'Painting & Decorating Association', tagdaekker: 'National Federation of Roofing Contractors', laasesmed: 'Master Locksmiths Association' },
     auth: (category, int) => (category === 'vvs' ? [{ kind: 'gas', number: digits(int, 6) }] : []),
-  },
-  {
-    country: 'US', currency: 'USD', fromDkk: 0.17, trustpilot: 'www', words: TRADE_WORDS.us,
-    prefixes: ['Hudsonflow', 'Brightline', 'Brownstone', 'Bluestone', 'Gotham Gear', 'Fresh Brush', 'Skyline', 'Keystone', 'Riverside', 'Liberty Volt', 'Pinecraft', 'Granite Row', 'Bridgeway', 'Palette', 'Summit', 'Deadbolt', 'Waterline', 'Empire Spark', 'Oakfield', 'Cornerstone', 'Piston & Co.', 'Colorwise', 'Highpoint', 'Latchkey'],
-    areas: [['Park Slope, Brooklyn', 'NY 11215', 40.672, -73.977], ['Williamsburg, Brooklyn', 'NY 11211', 40.708, -73.957], ['Upper West Side, New York', 'NY 10024', 40.787, -73.975], ['Harlem, New York', 'NY 10027', 40.81, -73.946], ['Chelsea, New York', 'NY 10011', 40.746, -74.0], ['Astoria, Queens', 'NY 11102', 40.764, -73.923]],
-    streets: ['Atlantic Avenue', 'Bedford Avenue', 'Amsterdam Avenue', 'Steinway Street'],
-    streetFirst: true,
-    phone: (int) => `+1212555${String(int(100, 199)).padStart(4, '0')}`,
-    registry: () => '',
-    memberships: {},
-    auth: (category, int) => (category === 'elektriker' || category === 'vvs' ? [{ kind: category === 'vvs' ? 'vvs' : 'el', number: `NYC-${digits(int, 6)}` }] : []),
   },
 ];
 const PER_TRADE_ABROAD = 3;

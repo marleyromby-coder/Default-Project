@@ -5,7 +5,7 @@
 ## Kort fortalt
 
 - **I kan godt udgive appen uden CVR-nummer.** En personlig Apple Developer-konto er nok. Jeres navn står så som udgiver i App Store.
-- **Appen er klar til hele verden:** dansk og engelsk, seks lande med egen valuta, miles i UK og USA, og byer i hele verden.
+- **Appen er klar til Europa:** dansk og engelsk, fem lande med egen valuta (Danmark, Sverige, Norge, Tyskland og Storbritannien), miles i UK, og byer i hele verden kan vælges som placering.
 - **Der er kun én ting, der blokerer App Store: rigtige virksomheder.** Demoversionen med fiktive virksomheder må ikke ligge i App Store (retningslinje 2.2), men den må gerne ligge på TestFlight.
 - **Til konkurrencen: brug TestFlight.** Så kan juryen installere appen på deres egen iPhone. Expo Go og iOS-simulatoren er alternativer.
 
@@ -21,7 +21,7 @@
 | Privatlivspolitik og vilkår på en hjemmeside | ⏳ Klar til at lægge online | `npm run website:build` bygger forside, privatlivspolitik, vilkår og support på dansk og engelsk. Læg `dist-website/` på fx Netlify. Apple kræver et link til privatlivspolitikken og en support-side |
 | Trader-status i EU | ⏳ Mangler | Se afsnittet nedenfor |
 | CVR-nummer | ✅ Ikke nødvendigt | Kræves ikke af Apple. Se afsnittet om skat og moms |
-| Apple tester ofte fra USA | ✅ Løst | Appen regner kun lande med virksomheder som åbne og viser ellers "FixMatch er endnu ikke i USA". Review-noterne fortæller, hvilken by de skal vælge (`docs/app-store/app-store-tekster.md`) |
+| Apple tester ofte fra USA | ✅ Løst | Appen regner kun lande med virksomheder som åbne og viser ellers "FixMatch er endnu ikke i [land]". Review-noterne fortæller, hvilken by de skal vælge (`docs/app-store/app-store-tekster.md`) |
 | Engelske App Store-tekster | ✅ Klar | `docs/app-store/app-store-texts-en.md` |
 
 Selve appen overtræder ikke noget. Det, der mangler, er rigtige data og et par oplysninger i App Store Connect.
@@ -70,8 +70,7 @@ Selv uden firma er I dataansvarlige for oplysninger om virksomheder og kontaktpe
 | --- | --- | --- | --- |
 | 1 | Danmark | Hjemmemarked, sprog og jura er på plads | Rigtige virksomheder i én by først, fx København |
 | 2 | Sverige og Norge | Samme kultur og prisniveau, høj iPhone-andel | Virksomheder i Stockholm og Oslo. Sverige: nævn ROT-fradrag på prissiden. Norge er ikke i EU, men har EØS-regler |
-| 3 | Tyskland og UK | Store markeder | Tysk oversættelse anbefales. UK: Gas Safe-registrering for gasarbejde |
-| 4 | USA | Største marked | Licens pr. delstat. Priser vises før salgsskat |
+| 3 | Tyskland og UK (London) | Store markeder. London er én stor by med mange håndværkere, så man kan starte smalt | Tysk oversættelse anbefales. UK: Gas Safe-registrering for gasarbejde |
 
 **App Store-tilgængelighed:** Vælg i App Store Connect kun de lande, hvor der er virksomheder. Ellers ser brugere i andre lande en tom app og giver dårlige anmeldelser. Appen viser selv "FixMatch er endnu ikke i [land]", hvis nogen alligevel åbner den.
 
@@ -79,16 +78,16 @@ Selv uden firma er I dataansvarlige for oplysninger om virksomheder og kontaktpe
 
 ## Jura i de nye lande
 
-Reglerne om rangering og anmeldelser er stort set ens i hele EU, fordi de kommer fra samme direktiv. UK og USA har tilsvarende regler. FixMatch er bygget til at overholde dem alle: åben rangering, mærkede annoncer, ingen betalt placering og ingen redigering af anmeldelser.
+Reglerne om rangering og anmeldelser er stort set ens i hele EU, fordi de kommer fra samme direktiv. UK har tilsvarende regler. FixMatch er bygget til at overholde dem alle: åben rangering, mærkede annoncer, ingen betalt placering og ingen redigering af anmeldelser.
 
-| Område | EU (Danmark, Sverige, Tyskland) og Norge (EØS) | UK | USA |
-| --- | --- | --- | --- |
-| Rangering og annoncer | Omnibus-direktivet (2019/2161): oplys hovedparametrene, og markér betalt placering. I Danmark markedsføringsloven § 6 a | Digital Markets, Competition and Consumers Act 2024 (DMCC) | FTC Act § 5 og FTC's vejledning om annoncer |
-| Anmeldelser | Oplys om og hvordan anmeldelser kontrolleres (i Danmark § 6 b). Falske anmeldelser er forbudt | DMCC: forbud mod falske anmeldelser siden 6. april 2025. Den, der viser anmeldelser, skal forebygge og fjerne falske | FTC's regel om anmeldelser (16 CFR Part 465) fra 21. oktober 2024 |
-| Persondata | GDPR | UK GDPR | Delstatslove, fx Californiens CCPA |
-| Platforme | Digital Services Act og P2B-forordningen | Online Safety Act gælder næppe: ingen brugerindhold, og der søges kun i FixMatch' egen database | – |
-| Priser | Totalpris inkl. moms | Inkl. VAT | Før salgsskat |
-| Håndværkere | Autorisation: Sikkerhedsstyrelsen (DK), Elsäkerhetsverket (SE), DSB (NO), Handwerkskammer (DE) | Gas Safe Register | Licens pr. delstat |
+| Område | EU (Danmark, Sverige, Tyskland) og Norge (EØS) | UK |
+| --- | --- | --- |
+| Rangering og annoncer | Omnibus-direktivet (2019/2161): oplys hovedparametrene, og markér betalt placering. I Danmark markedsføringsloven § 6 a | Digital Markets, Competition and Consumers Act 2024 (DMCC) |
+| Anmeldelser | Oplys om og hvordan anmeldelser kontrolleres (i Danmark § 6 b). Falske anmeldelser er forbudt | DMCC: forbud mod falske anmeldelser siden 6. april 2025. Den, der viser anmeldelser, skal forebygge og fjerne falske |
+| Persondata | GDPR | UK GDPR |
+| Platforme | Digital Services Act og P2B-forordningen | Online Safety Act gælder næppe: ingen brugerindhold, og der søges kun i FixMatch' egen database |
+| Priser | Totalpris inkl. moms | Inkl. VAT |
+| Håndværkere | Autorisation: Sikkerhedsstyrelsen (DK), Elsäkerhetsverket (SE), DSB (NO), Handwerkskammer (DE) | Gas Safe Register |
 
 Norge er med i EØS og har stort set de samme forbrugerregler. Nogle EU-forordninger, fx DSA, gælder først i Norge, når de er optaget i EØS-aftalen.
 

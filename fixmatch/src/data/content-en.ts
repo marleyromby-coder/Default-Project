@@ -86,7 +86,7 @@ export function infoPagesEn(
     priser: {
       title: 'About prices',
       intro:
-        'All prices come from the businesses themselves. In Europe they include VAT; in the US they are before sales tax. They are a guide – you agree the final price with the business.',
+        'All prices come from the businesses themselves. They include VAT and are a guide – you agree the final price with the business.',
       sections: [
         {
           heading: 'Hourly rate and examples',
@@ -108,7 +108,7 @@ export function infoPagesEn(
             'Denmark: håndværkerfradrag and servicefradrag on labour in your home (skat.dk).',
             'Sweden: ROT and RUT deductions on labour (skatteverket.se).',
             'Germany: part of the labour cost for work in your home reduces your income tax (§ 35a EStG).',
-            'UK and US: usually no general relief for home repairs – check with your tax authority.',
+            'UK: usually no general relief for home repairs – check with HMRC.',
           ],
         },
       ],
@@ -154,7 +154,6 @@ export function infoPagesEn(
             'Norway: Forbrukerrådet (forbrukerradet.no).',
             'Germany: the Verbraucherzentrale in your state, or the Schlichtungsstelle of the Handwerkskammer.',
             'UK: Citizens Advice (citizensadvice.org.uk).',
-            'US: your state attorney general’s consumer office or the contractor licensing board.',
           ],
         },
         {

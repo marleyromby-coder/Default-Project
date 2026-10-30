@@ -72,11 +72,11 @@ describe('format in English and other currencies', () => {
     expect(formatPrice(1200, 'GBP')).toBe('£1,200');
     expect(formatPriceRange(60, 90, 'opgave', 'EUR')).toBe('€60–90');
     expect(formatPriceRange(350, 650, 'm2', 'DKK')).toBe('DKK 350–650 per m²');
-    expect(formatHourly(100, 175, 'USD')).toBe('$100–175/hr');
+    expect(formatHourly(100, 175, 'GBP')).toBe('£100–175/hr');
     expect(formatDate('2026-10-14')).toBe('14 Oct 2026');
   });
 
-  it('shows miles in the UK and the US', () => {
+  it('shows miles in the UK', () => {
     setDistanceUnit('mi');
     expect(formatDistance(1.609)).toBe('1.0 mi');
     expect(formatDistance(40)).toBe('25 mi');

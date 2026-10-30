@@ -45,7 +45,6 @@ const CAPITALS: Record<string, string> = {
   NO: 'Oslo',
   DE: 'Berlin',
   GB: 'London',
-  US: 'New York City',
 };
 
 function findPlace(country: string, name: string): Place | undefined {
@@ -145,7 +144,7 @@ export const POPULAR_PLACES: Place[] = [
   .filter((p): p is Place => p !== undefined);
 
 /** One city per country outside Denmark where FixMatch has businesses. */
-export const INTERNATIONAL_PLACES: Place[] = (['SE', 'NO', 'DE', 'GB', 'US'] as const)
+export const INTERNATIONAL_PLACES: Place[] = (['SE', 'NO', 'DE', 'GB'] as const)
   .map((country) => findPlace(country, CAPITALS[country]))
   .filter((p): p is Place => p !== undefined)
   .sort(

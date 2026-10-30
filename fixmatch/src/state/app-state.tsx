@@ -151,7 +151,7 @@ export function userCountry(location: UserLocation): CountryCode | undefined {
 
 export function AppStateProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(reducer, undefined, initialState);
-  // Distances are shown in miles in the UK and the US. Set before the screens render.
+  // Distances are shown in miles in the UK. Set before the screens render.
   setDistanceUnit(getMarket(userCountry(state.location)).distanceUnit);
 
   useEffect(() => {

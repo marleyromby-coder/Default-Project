@@ -1,4 +1,4 @@
-This is FixMatch, an Expo/React Native iPhone app (Danish and English UI) for finding and comparing craftsmen and mechanics in Denmark, Sweden, Norway, Germany, the UK and the US by price, distance and Trustpilot score. Prioritize mobile-first patterns, performance, and cross-platform compatibility. The web build is used as a demo and must keep working.
+This is FixMatch, an Expo/React Native iPhone app (Danish and English UI) for finding and comparing craftsmen and mechanics in Denmark, Sweden, Norway, Germany and the UK (Europe first, London as the first UK city) by price, distance and Trustpilot score. Prioritize mobile-first patterns, performance, and cross-platform compatibility. The web build is used as a demo and must keep working.
 
 ## FixMatch specifics
 

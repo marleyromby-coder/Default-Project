@@ -33,7 +33,6 @@ const CURRENCY: Record<'da' | 'en', Record<Currency, Affix>> = {
     NOK: { suffix: ' NOK' },
     EUR: { suffix: ' €' },
     GBP: { prefix: '£' },
-    USD: { prefix: '$' },
   },
   en: {
     DKK: { prefix: 'DKK ' },
@@ -41,7 +40,6 @@ const CURRENCY: Record<'da' | 'en', Record<Currency, Affix>> = {
     NOK: { prefix: 'NOK ' },
     EUR: { prefix: '€' },
     GBP: { prefix: '£' },
-    USD: { prefix: '$' },
   },
 };
 
@@ -87,7 +85,7 @@ export function speakablePrice(text: string): string {
   return text.replace('–', ' to ').replace('/hr', ' per hour');
 }
 
-// Miles in the UK and the US. The app state sets this from the user's country.
+// Miles in the UK. The app state sets this from the user's country.
 let distanceUnit: 'km' | 'mi' = 'km';
 
 export function setDistanceUnit(unit: 'km' | 'mi'): void {

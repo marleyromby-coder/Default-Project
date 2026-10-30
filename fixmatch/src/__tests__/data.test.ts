@@ -26,7 +26,7 @@ describe('demo data', () => {
       expect(businesses.filter((b) => !b.country && b.categories.includes(category.id)).length).toBeGreaterThanOrEqual(
         10,
       );
-      for (const country of ['SE', 'NO', 'DE', 'GB', 'US']) {
+      for (const country of ['SE', 'NO', 'DE', 'GB']) {
         expect(
           businesses.filter((b) => b.country === country && b.categories.includes(category.id)).length,
         ).toBeGreaterThanOrEqual(3);
@@ -43,7 +43,6 @@ describe('demo data', () => {
       NO: /^\+4700\d{6}$/,
       DE: /^\+490\d+$/,
       GB: /^\+447700900\d{3}$/,
-      US: /^\+121255501\d{2}$/,
     };
     for (const b of businesses) {
       const country = b.country ?? 'DK';
@@ -74,7 +73,7 @@ describe('demo data', () => {
       expect(other?.tagline).toBeTruthy();
       expect(other?.services?.length).toBe(b.services.length);
     }
-    expect(new Set(businesses.map((b) => b.country ?? 'DK')).size).toBe(6);
+    expect(new Set(businesses.map((b) => b.country ?? 'DK')).size).toBe(5);
     for (const b of businesses.filter((x) => !x.country)) expect(isInDenmark(b.coords)).toBe(true);
   });
 
@@ -94,7 +93,7 @@ describe('demo data', () => {
 
 describe('markets', () => {
   it('opens only the countries that have businesses', () => {
-    expect(openCountries(businesses)).toEqual(['DK', 'SE', 'NO', 'DE', 'GB', 'US']);
+    expect(openCountries(businesses)).toEqual(['DK', 'SE', 'NO', 'DE', 'GB']);
     expect(openCountries(businesses.filter((b) => !b.country))).toEqual(['DK']);
     expect(openCountries([])).toHaveLength(Object.keys(MARKETS).length);
   });
@@ -135,7 +134,7 @@ describe('places', () => {
     expect(PLACES.length).toBeGreaterThan(3000);
     expect(searchPlaces('london')[0]).toMatchObject({ name: 'London', country: 'GB' });
     expect(nearestPlace({ lat: 52.52, lon: 13.4 }).country).toBe('DE');
-    expect(INTERNATIONAL_PLACES.map((p) => p.country)).toEqual(['SE', 'NO', 'DE', 'GB', 'US']);
+    expect(INTERNATIONAL_PLACES.map((p) => p.country)).toEqual(['SE', 'NO', 'DE', 'GB']);
   });
 
   it('searches by name and number', () => {

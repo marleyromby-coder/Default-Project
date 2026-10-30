@@ -17,7 +17,7 @@ export const DEFAULT_FILTERS: Filters = {
 
 const KM_PER_MILE = 1.609344;
 
-/** Distance chips in the market's unit: round kilometres, or round miles in the UK and the US. */
+/** Distance chips in the market's unit: round kilometres, or round miles in the UK. */
 export function distanceOptions(unit: 'km' | 'mi'): { value: number | null; label: string }[] {
   const steps = unit === 'mi' ? [3, 5, 15, 30] : [5, 10, 25, 50];
   return [

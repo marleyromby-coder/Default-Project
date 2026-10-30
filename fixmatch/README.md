@@ -2,7 +2,7 @@
 
 **Find den rette håndværker eller mekaniker – sammenlign pris, afstand og Trustpilot-anmeldelser, og ring direkte.**
 
-FixMatch er en iPhone-app (Expo / React Native) på dansk og engelsk til Danmark, Sverige, Norge, Tyskland, Storbritannien og USA. Brugeren vælger et fag eller en opgave og får lokale virksomheder rangeret efter en gennemsigtig FixMatch-score. Hver virksomhed har en side med telefonnummer, hjemmeside, prisinterval i landets valuta, TrustScore, registreringsnummer (fx CVR), autorisation og åbningstider.
+FixMatch er en iPhone-app (Expo / React Native) på dansk og engelsk til Danmark, Sverige, Norge, Tyskland og Storbritannien (London først). Brugeren vælger et fag eller en opgave og får lokale virksomheder rangeret efter en gennemsigtig FixMatch-score. Hver virksomhed har en side med telefonnummer, hjemmeside, prisinterval i landets valuta, TrustScore, registreringsnummer (fx CVR), autorisation og åbningstider.
 
 | Fag | VVS'er · Elektriker · Tømrer · Murer · Mekaniker · Maler · Tagdækker · Låsesmed |
 | --- | --- |
@@ -10,7 +10,7 @@ FixMatch er en iPhone-app (Expo / React Native) på dansk og engelsk til Danmark
 | Kontakt | Ring op, hjemmeside, rutevejledning, del |
 | Beskriv dit problem | Fritekst + budget → fag og opgave genkendes på telefonen, og virksomhederne grupperes efter, om deres egen pris passer til budgettet |
 | Kort | Apple Kort (MapKit) med alle virksomheder, farvet efter fag, klynger og swipe-kort. Se `docs/jura/apple-kort.md` |
-| Sprog og lande | Dansk og engelsk (følger telefonen). Priser sammenlignes kun inden for ét land og vises i landets valuta. Miles i UK og USA. Byer i hele verden kan vælges |
+| Sprog og lande | Dansk og engelsk (følger telefonen). Priser sammenlignes kun inden for ét land og vises i landets valuta. Miles i UK. Byer i hele verden kan vælges som placering |
 | Andet | Personlige prioriteter, filtre, sammenlign op til 3, gemte, søgning, akut/døgnvagt, mørk tilstand, VoiceOver |
 | Jura indbygget | "Sådan rangerer vi" (mfl. § 6 a), "Om anmeldelser" (mfl. § 6 b), annoncer altid markeret, priser inkl. moms, "Rapportér fejl" (DSA art. 16) |
 
@@ -32,7 +32,7 @@ Scan QR-koden med iPhonens kamera → appen åbner i Expo Go. Alt du ændrer i k
 - **Tjek koden**: `npm run check` (TypeScript, lint og 106 tests). Widgets: `npm run widgets:check`.
 - **Engelsk version**: på iPhone under Indstillinger → FixMatch → Sprog. På web: tilføj `?lang=en` til adressen.
 
-> Appen starter i **demotilstand** med 224 fiktive virksomheder: 104 i København, Aarhus, Odense og Aalborg og 24 i hver af Stockholm, Oslo, Berlin, London og New York. De er tydeligt markeret, telefonnumre er i nummerserier til fiktion eller ugyldige, registreringsnumre er ugyldige, og opkald er slået fra.
+> Appen starter i **demotilstand** med 200 fiktive virksomheder: 104 i København, Aarhus, Odense og Aalborg og 24 i hver af Stockholm, Oslo, Berlin og London. De er tydeligt markeret, telefonnumre er i nummerserier til fiktion eller ugyldige, registreringsnumre er ugyldige, og opkald er slået fra.
 
 **Fremvisning og lancering uden CVR:** se `docs/lancering/global-lancering.md`. Kort fortalt: vis appen via TestFlight (demodata er tilladt der), Expo Go, iOS-simulatoren eller webdemoen. App Store kræver rigtige virksomheder, men ikke et CVR-nummer.
 

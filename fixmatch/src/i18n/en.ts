@@ -240,8 +240,6 @@ const en: Record<string, string> = {
   'Kort afstand': 'Short distance',
   'Kort over virksomheder. Brug listen under kortet for at gennemgå dem':
     'Map of businesses. Use the list below the map to go through them',
-  'Krav til licens for håndværkere fastsættes af hver delstat.':
-    'Licensing rules for tradespeople are set by each state.',
   'Kun autoriserede': 'Licensed only',
   'Kun med Trustpilot-profil': 'Only with a Trustpilot profile',
   'Kystlinje: Natural Earth': 'Coastline: Natural Earth',
@@ -449,7 +447,6 @@ const en: Record<string, string> = {
   'Tømrer i et travlt værksted': 'Carpenter in a busy workshop',
   'Tømrer saver i træ på værkstedet': 'Carpenter sawing wood in the workshop',
   'Tømrer skærer træ på en bordsav': 'Carpenter cutting wood on a table saw',
-  USA: 'USA',
   'Uden budget – sorteret efter FixMatch-score': 'No budget – sorted by FixMatch score',
   'Udskiftning af tag på ældre hus': 'Replacing the roof of an older house',
   'VVS, el, tømrer, murer, mekaniker og flere.': 'Plumbers, electricians, carpenters, bricklayers, mechanics and more.',
@@ -499,7 +496,7 @@ const en: Record<string, string> = {
   autoriseret: 'licensed',
   demodata: 'demo data',
   eksempelvirksomhed: 'demo business',
-  'ekskl. skat': 'before tax',
+  'ekskl. moms': 'excl. VAT',
   'el-installationer': 'electrical installations',
   fiktivt: 'fictional',
   fre: 'Fri',
