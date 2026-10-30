@@ -11,6 +11,8 @@
  *    every build. That line is filtered out of its configure script.
  * 4. The app and widget targets compile only generated code that imports React's and
  *    Expo's prebuilt headers, which trigger nullability and module warnings in Xcode 27.
+ *    Swift reports the warnings of the C headers it imports separately, so every Swift
+ *    target (ours and the pods) also gets `-Xcc -w`.
  * 5. Hermes warns about React Native's own globals when it compiles the JavaScript for an
  *    archive; it runs with -w.
  */
@@ -21,6 +23,14 @@ const { withDangerousMod, withXcodeProject } = require('expo/config-plugins');
 
 const MARK = '# Added by plugins/with-quiet-xcode.js';
 const EXPO_CORE_WARNING = 'is internal, so the generated modules provider cannot reference it';
+/** Silences the C and Objective-C headers that Swift imports. */
+const SWIFT_HEADER_FLAGS = '-Xcc -w';
+
+/** "$(inherited) -D DEBUG" → "$(inherited) -D DEBUG -Xcc -w", keeping the pbxproj quotes. */
+function withSwiftHeaderFlags(value) {
+  const flags = String(value ?? '$(inherited)').replace(/^"|"$/g, '');
+  return flags.includes(SWIFT_HEADER_FLAGS) ? value : `"${flags} ${SWIFT_HEADER_FLAGS}"`;
+}
 
 function patchPodfile(podfile) {
   if (podfile.includes(MARK)) return podfile;
@@ -38,6 +48,10 @@ ${indent}  ${MARK}
 ${indent}  installer.pods_project.targets.each do |target|
 ${indent}    target.shell_script_build_phases.each do |phase|
 ${indent}      phase.always_out_of_date = '1' if Array(phase.output_paths).empty? && Array(phase.output_file_list_paths).empty?
+${indent}    end
+${indent}    target.build_configurations.each do |configuration|
+${indent}      flags = configuration.build_settings['OTHER_SWIFT_FLAGS'] || '$(inherited)'
+${indent}      configuration.build_settings['OTHER_SWIFT_FLAGS'] = "#{flags} ${SWIFT_HEADER_FLAGS}" unless flags.include?('${SWIFT_HEADER_FLAGS}')
 ${indent}    end
 ${indent}  end`,
     )}
@@ -84,6 +98,9 @@ const withQuietXcode = (config) => {
       if (typeof configuration !== 'object' || !configuration.buildSettings) continue;
       configuration.buildSettings.GCC_WARN_INHIBIT_ALL_WARNINGS = 'YES';
       configuration.buildSettings.SWIFT_SUPPRESS_WARNINGS = 'YES';
+      configuration.buildSettings.OTHER_SWIFT_FLAGS = withSwiftHeaderFlags(
+        configuration.buildSettings.OTHER_SWIFT_FLAGS,
+      );
     }
     return config;
   });
@@ -91,3 +108,4 @@ const withQuietXcode = (config) => {
 
 module.exports = withQuietXcode;
 module.exports.patchPodfile = patchPodfile;
+module.exports.withSwiftHeaderFlags = withSwiftHeaderFlags;

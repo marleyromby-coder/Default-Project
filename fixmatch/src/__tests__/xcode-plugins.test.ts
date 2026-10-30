@@ -1,6 +1,6 @@
 // The config plugins are plain Node.js (CommonJS), run by `expo prebuild`.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const { patchPodfile } = require('../../plugins/with-quiet-xcode');
+const { patchPodfile, withSwiftHeaderFlags } = require('../../plugins/with-quiet-xcode');
 
 const PODFILE = `platform :ios, '16.4'
 
@@ -24,6 +24,15 @@ describe('with-quiet-xcode', () => {
     );
     expect(patched).toMatch(/post_integrate do \|installer\|[\s\S]*expo-configure-project\.sh/);
     expect(patched).toContain('react_native_post_install(installer)');
+  });
+
+  it('silences the headers Swift imports, in the pods and in our targets', () => {
+    expect(patchPodfile(PODFILE)).toContain(`configuration.build_settings['OTHER_SWIFT_FLAGS'] = "#{flags} -Xcc -w"`);
+    expect(withSwiftHeaderFlags(undefined)).toBe('"$(inherited) -Xcc -w"');
+    expect(withSwiftHeaderFlags('"$(inherited) -D EXPO_CONFIGURATION_DEBUG"')).toBe(
+      '"$(inherited) -D EXPO_CONFIGURATION_DEBUG -Xcc -w"',
+    );
+    expect(withSwiftHeaderFlags('"$(inherited) -Xcc -w"')).toBe('"$(inherited) -Xcc -w"');
   });
 
   it('patches the Podfile only once', () => {
