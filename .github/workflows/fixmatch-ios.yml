@@ -64,7 +64,27 @@ jobs:
         working-directory: fixmatch/ios
         run: pod install
 
+      - name: Build for the simulator (Debug, like ▶︎ on iPhone 17 Pro)
+        working-directory: fixmatch/ios
+        run: |
+          set -o pipefail
+          SIMULATOR=$(xcrun simctl list devices available -j | python3 -c "
+          import json, sys
+          devices = [d for runtime, ds in json.load(sys.stdin)['devices'].items() if 'iOS' in runtime for d in ds]
+          names = [d['name'] for d in devices]
+          print(next((n for n in ['iPhone 17 Pro', 'iPhone 17'] if n in names), next(n for n in names if n.startswith('iPhone'))))
+          ")
+          echo "Simulator: $SIMULATOR"
+          xcodebuild build \
+            -workspace FixMatch.xcworkspace \
+            -scheme FixMatch \
+            -configuration Debug \
+            -destination "platform=iOS Simulator,name=$SIMULATOR" \
+            > simulator.log 2>&1 || { grep -nE -A3 ' error: |^error:|fatal error|BUILD FAILED' simulator.log | head -120; exit 1; }
+          grep -E 'BUILD SUCCEEDED' simulator.log
+
       - name: Build for iPhone (Debug, like ▶︎ in Xcode)
+        if: success() || failure()
         working-directory: fixmatch/ios
         run: |
           set -o pipefail
@@ -98,6 +118,7 @@ jobs:
         with:
           name: xcode-${{ matrix.xcode }}-logs
           path: |
+            fixmatch/ios/simulator.log
             fixmatch/ios/debug.log
             fixmatch/ios/archive.log
           if-no-files-found: ignore
