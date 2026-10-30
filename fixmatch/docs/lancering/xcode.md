@@ -85,6 +85,7 @@ Hver gang der pushes, bygger GitHub appen med Xcode 27.1 og 26.6 (▶︎ til iPh
 | "No profiles for 'dk.fixmatch.app.widgets' were found" | Vælg dit team under Signing for **ExpoWidgetsTarget** også (trin 2) |
 | "The app identifier dk.fixmatch.app cannot be registered" | Id'et er taget af en anden konto. Skift `bundleIdentifier` i `app.json` (fx `dk.ditnavn.fixmatch`) og widgets' `bundleIdentifier` og `groupIdentifier` til det samme med `.widgets` og `group.` foran. Kør `npm run ios:xcode` igen |
 | `pod install` fejler | Kør `brew install cocoapods`, og så `npm run ios:xcode` igen |
+| Hundredvis af fejl efter `git pull` | Der er kommet nye pakker til. Luk Xcode (⌘Q), kør `npm run ios:xcode`, og byg igen med ⇧⌘K og ▶︎. GitHub bygger hver version med 0 fejl (se *Actions*), så fejl, der bliver ved, skyldes det lokale projekt |
 | Projektet ser forkert ud i Xcode: røde filnavne eller fejl i mange filer | Xcode var åben, mens `ios/` blev lavet forfra. Luk Xcode (⌘Q), og kør `npm run ios:xcode` igen |
 | "No such module 'ExpoWidgets'", "Unable to resolve module dependency" eller "Clang dependency scanning failure" | Luk Xcode, kør `npm run ios:xcode` igen, og byg fra `FixMatch.xcworkspace`. Hjælper det ikke: **Product → Clean Build Folder** (⇧⌘K) og byg igen |
 | "Command PhaseScriptExecution failed" med "node: command not found" | Kør `npm run ios:xcode` igen. Den skriver stien til Node i `ios/.xcode.env.local` |

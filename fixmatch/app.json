@@ -145,6 +145,7 @@
         }
       ],
       "./plugins/with-implicit-modules",
+      "./plugins/with-quiet-pods",
       [
         "./plugins/with-fixmatch-widgets",
         {
