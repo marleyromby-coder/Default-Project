@@ -37,7 +37,7 @@ function patchPodfile(podfile) {
 ${indent}  ${MARK}
 ${indent}  installer.pods_project.targets.each do |target|
 ${indent}    target.shell_script_build_phases.each do |phase|
-${indent}      phase.always_out_of_date = '1' if phase.output_paths.empty? && phase.output_file_list_paths.empty?
+${indent}      phase.always_out_of_date = '1' if Array(phase.output_paths).empty? && Array(phase.output_file_list_paths).empty?
 ${indent}    end
 ${indent}  end`,
     )}

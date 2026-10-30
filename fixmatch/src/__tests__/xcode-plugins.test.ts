@@ -18,7 +18,10 @@ describe('with-quiet-xcode', () => {
     expect(patched).toContain(
       '  post_install do |installer|\n    # Added by plugins/with-quiet-xcode.js\n    installer.pods_project.targets.each do |target|',
     );
-    expect(patched).toContain("phase.always_out_of_date = '1'");
+    // CocoaPods leaves output_paths nil on phases without outputs.
+    expect(patched).toContain(
+      "phase.always_out_of_date = '1' if Array(phase.output_paths).empty? && Array(phase.output_file_list_paths).empty?",
+    );
     expect(patched).toMatch(/post_integrate do \|installer\|[\s\S]*expo-configure-project\.sh/);
     expect(patched).toContain('react_native_post_install(installer)');
   });
