@@ -16,6 +16,7 @@ This is FixMatch, an Expo/React Native iPhone app (Danish and English UI) for fi
 - Light/dark: always use `useTheme()`/`useIsDark()` from `src/hooks/use-theme.ts`, never React Native's `useColorScheme`, so the user's choice under Mere → Udseende (`src/state/appearance.ts`) applies.
 - Layout by width, never by orientation (the iPhone Duo's inner display ignores orientation locks): `useLayout()` in `src/hooks/use-layout.ts` gives `column` for scroll content, `gutter` for full-width bars and `wide` for side-by-side layouts.
 - `plugins/with-fixmatch-widgets.js` adds the logo images and iOS 27's `systemExtraLargePortrait` to the widget extension. It must stay listed before `expo-widgets` in `app.json`.
+- `npm run ios:xcode` (`scripts/open-xcode.js`) is the way to get an Xcode project: it refuses to run while Xcode is open, runs prebuild and `pod install`, clears FixMatch's DerivedData and opens the `.xcworkspace`. `.github/workflows/fixmatch-ios.yml` builds the app with Xcode 27.1 and 26.6 (Debug for iPhone and an unsigned Archive) on every push; check it after native changes.
 - Run `npm run check` (tsc, eslint, jest) before declaring a task done.
 
 ## Expo has changed — do not trust your training data

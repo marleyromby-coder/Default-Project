@@ -9,6 +9,7 @@
  * be followed by opening the project.
  */
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 
@@ -56,6 +57,22 @@ const pod = output('pod', ['--version']);
 if (!pod) stop('CocoaPods mangler. Installer det med:\n  brew install cocoapods\nog kør npm run ios:xcode igen.');
 console.log(`✓ CocoaPods ${pod}`);
 
+// ios/ is deleted and made again below. An open Xcode keeps showing the old, deleted project
+// with missing files and errors everywhere.
+if (output('pgrep', ['-x', 'Xcode']) !== null) {
+  stop('Xcode er åbent. Luk Xcode helt (⌘Q), og kør npm run ios:xcode igen.');
+}
+
+// After a git pull the packages may be out of date, and the native code must match them.
+const installedLock = path.join(ROOT, 'node_modules', '.package-lock.json');
+if (
+  !fs.existsSync(installedLock) ||
+  fs.statSync(installedLock).mtimeMs < fs.statSync(path.join(ROOT, 'package-lock.json')).mtimeMs
+) {
+  if (!run('npm', ['install', '--no-audit', '--no-fund'], { cwd: ROOT }))
+    stop('npm install fejlede. Se fejlen ovenfor.');
+}
+
 if (!run('npx', ['expo', 'prebuild', '--platform', 'ios', '--clean', '--no-install'], { cwd: ROOT })) {
   stop('expo prebuild fejlede. Se fejlen ovenfor.');
 }
@@ -76,6 +93,17 @@ if (!installed) {
 
 const workspace = fs.readdirSync(IOS).find((name) => name.endsWith('.xcworkspace'));
 if (!workspace) stop('pod install lavede ingen .xcworkspace. Kopiér outputtet ovenfor til Claude.');
+
+// Xcode's build cache for the old project can keep reporting errors that are already fixed,
+// such as "Unable to resolve module dependency". Only FixMatch's own cache is removed.
+const derivedData = path.join(os.homedir(), 'Library/Developer/Xcode/DerivedData');
+const projectName = workspace.replace('.xcworkspace', '');
+for (const name of fs.existsSync(derivedData) ? fs.readdirSync(derivedData) : []) {
+  if (name.startsWith(`${projectName}-`)) {
+    fs.rmSync(path.join(derivedData, name), { recursive: true, force: true });
+    console.log(`✓ Gammel build-cache slettet (${name})`);
+  }
+}
 
 console.log(
   `\n✓ Klar. Åbner ios/${workspace}.\n  Åbn altid ${workspace} (hvidt ikon) – aldrig ${workspace.replace('.xcworkspace', '.xcodeproj')} (blåt ikon).`,
