@@ -1,7 +1,8 @@
 name: fixmatch-ios
 # Builds the FixMatch iPhone app and its widget extension with Xcode, the same way
-# `npm run ios:xcode` + Product → Build does on a Mac, so build errors show up here.
-# Simulator build without signing: it compiles everything but needs no Apple account.
+# `npm run ios:xcode` followed by ▶︎ (Debug, iPhone) and Product → Archive does on a Mac,
+# so build errors show up here. Builds without signing: everything is compiled, but no
+# Apple account is needed.
 on:
   push:
     paths:
@@ -15,8 +16,18 @@ concurrency:
 
 jobs:
   build:
-    runs-on: macos-26
-    timeout-minutes: 90
+    name: Xcode ${{ matrix.xcode }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Xcode 27 builds with the iOS 27 SDK: iPhone Duo full screen and the extra-large widget.
+          - runner: xcode-27
+            xcode: '27.1'
+          - runner: macos-26
+            xcode: '26.6'
     defaults:
       run:
         working-directory: fixmatch
@@ -29,11 +40,11 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Select the newest Xcode
+      - name: Select Xcode ${{ matrix.xcode }}
+        env:
+          XCODE_VERSION: ${{ matrix.xcode }}
         run: |
-          ls -d /Applications/Xcode*.app
-          XCODE=$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)
-          sudo xcode-select -s "$XCODE"
+          sudo xcode-select -s "/Applications/Xcode_${XCODE_VERSION}.app"
           xcodebuild -version
           pod --version
 
@@ -52,31 +63,40 @@ jobs:
         working-directory: fixmatch/ios
         run: pod install
 
-      - name: Build (Release, iOS Simulator)
+      - name: Build for iPhone (Debug, like ▶︎ in Xcode)
         working-directory: fixmatch/ios
         run: |
           set -o pipefail
           xcodebuild build \
             -workspace FixMatch.xcworkspace \
             -scheme FixMatch \
-            -configuration Release \
-            -sdk iphonesimulator \
-            -destination 'generic/platform=iOS Simulator' \
+            -configuration Debug \
+            -destination 'generic/platform=iOS' \
             CODE_SIGNING_ALLOWED=NO \
-            2>&1 | tee build.log | grep -E '(error|warning: unable|BUILD|\*\*)' || exit 1
+            > debug.log 2>&1 || { grep -nE ' error: |^error:|fatal error|BUILD FAILED' debug.log | head -60; exit 1; }
+          grep -E 'BUILD SUCCEEDED' debug.log
 
-      - name: Show the build errors
-        if: failure()
+      - name: Archive (Release, like Product → Archive)
+        if: success() || failure()
         working-directory: fixmatch/ios
         run: |
-          [ -f build.log ] || exit 0
-          grep -nE ' error: |^error:|fatal error|No such module|Unable to resolve|PhaseScriptExecution|Command .* failed' build.log | head -80
-          echo '--- end of log ---'
-          tail -60 build.log
+          set -o pipefail
+          xcodebuild archive \
+            -workspace FixMatch.xcworkspace \
+            -scheme FixMatch \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/FixMatch.xcarchive" \
+            CODE_SIGNING_ALLOWED=NO \
+            > archive.log 2>&1 || { grep -nE ' error: |^error:|fatal error|ARCHIVE FAILED' archive.log | head -60; exit 1; }
+          grep -E 'ARCHIVE SUCCEEDED' archive.log
+          ls "$RUNNER_TEMP/FixMatch.xcarchive/Products/Applications/FixMatch.app/PlugIns"
 
       - uses: actions/upload-artifact@v4
-        if: failure()
+        if: always()
         with:
-          name: xcode-build-log
-          path: fixmatch/ios/build.log
+          name: xcode-${{ matrix.xcode }}-logs
+          path: |
+            fixmatch/ios/debug.log
+            fixmatch/ios/archive.log
           if-no-files-found: ignore
