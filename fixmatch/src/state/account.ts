@@ -23,8 +23,11 @@ export type Account =
 export type ContactChannel = 'call' | 'email' | 'message';
 
 const SKIPPED_KEY = 'fixmatch:account-skipped';
-/** Without a server, the account lives on the phone only. */
-const LOCAL_KEY = 'fixmatch:local-account';
+/**
+ * The signed-in account is also kept on the phone: all of it without a server, and with one
+ * the last known name and phone number, so starting without internet doesn't ask again.
+ */
+const ACCOUNT_KEY = 'fixmatch:account';
 
 let account: Account = { status: 'loading' };
 let skipped = false;
@@ -41,25 +44,31 @@ function set(next: Account) {
   emit();
 }
 
-function saveLocal(next: Account) {
+function save(next: Account) {
   set(next);
-  if (supabase) return;
   const write =
     next.status === 'signedIn'
-      ? AsyncStorage.setItem(LOCAL_KEY, JSON.stringify(next))
-      : AsyncStorage.removeItem(LOCAL_KEY);
+      ? AsyncStorage.setItem(ACCOUNT_KEY, JSON.stringify(next))
+      : AsyncStorage.removeItem(ACCOUNT_KEY);
   write.catch(() => undefined);
 }
 
 async function loadProfile(userId: string): Promise<Profile | null> {
   if (!supabase) return null;
-  const { data } = await supabase.from('profiles').select('name, phone').eq('id', userId).maybeSingle();
+  const { data, error } = await supabase.from('profiles').select('name, phone').eq('id', userId).maybeSingle();
+  if (error) throw error;
   return data ? { name: data.name, phone: data.phone } : null;
 }
 
-async function signedIn(userId: string, email: string | undefined) {
-  const profile = await loadProfile(userId).catch(() => null);
-  set({ status: 'signedIn', userId, email, profile });
+/** Fetches the profile; offline, the copy kept on the phone is used. */
+async function signedIn(userId: string, email: string | undefined, kept: Account = account) {
+  let profile: Profile | null;
+  try {
+    profile = await loadProfile(userId);
+  } catch {
+    profile = kept.status === 'signedIn' && kept.userId === userId ? kept.profile : null;
+  }
+  save({ status: 'signedIn', userId, email, profile });
 }
 
 // Read once at start-up. The root layout waits until the status is known.
@@ -69,24 +78,25 @@ AsyncStorage.getItem(SKIPPED_KEY)
   })
   .catch(() => undefined)
   .finally(async () => {
+    let kept: Account = { status: 'signedOut' };
+    try {
+      const stored = await AsyncStorage.getItem(ACCOUNT_KEY);
+      if (stored) kept = JSON.parse(stored) as Account;
+    } catch {
+      // Unreadable: start signed out.
+    }
     if (supabase) {
       // Signing in is handled where it happens; this only catches an expired or revoked session.
       supabase.auth.onAuthStateChange((event) => {
-        if (event === 'SIGNED_OUT') set({ status: 'signedOut' });
+        if (event === 'SIGNED_OUT') save({ status: 'signedOut' });
       });
       const { data } = await supabase.auth.getSession().catch(() => ({ data: { session: null } }));
       const session = data.session;
-      if (session) await signedIn(session.user.id, session.user.email);
-      else set({ status: 'signedOut' });
+      if (session) await signedIn(session.user.id, session.user.email, kept);
+      else save({ status: 'signedOut' });
       return;
     }
-    const stored = await AsyncStorage.getItem(LOCAL_KEY).catch(() => null);
-    try {
-      const parsed = stored ? (JSON.parse(stored) as Account) : null;
-      set(parsed?.status === 'signedIn' ? parsed : { status: 'signedOut' });
-    } catch {
-      set({ status: 'signedOut' });
-    }
+    set(kept.status === 'signedIn' ? kept : { status: 'signedOut' });
   });
 
 export function useAccount(): Account {
@@ -144,7 +154,7 @@ export async function signInWithApple(): Promise<{ name: string } | null> {
     if (error) throw error;
     await signedIn(data.user.id, data.user.email);
   } else {
-    saveLocal({ status: 'signedIn', userId: credential.user, email: credential.email ?? undefined, profile: null });
+    save({ status: 'signedIn', userId: credential.user, email: credential.email ?? undefined, profile: null });
   }
   return { name };
 }
@@ -158,7 +168,7 @@ export async function sendEmailCode(email: string): Promise<void> {
 
 export async function verifyEmailCode(email: string, code: string): Promise<void> {
   if (!supabase) {
-    saveLocal({ status: 'signedIn', userId: `local:${email}`, email, profile: null });
+    save({ status: 'signedIn', userId: `local:${email}`, email, profile: null });
     return;
   }
   const { data, error } = await supabase.auth.verifyOtp({ email, token: code, type: 'email' });
@@ -174,12 +184,12 @@ export async function saveProfile(profile: Profile): Promise<void> {
       .upsert({ id: account.userId, name: profile.name, phone: profile.phone, updated_at: new Date().toISOString() });
     if (error) throw error;
   }
-  saveLocal({ ...account, profile });
+  save({ ...account, profile });
 }
 
 export async function signOut(): Promise<void> {
   if (supabase) await supabase.auth.signOut().catch(() => undefined);
-  saveLocal({ status: 'signedOut' });
+  save({ status: 'signedOut' });
 }
 
 /** Deletes the account and everything stored with it (App Store guideline 5.1.1(v)). */
@@ -189,7 +199,7 @@ export async function deleteAccount(): Promise<void> {
     if (error) throw error;
     await supabase.auth.signOut({ scope: 'local' }).catch(() => undefined);
   }
-  saveLocal({ status: 'signedOut' });
+  save({ status: 'signedOut' });
 }
 
 /** Records that the user contacted a business, so the business can see who it was. */
@@ -208,11 +218,12 @@ let pending: ((ok: boolean) => void) | null = null;
 
 /**
  * Makes sure the user has an account with a name and phone number before contacting a
- * business. Opens the sign-up screen if not, and resolves once it closes.
+ * business. Opens the sign-up screen if not, and resolves once it closes. A second tap while
+ * the screen is open is ignored.
  */
 export function requireContactProfile(): Promise<boolean> {
   if (canContact()) return Promise.resolve(true);
-  pending?.(false);
+  if (pending) return Promise.resolve(false);
   return new Promise((resolve) => {
     pending = resolve;
     router.push({ pathname: '/konto', params: { reason: 'contact' } });
