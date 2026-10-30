@@ -70,15 +70,15 @@ TJEKKET OG GENNEMSIGTIGT
 
 RING DIREKTE
 • Telefonnummer, hjemmeside og rutevejledning lige ved hånden
-• Ingen mellemled, ingen login og ingen gebyrer
+• Ingen mellemled og ingen gebyrer. Virksomheden ser dit navn og nummer, så den ved, hvem den taler med
 
 FAG I FIXMATCH
 VVS'er, elektriker, tømrer, murer, mekaniker, maler, tagdækker og låsesmed – flere kommer til.
 
 DIT PRIVATLIV
-FixMatch har ingen login og ingen reklamesporing. Din placering bruges kun på din telefon til at beregne afstande.
+FixMatch har ingen reklamer og ingen sporing. Din placering bruges kun på din telefon til at beregne afstande. Din bruger ligger på servere i EU, og du kan slette den i appen.
 
-Er du håndværker eller værksted? Skriv til os, så kommer du gratis med.
+Er du håndværker eller værksted? Tilmeld dig gratis under Mere → Tilmeld din virksomhed.
 ```
 
 ## Hvad er nyt (version 1.0)
@@ -101,16 +101,23 @@ Siderne bygges med `npm run website:build` ud fra `docs/jura/` og `website/` (se
 
 Svar i App Store Connect → App-privatliv:
 
-- **Indsamler du eller dine tredjepartspartnere data fra denne app?** → *Nej, vi indsamler ikke data fra denne app.*
+- **Indsamler du eller dine tredjepartspartnere data fra denne app?** → *Ja.*
 
-Det er korrekt, fordi:
+Vælg disse datatyper. For hver: **Knyttet til brugeren: Ja**, **Bruges til sporing: Nej**, formål **Appens funktionalitet**:
 
-- placeringen kun bruges på telefonen og aldrig sendes nogen steder hen,
-- gemte virksomheder, by og prioriteter kun gemmes lokalt,
-- teksten i "Beskriv dit problem" kun behandles på telefonen og ikke sendes nogen steder hen,
-- der ikke er login, analyse-SDK'er, reklamer eller crash-rapportering.
+| Kategori | Datatype | Hvorfor |
+| --- | --- | --- |
+| Kontaktoplysninger | Navn | Virksomheden ser, hvem der ringer |
+| Kontaktoplysninger | E-mailadresse | Login med kode (eller fra Log ind med Apple) |
+| Kontaktoplysninger | Telefonnummer | Virksomheden ser, hvem der ringer |
+| Id'er | Bruger-id | Brugerkontoen hos Supabase |
+| Brugsdata | Produktinteraktion | Hvilke virksomheder brugeren har ringet til, så virksomheden kan se det |
 
-Tilføjer I senere analyse (fx Firebase, PostHog) eller login, skal svaret opdateres, før den version indsendes – ellers risikerer I afvisning efter retningslinje 5.1.2.
+Ikke indsamlet: placering (bruges kun på telefonen), søgninger og teksten i "Beskriv dit problem" (bliver på telefonen), gemte virksomheder, analyse, reklamer og crash-rapporter.
+
+Virksomhedernes egne tilmeldinger (Mere → Tilmeld din virksomhed) er oplysninger om virksomheden og dens kontaktperson. Kontaktpersonens navn og e-mail er også "Kontaktoplysninger → Navn / E-mailadresse" og er allerede med i tabellen.
+
+Samme typer står i privacy manifestet (`ios.privacyManifests.NSPrivacyCollectedDataTypes` i `app.json`). Tilføjer I analyse eller andet, skal begge opdateres, før den version indsendes (retningslinje 5.1.2).
 
 ## Noter til Apples review-team (på engelsk)
 
@@ -119,7 +126,9 @@ Udfyld byen i firkantede parenteser med den by, hvor I har rigtige virksomheder.
 ```
 FixMatch helps people find and compare local tradespeople (plumbers, electricians, carpenters, bricklayers, mechanics, painters, roofers, locksmiths) by price range and distance, and contact them directly by phone or website.
 
-• No account or login is required.
+• You can skip sign-up ("Spring over" / "Skip") and browse everything. An account is only required to call a business, so the business knows who is calling. To test it, use Sign in with Apple, or tap "Continue with e-mail" and enter the code from the e-mail.
+• The account can be deleted in the app: More → Delete account.
+• Businesses sign themselves up and give consent under More → Sign up your business.
 • The app is in English and Danish and follows the device language (Settings → FixMatch → Language).
 • Businesses are currently listed in [Copenhagen, Denmark]. If you review from another country, open More → Location and search for "[København]" to see the listings. Elsewhere the app says that FixMatch is not in that country yet.
 • Location permission is optional. Without it, the user picks a city manually (More → Location). Location is processed on the device only.

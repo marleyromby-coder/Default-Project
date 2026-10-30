@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Builds the public website: front page, privacy policy, terms and support, in
- * Danish and English. Apple needs public privacy policy and support URLs.
+ * Builds the public website: front page, privacy policy, terms, support and the sign-up
+ * form for businesses, in Danish and English. Apple needs public privacy policy and support URLs.
  *
  *   npm run website:build   → dist-website/, ready for Netlify Drop or GitHub Pages
  *
@@ -12,6 +12,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
+const { FORM_STYLE, signupForm } = require('./lib/signup-form');
+
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'dist-website');
 
@@ -21,11 +23,27 @@ const PAGES = [
   { da: ['docs/jura/privatlivspolitik.md', 'privatliv/'], en: ['docs/jura/privacy-policy.en.md', 'en/privacy/'] },
   { da: ['docs/jura/vilkaar.md', 'vilkaar/'], en: ['docs/jura/terms.en.md', 'en/terms/'] },
   { da: ['website/support.md', 'support/'], en: ['website/support.en.md', 'en/support/'] },
+  // Businesses sign up and give their consent here ({{form}}, scripts/lib/signup-form.js).
+  { da: ['website/tilmeld.md', 'tilmeld/'], en: ['website/signup.en.md', 'en/sign-up/'] },
 ];
 
 const UI = {
-  da: { privacy: 'Privatlivspolitik', terms: 'Vilkår', support: 'Support', other: 'English', locale: 'da-DK' },
-  en: { privacy: 'Privacy policy', terms: 'Terms', support: 'Support', other: 'Dansk', locale: 'en-GB' },
+  da: {
+    privacy: 'Privatlivspolitik',
+    terms: 'Vilkår',
+    support: 'Support',
+    business: 'For virksomheder',
+    other: 'English',
+    locale: 'da-DK',
+  },
+  en: {
+    privacy: 'Privacy policy',
+    terms: 'Terms',
+    support: 'Support',
+    business: 'For businesses',
+    other: 'Dansk',
+    locale: 'en-GB',
+  },
 };
 
 /** The string fields of APP_INFO. app-info.ts is TypeScript, so it is read as text. */
@@ -150,7 +168,7 @@ function page({ lang, html, title, here, other, info }) {
 <title>${escape(title)} – ${escape(info.name)}</title>
 <link rel="alternate" hreflang="${lang === 'da' ? 'en' : 'da'}" href="${target(other)}">
 <link rel="icon" href="${rel('favicon.png')}">
-<style>${STYLE.replaceAll('{{fonts}}', rel('fonts') + '/')}</style>
+<style>${STYLE.replaceAll('{{fonts}}', rel('fonts') + '/')}${html.includes('id="signup"') ? FORM_STYLE : ''}</style>
 </head>
 <body>
 <header>
@@ -165,6 +183,7 @@ ${html}
 <a href="${target(links[0])}">${ui.privacy}</a>
 <a href="${target(links[1])}">${ui.terms}</a>
 <a href="${target(links[2])}">${ui.support}</a>
+<a href="${target(links[3])}">${ui.business}</a>
 </nav>
 © ${new Date().getFullYear()} ${escape(info.company)}
 </footer>
@@ -181,13 +200,20 @@ function buildWebsite(out = OUT, root = ROOT) {
     for (const lang of ['da', 'en']) {
       const [source, here] = entry[lang];
       const other = entry[lang === 'da' ? 'en' : 'da'][1];
-      const values = { publisher: info.company, email: info.email, updated: formatDate(info.updated, UI[lang].locale) };
+      const values = {
+        publisher: info.company,
+        email: info.email,
+        updated: formatDate(info.updated, UI[lang].locale),
+        form: '{{form}}',
+      };
       const markdown = fill(fs.readFileSync(path.join(root, source), 'utf8'), values, source);
       const link = (href) =>
         /^(https?:|mailto:|#)/.test(href)
           ? href
           : `${path.posix.relative(here || '.', href) || '.'}/`.replace(/\/\/$/, '/');
-      const html = markdownToHtml(markdown, link);
+      const html = markdownToHtml(markdown, link).replace('<p>{{form}}</p>', () =>
+        signupForm(lang, { root, email: info.email }),
+      );
       const title = markdown.match(/^# (.*)$/m)?.[1] ?? info.name;
       const file = path.join(out, here, 'index.html');
       fs.mkdirSync(path.dirname(file), { recursive: true });

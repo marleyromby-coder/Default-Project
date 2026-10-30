@@ -120,11 +120,12 @@ export function infoPagesEn(
         {
           heading: 'How to join',
           bullets: [
-            'We contact you, or you write to us.',
+            'Sign up under More → Sign up your business or on the website. It takes a few minutes.',
             reviews
               ? 'You approve your details: contact, prices, opening hours, photos and your Trustpilot profile.'
               : 'You approve your details: contact, prices, opening hours and photos.',
-            'You sign a consent that you can withdraw at any time.',
+            'You give your consent when you sign up and can withdraw it at any time.',
+            'When a customer calls you through FixMatch, you can see the customer’s name and phone number.',
           ],
         },
         {
@@ -167,7 +168,7 @@ export function infoPagesEn(
     },
     privatliv: {
       title: 'Privacy policy',
-      intro: `In short: FixMatch has no login and no ad tracking, and does not send your details anywhere. Controller: ${APP_INFO.company}, ${APP_INFO.email}.`,
+      intro: `In short: FixMatch has no ads and no tracking. If you create an account, we store your name, phone number and e-mail in the EU, so the businesses you call know who they are talking to. Everything else stays on your phone. Controller: ${APP_INFO.company}, ${APP_INFO.email}.`,
       sections: [
         {
           heading: 'Your location',
@@ -188,9 +189,16 @@ export function infoPagesEn(
           ],
         },
         {
+          heading: 'Your account',
+          paragraphs: [
+            'You can browse and compare without an account. The first time you call a business, we ask you to create one. We store your e-mail (or your Apple ID), your name, your phone number and which businesses you have called and when – with Supabase on servers in the EU (Frankfurt).',
+            'Only the business you call sees your name and number. We never sell them. You delete it all under More → Delete account.',
+          ],
+        },
+        {
           heading: 'When you contact a business',
           paragraphs: [
-            'Calls and websites happen outside FixMatch, and the business’s own privacy policy applies. If a business has its own picture on FixMatch, it is loaded from the internet, and that server can see your IP address.',
+            'The call itself and websites happen outside FixMatch, and the business’s own privacy policy applies. If a business has its own picture on FixMatch, it is loaded from the internet, and that server can see your IP address.',
           ],
         },
         {
@@ -243,8 +251,8 @@ export function infoPagesEn(
         {
           heading: 'Data and typeface',
           paragraphs: [
-              'City names from GeoNames (geonames.org, CC BY 4.0). Coastlines on the web map from Natural Earth (public domain).',
-              'Headings are set in Fraunces by Undercase Type (SIL Open Font License 1.1).',
+            'City names from GeoNames (geonames.org, CC BY 4.0). Coastlines on the web map from Natural Earth (public domain).',
+            'Headings are set in Fraunces by Undercase Type (SIL Open Font License 1.1).',
           ],
         },
       ],

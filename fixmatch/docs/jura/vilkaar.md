@@ -6,7 +6,7 @@
 
 ## For brugere
 
-1. **Tjenesten.** FixMatch hjælper dig med at finde og sammenligne virksomheder og kontakte dem direkte. FixMatch er gratis og kræver ikke login.
+1. **Tjenesten.** FixMatch hjælper dig med at finde og sammenligne virksomheder og kontakte dem direkte. FixMatch er gratis. Du kan se og sammenligne uden en bruger; for at ringe til en virksomhed gennem FixMatch skal du oprette en med dit rigtige navn og telefonnummer, som virksomheden får at se. Du kan slette brugeren i appen når som helst.
 2. **FixMatch er ikke part i aftalen.** Aftalen om arbejdet indgår du direkte med virksomheden. Dine rettigheder som forbruger (fx reklamation og klageadgang) gælder over for virksomheden.
 3. **Oplysninger.** Priser, åbningstider og øvrige oplysninger er oplyst af virksomhederne. Priserne er vejledende og inkl. moms. Vi gør os umage for, at alt er korrekt, men kan ikke garantere det. Bed altid om et skriftligt tilbud.
 4. **Anmeldelser.** Viser FixMatch anmeldelser, kommer de fra Trustpilot. FixMatch skriver, ændrer eller udvælger ikke anmeldelser og kontrollerer ikke selv, om de stammer fra rigtige kunder (markedsføringsloven § 6 b).

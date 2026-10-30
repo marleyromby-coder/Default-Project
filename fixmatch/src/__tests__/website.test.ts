@@ -3,6 +3,8 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
+import { CONSENT_VERSION } from '@/lib/business-signup';
+
 // The website builder is plain Node.js (CommonJS) so it runs without a build step.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { buildWebsite, fill, markdownToHtml } = require('../../scripts/build-website');
@@ -26,12 +28,23 @@ describe('website', () => {
   it('builds every page in Danish and English, filled in and without team notes', () => {
     const out = fs.mkdtempSync(path.join(os.tmpdir(), 'fixmatch-site-'));
     const { written, info } = buildWebsite(out);
-    expect(written).toHaveLength(8);
+    expect(written).toHaveLength(10);
     for (const file of written) {
       const html = fs.readFileSync(path.join(out, file), 'utf8');
       expect(html).toMatch(/<html lang="(da|en)">/);
       expect(html).not.toMatch(/\{\{|Skabelon|Template\./);
       expect(html).toContain(info.email);
     }
+  });
+
+  it('puts the business sign-up form, with the consent statements of the app, on the sign-up pages', () => {
+    const out = fs.mkdtempSync(path.join(os.tmpdir(), 'fixmatch-site-'));
+    buildWebsite(out);
+    const da = fs.readFileSync(path.join(out, 'tilmeld/index.html'), 'utf8');
+    const en = fs.readFileSync(path.join(out, 'en/sign-up/index.html'), 'utf8');
+    expect(da).toContain('id="signup"');
+    expect(da).toContain('Jeg må give samtykke på virksomhedens vegne.');
+    expect(en).toContain('I am allowed to give consent on behalf of the business.');
+    expect(en).toContain(`"version":"${CONSENT_VERSION}"`);
   });
 });

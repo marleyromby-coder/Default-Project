@@ -64,6 +64,10 @@ Alle udviklere skal angive i App Store Connect under *Business → Compliance �
 
 Selv uden firma er I dataansvarlige for oplysninger om virksomheder og kontaktpersoner. Samtykkeerklæringen og privatlivspolitikken i `docs/jura/` gælder uændret. Skriv jeres navn i stedet for firmanavn og CVR.
 
+## Få virksomheder med hurtigt
+
+Virksomhederne tilmelder sig selv i appen (Mere → Tilmeld din virksomhed) eller på hjemmesiden (`/tilmeld/` og `/en/sign-up/`) og giver samtykke med tre flueben. I tjekker tilmeldingen i Supabase og importerer den med `npm run import:businesses` – også fra London, Stockholm, Oslo og Berlin. Arbejdsgangen og reglerne for at kontakte virksomheder i hvert land står i `docs/jura/kontakt-af-virksomheder.md`, og opsætningen i `supabase.md`.
+
 ## Global udrulning
 
 | Fase | Lande | Hvorfor | Hvad der skal til |

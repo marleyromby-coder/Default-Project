@@ -56,6 +56,8 @@ function main() {
   const rows = parseCsv(fs.readFileSync(path.resolve(input), 'utf8'));
   const context = {
     places: JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/places.json'), 'utf8')),
+    // [name, country, lat, lon, population] – finds towns abroad, where there is no postcode list.
+    cities: JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/world-cities.json'), 'utf8')),
     jobsByCategory: loadJobs(),
     photoKeys: loadPhotoKeys(),
     today: new Date().toISOString().slice(0, 10),

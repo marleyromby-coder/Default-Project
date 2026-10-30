@@ -10,6 +10,10 @@ Buildet er demoversionen: fiktive virksomheder og ingen Trustpilot. Det er stand
 - [Node.js 20 eller nyere](https://nodejs.org) og CocoaPods (`brew install cocoapods`).
 - Din Apple Developer-konto, logget ind i Xcode → Settings → Accounts.
 
+## 0. Supabase (brugere og tilmeldinger)
+
+Appen gemmer brugere og virksomhedstilmeldinger i Supabase. Er det sat op (`supabase.md`), så læg filen `fixmatch/.env` med de to værdier, **før** du kører `npm run ios:xcode`. Uden `.env` virker appen også – brugeren gemmes så kun på telefonen, og det er fint til en demo.
+
 ## 1. Hent projektet og åbn det i Xcode
 
 ```bash
@@ -33,6 +37,8 @@ I Xcode: klik på **FixMatch** øverst i venstre side → fanen **Signing & Capa
 | --- | --- |
 | **FixMatch** | Selve appen (`dk.fixmatch.app`) |
 | **ExpoWidgetsTarget** | Widgets til hjemmeskærm og låseskærm (`dk.fixmatch.app.widgets`) |
+
+FixMatch-targetet har også **Sign in with Apple**. Det står allerede under Signing & Capabilities og bliver oprettet automatisk, når du har valgt dit team.
 
 For hvert target: sæt flueben i **Automatically manage signing**, og vælg dit team under **Team**. Xcode opretter selv app-id'erne og App Group'en `group.dk.fixmatch.app`, som widgets bruger.
 

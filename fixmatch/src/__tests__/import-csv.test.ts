@@ -96,3 +96,44 @@ describe('CSV import', () => {
     expect(errors[0]).toMatch(/doegnvagt/);
   });
 });
+
+describe('CSV import abroad', () => {
+  const cities = [['London', 'GB', 51.5085, -0.1257, 8961989]];
+  const header =
+    'navn;kategorier;land;cvr;telefon;adresse;postnummer;by;timepris_min;timepris_max;aabningstider;samtykke_dato;samtykke_kontakt';
+  const signup = (values: string) => csv.parseCsv(`${header}\n${values}`)[0];
+
+  it('imports a sign-up from London with local phone number, currency and town', () => {
+    const { business, errors, warnings } = csv.rowToBusiness(
+      signup(
+        'Copperleaf Plumbing;vvs;GB;12345678;020 7946 0000;12 Station Road;N1 8XX;London;75;95;"Mon-Fri 07-16; Sat-Sun closed";2026-10-30;"Sam Taylor (selvbetjent web)"',
+      ),
+      { ...context, cities },
+    );
+    expect(errors).toEqual([]);
+    expect(business.country).toBe('GB');
+    expect(business.cvr).toBe('12345678');
+    expect(business.contact.phone).toBe('+442079460000');
+    expect(business.pricing).toMatchObject({ hourlyMin: 75, hourlyMax: 95, currency: 'GBP' });
+    expect(business.coords).toEqual({ lat: 51.5085, lon: -0.1257 });
+    expect(business.hours[0]).toEqual(['07:00', '16:00']);
+    expect(business.hours[6]).toBeNull();
+    expect(warnings.some((w: string) => w.includes('byens midtpunkt'))).toBe(true);
+  });
+
+  it('checks prices in the local currency and unknown countries', () => {
+    const { errors } = csv.rowToBusiness(
+      signup('Dyr VVS;vvs;GB;12345678;+44 20 7946 0000;Road 1;N1;London;600;700;;2026-10-30;Sam'),
+      { ...context, cities },
+    );
+    expect(errors.some((e: string) => e.includes('GBP'))).toBe(true);
+    const unknown = csv.rowToBusiness(
+      signup('X;vvs;US;123456;+1 212 555 0100;A;10001;New York;100;120;;2026-10-30;Sam'),
+      {
+        ...context,
+        cities,
+      },
+    );
+    expect(unknown.errors.some((e: string) => e.startsWith('Land skal være'))).toBe(true);
+  });
+});

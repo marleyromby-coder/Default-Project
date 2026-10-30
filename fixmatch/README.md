@@ -7,7 +7,8 @@ FixMatch er en iPhone-app (Expo / React Native) på dansk og engelsk til Danmark
 | Fag | VVS'er · Elektriker · Tømrer · Murer · Mekaniker · Maler · Tagdækker · Låsesmed |
 | --- | --- |
 | Sammenligning | Pris (timepris + eksempelpriser), afstand (luftlinje) og Trustpilot (TrustScore, antal anmeldelser) |
-| Kontakt | Ring op, hjemmeside, rutevejledning, del |
+| Kontakt | Ring op, hjemmeside, rutevejledning, del. Første opkald kræver en bruger (Log ind med Apple eller e-mail-kode + navn og telefon), så virksomheden ved, hvem der ringer |
+| For virksomheder | Selvbetjent tilmelding med samtykke i appen og på hjemmesiden, gemt i Supabase (EU) og importeret med `npm run import:businesses` |
 | Beskriv dit problem | Fritekst + budget → fag og opgave genkendes på telefonen, og virksomhederne grupperes efter, om deres egen pris passer til budgettet |
 | Kort | Apple Kort (MapKit) med alle virksomheder, farvet efter fag, klynger og swipe-kort. Se `docs/jura/apple-kort.md` |
 | Sprog og lande | Dansk og engelsk (følger telefonen). Priser sammenlignes kun inden for ét land og vises i landets valuta. Miles i UK. Byer i hele verden kan vælges som placering |
@@ -29,12 +30,18 @@ npx expo start
 Scan QR-koden med iPhonens kamera → appen åbner i Expo Go. Alt du ændrer i koden, vises med det samme.
 
 - **Web-demo** (til projektor eller jury på bærbar): `npx expo start --web`, eller `npm run export:web` og læg mappen `dist/` på fx Netlify, Vercel eller GitHub Pages.
-- **Tjek koden**: `npm run check` (TypeScript, lint og 106 tests). Widgets: `npm run widgets:check`.
+- **Tjek koden**: `npm run check` (TypeScript, lint og tests). Widgets: `npm run widgets:check`.
 - **Engelsk version**: på iPhone under Indstillinger → FixMatch → Sprog. På web: tilføj `?lang=en` til adressen.
 
 > Appen starter i **demotilstand** med 200 fiktive virksomheder: 104 i København, Aarhus, Odense og Aalborg og 24 i hver af Stockholm, Oslo, Berlin og London. De er tydeligt markeret, telefonnumre er i nummerserier til fiktion eller ugyldige, registreringsnumre er ugyldige, og opkald er slået fra.
 
 **Fremvisning og lancering uden CVR:** se `docs/lancering/global-lancering.md`. Kort fortalt: vis appen via TestFlight (demodata er tilladt der), Expo Go, iOS-simulatoren eller webdemoen. App Store kræver rigtige virksomheder, men ikke et CVR-nummer.
+
+## Brugere og virksomhedstilmeldinger (Supabase)
+
+- **Første skærm** er "Opret en bruger" med Log ind med Apple eller e-mail og en kode, og så navn og telefonnummer. Den kan springes over. Uden bruger beder appen om en, første gang man ringer til en virksomhed, så virksomheden kan se, hvem der ringer (`src/state/account.ts`, `src/components/account/sign-up-flow.tsx`). Under Mere → Din bruger kan man rette navn og telefon, logge ud og slette brugeren.
+- **Virksomheder tilmelder sig selv** under Mere → Tilmeld din virksomhed (`src/app/tilmeld.tsx`) eller på hjemmesiden (`/tilmeld/`, `/en/sign-up/`). De sætter flueben ved tre samtykke-udsagn, og ordlyd, version og tidspunkt gemmes (`src/lib/business-signup.ts`).
+- **Serveren** er Supabase i Frankfurt. Skemaet med row level security står i `supabase/migrations/`, og opsætningen i `docs/lancering/supabase.md`. URL og publishable key står i `fixmatch/.env` (se `.env.example`). Uden dem gemmes brugeren kun på telefonen, og tilmeldinger går på e-mail – fint til en demo.
 
 ## Design og billeder
 

@@ -19,7 +19,23 @@ const CATEGORY_ALIASES = {
 
 const AUTHORIZATION_KINDS = ['el', 'vvs', 'kloak', 'gas'];
 
-const DAY_NAMES = { man: 0, tir: 1, ons: 2, tor: 3, fre: 4, loer: 5, lor: 5, soen: 6, son: 6 };
+// Danish and English day names, so businesses abroad can write "Mon-Fri 07-16".
+const DAY_NAMES = {
+  man: 0, tir: 1, ons: 2, tor: 3, fre: 4, loer: 5, lor: 5, soen: 6, son: 6,
+  mon: 0, tue: 1, wed: 2, thu: 3, fri: 4, sat: 5, sun: 6,
+};
+
+/**
+ * The countries FixMatch is in (src/lib/markets.ts): calling code, currency, prices relative
+ * to DKK, and rough borders [south, north, west, east] to catch swapped coordinates.
+ */
+const COUNTRIES = {
+  DK: { code: '45', currency: 'DKK', fromDkk: 1, box: [54.4, 57.9, 7.9, 15.3] },
+  SE: { code: '46', currency: 'SEK', fromDkk: 1.45, box: [55, 69.1, 10.9, 24.2] },
+  NO: { code: '47', currency: 'NOK', fromDkk: 1.7, box: [57.9, 71.2, 4.5, 31.2] },
+  DE: { code: '49', currency: 'EUR', fromDkk: 0.13, box: [47.2, 55.1, 5.8, 15.1] },
+  GB: { code: '44', currency: 'GBP', fromDkk: 0.115, box: [49.8, 60.9, -8.7, 1.8] },
+};
 
 function fold(value) {
   return String(value ?? '')
@@ -109,6 +125,15 @@ function isValidCvr(cvr) {
   return sum % 11 === 0;
 }
 
+/** "020 7946 0000" in the UK → "+442079460000". Numbers with + or 00 keep their country code. */
+function normalizeIntlPhone(value, code) {
+  const raw = String(value ?? '').trim();
+  let digits = raw.replace(/\D/g, '');
+  if (raw.startsWith('00')) digits = digits.slice(2);
+  else if (!raw.startsWith('+')) digits = code + digits.replace(/^0/, '');
+  return /^\d{8,15}$/.test(digits) && digits.startsWith(code) ? `+${digits}` : undefined;
+}
+
 function normalizePhone(value) {
   const digits = String(value ?? '').replace(/\D/g, '');
   const local = digits.length === 10 && digits.startsWith('45') ? digits.slice(2) : digits;
@@ -134,7 +159,7 @@ function parseHours(value, errors) {
       continue;
     }
     let slot = null;
-    if (!/lukket/.test(match[3])) {
+    if (!/lukket|closed/.test(match[3])) {
       const times = match[3].match(/^(\d{1,2})(?:[:.](\d{2}))?\s*-\s*(\d{1,2})(?:[:.](\d{2}))?$/);
       if (!times) {
         errors.push(`Åbningstider: kan ikke læse tiden i "${part.trim()}"`);
@@ -195,9 +220,15 @@ function isIsoDate(value) {
  * A row with errors must not be published.
  */
 function rowToBusiness(row, context) {
-  const { places, jobsByCategory, photoKeys, today } = context;
+  const { places, cities = [], jobsByCategory, photoKeys, today } = context;
   const errors = [];
   const warnings = [];
+
+  // Denmark unless the "land" column says otherwise (sign-ups from business_signups_export).
+  const country = String(row.land ?? '').trim().toUpperCase() || 'DK';
+  const market = COUNTRIES[country] ?? COUNTRIES.DK;
+  if (!COUNTRIES[country]) errors.push(`Land skal være ${Object.keys(COUNTRIES).join(', ')}`);
+  const abroad = country !== 'DK';
 
   const name = row.navn;
   if (!name) errors.push('Navn mangler');
@@ -212,40 +243,60 @@ function rowToBusiness(row, context) {
   }
   if (categories.length === 0) errors.push('Mindst én kategori skal angives');
 
-  const cvr = String(row.cvr ?? '').replace(/\D/g, '');
-  if (!/^\d{8}$/.test(cvr)) errors.push('CVR skal være 8 cifre');
+  const cvr = abroad ? String(row.cvr ?? '').trim() : String(row.cvr ?? '').replace(/\D/g, '');
+  if (abroad) {
+    if (cvr.replace(/\W/g, '').length < 4) errors.push('Registreringsnummer mangler');
+  } else if (!/^\d{8}$/.test(cvr)) errors.push('CVR skal være 8 cifre');
   else if (!isValidCvr(cvr)) warnings.push('CVR-nummeret består ikke kontrolcifferet – tjek det i CVR');
 
-  const phone = normalizePhone(row.telefon);
-  if (!phone) errors.push('Telefonnummer skal være et dansk nummer med 8 cifre');
+  const phone = abroad ? normalizeIntlPhone(row.telefon, market.code) : normalizePhone(row.telefon);
+  if (!phone && abroad) errors.push(`Telefonnummer skal være et gyldigt nummer i ${country} (landekode +${market.code})`);
+  else if (!phone) errors.push('Telefonnummer skal være et dansk nummer med 8 cifre');
 
   const website = row.hjemmeside ? (/^https?:\/\//.test(row.hjemmeside) ? row.hjemmeside : `https://${row.hjemmeside}`) : undefined;
   if (website && !/^https:\/\/[^\s.]+\.[^\s]+$/.test(website)) errors.push('Hjemmeside skal være en gyldig https-adresse');
 
   const hourlyMin = toNumber(row.timepris_min);
   const hourlyMax = toNumber(row.timepris_max) ?? hourlyMin;
-  if (!(hourlyMin >= 100 && hourlyMin <= 3000)) errors.push('Timepris (min) skal være et tal mellem 100 og 3.000 kr. inkl. moms');
+  const [lowest, highest] = [100, 3000].map((dkk) => Math.round(dkk * market.fromDkk));
+  if (!(hourlyMin >= lowest && hourlyMin <= highest)) {
+    errors.push(`Timepris (min) skal være et tal mellem ${lowest} og ${highest} ${market.currency} inkl. moms`);
+  }
   if (!(hourlyMax >= hourlyMin)) errors.push('Timepris (max) skal være mindst lige så høj som timepris (min)');
   const calloutFee = toNumber(row.koerselsgebyr);
   if (Number.isNaN(calloutFee)) errors.push('Kørselsgebyr skal være et tal');
 
   const postalCode = String(row.postnummer ?? '').trim();
-  const place = places.find((p) => {
-    const value = Number(postalCode);
-    return value >= Number(p.code) && value <= Number(p.to ?? p.code);
-  });
-  if (!/^\d{4}$/.test(postalCode) || !place) errors.push('Postnummer skal være et gyldigt dansk postnummer');
+  // Danish postcodes give the town and a midpoint; abroad the town is looked up by name.
+  const city = abroad ? cities.find(([name, code]) => code === country && fold(name) === fold(row.by)) : undefined;
+  const place = abroad
+    ? city && { name: city[0], lat: city[2], lon: city[3] }
+    : places.find((p) => {
+        const value = Number(postalCode);
+        return value >= Number(p.code) && value <= Number(p.to ?? p.code);
+      });
+  if (abroad) {
+    if (postalCode.length < 3) errors.push('Postnummer mangler');
+    if (!row.by) errors.push('By mangler');
+  } else if (!/^\d{4}$/.test(postalCode) || !place) errors.push('Postnummer skal være et gyldigt dansk postnummer');
 
   let lat = toNumber(row.breddegrad, { decimal: true });
   let lon = toNumber(row.laengdegrad, { decimal: true });
+  const [south, north, west, east] = market.box;
   if (lat === undefined || lon === undefined) {
     if (place) {
       lat = place.lat;
       lon = place.lon;
-      warnings.push('Ingen koordinater – bruger postnummerets midtpunkt. Afstande bliver omtrentlige.');
+      warnings.push(
+        abroad
+          ? 'Ingen koordinater – bruger byens midtpunkt. Afstande bliver omtrentlige; tilføj breddegrad og længdegrad.'
+          : 'Ingen koordinater – bruger postnummerets midtpunkt. Afstande bliver omtrentlige.',
+      );
+    } else if (abroad) {
+      errors.push(`Byen "${row.by ?? ''}" findes ikke i listen – udfyld breddegrad og laengdegrad`);
     }
-  } else if (!(lat >= 54.4 && lat <= 57.9 && lon >= 7.9 && lon <= 15.3)) {
-    errors.push('Koordinaterne ligger ikke i Danmark (breddegrad ca. 54–58, længdegrad ca. 8–15)');
+  } else if (!(lat >= south && lat <= north && lon >= west && lon <= east)) {
+    errors.push(`Koordinaterne ligger ikke i ${country} (breddegrad ca. ${south}–${north}, længdegrad ca. ${west}–${east})`);
   }
 
   let trustpilot;
@@ -271,10 +322,11 @@ function rowToBusiness(row, context) {
       authorizations.push({ kind: fold(kind), number });
     }
   }
-  if (categories.includes('elektriker') && !authorizations.some((a) => a.kind === 'el')) {
+  // Sikkerhedsstyrelsen's authorisations only exist in Denmark.
+  if (!abroad && categories.includes('elektriker') && !authorizations.some((a) => a.kind === 'el')) {
     warnings.push('Elektriker uden el-autorisation – tjek Sikkerhedsstyrelsens register');
   }
-  if (categories.includes('vvs') && !authorizations.some((a) => a.kind === 'vvs')) {
+  if (!abroad && categories.includes('vvs') && !authorizations.some((a) => a.kind === 'vvs')) {
     warnings.push("VVS'er uden VVS-autorisation – tjek Sikkerhedsstyrelsens register");
   }
 
@@ -296,6 +348,7 @@ function rowToBusiness(row, context) {
   const business = {
     id: slugify(name || cvr),
     name,
+    ...(abroad ? { country } : {}),
     categories,
     tagline: row.kort_beskrivelse || '',
     description: row.beskrivelse || '',
@@ -309,6 +362,7 @@ function rowToBusiness(row, context) {
       hourlyMax,
       ...(calloutFee > 0 ? { calloutFee } : {}),
       examples,
+      ...(abroad ? { currency: market.currency } : {}),
       updatedAt: row.priser_opdateret && isIsoDate(row.priser_opdateret) ? row.priser_opdateret : today,
     },
     ...(trustpilot ? { trustpilot } : {}),

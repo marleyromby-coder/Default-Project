@@ -29,7 +29,7 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 - ✅ Placering kun "mens appen bruges", med dansk forklaring. Ingen baggrundsplacering.
 - ✅ Appen virker uden placering (manuel by).
 - ✅ Privacy manifest (`ios.privacyManifests` i `app.json`) og `ITSAppUsesNonExemptEncryption = false` (ingen eksportdokumentation nødvendig).
-- ✅ Ingen login → kravet om kontosletning gælder ikke.
+- ✅ Brugere kan slette deres konto i appen (Mere → Slet bruger), som retningslinje 5.1.1(v) kræver. Log ind med Apple er med, og login kan springes over.
 - ✅ Privatlivspolitik er tilgængelig inde i appen (Mere → Privatlivspolitik).
 - ✅ Mørk tilstand, Dynamic Type og VoiceOver-labels.
 - ✅ Kun iPhone (`supportsTablet: false`) – ingen iPad-skærmbilleder nødvendige.
@@ -46,7 +46,8 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 ## 4. App Store Connect
 
 - [ ] Tekster, søgeord og noter fra `app-store-tekster.md` (dansk) og `app-store-texts-en.md` (engelsk, til alle andre lande).
-- [ ] App Privacy: "Indsamler ikke data".
+- [ ] App Privacy: datatyperne fra `app-store-tekster.md` → App Privacy (navn, e-mail, telefon, bruger-id, produktinteraktion).
+- [ ] Supabase er sat op (`docs/lancering/supabase.md`), og `fixmatch/.env` har URL og publishable key i den build, der indsendes.
 - [ ] Aldersgrænse 4+.
 - [ ] Skærmbilleder (6,9").
 - [ ] Support- og privatlivs-URL virker uden login.

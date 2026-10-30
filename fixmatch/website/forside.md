@@ -1,6 +1,6 @@
 # Find den rette håndværker
 
-FixMatch finder lokale VVS'ere, elektrikere, tømrere, murere, mekanikere, malere, tagdækkere og låsesmede og sammenligner dem på pris og afstand. Du ringer direkte til virksomheden – uden login og uden mellemled.
+FixMatch finder lokale VVS'ere, elektrikere, tømrere, murere, mekanikere, malere, tagdækkere og låsesmede og sammenligner dem på pris og afstand. Du ringer direkte til virksomheden – uden mellemled. Virksomheden ser dit navn og nummer, så den ved, hvem den taler med.
 
 - **Beskriv dit problem.** Skriv med dine egne ord, hvad der er galt, og hvad du vil give. FixMatch finder faget og viser, hvem der passer til dit budget.
 - **Se prisen, før du ringer.** Timepris og typiske priser for almindelige opgaver, oplyst af virksomhederne selv.
@@ -11,4 +11,4 @@ FixMatch kommer snart til iPhone.
 
 ## Har du en virksomhed?
 
-Det er gratis at være med, og du bestemmer over dine oplysninger. Skriv til {{email}}.
+Det er gratis at være med, og du bestemmer over dine oplysninger. [Tilmeld din virksomhed](tilmeld) på et par minutter, eller skriv til {{email}}.

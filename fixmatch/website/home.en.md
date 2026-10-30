@@ -1,6 +1,6 @@
 # Find the right tradesperson
 
-FixMatch finds local plumbers, electricians, carpenters, bricklayers, mechanics, painters, roofers and locksmiths and compares them on price and distance. You call the business directly – no login and no middleman.
+FixMatch finds local plumbers, electricians, carpenters, bricklayers, mechanics, painters, roofers and locksmiths and compares them on price and distance. You call the business directly – no middleman. The business sees your name and number, so it knows who it is talking to.
 
 - **Describe your problem.** Say in your own words what is wrong and what you want to spend. FixMatch finds the trade and shows who fits your budget.
 - **See the price before you call.** Hourly rates and typical prices for common jobs, provided by the businesses themselves.
@@ -11,4 +11,4 @@ FixMatch is coming soon to iPhone.
 
 ## Do you run a business?
 
-Listing is free, and you stay in control of your details. Write to {{email}}.
+Listing is free, and you stay in control of your details. [Sign up your business](en/sign-up) in a few minutes, or write to {{email}}.

@@ -69,10 +69,10 @@ FixMatch helps people find and compare local tradespeople (plumbers, electrician
 **Hvad skal testes**
 
 ```
-Tap a trade on the home screen, open a business, compare up to three businesses, and try "Describe your problem" with one of the examples. Add the "FixMatch" widgets to the home screen and lock screen. The app needs no account. Location is optional (More → Location lets you pick a city).
+Tap a trade on the home screen, open a business, compare up to three businesses, and try "Describe your problem" with one of the examples. Add the "FixMatch" widgets to the home screen and lock screen. You can skip sign-up on the first screen. Calling a business asks for an account (Sign in with Apple, or e-mail and a code). Businesses can sign up under More → Sign up your business. Location is optional (More → Location lets you pick a city).
 ```
 
-Feedback-e-mail: jeres egen. Login: ikke nødvendigt.
+Feedback-e-mail: jeres egen. Login: ikke nødvendigt – testere kan springe det over eller bruge Log ind med Apple.
 
 ## 5. Inden fremvisningen
 

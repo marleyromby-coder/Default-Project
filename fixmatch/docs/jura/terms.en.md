@@ -6,7 +6,7 @@
 
 ## For users
 
-1. **The service.** FixMatch helps you find and compare businesses and contact them directly. FixMatch is free and needs no login.
+1. **The service.** FixMatch helps you find and compare businesses and contact them directly. FixMatch is free. You can browse and compare without an account; to call a business through FixMatch you create one with your real name and phone number, which the business sees. You can delete the account in the app at any time.
 2. **FixMatch is not a party to the agreement.** You make the agreement about the work directly with the business. Your rights as a consumer (such as complaints and remedies) apply against the business.
 3. **Information.** Prices, opening hours and other details are provided by the businesses. Prices are a guide and include VAT. We do our best to keep everything correct but cannot guarantee it. Always ask for a written quote.
 4. **Reviews.** When FixMatch shows reviews, they come from Trustpilot. FixMatch does not write, edit or select reviews and does not itself check whether they come from real customers.

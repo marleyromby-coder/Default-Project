@@ -103,7 +103,7 @@ export interface Business {
   memberships: string[];
   services: string[];
   hours: WeekHours;
-  /** IANA time zone of the opening hours, when it differs from the country's (e.g. in the US). */
+  /** IANA time zone of the opening hours, when it differs from the country's. */
   timeZone?: string;
   /** Answers the phone outside opening hours (døgnvagt). */
   emergency: boolean;

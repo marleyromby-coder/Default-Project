@@ -138,11 +138,12 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
         {
           heading: 'Sådan kommer du med',
           bullets: [
-            'Vi kontakter dig eller du skriver til os.',
+            'Tilmeld din virksomhed under Mere → Tilmeld din virksomhed eller på hjemmesiden. Det tager et par minutter.',
             reviews
               ? 'Du godkender dine oplysninger: kontakt, priser, åbningstider, billeder og din Trustpilot-profil.'
               : 'Du godkender dine oplysninger: kontakt, priser, åbningstider og billeder.',
-            'Du underskriver et samtykke, som du til enhver tid kan trække tilbage.',
+            'Du giver samtykke, når du tilmelder dig, og kan til enhver tid trække det tilbage.',
+            'Når en kunde ringer til dig gennem FixMatch, kan du se kundens navn og telefonnummer.',
           ],
         },
         {
@@ -189,7 +190,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
     },
     privatliv: {
       title: 'Privatlivspolitik',
-      intro: `Kort fortalt: FixMatch har ingen login, ingen reklamesporing og sender ikke dine oplysninger nogen steder hen. Dataansvarlig: ${APP_INFO.company}, ${APP_INFO.email}.`,
+      intro: `Kort fortalt: FixMatch har ingen reklamer og ingen sporing. Opretter du en bruger, gemmer vi dit navn, dit telefonnummer og din e-mail i EU, så de virksomheder, du ringer til, ved, hvem de taler med. Alt andet bliver på din telefon. Dataansvarlig: ${APP_INFO.company}, ${APP_INFO.email}.`,
       sections: [
         {
           heading: 'Din placering',
@@ -210,9 +211,16 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
           ],
         },
         {
+          heading: 'Din bruger',
+          paragraphs: [
+            'Du kan se og sammenligne uden en bruger. Første gang du ringer til en virksomhed, beder vi dig oprette en. Vi gemmer din e-mail (eller dit Apple-id), dit navn, dit telefonnummer og hvilke virksomheder du har ringet til og hvornår – hos Supabase på servere i EU (Frankfurt).',
+            'Kun den virksomhed, du ringer til, ser dit navn og nummer. Vi sælger dem aldrig. Du sletter det hele under Mere → Slet bruger.',
+          ],
+        },
+        {
           heading: 'Når du kontakter en virksomhed',
           paragraphs: [
-            'Når du ringer eller åbner en hjemmeside, foregår det uden om FixMatch, og virksomhedens egen privatlivspolitik gælder. Har en virksomhed sit eget billede på FixMatch, hentes det fra internettet, og serveren kan se din IP-adresse.',
+            'Selve opkaldet og hjemmesider foregår uden om FixMatch, og virksomhedens egen privatlivspolitik gælder. Har en virksomhed sit eget billede på FixMatch, hentes det fra internettet, og serveren kan se din IP-adresse.',
           ],
         },
         {
@@ -265,8 +273,8 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
         {
           heading: 'Data og skrift',
           paragraphs: [
-              'Bynavne fra GeoNames (geonames.org, CC BY 4.0). Kystlinjer på webkortet fra Natural Earth (public domain).',
-              'Overskrifterne er sat i Fraunces af Undercase Type (SIL Open Font License 1.1).',
+            'Bynavne fra GeoNames (geonames.org, CC BY 4.0). Kystlinjer på webkortet fra Natural Earth (public domain).',
+            'Overskrifterne er sat i Fraunces af Undercase Type (SIL Open Font License 1.1).',
           ],
         },
       ],

@@ -73,15 +73,15 @@ TRANSPARENT BY DESIGN
 
 CALL DIRECTLY
 • Phone, website and directions in one tap
-• No middleman, no login and no fees
+• No middleman and no fees. The business sees your name and number, so it knows who it is talking to
 
 TRADES IN FIXMATCH
 Plumbers, electricians, carpenters, bricklayers, mechanics, painters, roofers and locksmiths – with more to come.
 
 YOUR PRIVACY
-FixMatch has no login and no ad tracking. Your location is only used on your phone to work out distances.
+FixMatch has no ads and no tracking. Your location is only used on your phone to work out distances. Your account is stored on servers in the EU, and you can delete it in the app.
 
-Are you a tradesperson or a garage? Get in touch and get listed for free.
+Are you a tradesperson or a garage? Sign up for free under More → Sign up your business.
 ```
 
 With the Trustpilot agreement in place (and `EXPO_PUBLIC_FIXMATCH_TRUSTPILOT=on` in the build), use the *Trustpilot on* subtitle, change "price and distance" to "price, distance and reviews" in the first paragraph and in the FixMatch score bullet, and add this bullet under *TRANSPARENT BY DESIGN*:
