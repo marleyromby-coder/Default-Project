@@ -36,6 +36,8 @@ const ICONS = {
   bolt: { ios: 'bolt.fill', web: 'bolt' },
   building: { ios: 'building.2', web: 'apartment' },
   people: { ios: 'person.2', web: 'groups' },
+  person: { ios: 'person.crop.circle', web: 'account_circle' },
+  logout: { ios: 'rectangle.portrait.and.arrow.right', web: 'logout' },
   calendar: { ios: 'calendar', web: 'calendar_month' },
   tag: { ios: 'tag', web: 'sell' },
   money: { ios: 'banknote', web: 'payments' },

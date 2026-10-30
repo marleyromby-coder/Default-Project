@@ -9,6 +9,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 
 import { MaxContentWidth, SerifFonts } from '@/constants/theme';
 import { useIsDark, useTheme } from '@/hooks/use-theme';
+import { canContact, useAccount, useAccountSkipped } from '@/state/account';
 import { AppStateProvider, useApp } from '@/state/app-state';
 import { useAppearanceLoaded } from '@/state/appearance';
 import { getLanguage, t } from '@/i18n';
@@ -56,8 +57,13 @@ function RootNavigator() {
   });
   // The saved light/dark choice is read first, so the app never flashes the wrong theme.
   const appearanceLoaded = useAppearanceLoaded();
+  const account = useAccount();
+  const skipped = useAccountSkipped();
   // If the fonts cannot load, the titles fall back to the system font instead of hanging.
-  const ready = state.ready && appearanceLoaded && (fontsLoaded || !!fontError);
+  const ready = state.ready && appearanceLoaded && account.status !== 'loading' && (fontsLoaded || !!fontError);
+  // The app opens on "Opret en bruger" until there is an account with a name and phone
+  // number, or the user chose "Spring over".
+  const accountStepDone = skipped || canContact(account);
 
   useEffect(() => {
     if (ready) SplashScreen.hideAsync().catch(() => undefined);
@@ -75,7 +81,10 @@ function RootNavigator() {
         headerStyle: { backgroundColor: colors.background },
         contentStyle: { backgroundColor: colors.background },
       }}>
-      <Stack.Protected guard={state.onboarded}>
+      <Stack.Protected guard={!accountStepDone}>
+        <Stack.Screen name="start" options={{ headerShown: false, animation: 'fade' }} />
+      </Stack.Protected>
+      <Stack.Protected guard={accountStepDone && state.onboarded}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false, title: t('Find') }} />
         <Stack.Screen name="kategori/[id]" options={{ title: '' }} />
         <Stack.Screen name="virksomhed/[id]" options={{ headerShown: false, title: t('Virksomhed') }} />
@@ -102,11 +111,14 @@ function RootNavigator() {
         <Stack.Screen name="beskriv" options={{ title: t('Beskriv dit problem') }} />
         <Stack.Screen name="match" options={{ title: t('Dit match') }} />
         <Stack.Screen name="placering" options={{ presentation: 'modal', title: t('Vælg placering') }} />
-        <Stack.Screen name="info/[slug]" options={{ title: '' }} />
+        <Stack.Screen name="konto" options={{ presentation: 'modal', title: t('Din bruger') }} />
+        <Stack.Screen name="tilmeld" options={{ presentation: 'modal', title: t('Tilmeld din virksomhed') }} />
       </Stack.Protected>
-      <Stack.Protected guard={!state.onboarded}>
+      <Stack.Protected guard={accountStepDone && !state.onboarded}>
         <Stack.Screen name="velkommen" options={{ headerShown: false, animation: 'fade' }} />
       </Stack.Protected>
+      {/* Terms and privacy are linked from the sign-up screen too, before the app is open. */}
+      <Stack.Screen name="info/[slug]" options={{ title: '' }} />
     </Stack>
   );
 }

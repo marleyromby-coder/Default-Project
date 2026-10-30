@@ -5,6 +5,7 @@ import { Linking, Platform, Share } from 'react-native';
 
 import { APP_INFO } from '@/constants/app-info';
 import { t } from '@/i18n';
+import { logContact, requireContactProfile } from '@/state/account';
 
 import { showDialog } from './dialog';
 import { formatPhone, phoneHref } from './format';
@@ -56,8 +57,10 @@ export async function openLink(url: string): Promise<void> {
   }
 }
 
+/** Calls the business. The first time, the user is asked for an account with a name and phone number. */
 export async function callBusiness(business: Business): Promise<void> {
   tap();
+  if (!(await requireContactProfile())) return;
   const number = formatPhone(business.contact.phone);
   if (business.demo) {
     demoNotice(
@@ -68,6 +71,7 @@ export async function callBusiness(business: Business): Promise<void> {
     );
     return;
   }
+  logContact(business, 'call');
   try {
     await Linking.openURL(phoneHref(business.contact.phone));
   } catch {

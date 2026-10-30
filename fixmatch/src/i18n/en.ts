@@ -162,7 +162,6 @@ const en: Record<string, string> = {
   'Fundet via FixMatch': 'Found on FixMatch',
   'Fx autoriseret til el, VVS eller gas': 'E.g. licensed for electrical, plumbing or gas work',
   'Fx: Køkkenvasken er stoppet, og vandet løber ikke ud': "E.g. The kitchen sink is blocked and won't drain",
-  'Få din virksomhed på FixMatch': 'Get your business on FixMatch',
   Færre: 'Fewer',
   'Gasarbejde kræver registrering i Gas Safe Register.': 'Gas work requires registration on the Gas Safe Register.',
   Gem: 'Save',
@@ -573,6 +572,125 @@ const en: Record<string, string> = {
   'åbner virksomhedens egen hjemmeside her.': "the business's own website opens here.",
   'åbner virksomhedens profil på Trustpilot, hvor du kan læse alle anmeldelserne.':
     "the business's Trustpilot profile opens here, where you can read all the reviews.",
+  // Accounts and business sign-up
+  'Log ud?': 'Sign out?',
+  'Du skal logge ind igen, før du kan kontakte en virksomhed.':
+    'You need to sign in again before you can contact a business.',
+  'Log ud': 'Sign out',
+  'Slet din bruger?': 'Delete your account?',
+  'Din bruger, dit navn, dit telefonnummer og listen over virksomheder, du har kontaktet, slettes for altid.':
+    'Your account, your name, your phone number and the list of businesses you have contacted are deleted for good.',
+  'Slet bruger': 'Delete account',
+  'Det lykkedes ikke': "That didn't work",
+  'Brugeren blev ikke slettet. Tjek internettet, og prøv igen.':
+    'The account was not deleted. Check your internet connection and try again.',
+  'Din bruger': 'Your account',
+  'Virksomheder, du ringer til gennem FixMatch, ser dit navn og telefonnummer.':
+    'Businesses you call through FixMatch see your name and phone number.',
+  'Tilføj navn og telefonnummer': 'Add name and phone number',
+  'Ret navn og telefonnummer': 'Edit name and phone number',
+  'Du skal have en bruger for at ringe til virksomhederne, så de ved, hvem de taler med.':
+    'You need an account to call businesses, so they know who they are talking to.',
+  'Opret bruger eller log ind': 'Create account or sign in',
+  'Gratis. Udfyld oplysningerne, og giv samtykke på et par minutter.':
+    'Free. Fill in your details and give your consent in a few minutes.',
+  'Tilmeld din virksomhed': 'Sign up your business',
+  'Sådan fungerer det for virksomheder': 'How it works for businesses',
+  'Der mangler noget': 'Something is missing',
+  'Ret de felter, der er markeret med rødt.': 'Correct the fields marked in red.',
+  'Tilmeldingen blev ikke sendt. Tjek internettet, og prøv igen.':
+    'The sign-up was not sent. Check your internet connection and try again.',
+  'Tak for tilmeldingen': 'Thank you for signing up',
+  'Send e-mailen for at blive tilmeldt': 'Send the e-mail to sign up',
+  'Vi tjekker oplysningerne og viser {name} i FixMatch inden for få dage. I kan altid få dem rettet eller fjernet.':
+    'We check the details and show {name} in FixMatch within a few days. You can always have them corrected or removed.',
+  'Din mail-app er åbnet med tilmeldingen. Når du har sendt den, tjekker vi oplysningerne.':
+    'Your mail app has opened with the sign-up. Once you have sent it, we check the details.',
+  Luk: 'Close',
+  'Kom gratis på FixMatch': 'Join FixMatch for free',
+  'Udfyld oplysningerne, og giv samtykke. Vi tjekker dem og viser jer i appen inden for få dage. Det koster intet, og I kan altid få oplysningerne rettet eller fjernet.':
+    'Fill in your details and give your consent. We check them and show you in the app within a few days. It costs nothing, and you can always have the details corrected or removed.',
+  Land: 'Country',
+  Virksomheden: 'The business',
+  Navn: 'Name',
+  Registreringsnummer: 'Registration number',
+  Postnummer: 'Postcode',
+  By: 'Town or city',
+  'Sådan kontakter kunderne jer': 'How customers contact you',
+  'E-mail': 'E-mail',
+  'Vises ikke i appen. Vi bruger den kun til at bekræfte tilmeldingen.':
+    'Not shown in the app. We only use it to confirm the sign-up.',
+  'Hjemmeside (valgfri)': 'Website (optional)',
+  'Priser i {currency} {tax}': 'Prices in {currency} {tax}',
+  'Timepris fra': 'Hourly rate from',
+  'Timepris til': 'Hourly rate to',
+  'Kørselsgebyr (valgfrit)': 'Call-out fee (optional)',
+  'Åbningstider (valgfrit)': 'Opening hours (optional)',
+  'Fx man-fre 07-16, lør-søn lukket': 'E.g. Mon-Fri 07-16, Sat-Sun closed',
+  'Døgnvagt / akut hjælp': '24-hour / emergency service',
+  'Kort om jer (valgfrit)': 'About you (optional)',
+  'Fx: Familieejet VVS-firma med speciale i badeværelser.': 'E.g.: Family-run plumbers specialising in bathrooms.',
+  'Dig, der tilmelder': 'You, signing up',
+  'Dit navn': 'Your name',
+  'Din stilling (valgfri)': 'Your role (optional)',
+  'Fx ejer eller daglig leder': 'E.g. owner or manager',
+  'Læs vilkårene for virksomheder': 'Read the terms for businesses',
+  'Send tilmelding': 'Send sign-up',
+  'For mange forsøg. Vent et minut, og prøv igen.': 'Too many attempts. Wait a minute and try again.',
+  'Koden er forkert eller udløbet. Prøv igen, eller få en ny kode.':
+    'The code is wrong or has expired. Try again, or get a new code.',
+  'Ingen forbindelse. Tjek internettet, og prøv igen.': 'No connection. Check your internet connection and try again.',
+  'Noget gik galt. Prøv igen om lidt.': 'Something went wrong. Try again in a moment.',
+  'Opret en bruger': 'Create an account',
+  'Så kan håndværkerne se, hvem de taler med, når du kontakter dem. Det tager under et minut.':
+    'Then tradespeople can see who they are talking to when you contact them. It takes less than a minute.',
+  'Opret en bruger for at kontakte virksomheden': 'Create an account to contact the business',
+  'Virksomheden får dit navn og telefonnummer, så den ved, hvem den taler med.':
+    'The business gets your name and phone number, so it knows who it is talking to.',
+  'Med en bruger kan du kontakte virksomhederne, og de kan se, hvem du er.':
+    'With an account you can contact businesses, and they can see who you are.',
+  'Dit navn og telefonnummer': 'Your name and phone number',
+  eller: 'or',
+  'navn@eksempel.dk': 'name@example.com',
+  'Skriv en gyldig e-mailadresse.': 'Enter a valid e-mail address.',
+  'Vi sender dig en kode. Ingen adgangskode.': 'We send you a code. No password.',
+  'Fortsæt med e-mail': 'Continue with e-mail',
+  'Tjek din e-mail': 'Check your e-mail',
+  'Vi har sendt en kode til {email}. Skriv den her.': 'We have sent a code to {email}. Enter it here.',
+  Kode: 'Code',
+  Bekræft: 'Confirm',
+  'Send en ny kode': 'Send a new code',
+  'Brug en anden e-mail': 'Use another e-mail',
+  'Virksomheder, du kontakter gennem FixMatch, ser dit navn og telefonnummer, så de ved, hvem de taler med. Vi viser dem ikke til andre.':
+    "Businesses you contact through FixMatch see your name and phone number, so they know who they are talking to. We don't show them to anyone else.",
+  'Fornavn og efternavn': 'First and last name',
+  'Skriv dit navn.': 'Enter your name.',
+  Telefonnummer: 'Phone number',
+  'Skriv et telefonnummer, gerne med landekode.': 'Enter a phone number, preferably with the country code.',
+  'Gem og fortsæt': 'Save and continue',
+  'Demo: din bruger gemmes kun på denne telefon.': 'Demo: your account is only saved on this phone.',
+  'Når du fortsætter, accepterer du': 'By continuing, you accept',
+  vilkårene: 'the terms',
+  og: 'and',
+  privatlivspolitikken: 'the privacy policy',
+  'Vi giver FixMatch lov til gratis at vise oplysningerne ovenfor i appen og på hjemmesiden, indtil vi beder om at blive fjernet.':
+    'We allow FixMatch to show the details above in the app and on the website free of charge, until we ask to be removed.',
+  'Oplysningerne er korrekte, og priserne er vores egne og inkl. moms.':
+    'The details are correct, and the prices are our own and include VAT.',
+  'Jeg må give samtykke på virksomhedens vegne.': 'I am allowed to give consent on behalf of the business.',
+  'Vælg et land.': 'Choose a country.',
+  'Skriv virksomhedens navn.': 'Enter the name of the business.',
+  'Skriv registreringsnummeret.': 'Enter the registration number.',
+  'Vælg mindst ét fag.': 'Choose at least one trade.',
+  'Skriv adressen.': 'Enter the address.',
+  'Skriv postnummeret.': 'Enter the postcode.',
+  'Skriv byen.': 'Enter the town or city.',
+  'Skriv timeprisen som et helt tal.': 'Enter the hourly rate as a whole number.',
+  'Den højeste timepris skal være mindst lige så høj som den laveste.':
+    'The highest hourly rate must be at least as high as the lowest.',
+  'Skriv kørselsgebyret som et helt tal.': 'Enter the call-out fee as a whole number.',
+  'Sæt flueben ved alle tre for at blive vist.': 'Tick all three to be listed.',
+  'Tilmelding: {name}': 'Sign-up: {name}',
 };
 
 export default en;

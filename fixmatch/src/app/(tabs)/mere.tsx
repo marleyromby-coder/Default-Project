@@ -19,6 +19,7 @@ import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { weightsFromPriorities } from '@/lib/ranking';
 import { getLanguage, LANGUAGES, t } from '@/i18n';
 import { countryName } from '@/lib/markets';
+import { deleteAccount, signOut, useAccount } from '@/state/account';
 import { useApp } from '@/state/app-state';
 import { setAppearance, useAppearance } from '@/state/appearance';
 
@@ -52,6 +53,31 @@ export default function MoreScreen() {
   const appearance = useAppearance();
   const weights = weightsFromPriorities(state.priorities);
   const info = (slug: string) => () => router.push({ pathname: '/info/[slug]', params: { slug } });
+  const account = useAccount();
+  const openAccount = (reason: 'settings' | 'profile') => () => router.push({ pathname: '/konto', params: { reason } });
+
+  const confirmSignOut = () =>
+    showDialog(t('Log ud?'), t('Du skal logge ind igen, før du kan kontakte en virksomhed.'), [
+      { text: t('Annuller'), style: 'cancel' },
+      { text: t('Log ud'), onPress: () => signOut() },
+    ]);
+
+  const confirmDelete = () =>
+    showDialog(
+      t('Slet din bruger?'),
+      t('Din bruger, dit navn, dit telefonnummer og listen over virksomheder, du har kontaktet, slettes for altid.'),
+      [
+        { text: t('Annuller'), style: 'cancel' },
+        {
+          text: t('Slet bruger'),
+          style: 'destructive',
+          onPress: () =>
+            deleteAccount().catch(() =>
+              showDialog(t('Det lykkedes ikke'), t('Brugeren blev ikke slettet. Tjek internettet, og prøv igen.')),
+            ),
+        },
+      ],
+    );
 
   const confirmReset = () =>
     showDialog(t('Nulstil app-data?'), t('Gemte virksomheder, valgt by og dine prioriteter slettes fra telefonen.'), [
@@ -70,6 +96,28 @@ export default function MoreScreen() {
       contentInsetAdjustmentBehavior="never">
       <ScreenHeader title={t('Mere')} />
       <View style={styles.sections}>
+        {account.status === 'signedIn' ? (
+          <ListSection
+            title={t('Din bruger')}
+            footer={t('Virksomheder, du ringer til gennem FixMatch, ser dit navn og telefonnummer.')}>
+            <ListRow
+              icon="person"
+              title={account.profile?.name ?? t('Tilføj navn og telefonnummer')}
+              subtitle={[account.profile?.phone, account.email].filter(Boolean).join(' · ') || undefined}
+              onPress={openAccount('profile')}
+              accessibilityHint={t('Ret navn og telefonnummer')}
+            />
+            <ListRow icon="logout" title={t('Log ud')} onPress={confirmSignOut} />
+            <ListRow icon="trash" title={t('Slet bruger')} destructive onPress={confirmDelete} />
+          </ListSection>
+        ) : (
+          <ListSection
+            title={t('Din bruger')}
+            footer={t('Du skal have en bruger for at ringe til virksomhederne, så de ved, hvem de taler med.')}>
+            <ListRow icon="person" title={t('Opret bruger eller log ind')} onPress={openAccount('settings')} />
+          </ListSection>
+        )}
+
         <ListSection title={t('Din søgning')}>
           <ListRow
             icon="pin"
@@ -126,8 +174,11 @@ export default function MoreScreen() {
           <ListRow icon="scale" title={t('Hvis noget går galt')} onPress={info('hjaelp')} />
         </ListSection>
 
-        <ListSection title={t('For virksomheder')}>
-          <ListRow icon="store" title={t('Få din virksomhed på FixMatch')} onPress={info('virksomheder')} />
+        <ListSection
+          title={t('For virksomheder')}
+          footer={t('Gratis. Udfyld oplysningerne, og giv samtykke på et par minutter.')}>
+          <ListRow icon="store" title={t('Tilmeld din virksomhed')} onPress={() => router.push('/tilmeld')} />
+          <ListRow icon="info" title={t('Sådan fungerer det for virksomheder')} onPress={info('virksomheder')} />
           <ListRow icon="flag" title={t('Ret eller fjern oplysninger')} onPress={() => reportProblem()} />
         </ListSection>
 

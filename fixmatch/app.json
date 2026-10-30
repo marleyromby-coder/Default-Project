@@ -12,6 +12,7 @@
     "backgroundColor": "#F4F1EA",
     "ios": {
       "bundleIdentifier": "dk.fixmatch.app",
+      "usesAppleSignIn": true,
       "buildNumber": "1",
       "supportsTablet": false,
       "icon": "./assets/fixmatch.icon",
@@ -85,6 +86,7 @@
         }
       ],
       "expo-web-browser",
+      "expo-apple-authentication",
       [
         "expo-localization",
         {
