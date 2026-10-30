@@ -101,6 +101,7 @@
           "supportsRTL": false
         }
       ],
+      "./plugins/with-implicit-modules",
       [
         "./plugins/with-fixmatch-widgets",
         {

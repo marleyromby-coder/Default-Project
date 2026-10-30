@@ -94,12 +94,13 @@ if (!installed) {
 const workspace = fs.readdirSync(IOS).find((name) => name.endsWith('.xcworkspace'));
 if (!workspace) stop('pod install lavede ingen .xcworkspace. Kopiér outputtet ovenfor til Claude.');
 
-// Xcode's build cache for the old project can keep reporting errors that are already fixed,
-// such as "Unable to resolve module dependency". Only FixMatch's own cache is removed.
+// Xcode's build cache for the old project, and its shared module cache that still points into
+// it, keep reporting errors that are already fixed, such as "Unable to resolve module
+// dependency" and "module map file … not found". Both are rebuilt by the next build.
 const derivedData = path.join(os.homedir(), 'Library/Developer/Xcode/DerivedData');
 const projectName = workspace.replace('.xcworkspace', '');
 for (const name of fs.existsSync(derivedData) ? fs.readdirSync(derivedData) : []) {
-  if (name.startsWith(`${projectName}-`)) {
+  if (name.startsWith(`${projectName}-`) || name === 'ModuleCache.noindex') {
     fs.rmSync(path.join(derivedData, name), { recursive: true, force: true });
     console.log(`✓ Gammel build-cache slettet (${name})`);
   }
