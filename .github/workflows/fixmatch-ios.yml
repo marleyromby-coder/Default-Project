@@ -1,0 +1,82 @@
+name: fixmatch-ios
+# Builds the FixMatch iPhone app and its widget extension with Xcode, the same way
+# `npm run ios:xcode` + Product → Build does on a Mac, so build errors show up here.
+# Simulator build without signing: it compiles everything but needs no Apple account.
+on:
+  push:
+    paths:
+      - 'fixmatch/**'
+      - '.github/workflows/fixmatch-ios.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: fixmatch-ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: fixmatch
+    env:
+      CI: '1'
+      LANG: en_US.UTF-8
+      LC_ALL: en_US.UTF-8
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Select the newest Xcode
+        run: |
+          ls -d /Applications/Xcode*.app
+          XCODE=$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)
+          sudo xcode-select -s "$XCODE"
+          xcodebuild -version
+          pod --version
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: fixmatch/package-lock.json
+
+      - run: npm ci
+
+      - name: Generate the Xcode project
+        run: npx expo prebuild --platform ios --clean --no-install
+
+      - name: pod install
+        working-directory: fixmatch/ios
+        run: pod install
+
+      - name: Build (Release, iOS Simulator)
+        working-directory: fixmatch/ios
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -workspace FixMatch.xcworkspace \
+            -scheme FixMatch \
+            -configuration Release \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            2>&1 | tee build.log | grep -E '(error|warning: unable|BUILD|\*\*)' || exit 1
+
+      - name: Show the build errors
+        if: failure()
+        working-directory: fixmatch/ios
+        run: |
+          [ -f build.log ] || exit 0
+          grep -nE ' error: |^error:|fatal error|No such module|Unable to resolve|PhaseScriptExecution|Command .* failed' build.log | head -80
+          echo '--- end of log ---'
+          tail -60 build.log
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: xcode-build-log
+          path: fixmatch/ios/build.log
+          if-no-files-found: ignore
