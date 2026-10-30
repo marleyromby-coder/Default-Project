@@ -145,7 +145,7 @@
         }
       ],
       "./plugins/with-implicit-modules",
-      "./plugins/with-quiet-pods",
+      "./plugins/with-quiet-xcode",
       [
         "./plugins/with-fixmatch-widgets",
         {

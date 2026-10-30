@@ -131,12 +131,12 @@ jobs:
                   elif re.match(r'^(warning|error): ', line):
                       kind, _, message = line.partition(': ')
                       (warnings if kind == 'warning' else errors).add(('', message))
-              origin = lambda path: 'node_modules' if '/node_modules/' in path else 'Pods' if '/Pods/' in path else 'project'
+              origin = lambda path: next((name for name in ('node_modules', 'Pods', 'DerivedData') if f'/{name}/' in path), 'project')
               print(f'{name}: {len(errors)} errors, {len(warnings)} warnings')
               print('  warnings by origin:', dict(collections.Counter(origin(p) for p, _ in warnings)))
               for path, message in sorted(e for e in errors)[:40]:
                   print('  ERROR', path.split('/fixmatch/')[-1], '–', message[:200])
-              for path, message in sorted(w for w in warnings if origin(w[0]) == 'project')[:80]:
+              for path, message in sorted(warnings)[:80]:
                   print('  WARNING', path.split('/fixmatch/')[-1] or '(build setting)', '–', message[:200])
           EOF
 
