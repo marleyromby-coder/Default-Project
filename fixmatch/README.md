@@ -85,7 +85,7 @@ Apple kræver en offentlig privatlivspolitik og en support-side. De bygges ud fr
 npm run website:build   # → dist-website/ med forside, privatliv, vilkår, support og tilmelding på dansk og engelsk
 ```
 
-- Siden er klar til [Netlify Drop](https://app.netlify.com/drop) på **https://fixmatch-app.netlify.app**. Trin for trin: `docs/lancering/hjemmeside.md`.
+- Siden er klar til [Netlify Drop](https://app.netlify.com/drop) på **https://fixmatchh.netlify.app**. Trin for trin: `docs/lancering/hjemmeside.md`.
 - Udgiver (Marley Romby Sangill), e-mail og adresse står i `src/constants/app-info.ts`. Felterne i `{{…}}` i teksterne udfyldes derfra, og linjer, der starter med `>`, er noter til jer og kommer ikke med.
 - Med siden følger beskrivelser og delingsbillede, `sitemap.xml`, `robots.txt`, en 404-side og Netlify-`_headers`. E-mailadressen er skjult for de simpleste spam-robotter.
 - Køber I et domæne, retter I adressen i `app-info.ts` og bygger igen. Stierne (`/privatliv/`, `/en/privacy/` osv.) skal være de samme.

@@ -10,7 +10,7 @@
  * (required by Apple). Hosted with Netlify Drop until FixMatch has its own domain; change
  * this one line when it moves (docs/lancering/hjemmeside.md).
  */
-const WEBSITE = 'https://fixmatch-app.netlify.app';
+const WEBSITE = 'https://fixmatchh.netlify.app';
 
 export const APP_INFO = {
   name: 'FixMatch',
@@ -20,7 +20,7 @@ export const APP_INFO = {
   cvr: '',
   /** The mailbox for customers and businesses. Change it when FixMatch has its own domain. */
   email: 'marleyromby@gmail.com',
-  website: 'https://fixmatch-app.netlify.app',
+  website: 'https://fixmatchh.netlify.app',
   privacyUrl: `${WEBSITE}/privatliv/`,
   privacyUrlEn: `${WEBSITE}/en/privacy/`,
   termsUrl: `${WEBSITE}/vilkaar/`,
