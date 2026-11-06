@@ -36,6 +36,16 @@ const TEXT = {
     hoursPlaceholder: 'Fx man-fre 07-16, lør-søn lukket',
     emergency: 'Døgnvagt / akut hjælp',
     about: 'Kort om jer (valgfrit)',
+    verify: 'Bliv verificeret (gratis)',
+    verifyText:
+      'Verificerede virksomheder får et flueben ved navnet, så kunderne kan se, at FixMatch har tjekket dem. Vi kontakter dig for at bekræfte, at du er ejer, og beder om at se forsikringen.',
+    verifyYes: 'Ja tak, verificér os',
+    authorization: 'Autorisationsnummer',
+    authorizationHint: 'Fra Sikkerhedsstyrelsen. Kræves for el, VVS og kloak.',
+    insurer: 'Forsikringsselskab (valgfrit)',
+    guarantee: 'Garantiordning (valgfri)',
+    guaranteePlaceholder: 'Fx Byg Garanti eller TEKNIQ',
+    authorizationMissing: 'Skriv autorisationsnummeret. Uden det kan vi ikke verificere jer.',
     you: 'Dig, der tilmelder',
     yourName: 'Dit navn',
     role: 'Din stilling (valgfri)',
@@ -72,6 +82,16 @@ const TEXT = {
     hoursPlaceholder: 'E.g. Mon-Fri 07-16, Sat-Sun closed',
     emergency: '24-hour / emergency service',
     about: 'About you (optional)',
+    verify: 'Get verified (free)',
+    verifyText:
+      'Verified businesses get a tick next to their name, so customers can see that FixMatch has checked them. We contact you to confirm that you are the owner and ask to see your insurance.',
+    verifyYes: 'Yes, verify us',
+    authorization: 'Licence number',
+    authorizationHint: 'From the Danish Safety Technology Authority. Required for electrical, plumbing and drainage work.',
+    insurer: 'Insurance company (optional)',
+    guarantee: 'Guarantee scheme (optional)',
+    guaranteePlaceholder: 'E.g. Byg Garanti or TEKNIQ',
+    authorizationMissing: 'Enter the licence number. We cannot verify you without it.',
     you: 'You, signing up',
     yourName: 'Your name',
     role: 'Your role (optional)',
@@ -112,6 +132,16 @@ function readLaunchedCountries(root) {
   const codes = [...(list ?? '').matchAll(/'([A-Z]{2})'/g)].map((m) => m[1]);
   if (codes.length === 0) throw new Error('Could not read LAUNCHED_COUNTRIES from markets.ts');
   return codes;
+}
+
+/**
+ * The trades whose work requires an authorisation (an `authorization` in categories.ts), so
+ * the Verificeret badge needs the authorisation number – as needsAuthorization() in the app.
+ */
+function readAuthorizationTrades(root) {
+  const source = fs.readFileSync(path.join(root, 'src/data/categories.ts'), 'utf8');
+  const pattern = /^ {4}id: '([a-z]+)',[\s\S]*?^ {4}(?:authorization: '[a-z]+'|keywords:)/gm;
+  return [...source.matchAll(pattern)].filter((m) => m[0].includes('authorization:')).map((m) => m[1]);
 }
 
 /** CONSENT_STATEMENTS and CONSENT_VERSION from the app, with the English from en.ts. */
@@ -160,6 +190,7 @@ function signupForm(lang, { root, email }) {
   const consent = readConsent(root);
   const supabase = readSupabase(root);
   const launched = readLaunchedCountries(root);
+  const authorizationTrades = readAuthorizationTrades(root);
   const countries = Object.entries(COUNTRIES[lang])
     .filter(([code]) => launched.includes(code))
     .map(
@@ -188,6 +219,7 @@ function signupForm(lang, { root, email }) {
     email,
     supabase,
     version: consent.version,
+    authorizationTrades,
     statements: Object.fromEntries(consent.statements.map((s) => [s.key, s[lang]])),
     text: {
       sending: text.sending,
@@ -195,6 +227,7 @@ function signupForm(lang, { root, email }) {
       error: text.error,
       pricesInvalid: text.pricesInvalid,
       tradesMissing: text.tradesMissing,
+      authorizationMissing: text.authorizationMissing,
     },
   };
 
@@ -218,6 +251,15 @@ ${field(text.callout, '<input name="callout_fee" type="number" min="0" step="1" 
 ${field(text.hours, `<input name="opening_hours" maxlength="200" placeholder="${escape(text.hoursPlaceholder)}">`)}
 <label class="choice"><input type="checkbox" name="emergency"> ${escape(text.emergency)}</label>
 ${field(text.about, '<textarea name="description" maxlength="500" rows="3"></textarea>')}
+</fieldset>
+<fieldset><legend>${escape(text.verify)}</legend>
+<p class="hint">${escape(text.verifyText)}</p>
+<label class="choice"><input type="checkbox" name="verify"> ${escape(text.verifyYes)}</label>
+<div class="verify-fields" hidden>
+${field(text.authorization, '<input name="authorization_number" maxlength="40" autocapitalize="characters">', text.authorizationHint)}
+${field(text.insurer, '<input name="insurer" maxlength="120">')}
+${field(text.guarantee, `<input name="guarantee_scheme" maxlength="120" placeholder="${escape(text.guaranteePlaceholder)}">`)}
+</div>
 </fieldset>
 <fieldset><legend>${escape(text.you)}</legend>
 ${field(text.yourName, '<input name="contact_name" required minlength="2" maxlength="100" autocomplete="name">')}
@@ -243,6 +285,9 @@ const CLIENT = `(() => {
   const value = (name) => (form.elements[name].value || '').trim();
   const number = (name) => (value(name) === '' ? null : Math.round(Number(value(name))));
   const show = (message) => { error.textContent = message; error.hidden = false; error.scrollIntoView({ block: 'center' }); };
+  const verifyBox = form.elements.verify;
+  const verifyFields = form.querySelector('.verify-fields');
+  verifyBox.addEventListener('change', () => { verifyFields.hidden = !verifyBox.checked; });
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     error.hidden = true;
@@ -252,6 +297,12 @@ const CLIENT = `(() => {
     const min = number('hourly_min');
     const max = number('hourly_max') ?? min;
     if (max < min) { show(config.text.pricesInvalid); return; }
+    const verify = verifyBox.checked;
+    const needsAuthorization = trades.some((trade) => config.authorizationTrades.includes(trade));
+    if (verify && needsAuthorization && value('authorization_number').length < 3) {
+      show(config.text.authorizationMissing);
+      return;
+    }
     const website = value('website');
     const row = {
       source: 'web',
@@ -274,6 +325,10 @@ const CLIENT = `(() => {
       description: value('description') || null,
       contact_name: value('contact_name'),
       contact_role: value('contact_role') || null,
+      verification_requested: verify,
+      authorization_number: verify ? value('authorization_number') || null : null,
+      insurer: verify ? value('insurer') || null : null,
+      guarantee_scheme: verify ? value('guarantee_scheme') || null : null,
       consent: { listing: true, accurate: true, authority: true, statements: config.statements },
       consent_version: config.version,
     };
@@ -324,9 +379,12 @@ const FORM_STYLE = `
 .signup .choice { display: flex; gap: 10px; align-items: flex-start; color: var(--text); font-weight: 400; }
 .signup .choice input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--brand); flex: none; }
 .signup .error { color: var(--danger); font-weight: 600; }
+.signup .hint { margin: 0; color: var(--muted); }
+.signup .verify-fields { display: grid; gap: 14px; }
+.signup [hidden] { display: none; }
 .signup button { margin-top: 24px; width: 100%; font: inherit; font-weight: 600; font-size: 18px; color: var(--surface); background: var(--brand); border: 0; border-radius: 14px; padding: 16px; cursor: pointer; }
 .signup button:disabled { opacity: 0.6; }
 @media (max-width: 520px) { .signup .row { grid-template-columns: 1fr; } }
 `;
 
-module.exports = { signupForm, readConsent, readTrades, readSupabase, FORM_STYLE };
+module.exports = { signupForm, readConsent, readTrades, readAuthorizationTrades, readSupabase, FORM_STYLE };

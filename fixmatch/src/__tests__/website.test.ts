@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-import { CONSENT_VERSION } from '@/lib/business-signup';
+import { CONSENT_VERSION, emptySignup, signupRow } from '@/lib/business-signup';
 
 // The website builder is plain Node.js (CommonJS) so it runs without a build step.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -46,5 +46,18 @@ describe('website', () => {
     expect(da).toContain('Jeg må give samtykke på virksomhedens vegne.');
     expect(en).toContain('I am allowed to give consent on behalf of the business.');
     expect(en).toContain(`"version":"${CONSENT_VERSION}"`);
+  });
+
+  it('lets businesses ask for the Verificeret badge on the website too, with the same row as the app', () => {
+    const out = fs.mkdtempSync(path.join(os.tmpdir(), 'fixmatch-site-'));
+    buildWebsite(out);
+    const da = fs.readFileSync(path.join(out, 'tilmeld/index.html'), 'utf8');
+    const en = fs.readFileSync(path.join(out, 'en/sign-up/index.html'), 'utf8');
+    expect(da).toContain('Ja tak, verificér os');
+    expect(en).toContain('Yes, verify us');
+    expect(da).toContain('name="authorization_number"');
+    expect(da).toContain('"authorizationTrades":["vvs","elektriker"]');
+    // Every column the app sends, the website sends too.
+    for (const key of Object.keys(signupRow(emptySignup('DK')))) expect(da).toMatch(new RegExp(`\\b${key}[:,]`));
   });
 });

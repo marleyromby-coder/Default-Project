@@ -144,7 +144,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
               ? 'Du godkender dine oplysninger: kontakt, priser, åbningstider, billeder og din Trustpilot-profil.'
               : 'Du godkender dine oplysninger: kontakt, priser, åbningstider og billeder.',
             'Du giver samtykke, når du tilmelder dig, og kan til enhver tid trække det tilbage.',
-            'Vil du have Verificeret-mærket, sætter du flueben ved det i tilmeldingen. Det er gratis.',
+            'Vil du have Verificeret-mærket, sætter du flueben ved det i tilmeldingen i appen eller på hjemmesiden. Det er gratis.',
             'Når en kunde ringer til dig gennem FixMatch, kan du se kundens navn og telefonnummer.',
           ],
         },
@@ -201,7 +201,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
         {
           heading: 'Er du en virksomhed?',
           paragraphs: [
-            `Sæt flueben ved "Verificér os" i tilmeldingen under Mere → Tilmeld din virksomhed, eller skriv til ${APP_INFO.email}. Det er gratis.`,
+            `Sæt flueben ved "Ja tak, verificér os", når du tilmelder virksomheden i appen (Mere → Tilmeld din virksomhed) eller på hjemmesiden, eller skriv til ${APP_INFO.email}. Det er gratis.`,
           ],
         },
       ],

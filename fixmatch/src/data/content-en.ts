@@ -126,7 +126,7 @@ export function infoPagesEn(
               ? 'You approve your details: contact, prices, opening hours, photos and your Trustpilot profile.'
               : 'You approve your details: contact, prices, opening hours and photos.',
             'You give your consent when you sign up and can withdraw it at any time.',
-            'If you want the Verified badge, tick it when you sign up. It is free.',
+            'If you want the Verified badge, tick it when you sign up in the app or on the website. It is free.',
             'When a customer calls you through FixMatch, you can see the customer’s name and phone number.',
           ],
         },
@@ -183,7 +183,7 @@ export function infoPagesEn(
         {
           heading: 'Are you a business?',
           paragraphs: [
-            `Tick "Verify us" when you sign up under More → Sign up your business, or write to ${APP_INFO.email}. It is free.`,
+            `Tick "Yes, verify us" when you sign up your business in the app (More → Sign up your business) or on the website, or write to ${APP_INFO.email}. It is free.`,
           ],
         },
       ],
