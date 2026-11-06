@@ -15,6 +15,8 @@
  *    target (ours and the pods) also gets `-Xcc -w`.
  * 5. Hermes warns about React Native's own globals when it compiles the JavaScript for an
  *    archive; it runs with -w.
+ * 6. In Release, pods' debug-only files compile to nothing, and libtool warns "'X.o' has no
+ *    symbols" for each; the pods' libtool runs with -no_warning_for_no_symbols.
  */
 const fs = require('node:fs');
 const path = require('node:path');
@@ -25,6 +27,8 @@ const MARK = '# Added by plugins/with-quiet-xcode.js';
 const EXPO_CORE_WARNING = 'is internal, so the generated modules provider cannot reference it';
 /** Silences the C and Objective-C headers that Swift imports. */
 const SWIFT_HEADER_FLAGS = '-Xcc -w';
+/** Static libraries whose files are empty in Release (debug-only code). */
+const LIBTOOL_FLAGS = '-no_warning_for_no_symbols';
 
 /** "$(inherited) -D DEBUG" → "$(inherited) -D DEBUG -Xcc -w", keeping the pbxproj quotes. */
 function withSwiftHeaderFlags(value) {
@@ -52,6 +56,8 @@ ${indent}    end
 ${indent}    target.build_configurations.each do |configuration|
 ${indent}      flags = configuration.build_settings['OTHER_SWIFT_FLAGS'] || '$(inherited)'
 ${indent}      configuration.build_settings['OTHER_SWIFT_FLAGS'] = "#{flags} ${SWIFT_HEADER_FLAGS}" unless flags.include?('${SWIFT_HEADER_FLAGS}')
+${indent}      libtool = configuration.build_settings['OTHER_LIBTOOLFLAGS'] || '$(inherited)'
+${indent}      configuration.build_settings['OTHER_LIBTOOLFLAGS'] = "#{libtool} ${LIBTOOL_FLAGS}" unless libtool.include?('${LIBTOOL_FLAGS}')
 ${indent}    end
 ${indent}  end`,
     )}

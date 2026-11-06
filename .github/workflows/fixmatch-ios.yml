@@ -131,6 +131,14 @@ jobs:
                   elif re.match(r'^(warning|error): ', line):
                       kind, _, message = line.partition(': ')
                       (warnings if kind == 'warning' else errors).add(('', message))
+                  else:
+                      # Tools that print their own name first, e.g. "ld: warning:" or libtool's
+                      # "'X.o' has no symbols", which Xcode shows as warnings too.
+                      tool = re.match(r'^(\S+): (warning|error): (.*)', line)
+                      if tool:
+                          (warnings if tool.group(2) == 'warning' else errors).add((tool.group(1), tool.group(3)))
+                      elif 'has no symbols' in line:
+                          warnings.add(('libtool', line.split(': ')[-1]))
               origin = lambda path: next((name for name in ('node_modules', 'Pods', 'DerivedData') if f'/{name}/' in path), 'project')
               print(f'{name}: {len(errors)} errors, {len(warnings)} warnings')
               print('  warnings by origin:', dict(collections.Counter(origin(p) for p, _ in warnings)))

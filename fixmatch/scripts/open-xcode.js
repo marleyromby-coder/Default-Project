@@ -39,6 +39,25 @@ function applyTeam(pbxproj, team) {
     .replace(/^(\s*)(PRODUCT_BUNDLE_IDENTIFIER = [^;]+;)$/gm, `$1$2\n$1DEVELOPMENT_TEAM = ${team};`);
 }
 
+/**
+ * ▶︎ in Xcode builds Release without the debugger, so the app on the iPhone has its JavaScript
+ * inside and opens by itself, also away from the Mac. A Debug build waits for the JavaScript
+ * from `npx expo start` on the Mac and stays on the logo without it, and the debugger can hold
+ * the first launch on a new iPhone for minutes. Profile and Archive stay Release; developers
+ * who want Fast Refresh choose Debug under Product → Scheme → Edit Scheme.
+ */
+function configureScheme(scheme) {
+  return scheme.replace(/<LaunchAction\b[^>]*>/, (tag) =>
+    tag
+      .replace(/buildConfiguration = "[^"]*"/, 'buildConfiguration = "Release"')
+      .replace(/selectedDebuggerIdentifier = "[^"]*"/, 'selectedDebuggerIdentifier = ""')
+      .replace(
+        /selectedLauncherIdentifier = "[^"]*"/,
+        'selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"',
+      ),
+  );
+}
+
 /** Xcode's caches next to the projects' build folders that outlive a project: modules and compiled results. */
 const SHARED_CACHES = ['ModuleCache.noindex', 'CompilationCache.noindex'];
 /** iPhone Duo's full inner display and the iOS 27 extra-large widget need the iOS 27.1 SDK. */
@@ -133,6 +152,14 @@ function main() {
   if (fs.readFileSync(packageJson, 'utf8') !== packageText) fs.writeFileSync(packageJson, packageText);
   if (!prebuilt) stop('expo prebuild fejlede. Se fejlen ovenfor.');
 
+  const schemes = path.join(IOS, 'FixMatch.xcodeproj', 'xcshareddata', 'xcschemes');
+  for (const name of fs.existsSync(schemes) ? fs.readdirSync(schemes) : []) {
+    if (name !== 'FixMatch.xcscheme') continue;
+    const file = path.join(schemes, name);
+    fs.writeFileSync(file, configureScheme(fs.readFileSync(file, 'utf8')));
+    console.log('✓ ▶︎ bygger en Release-app, der åbner af sig selv på iPhonen');
+  }
+
   if (team && /^[A-Z0-9]{10}$/.test(team)) {
     fs.writeFileSync(PBXPROJ, applyTeam(fs.readFileSync(PBXPROJ, 'utf8'), team));
     fs.writeFileSync(TEAM_FILE, `${team}\n`);
@@ -187,4 +214,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { readTeam, applyTeam };
+module.exports = { readTeam, applyTeam, configureScheme };

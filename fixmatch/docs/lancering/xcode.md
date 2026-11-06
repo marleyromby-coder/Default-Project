@@ -55,7 +55,11 @@ For hvert target: sæt flueben i **Automatically manage signing**, og vælg dit 
 
 ## 3. Test på din egen iPhone (valgfrit)
 
-Slut din iPhone til, vælg den øverst i Xcode, og tryk ▶︎ (Run). Eller kør `npx expo run:ios --device` i terminalen.
+Slut din iPhone til, vælg den øverst i Xcode, og tryk ▶︎ (Run). `npm run ios:xcode` sætter ▶︎ til at bygge en **Release-app uden debugger**: JavaScript ligger inde i appen, så den åbner af sig selv og virker også, når Macen er slukket. Du kan også åbne den fra hjemmeskærmen.
+
+Vil du se ændringer med det samme (Fast Refresh), så kør `npx expo start` i terminalen og vælg **Debug** under **Product → Scheme → Edit Scheme → Run**. Uden `npx expo start` bliver en Debug-app ved logoet.
+
+Første gang Xcode møder en ny iPhone, henter den telefonens systemfiler ("Preparing iPhone" eller "Copying shared cache symbols"). Det kan tage nogle minutter.
 
 **iPhone Duo uden en Duo:** Vælg simulatoren **iPhone Duo** øverst i Xcode, og tryk ▶︎. Fold den ud og sammen fra menuen i simulatoren. Udfoldet bruger appen hele den indre skærm. Vender du den på tværs, står listen ved siden af kortet, og de andre skærme holder teksten i en læsevenlig bredde i midten.
 
@@ -96,6 +100,7 @@ Hver gang der pushes, bygger GitHub appen med Xcode 27.1 og 26.6 (▶︎ til iPh
 | `pod install` fejler | Kør `brew install cocoapods`, og så `npm run ios:xcode` igen |
 | Hundredvis af fejl efter `git pull` | Der er kommet nye pakker til. Luk Xcode (⌘Q), kør `npm run ios:xcode`, og byg igen med ⇧⌘K og ▶︎. GitHub bygger hver version med 0 fejl (se *Actions*), så fejl, der bliver ved, skyldes det lokale projekt |
 | Projektet ser forkert ud i Xcode: røde filnavne eller fejl i mange filer | Xcode var åben, mens `ios/` blev lavet forfra. Luk Xcode (⌘Q), og kør `npm run ios:xcode` igen |
+| Appen bliver ved logoet | Den er bygget i **Debug** og venter på `npx expo start`, eller debuggeren holder den. Kør `npm run ios:xcode` igen (▶︎ bliver Release uden debugger), eller vælg **Release** og fjern fluebenet ved **Debug executable** under **Product → Scheme → Edit Scheme → Run** |
 | "No such module 'ExpoWidgets'", "Unable to resolve module dependency" eller "Clang dependency scanning failure" | Næsten altid bygget fra `FixMatch.xcodeproj` (blåt ikon øverst i vinduet) eller et gammelt vindue. Kør `npm run ios:xcode` igen, og byg kun i vinduet, den åbner (hvidt ikon). Hjælper det ikke: **Product → Clean Build Folder** (⇧⌘K) og byg igen |
 | "Command PhaseScriptExecution failed" med "node: command not found" | Kør `npm run ios:xcode` igen. Den skriver stien til Node i `ios/.xcode.env.local` |
 | "Redundant Binary Upload" / buildnummer er brugt | Tal `buildNumber` op i `app.json` (se ovenfor) |

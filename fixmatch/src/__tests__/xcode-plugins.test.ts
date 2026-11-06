@@ -35,6 +35,12 @@ describe('with-quiet-xcode', () => {
     expect(withSwiftHeaderFlags('"$(inherited) -Xcc -w"')).toBe('"$(inherited) -Xcc -w"');
   });
 
+  it("stops libtool's \"has no symbols\" warnings for pods that are empty in Release", () => {
+    expect(patchPodfile(PODFILE)).toContain(
+      `configuration.build_settings['OTHER_LIBTOOLFLAGS'] = "#{libtool} -no_warning_for_no_symbols"`,
+    );
+  });
+
   it('patches the Podfile only once', () => {
     const once = patchPodfile(PODFILE);
     expect(patchPodfile(once)).toBe(once);
@@ -47,7 +53,7 @@ describe('with-quiet-xcode', () => {
 
 describe('npm run ios:xcode', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { readTeam, applyTeam } = require('../../scripts/open-xcode');
+  const { readTeam, applyTeam, configureScheme } = require('../../scripts/open-xcode');
   const project = `
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			buildSettings = {
@@ -72,5 +78,24 @@ describe('npm run ios:xcode', () => {
     expect(applyTeam(signed, 'AB12CD34EF')).toBe(signed);
     expect(applyTeam(signed, 'ZZ99YY88XX').match(/DEVELOPMENT_TEAM/g)).toHaveLength(2);
     expect(readTeam(project)).toBeUndefined();
+  });
+
+  it('makes ▶︎ build a Release app without the debugger, and leaves Archive alone', () => {
+    const scheme = `<Scheme>
+   <LaunchAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0">
+   </LaunchAction>
+   <ArchiveAction
+      buildConfiguration = "Release">
+   </ArchiveAction>
+</Scheme>`;
+    const run = configureScheme(scheme);
+    expect(run).toContain('buildConfiguration = "Release"\n      selectedDebuggerIdentifier = ""');
+    expect(run).toContain('selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"');
+    expect(run).toContain('<ArchiveAction\n      buildConfiguration = "Release">');
+    expect(configureScheme(run)).toBe(run);
   });
 });
