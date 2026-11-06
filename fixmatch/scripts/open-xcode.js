@@ -111,9 +111,13 @@ function main() {
       stop('npm install fejlede. Se fejlen ovenfor.');
   }
 
-  if (!run('npx', ['expo', 'prebuild', '--platform', 'ios', '--clean', '--no-install'], { cwd: ROOT })) {
-    stop('expo prebuild fejlede. Se fejlen ovenfor.');
-  }
+  // prebuild rewrites the "ios" and "android" scripts in package.json; keep the project's own,
+  // so the file is unchanged and the next git pull is not blocked by a local change.
+  const packageJson = path.join(ROOT, 'package.json');
+  const packageText = fs.readFileSync(packageJson, 'utf8');
+  const prebuilt = run('npx', ['expo', 'prebuild', '--platform', 'ios', '--clean', '--no-install'], { cwd: ROOT });
+  if (fs.readFileSync(packageJson, 'utf8') !== packageText) fs.writeFileSync(packageJson, packageText);
+  if (!prebuilt) stop('expo prebuild fejlede. Se fejlen ovenfor.');
 
   if (team && /^[A-Z0-9]{10}$/.test(team)) {
     fs.writeFileSync(PBXPROJ, applyTeam(fs.readFileSync(PBXPROJ, 'utf8'), team));
