@@ -8,6 +8,10 @@
  * after a `prebuild --clean`, a deleted DerivedData or a project opened without its pods.
  * Implicit modules build the same code and simply rebuild what is missing. CocoaPods still
  * recommends them.
+ *
+ * It also turns off user script sandboxing (ENABLE_USER_SCRIPT_SANDBOXING). Expo's and
+ * CocoaPods' build scripts write into ios/Pods (e.g. the widget's ExpoModulesProvider.swift),
+ * and the sandbox stops them with "Sandbox: bash deny(1) file-write-create …/ios/Pods/…".
  */
 const { withXcodeProject } = require('expo/config-plugins');
 
@@ -18,6 +22,7 @@ const withImplicitModules = (config) =>
       if (typeof configuration !== 'object' || !configuration.buildSettings) continue;
       configuration.buildSettings.SWIFT_ENABLE_EXPLICIT_MODULES = 'NO';
       configuration.buildSettings.CLANG_ENABLE_EXPLICIT_MODULES = 'NO';
+      configuration.buildSettings.ENABLE_USER_SCRIPT_SANDBOXING = 'NO';
     }
     return config;
   });

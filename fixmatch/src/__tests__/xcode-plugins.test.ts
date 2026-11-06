@@ -99,3 +99,26 @@ describe('npm run ios:xcode', () => {
     expect(configureScheme(run)).toBe(run);
   });
 });
+
+describe('with-implicit-modules', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const withImplicitModules = require('../../plugins/with-implicit-modules');
+
+  it('turns off explicit modules and script sandboxing in every configuration', async () => {
+    const configs: Record<string, { buildSettings: Record<string, string> } | string> = {
+      a: { buildSettings: {} },
+      b: { buildSettings: { ENABLE_USER_SCRIPT_SANDBOXING: 'YES' } },
+      a_comment: 'Debug',
+    };
+    const config = withImplicitModules({ name: 'x', slug: 'x' });
+    const mod = config.mods.ios.xcodeproj;
+    await mod({ ...config, modResults: { pbxXCBuildConfigurationSection: () => configs }, modRequest: {} });
+    for (const key of ['a', 'b']) {
+      expect((configs[key] as { buildSettings: Record<string, string> }).buildSettings).toMatchObject({
+        SWIFT_ENABLE_EXPLICIT_MODULES: 'NO',
+        CLANG_ENABLE_EXPLICIT_MODULES: 'NO',
+        ENABLE_USER_SCRIPT_SANDBOXING: 'NO',
+      });
+    }
+  });
+});
