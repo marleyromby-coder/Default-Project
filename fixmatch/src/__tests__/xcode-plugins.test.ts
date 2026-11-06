@@ -44,3 +44,33 @@ describe('with-quiet-xcode', () => {
     expect(() => patchPodfile("target 'FixMatch' do\nend\n")).toThrow(/with-quiet-xcode/);
   });
 });
+
+describe('npm run ios:xcode', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { readTeam, applyTeam } = require('../../scripts/open-xcode');
+  const project = `
+		13B07F941A680F5B00A75B9A /* Debug */ = {
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = dk.fixmatch.app;
+			};
+		};
+		61740330E7C444D485AC5133 /* Debug */ = {
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "dk.fixmatch.app.widgets";
+			};
+		};
+		83CBBA201A601CBA00E9B192 /* Debug */ = {
+			buildSettings = {
+				SDKROOT = iphoneos;
+			};
+		};`;
+
+  it('keeps the signing team for the app and the widget when ios/ is made again', () => {
+    const signed = applyTeam(project, 'AB12CD34EF');
+    expect(signed.match(/DEVELOPMENT_TEAM = AB12CD34EF;/g)).toHaveLength(2);
+    expect(readTeam(signed)).toBe('AB12CD34EF');
+    expect(applyTeam(signed, 'AB12CD34EF')).toBe(signed);
+    expect(applyTeam(signed, 'ZZ99YY88XX').match(/DEVELOPMENT_TEAM/g)).toHaveLength(2);
+    expect(readTeam(project)).toBeUndefined();
+  });
+});

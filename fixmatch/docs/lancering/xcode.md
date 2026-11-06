@@ -25,7 +25,7 @@ npm install
 npm run ios:xcode
 ```
 
-**Luk Xcode (⌘Q), før du kører kommandoen.** `npm run ios:xcode` tjekker Xcode og CocoaPods, installerer pakkerne, hvis de er forældede, sletter FixMatchs gamle build-cache og Xcodes modul-cache, laver Xcode-projektet (mappen `ios/`) ud fra `app.json`, kører `pod install` og åbner **`ios/FixMatch.xcworkspace`**. Går et trin galt, stopper den og skriver hvorfor. Mappen laves forfra hver gang, så ret aldrig i den direkte. Ret i `app.json` og kør kommandoen igen.
+`npm run ios:xcode` lukker selv Xcode, tjekker Xcode og CocoaPods, installerer pakkerne, hvis de er forældede, laver Xcode-projektet (mappen `ios/`) ud fra `app.json` og kører `pod install`. Den tjekker, at widgettens pods er med, og sletter FixMatchs gamle build-cache og Xcodes modul- og compiler-cache. Så åbner den kun **`ios/FixMatch.xcworkspace`**, uden de vinduer, Xcode ellers selv genåbner. Det team, du har valgt under Signing, bliver husket til næste gang (i filen `.xcode-team`, som ikke kommer i git). Går et trin galt, stopper den og skriver hvorfor. Mappen laves forfra hver gang, så ret aldrig i den direkte. Ret i `app.json` og kør kommandoen igen.
 
 **Åbn altid `FixMatch.xcworkspace` (hvidt ikon), aldrig `FixMatch.xcodeproj` (blåt ikon).** Projektfilen alene kender ikke Expos moduler, og så fejler buildet med "No such module 'ExpoWidgets'".
 
@@ -87,7 +87,7 @@ Hver gang der pushes, bygger GitHub appen med Xcode 27.1 og 26.6 (▶︎ til iPh
 | `pod install` fejler | Kør `brew install cocoapods`, og så `npm run ios:xcode` igen |
 | Hundredvis af fejl efter `git pull` | Der er kommet nye pakker til. Luk Xcode (⌘Q), kør `npm run ios:xcode`, og byg igen med ⇧⌘K og ▶︎. GitHub bygger hver version med 0 fejl (se *Actions*), så fejl, der bliver ved, skyldes det lokale projekt |
 | Projektet ser forkert ud i Xcode: røde filnavne eller fejl i mange filer | Xcode var åben, mens `ios/` blev lavet forfra. Luk Xcode (⌘Q), og kør `npm run ios:xcode` igen |
-| "No such module 'ExpoWidgets'", "Unable to resolve module dependency" eller "Clang dependency scanning failure" | Luk Xcode, kør `npm run ios:xcode` igen, og byg fra `FixMatch.xcworkspace`. Hjælper det ikke: **Product → Clean Build Folder** (⇧⌘K) og byg igen |
+| "No such module 'ExpoWidgets'", "Unable to resolve module dependency" eller "Clang dependency scanning failure" | Næsten altid bygget fra `FixMatch.xcodeproj` (blåt ikon øverst i vinduet) eller et gammelt vindue. Kør `npm run ios:xcode` igen, og byg kun i vinduet, den åbner (hvidt ikon). Hjælper det ikke: **Product → Clean Build Folder** (⇧⌘K) og byg igen |
 | "Command PhaseScriptExecution failed" med "node: command not found" | Kør `npm run ios:xcode` igen. Den skriver stien til Node i `ios/.xcode.env.local` |
 | "Redundant Binary Upload" / buildnummer er brugt | Tal `buildNumber` op i `app.json` (se ovenfor) |
 | Widgets vises ikke | Åbn appen én gang efter installation. Hold fingeren på hjemmeskærmen → **+** → søg "FixMatch" |
