@@ -7,7 +7,16 @@ Buildet er demoversionen: fiktive virksomheder og ingen Trustpilot. Det er stand
 ## Det skal du have
 
 - En Mac med **Xcode 27.1** eller nyere (kræver macOS Tahoe 26.6). Xcode 27.1 er nødvendig, for at appen fylder hele den indre skærm på **iPhone Duo** og får den nye **ekstra store widget** fra iOS 27. Ældre Xcode virker også, men så kører appen med sorte kanter på den åbne Duo, og widgetten mangler.
-- [Node.js 20 eller nyere](https://nodejs.org) og CocoaPods (`brew install cocoapods`).
+- [Node.js 20 eller nyere](https://nodejs.org) og CocoaPods. CocoaPods installeres med [Homebrew](https://brew.sh). Har du ikke Homebrew, så kør i Terminal:
+
+  ```bash
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  brew install cocoapods
+  ```
+
+  Uden CocoaPods fejler buildet med "No such module 'ExpoWidgets'".
 - Din Apple Developer-konto, logget ind i Xcode → Settings → Accounts.
 
 ## 0. Supabase (brugere og tilmeldinger)

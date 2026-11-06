@@ -81,7 +81,21 @@ function main() {
   }
 
   const pod = output('pod', ['--version']);
-  if (!pod) stop('CocoaPods mangler. Installer det med:\n  brew install cocoapods\nog kør npm run ios:xcode igen.');
+  if (!pod) {
+    // Without CocoaPods there are no pods, and Xcode fails with "No such module 'ExpoWidgets'".
+    stop(
+      output('brew', ['--version'])
+        ? 'CocoaPods mangler. Installer det med:\n  brew install cocoapods\nog kør npm run ios:xcode igen.'
+        : 'CocoaPods mangler, og det gør Homebrew, der installerer det, også. Kør disse kommandoer én ad gangen\n' +
+            '(den første beder om din Mac-adgangskode og tager et par minutter):\n\n' +
+            '  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"\n' +
+            '  echo \'eval "$(/opt/homebrew/bin/brew shellenv)"\' >> ~/.zprofile\n' +
+            '  eval "$(/opt/homebrew/bin/brew shellenv)"\n' +
+            '  brew install cocoapods\n\n' +
+            'Står der noget andet under "Next steps", når Homebrew er installeret, så brug de linjer i stedet for\n' +
+            'de to med brew shellenv. Kør så npm run ios:xcode igen.',
+    );
+  }
   console.log(`✓ CocoaPods ${pod}`);
 
   // ios/ is deleted and made again below. An open Xcode keeps showing the old, deleted project
