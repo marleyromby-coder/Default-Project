@@ -4,6 +4,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BusinessMark } from '@/components/business/business-mark';
+import { VerifiedMark } from '@/components/business/verified-mark';
 import { OpenStatus } from '@/components/business/open-status';
 import { PriceLevel } from '@/components/business/price-level';
 import { ScoreBars } from '@/components/business/score-bars';
@@ -51,6 +52,7 @@ import { matchLabel, priceLevel, weightsFromPriorities } from '@/lib/ranking';
 import { t } from '@/i18n';
 import { businessText, countryOf, currencyOf } from '@/lib/business-text';
 import { getMarket, taxNote } from '@/lib/markets';
+import { CHECK_TEXT, isTopRated, isVerified, passedChecks, verificationExpiry } from '@/lib/verification';
 import { MAX_COMPARE, useApp, useBusiness } from '@/state/app-state';
 
 /** How far the header scrolls before the compact title bar appears. */
@@ -82,6 +84,7 @@ export default function BusinessScreen() {
 
   const category = getCategory(business.categories[0]);
   const text = businessText(business);
+  const verified = isVerified(business);
   const country = countryOf(business);
   const market = getMarket(country);
   const currency = currencyOf(business);
@@ -123,9 +126,12 @@ export default function BusinessScreen() {
           <View style={styles.headerRow}>
             <BusinessMark business={business} size={72} />
             <View style={styles.flex}>
-              <AppText variant="title2" numberOfLines={2}>
-                {business.name}
-              </AppText>
+              <View style={styles.nameRow}>
+                <AppText variant="title2" numberOfLines={2} style={styles.shrink}>
+                  {business.name}
+                </AppText>
+                <VerifiedMark business={business} size={20} />
+              </View>
               <AppText variant="subhead" tone="textSecondary" numberOfLines={2}>
                 {text.tagline}
               </AppText>
@@ -133,6 +139,8 @@ export default function BusinessScreen() {
           </View>
           <View style={styles.heroBadges}>
             {category ? <Badge label={category.name} tone="neutral" icon={category.id} /> : null}
+            {verified ? <Badge label={t('Verificeret')} tone="success" icon="verified" /> : null}
+            {isTopRated(business) ? <Badge label={t('Topbedømt')} tone="brand" icon="star" /> : null}
             {business.demo ? <Badge label={t('Eksempel')} tone="warning" /> : null}
           </View>
           <View style={[styles.stats, { borderTopColor: colors.border }]}>
@@ -298,6 +306,14 @@ export default function BusinessScreen() {
               )}
             </AppText>
             <LinkText label={t('Om priserne og håndværkerfradrag')} slug="priser" />
+            <Button
+              title={t('Har du fået et tilbud? Tjek prisen')}
+              icon="receipt"
+              variant="plain"
+              size="small"
+              onPress={() => router.push({ pathname: '/tilbudstjek', params: { kategori: business.categories[0] } })}
+              style={styles.alignStart}
+            />
           </Card>
 
           <Card>
@@ -365,7 +381,38 @@ export default function BusinessScreen() {
           </Card>
 
           <Card>
-            <CardTitle title={t('Tjekket af FixMatch')} icon="verified" />
+            <CardTitle title={t('Verificering')} icon="verified" />
+            {verified && business.verified ? (
+              <>
+                <InfoRow
+                  icon="verified"
+                  label={t('Verificeret af FixMatch')}
+                  value={t('Tjekket {date} · gælder til {until}', {
+                    date: formatDate(business.verified.date),
+                    until: formatDate(verificationExpiry(business.verified).toISOString().slice(0, 10)),
+                  })}
+                  onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'verificering' } })}
+                />
+                <View style={styles.checks}>
+                  {passedChecks(business).map((check) => (
+                    <View key={check} style={styles.checkRow}>
+                      <Icon name="check" size={13} color={colors.success} weight="bold" />
+                      <AppText variant="footnote" style={styles.flex}>
+                        {t(CHECK_TEXT[check])}
+                      </AppText>
+                    </View>
+                  ))}
+                </View>
+              </>
+            ) : (
+              <InfoRow
+                icon="info"
+                label={t('Ikke verificeret endnu')}
+                value={t('Se, hvad FixMatch tjekker')}
+                onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'verificering' } })}
+              />
+            )}
+            <Divider inset={30} />
             {business.cvr && market.registryLabel ? (
               <InfoRow
                 icon="building"
@@ -629,7 +676,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   headerRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  heroBadges: { flexDirection: 'row', gap: Spacing.xs },
+  heroBadges: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs },
+  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  shrink: { flexShrink: 1 },
+  alignStart: { alignSelf: 'flex-start' },
+  checks: { gap: 6, paddingLeft: 30, paddingBottom: Spacing.sm },
+  checkRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   stats: { flexDirection: 'row', borderTopWidth: StyleSheet.hairlineWidth, paddingTop: Spacing.md },
   stat: { flex: 1, alignItems: 'center', gap: 1, paddingHorizontal: 2 },
   body: { padding: ScreenPadding, gap: Spacing.lg },

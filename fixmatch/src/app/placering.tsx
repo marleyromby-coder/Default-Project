@@ -32,7 +32,7 @@ export default function LocationScreen() {
         : [
             { title: t('Store byer i Danmark'), data: POPULAR_PLACES },
             { title: t('FixMatch i udlandet'), data: INTERNATIONAL_PLACES },
-          ],
+          ].filter((section) => section.data.length > 0),
     [query],
   );
 
@@ -79,7 +79,10 @@ export default function LocationScreen() {
         keyExtractor={(p) => `${p.country}-${p.code ?? ''}-${p.name}`}
         keyboardShouldPersistTaps="handled"
         stickySectionHeadersEnabled={false}
-        contentContainerStyle={[column, { paddingHorizontal: ScreenPadding, paddingBottom: insets.bottom + Spacing.xl }]}
+        contentContainerStyle={[
+          column,
+          { paddingHorizontal: ScreenPadding, paddingBottom: insets.bottom + Spacing.xl },
+        ]}
         renderSectionHeader={({ section }) => (
           <AppText variant="subhead" weight="600" tone="textSecondary" style={styles.label} accessibilityRole="header">
             {section.title}
@@ -119,7 +122,7 @@ export default function LocationScreen() {
         }}
         ListEmptyComponent={
           <AppText variant="subhead" tone="textSecondary" align="center" style={styles.empty}>
-            {t('Ingen byer eller postnumre matcher “{query}”.', { query })}
+            {t('Ingen byer eller postnumre matcher “{query}”. FixMatch er kun i Danmark indtil videre.', { query })}
           </AppText>
         }
       />

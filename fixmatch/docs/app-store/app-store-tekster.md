@@ -45,6 +45,11 @@ Ny: Sammenlign op til tre håndværkere side om side – timepris inkl. moms, af
 ```
 Mangler du en VVS'er, elektriker, tømrer, murer eller mekaniker? FixMatch finder lokale danske virksomheder og sammenligner dem på det, der betyder noget: pris og afstand. Så sparer du både tid og penge.
 
+TILBUDSTJEK – ER PRISEN FAIR?
+• Tast et tilbud ind, også et du har fået et andet sted, og se om prisen er lav, normal eller høj
+• Se hvad det grønne håndværkerfradrag giver tilbage i kroner
+• Find verificerede virksomheder i nærheden, der tager mindre for samme opgave
+
 BESKRIV DIT PROBLEM – VI MATCHER DIT BUDGET
 • Skriv med dine egne ord, fx "køkkenvasken er stoppet", og hvad du vil give
 • FixMatch finder faget og viser, hvem der ligger inden for dit budget – og hvem der er tæt på
@@ -65,6 +70,7 @@ SAMMENLIGN PÅ ÉT SKÆRMBILLEDE
 • Sortér efter pris eller afstand, og filtrér på åben nu, døgnvagt og autorisation
 
 TJEKKET OG GENNEMSIGTIGT
+• Verificeret-mærket: FixMatch har selv tjekket CVR, ejer og autorisation
 • CVR-nummer og autorisation fra Sikkerhedsstyrelsen for el og VVS
 • Ingen kan betale sig til en bedre placering. Annoncer er altid tydeligt markeret
 

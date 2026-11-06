@@ -18,12 +18,13 @@ import {
   CONSENT_KEYS,
   CONSENT_STATEMENTS,
   emptySignup,
+  needsAuthorization,
   type SignupField,
   signupErrors,
   submitSignup,
 } from '@/lib/business-signup';
 import { showDialog } from '@/lib/dialog';
-import { COUNTRY_CODES, countryName, getMarket, taxNote } from '@/lib/markets';
+import { countryName, getMarket, LAUNCHED_COUNTRIES, taxNote } from '@/lib/markets';
 import { useMarket } from '@/state/app-state';
 import { t } from '@/i18n';
 
@@ -108,18 +109,20 @@ export default function BusinessSignupScreen() {
           </AppText>
         </View>
 
-        <Section title={t('Land')}>
-          <View style={styles.chips}>
-            {COUNTRY_CODES.map((code) => (
-              <Chip
-                key={code}
-                label={countryName(code)}
-                selected={signup.country === code}
-                onPress={() => update('country', code)}
-              />
-            ))}
-          </View>
-        </Section>
+        {LAUNCHED_COUNTRIES.length > 1 ? (
+          <Section title={t('Land')}>
+            <View style={styles.chips}>
+              {LAUNCHED_COUNTRIES.map((code) => (
+                <Chip
+                  key={code}
+                  label={countryName(code)}
+                  selected={signup.country === code}
+                  onPress={() => update('country', code)}
+                />
+              ))}
+            </View>
+          </Section>
+        ) : null}
 
         <Section title={t('Virksomheden')}>
           <TextField
@@ -242,6 +245,37 @@ export default function BusinessSignupScreen() {
             placeholder={t('Fx: Familieejet VVS-firma med speciale i badeværelser.')}
             {...field('description')}
           />
+        </Section>
+
+        <Section title={t('Bliv verificeret (gratis)')}>
+          <AppText variant="subhead" tone="textSecondary">
+            {t(
+              'Verificerede virksomheder får et flueben ved navnet, så kunderne kan se, at FixMatch har tjekket dem. Vi kontakter dig for at bekræfte, at du er ejer, og beder om at se forsikringen.',
+            )}
+          </AppText>
+          <CheckRow
+            label={t('Ja tak, verificér os')}
+            checked={signup.verify}
+            onToggle={() => update('verify', !signup.verify)}
+          />
+          {signup.verify ? (
+            <>
+              {needsAuthorization(signup.trades) ? (
+                <TextField
+                  label={t('Autorisationsnummer')}
+                  hint={t('Fra Sikkerhedsstyrelsen. Kræves for el, VVS og kloak.')}
+                  autoCapitalize="characters"
+                  {...field('authorizationNumber')}
+                />
+              ) : null}
+              <TextField label={t('Forsikringsselskab (valgfrit)')} {...field('insurer')} />
+              <TextField
+                label={t('Garantiordning (valgfri)')}
+                placeholder={t('Fx Byg Garanti eller TEKNIQ')}
+                {...field('guaranteeScheme')}
+              />
+            </>
+          ) : null}
         </Section>
 
         <Section title={t('Dig, der tilmelder')}>

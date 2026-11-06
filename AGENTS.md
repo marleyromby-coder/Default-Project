@@ -3,7 +3,7 @@
 This repository holds two independent projects:
 
 - `index.html` – a single-file Three.js demo (CDN-loaded r128, no build step).
-- `fixmatch/` – **FixMatch**, an Expo (SDK 58) / React Native iPhone app (Danish and English) for finding and comparing craftsmen and mechanics in Denmark, Sweden, Norway, Germany and the UK. See `fixmatch/README.md` and `fixmatch/AGENTS.md`.
+- `fixmatch/` – **FixMatch**, an Expo (SDK 58) / React Native iPhone app (Danish and English) for finding and comparing craftsmen and mechanics. It launches in Denmark first; Sweden, Norway, Germany and the UK are ready in the code. See `fixmatch/README.md` and `fixmatch/AGENTS.md`.
 
 ## Structure
 

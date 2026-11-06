@@ -3,8 +3,9 @@ import { getLanguage, msg, t } from '@/i18n';
 import type { Region } from './cluster';
 
 /**
- * The countries FixMatch lists businesses in, in launch order:
+ * The countries FixMatch can list businesses in, in launch order:
  * 1 Denmark → 2 Sweden and Norway → 3 Germany and the UK (London first).
+ * Only LAUNCHED_COUNTRIES are shown in the app; the others stay ready for later.
  * Prices are compared within one country only, never across currencies.
  */
 
@@ -113,16 +114,31 @@ export const MARKETS: Record<CountryCode, Market> = {
 
 export const COUNTRY_CODES = Object.keys(MARKETS) as CountryCode[];
 
+/**
+ * The countries FixMatch is live in. FixMatch launches in Denmark first and opens the next
+ * phase when Denmark works (docs/lancering/global-lancering.md). Add a country here to open
+ * it: listings, places, the business sign-up and the map follow this list.
+ */
+export const LAUNCHED_COUNTRIES: readonly CountryCode[] = ['DK'];
+
 export function isCountryCode(value: unknown): value is CountryCode {
   return typeof value === 'string' && value in MARKETS;
+}
+
+/** Whether FixMatch is live in a country (see LAUNCHED_COUNTRIES). */
+export function isLaunched(value: unknown): value is CountryCode {
+  return isCountryCode(value) && LAUNCHED_COUNTRIES.includes(value);
 }
 
 export function getMarket(country: CountryCode | undefined): Market {
   return MARKETS[country ?? 'DK'] ?? MARKETS.DK;
 }
 
-/** Every country FixMatch is in, from the UK to Norway, for the map's "all countries" view. */
-export const MARKETS_REGION: Region = { latitude: 57, longitude: 9, latitudeDelta: 30, longitudeDelta: 44 };
+/** Every country FixMatch is live in, for the map's "all countries" view: just Denmark at launch. */
+export const MARKETS_REGION: Region =
+  LAUNCHED_COUNTRIES.length === 1
+    ? MARKETS[LAUNCHED_COUNTRIES[0]].region
+    : { latitude: 57, longitude: 9, latitudeDelta: 30, longitudeDelta: 44 };
 
 export function countryName(country: string): string {
   if (isCountryCode(country)) return t(MARKETS[country].name);

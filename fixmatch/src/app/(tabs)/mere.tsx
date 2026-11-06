@@ -167,6 +167,7 @@ export default function MoreScreen() {
           title={t('Gennemsigtighed')}
           footer={t('Ingen kan betale sig til en bedre placering i søgeresultaterne.')}>
           <ListRow icon="list" title={t('Sådan rangerer vi')} onPress={info('rangering')} />
+          <ListRow icon="verified" title={t('Sådan verificerer vi')} onPress={info('verificering')} />
           {TRUSTPILOT_ENABLED ? (
             <ListRow icon="star" title={t('Om anmeldelser')} onPress={info('anmeldelser')} />
           ) : null}

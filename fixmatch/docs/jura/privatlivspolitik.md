@@ -54,6 +54,10 @@ Appen henter virksomhedernes egne billeder og (hvis aktiveret) en opdateret virk
 
 Vi viser oplysninger om virksomheder (fx navn, CVR, telefonnummer og priser), som virksomhederne selv har godkendt. For enkeltmandsvirksomheder kan det være personoplysninger om ejeren. Retsgrundlaget er virksomhedens samtykke (GDPR art. 6, stk. 1, litra a). Tilmelder virksomheden sig selv i appen eller på hjemmesiden, gemmer vi tilmeldingen med samtykketeksten og tidspunktet hos Supabase i EU som dokumentation. Samtykket kan til enhver tid trækkes tilbage ved at skrive til {{email}}, og så fjerner vi oplysningerne inden for 2 hverdage. Kontaktpersoners navn og e-mail bruges kun til at administrere profilen og opbevares, så længe profilen findes, og 12 måneder derefter som dokumentation for samtykket.
 
+**Verificeret-mærket.** Beder en virksomhed om mærket, gemmer vi også autorisationsnummer, forsikringsselskab og garantiordning, og hvad vi har tjekket og hvornår (CVR, ejer, autorisation, forsikring og garantiordning). Vi bruger det kun til at give og forny mærket. Retsgrundlaget er aftalen med virksomheden om mærket (GDPR art. 6, stk. 1, litra b). Oplysningerne slettes, når mærket ikke længere fornyes, eller når virksomheden trækker sig fra FixMatch.
+
+> Tjek retsgrundlag og opbevaringstid for verificeringen med jeres advokat (se GDPR-forberedelsen).
+
 ## 11. Henvendelser til os
 
 Skriver du til os, bruger vi din e-mail og det, du skriver, til at svare dig. Vi sletter henvendelsen senest 12 måneder efter, sagen er afsluttet.

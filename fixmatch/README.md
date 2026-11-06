@@ -2,13 +2,15 @@
 
 **Find den rette håndværker eller mekaniker – sammenlign pris, afstand og Trustpilot-anmeldelser, og ring direkte.**
 
-FixMatch er en iPhone-app (Expo / React Native) på dansk og engelsk til Danmark, Sverige, Norge, Tyskland og Storbritannien (London først). Brugeren vælger et fag eller en opgave og får lokale virksomheder rangeret efter en gennemsigtig FixMatch-score. Hver virksomhed har en side med telefonnummer, hjemmeside, prisinterval i landets valuta, TrustScore, registreringsnummer (fx CVR), autorisation og åbningstider.
+FixMatch er en iPhone-app (Expo / React Native) på dansk og engelsk, der lanceres i **Danmark først**. Sverige, Norge, Tyskland og Storbritannien (London) ligger klar i koden og slås til i `LAUNCHED_COUNTRIES` i `src/lib/markets.ts`, når Danmark virker. Brugeren vælger et fag eller en opgave og får lokale virksomheder rangeret efter en gennemsigtig FixMatch-score. Hver virksomhed har en side med telefonnummer, hjemmeside, prisinterval i landets valuta, TrustScore, registreringsnummer (fx CVR), autorisation og åbningstider.
 
 | Fag | VVS'er · Elektriker · Tømrer · Murer · Mekaniker · Maler · Tagdækker · Låsesmed |
 | --- | --- |
 | Sammenligning | Pris (timepris + eksempelpriser), afstand (luftlinje) og Trustpilot (TrustScore, antal anmeldelser) |
 | Kontakt | Ring op, hjemmeside, rutevejledning, del. Første opkald kræver en bruger (Log ind med Apple eller e-mail-kode + navn og telefon), så virksomheden ved, hvem der ringer |
 | For virksomheder | Selvbetjent tilmelding med samtykke i appen og på hjemmesiden, gemt i Supabase (EU) og importeret med `npm run import:businesses` |
+| Tilbudstjek | Tast et tilbud ind (også fra en anden side), og se om prisen er lav, normal eller høj i forhold til virksomhederne i nærheden, hvad det grønne håndværkerfradrag giver, og hvem der tager mindre (`src/app/tilbudstjek.tsx`, `src/lib/quote-check.ts`) |
+| Verificeret | Gratis mærke ved navnet, når FixMatch har tjekket CVR, ejer og autorisation (og evt. forsikring og garantiordning). Gælder et år. Virksomheder beder om det i tilmeldingen; I sætter `verificeret` og `verificeret_tjek` i import-CSV'en (`src/lib/verification.ts`) |
 | Beskriv dit problem | Fritekst + budget → fag og opgave genkendes på telefonen, og virksomhederne grupperes efter, om deres egen pris passer til budgettet |
 | Kort | Apple Kort (MapKit) med alle virksomheder, farvet efter fag, klynger og swipe-kort. Se `docs/jura/apple-kort.md` |
 | Sprog og lande | Dansk og engelsk (følger telefonen). Priser sammenlignes kun inden for ét land og vises i landets valuta. Miles i UK. Byer i hele verden kan vælges som placering |
@@ -33,7 +35,7 @@ Scan QR-koden med iPhonens kamera → appen åbner i Expo Go. Alt du ændrer i k
 - **Tjek koden**: `npm run check` (TypeScript, lint og tests). Widgets: `npm run widgets:check`.
 - **Engelsk version**: på iPhone under Indstillinger → FixMatch → Sprog. På web: tilføj `?lang=en` til adressen.
 
-> Appen starter i **demotilstand** med 200 fiktive virksomheder: 104 i København, Aarhus, Odense og Aalborg og 24 i hver af Stockholm, Oslo, Berlin og London. De er tydeligt markeret, telefonnumre er i nummerserier til fiktion eller ugyldige, registreringsnumre er ugyldige, og opkald er slået fra.
+> Appen starter i **demotilstand** med 200 fiktive virksomheder: 104 i København, Aarhus, Odense og Aalborg (60 af dem verificerede) og 24 i hver af Stockholm, Oslo, Berlin og London. Appen viser kun de danske, indtil de andre lande slås til. De er tydeligt markeret, telefonnumre er i nummerserier til fiktion eller ugyldige, registreringsnumre er ugyldige, og opkald er slået fra.
 
 **Fremvisning og lancering uden CVR:** se `docs/lancering/global-lancering.md`. Kort fortalt: vis appen via TestFlight (demodata er tilladt der), Expo Go, iOS-simulatoren eller webdemoen. App Store kræver rigtige virksomheder, men ikke et CVR-nummer.
 

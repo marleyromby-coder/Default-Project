@@ -73,6 +73,15 @@ export interface Authorization {
   number: string;
 }
 
+/** What FixMatch checks before a business gets the Verificeret badge (see lib/verification.ts). */
+export type VerificationCheck = 'cvr' | 'identity' | 'authorization' | 'insurance' | 'guarantee';
+
+export interface Verification {
+  /** The day FixMatch last checked the business, YYYY-MM-DD. The badge lapses a year later. */
+  date: string;
+  checks: VerificationCheck[];
+}
+
 /** Opening hours from Monday (index 0) to Sunday (index 6). `null` means closed. */
 export type WeekHours = ([string, string] | null)[];
 
@@ -101,6 +110,8 @@ export interface Business {
   trustpilot?: TrustpilotInfo;
   authorizations: Authorization[];
   memberships: string[];
+  /** FixMatch's own check of the business: the Verificeret badge. */
+  verified?: Verification;
   services: string[];
   hours: WeekHours;
   /** IANA time zone of the opening hours, when it differs from the country's. */
@@ -155,5 +166,6 @@ export interface Filters {
   openNow: boolean;
   emergency: boolean;
   authorizedOnly: boolean;
+  verifiedOnly: boolean;
   trustpilotOnly: boolean;
 }

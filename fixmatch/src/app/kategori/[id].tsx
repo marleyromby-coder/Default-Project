@@ -90,7 +90,8 @@ export default function CategoryScreen() {
       t('Du kan sammenligne op til {MAX_COMPARE} virksomheder. Fjern en for at vælge en ny.', { MAX_COMPARE }),
     );
 
-  const toggle = (key: 'openNow' | 'emergency' | 'authorizedOnly') => setFilters({ ...filters, [key]: !filters[key] });
+  const toggle = (key: 'openNow' | 'emergency' | 'authorizedOnly' | 'verifiedOnly') =>
+    setFilters({ ...filters, [key]: !filters[key] });
 
   const header = (
     <View style={styles.header}>
@@ -140,6 +141,12 @@ export default function CategoryScreen() {
           count={filterCount}
           onPress={() => router.push({ pathname: '/filtre', params: { kategori: category.id } })}
           accessibilityLabel={filterCount ? t('Filtre, {count} aktive', { count: filterCount }) : t('Filtre')}
+        />
+        <Chip
+          label={t('Verificeret')}
+          icon="verified"
+          selected={filters.verifiedOnly}
+          onPress={() => toggle('verifiedOnly')}
         />
         <Chip label={t('Åben nu')} selected={filters.openNow} onPress={() => toggle('openNow')} />
         <Chip label={t('Døgnvagt')} icon="bolt" selected={filters.emergency} onPress={() => toggle('emergency')} />

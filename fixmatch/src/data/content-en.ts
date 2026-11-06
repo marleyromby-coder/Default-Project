@@ -2,6 +2,7 @@ import { APP_INFO } from '@/constants/app-info';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { CLOSE_MARGIN, WORKSHOP_RADIUS_KM } from '@/lib/matcher';
 import { DISTANCE_SCALE_KM, NO_REVIEWS_SCORE, REVIEW_PRIOR_COUNT, REVIEW_PRIOR_MEAN } from '@/lib/ranking';
+import { TOP_RATED_MIN_REVIEWS, TOP_RATED_MIN_SCORE, VERIFICATION_VALID_DAYS } from '@/lib/verification';
 
 import type { InfoPage } from './content';
 
@@ -9,7 +10,7 @@ import type { InfoPage } from './content';
 export function infoPagesEn(
   reviews = TRUSTPILOT_ENABLED,
 ): Record<
-  'rangering' | 'anmeldelser' | 'priser' | 'virksomheder' | 'hjaelp' | 'privatliv' | 'vilkaar' | 'om',
+  'rangering' | 'anmeldelser' | 'priser' | 'virksomheder' | 'verificering' | 'hjaelp' | 'privatliv' | 'vilkaar' | 'om',
   InfoPage
 > {
   return {
@@ -52,7 +53,7 @@ export function infoPagesEn(
         {
           heading: 'Filters',
           paragraphs: [
-            'Filters such as distance, opening hours, 24-hour service and licences hide businesses but do not change their score.',
+            'Filters such as distance, opening hours, 24-hour service, licences and Verified hide businesses but do not change their score. The Verified badge does not give a better position either.',
           ],
         },
       ],
@@ -125,6 +126,7 @@ export function infoPagesEn(
               ? 'You approve your details: contact, prices, opening hours, photos and your Trustpilot profile.'
               : 'You approve your details: contact, prices, opening hours and photos.',
             'You give your consent when you sign up and can withdraw it at any time.',
+            'If you want the Verified badge, tick it when you sign up. It is free.',
             'When a customer calls you through FixMatch, you can see the customer’s name and phone number.',
           ],
         },
@@ -139,6 +141,50 @@ export function infoPagesEn(
         {
           heading: 'Contact',
           paragraphs: [`Write to ${APP_INFO.email} if you want to join or something needs correcting.`],
+        },
+      ],
+    },
+    verificering: {
+      title: 'How we verify',
+      intro:
+        'Verified means FixMatch has checked who the business is – a bit like a blue tick, but for tradespeople. It is free, the criteria are the same for everyone, and the badge does not give a better position.',
+      sections: [
+        {
+          heading: 'What we check',
+          bullets: [
+            'Company number: that the CVR number is active in the Danish business register and belongs to the business.',
+            'The owner: that the person who signed the business up owns it or may act on its behalf.',
+            'Licence: for electrical, plumbing and drainage work we look the licence up with the Danish Safety Technology Authority. Without it, there is no badge.',
+            'Insurance and guarantee scheme: when they are listed on the business’s page, it has shown us the policy or the membership.',
+          ],
+        },
+        {
+          heading: 'How long does it last?',
+          paragraphs: [
+            `The badge lasts ${VERIFICATION_VALID_DAYS} days from the day we checked. Then we check again. The business’s page shows the date and everything we checked.`,
+          ],
+        },
+        ...(reviews
+          ? [
+              {
+                heading: 'Top rated',
+                paragraphs: [
+                  `Verified businesses with a TrustScore of at least ${TOP_RATED_MIN_SCORE} and at least ${TOP_RATED_MIN_REVIEWS} reviews on Trustpilot are Top rated.`,
+                ],
+              },
+            ]
+          : []),
+        {
+          heading: 'What the badge does not mean',
+          paragraphs: [
+            'Verified is not a guarantee of the quality of the work. Still ask for a written quote, and check the price with Quote check.',
+          ],
+        },
+        {
+          heading: 'Are you a business?',
+          paragraphs: [
+            `Tick "Verify us" when you sign up under More → Sign up your business, or write to ${APP_INFO.email}. It is free.`,
+          ],
         },
       ],
     },
@@ -205,6 +251,7 @@ export function infoPagesEn(
           heading: 'Details about businesses',
           paragraphs: [
             'We show details about businesses and their contacts on the basis of the business’s consent. The consent can be withdrawn at any time, and then we remove the details.',
+            'If a business asks for the Verified badge, we also keep its licence number, insurance and guarantee scheme, and what we checked and when, for as long as the badge lasts.',
           ],
         },
         {
@@ -241,6 +288,8 @@ export function infoPagesEn(
           heading: 'Why FixMatch?',
           bullets: [
             'Price ranges from the start – not after three quotes.',
+            'Quote check tells you whether a quote you got is low, normal or high.',
+            'The Verified badge shows which businesses FixMatch has checked itself.',
             reviews
               ? 'Trustpilot score, company number and licences on one page.'
               : 'Company number and licences on one page.',

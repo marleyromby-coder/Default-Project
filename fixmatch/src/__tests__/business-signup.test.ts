@@ -1,20 +1,20 @@
 import { CONSENT_VERSION, emptySignup, signupErrors, signupRow } from '@/lib/business-signup';
 
 const complete = () => ({
-  ...emptySignup('GB'),
-  companyName: 'Copperleaf Plumbing',
+  ...emptySignup('DK'),
+  companyName: 'Kobberbladet VVS',
   registryNumber: '12345678',
   trades: ['vvs' as const],
-  street: '12 Station Road',
-  postalCode: 'N1 8XX',
-  city: 'London',
-  phone: '+44 20 7946 0000',
-  email: 'hello@copperleaf.example',
-  website: 'copperleaf.example',
-  hourlyMin: '75',
-  hourlyMax: '95',
+  street: 'Stationsvej 12',
+  postalCode: '2200',
+  city: 'København N',
+  phone: '+45 10 10 10 10',
+  email: 'hej@kobberbladet.example',
+  website: 'kobberbladet.example',
+  hourlyMin: '650',
+  hourlyMax: '795',
   calloutFee: '',
-  contactName: 'Sam Taylor',
+  contactName: 'Sam Hansen',
   consent: { listing: true, accurate: true, authority: true },
 });
 
@@ -47,6 +47,7 @@ describe('business sign-up', () => {
 
   it('checks the prices', () => {
     expect(signupErrors({ ...complete(), hourlyMax: '50' }).hourlyMax).toBeDefined();
+    expect(signupErrors({ ...complete(), country: 'GB' }).country).toBeDefined(); // not launched yet
     expect(signupErrors({ ...complete(), hourlyMin: '1.200', hourlyMax: '' })).toEqual({});
     expect(signupErrors({ ...complete(), calloutFee: 'gratis' }).calloutFee).toBeDefined();
   });
@@ -54,8 +55,8 @@ describe('business sign-up', () => {
   it('stores the consent with its wording and version', () => {
     const row = signupRow({ ...complete(), hourlyMin: '1.200', hourlyMax: '' });
     expect(row).toMatchObject({
-      country: 'GB',
-      website: 'https://copperleaf.example',
+      country: 'DK',
+      website: 'https://kobberbladet.example',
       hourly_min: 1200,
       hourly_max: 1200,
       callout_fee: null,

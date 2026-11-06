@@ -211,7 +211,8 @@ const en: Record<string, string> = {
   'Inden for budget': 'Within budget',
   Ingen: 'None',
   'Ingen Trustpilot-profil endnu': 'No Trustpilot profile yet',
-  'Ingen byer eller postnumre matcher “{query}”.': 'No cities or postcodes match “{query}”.',
+  'Ingen byer eller postnumre matcher “{query}”. FixMatch er kun i Danmark indtil videre.':
+    'No cities or postcodes match “{query}”. FixMatch is only in Denmark for now.',
   'Ingen gemte endnu': 'Nothing saved yet',
   'Ingen her – zoom ud': 'None here – zoom out',
   'Ingen kan betale sig til en bedre placering i søgeresultaterne.':
@@ -416,7 +417,6 @@ const en: Record<string, string> = {
   'Timepris og eksempelpriser {tax} – før du ringer.': 'Hourly rates and example prices {tax} – before you call.',
   'Timepris {tax}': 'Hourly rate {tax}',
   Tirsdag: 'Tuesday',
-  'Tjekket af FixMatch': 'Checked by FixMatch',
   'To malere maler en væg': 'Two painters painting a wall',
   Torsdag: 'Thursday',
   'Trin {step} af {STEPS}': 'Step {step} of {STEPS}',
@@ -691,6 +691,93 @@ const en: Record<string, string> = {
   'Skriv kørselsgebyret som et helt tal.': 'Enter the call-out fee as a whole number.',
   'Sæt flueben ved alle tre for at blive vist.': 'Tick all three to be listed.',
   'Tilmelding: {name}': 'Sign-up: {name}',
+  'Tilbudstjek: se om et tilbud, du har fået, er lavt, normalt eller højt':
+    'Quote check: see whether a quote you got is low, normal or high',
+  Tilbudstjek: 'Quote check',
+  'Har du fået et tilbud? Se om prisen er fair – og hvad fradraget giver.':
+    'Got a quote? See if the price is fair – and what the tax deduction gives.',
+  'Sådan verificerer vi': 'How we verify',
+  'Kun verificerede': 'Verified only',
+  'FixMatch har tjekket CVR, ejer og autorisation': 'FixMatch has checked the company number, owner and licence',
+  Verificeret: 'Verified',
+  'Tilbuddet er {percent} % under det, virksomhederne i FixMatch normalt tager. Tjek, at materialer, moms og bortskaffelse er med.':
+    'The quote is {percent}% below what businesses on FixMatch usually charge. Check that materials, VAT and disposal are included.',
+  'Tilbuddet ligger inden for det, virksomhederne i FixMatch normalt tager for opgaven.':
+    'The quote is within what businesses on FixMatch usually charge for the job.',
+  'Tilbuddet er {percent} % over det normale. Spørg, hvad der er med i prisen.':
+    'The quote is {percent}% above normal. Ask what the price includes.',
+  'Tilbuddet er {percent} % over det normale. Det kan betale sig at få et tilbud mere.':
+    'The quote is {percent}% above normal. Getting another quote may pay off.',
+  'Ingen virksomheder har oplyst en pris for opgaven endnu, så det er FixMatch’ eget skøn.':
+    'No business has listed a price for this job yet, so this is FixMatch’s own estimate.',
+  'Bygger på {count} priser fra virksomheder inden for {km} km.':
+    'Based on {count} prices from businesses within {km} km.',
+  'Bygger på {count} priser fra virksomheder i hele {country}.':
+    'Based on {count} prices from businesses across {country}.',
+  'Har du fået et tilbud? Tast det ind, så ser du, om prisen er lav, normal eller høj i forhold til virksomhederne i FixMatch – også hvis tilbuddet kommer et andet sted fra.':
+    'Got a quote? Type it in to see whether the price is low, normal or high compared with the businesses on FixMatch – even if the quote came from somewhere else.',
+  Opgave: 'Job',
+  'Antal m²': 'Area in m²',
+  'Antal stk.': 'Number of pieces',
+  'Pris i tilbuddet, {tax}': 'Price in the quote, {tax}',
+  'Normalt: {range}': 'Usually: {range}',
+  'Grøn energiforbedring': 'Green energy improvement',
+  'Fx isolering, vinduer, varmepumpe eller solceller. Så kan du få håndværkerfradrag.':
+    'E.g. insulation, windows, a heat pump or solar panels. Then you can get the Danish tradesperson deduction.',
+  'Heraf arbejdsløn': 'Of which labour',
+  'Står på tilbuddet': 'On the quote',
+  'Du kan trække {deduction} fra og få ca. {saving} tilbage i skat.':
+    'You can deduct {deduction} and get about {saving} back in tax.',
+  'Skriv arbejdslønnen, så regner vi fradraget ud. Kun arbejdsløn tæller, ikke materialer.':
+    'Enter the labour cost and we work out the deduction. Only labour counts, not materials.',
+  'Grænsen er {max} pr. voksen i husstanden i 2026. Tjek på skat.dk, om netop din opgave er med.':
+    'The limit is {max} per adult in the household in 2026. Check on skat.dk whether your job is covered.',
+  'Tjek også tilbuddet for': 'Also check the quote for',
+  'CVR-nummer og firmanavn.': 'Company number (CVR) and company name.',
+  'Fast pris. Står der overslag, kan det blive dyrere.':
+    'A fixed price. An estimate (overslag) can end up costing more.',
+  'Arbejdsløn og materialer hver for sig. Det kræver fradraget.':
+    'Labour and materials listed separately. The deduction requires it.',
+  'Autorisation. Den slår du op hos Sikkerhedsstyrelsen.':
+    'A licence. You can look it up with the Danish Safety Technology Authority.',
+  'Garantiordning, fx Byg Garanti.': 'A guarantee scheme, e.g. Byg Garanti.',
+  'Tager mindre for opgaven': 'Charge less for the job',
+  'Virksomheder i nærheden, hvis egen pris starter under dit tilbud. Verificerede står først.':
+    'Nearby businesses whose own price starts below your quote. Verified ones first.',
+  'Vurderingen er vejledende og bygger på eksempelvirksomhedernes priser i demoen. Det, du skriver, bliver på din telefon.':
+    'The assessment is a guide based on the demo businesses’ prices. What you type stays on your phone.',
+  'Vurderingen er vejledende og bygger på de priser, virksomhederne selv har oplyst i FixMatch. Det, du skriver, bliver på din telefon.':
+    'The assessment is a guide based on the prices businesses have listed on FixMatch themselves. What you type stays on your phone.',
+  'Om priserne og fradraget': 'About prices and the deduction',
+  'Bliv verificeret (gratis)': 'Get verified (free)',
+  'Verificerede virksomheder får et flueben ved navnet, så kunderne kan se, at FixMatch har tjekket dem. Vi kontakter dig for at bekræfte, at du er ejer, og beder om at se forsikringen.':
+    'Verified businesses get a tick next to their name, so customers can see that FixMatch has checked them. We contact you to confirm that you are the owner and ask to see your insurance.',
+  'Ja tak, verificér os': 'Yes, verify us',
+  Autorisationsnummer: 'Licence number',
+  'Fra Sikkerhedsstyrelsen. Kræves for el, VVS og kloak.':
+    'From the Danish Safety Technology Authority. Required for electrical, plumbing and drainage work.',
+  'Forsikringsselskab (valgfrit)': 'Insurance company (optional)',
+  'Garantiordning (valgfri)': 'Guarantee scheme (optional)',
+  'Fx Byg Garanti eller TEKNIQ': 'E.g. Byg Garanti or TEKNIQ',
+  Topbedømt: 'Top rated',
+  'Har du fået et tilbud? Tjek prisen': 'Got a quote? Check the price',
+  Verificering: 'Verification',
+  'Verificeret af FixMatch': 'Verified by FixMatch',
+  'Tjekket {date} · gælder til {until}': 'Checked {date} · valid until {until}',
+  'Ikke verificeret endnu': 'Not verified yet',
+  'Se, hvad FixMatch tjekker': 'See what FixMatch checks',
+  'verificeret af FixMatch': 'verified by FixMatch',
+  topbedømt: 'top rated',
+  'Skriv autorisationsnummeret. Uden det kan vi ikke verificere jer.':
+    'Enter the licence number. We cannot verify you without it.',
+  'CVR-nummeret er aktivt og hører til virksomheden': 'The company number is active and belongs to the business',
+  'Ejeren har bekræftet, hvem de er': 'The owner has confirmed who they are',
+  'Autorisationen er tjekket hos Sikkerhedsstyrelsen':
+    'The licence has been checked with the Danish Safety Technology Authority',
+  'Har en erhvervsansvarsforsikring': 'Has public liability insurance',
+  'Er med i en garantiordning': 'Is part of a guarantee scheme',
+  'Normal pris': 'Normal price',
+  'Lidt højt': 'A bit high',
 };
 
 export default en;

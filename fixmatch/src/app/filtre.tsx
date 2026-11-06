@@ -105,6 +105,13 @@ export default function FiltersScreen() {
             value={draft.authorizedOnly}
             onChange={(v) => update({ authorizedOnly: v })}
           />
+          <Divider inset={Spacing.lg} />
+          <SwitchRow
+            label={t('Kun verificerede')}
+            hint={t('FixMatch har tjekket CVR, ejer og autorisation')}
+            value={draft.verifiedOnly}
+            onChange={(v) => update({ verifiedOnly: v })}
+          />
           {TRUSTPILOT_ENABLED ? (
             <>
               <Divider inset={Spacing.lg} />

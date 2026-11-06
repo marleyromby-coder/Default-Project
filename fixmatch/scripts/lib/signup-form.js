@@ -105,6 +105,15 @@ function readTrades(root) {
   return [...source.matchAll(pattern)].map((m) => ({ id: m[1], da: unquote(m, 2), en: unquote(m, 4) }));
 }
 
+/** LAUNCHED_COUNTRIES from the app: the countries a business can sign up in. */
+function readLaunchedCountries(root) {
+  const source = fs.readFileSync(path.join(root, 'src/lib/markets.ts'), 'utf8');
+  const list = source.match(/LAUNCHED_COUNTRIES: readonly CountryCode\[\] = \[([^\]]*)\]/)?.[1];
+  const codes = [...(list ?? '').matchAll(/'([A-Z]{2})'/g)].map((m) => m[1]);
+  if (codes.length === 0) throw new Error('Could not read LAUNCHED_COUNTRIES from markets.ts');
+  return codes;
+}
+
 /** CONSENT_STATEMENTS and CONSENT_VERSION from the app, with the English from en.ts. */
 function readConsent(root) {
   const source = fs.readFileSync(path.join(root, 'src/lib/business-signup.ts'), 'utf8');
@@ -150,12 +159,19 @@ function signupForm(lang, { root, email }) {
   const trades = readTrades(root);
   const consent = readConsent(root);
   const supabase = readSupabase(root);
+  const launched = readLaunchedCountries(root);
   const countries = Object.entries(COUNTRIES[lang])
+    .filter(([code]) => launched.includes(code))
     .map(
       ([code, name]) =>
         `<option value="${code}"${code === (lang === 'da' ? 'DK' : 'GB') ? ' selected' : ''}>${escape(name)}</option>`,
     )
     .join('');
+  // One launched country (Denmark at launch): no choice to make, so no field.
+  const countryField =
+    launched.length === 1
+      ? `<input type="hidden" name="country" value="${launched[0]}">`
+      : field(text.country, `<select name="country" required>${countries}</select>`);
   const tradeBoxes = trades
     .map(
       (t) => `<label class="choice"><input type="checkbox" name="trades" value="${t.id}"> ${escape(t[lang])}</label>`,
@@ -184,7 +200,7 @@ function signupForm(lang, { root, email }) {
 
   return `<form id="signup" class="signup" novalidate>
 <fieldset><legend>${escape(text.business)}</legend>
-${field(text.country, `<select name="country" required>${countries}</select>`)}
+${countryField}
 ${field(text.name, '<input name="company_name" required minlength="2" maxlength="120" autocomplete="organization">')}
 ${field(text.registry, '<input name="registry_number" required minlength="4" maxlength="30">')}
 <div class="field"><span>${escape(text.trades)}</span><div class="choices">${tradeBoxes}</div></div>

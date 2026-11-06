@@ -23,7 +23,7 @@ import { inRegion, regionAround, type Region } from '@/lib/cluster';
 import { callBusiness } from '@/lib/contact';
 import { DEFAULT_FILTERS } from '@/lib/filters';
 import { formatDistance, formatHourly, speakablePrice } from '@/lib/format';
-import { MARKETS_REGION } from '@/lib/markets';
+import { LAUNCHED_COUNTRIES, MARKETS_REGION } from '@/lib/markets';
 import type { ScoredBusiness } from '@/lib/ranking';
 import type { CategoryId, Filters } from '@/lib/types';
 import { t } from '@/i18n';
@@ -191,7 +191,10 @@ export default function MapScreen() {
           label: t('Vis hele {country}', { country: t(market.name) }),
           onPress: () => setTarget(countryRegion()),
         },
-        { icon: 'world', label: t('Vis alle lande'), onPress: () => setTarget({ ...MARKETS_REGION }) },
+        // Only when FixMatch is live in more than one country.
+        ...(LAUNCHED_COUNTRIES.length > 1
+          ? [{ icon: 'world' as const, label: t('Vis alle lande'), onPress: () => setTarget({ ...MARKETS_REGION }) }]
+          : []),
       ]}
     />
   );

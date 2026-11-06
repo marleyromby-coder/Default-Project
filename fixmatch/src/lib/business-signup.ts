@@ -3,9 +3,10 @@ import { Linking, Platform } from 'react-native';
 import { APP_INFO } from '@/constants/app-info';
 import { getLanguage, msg, t } from '@/i18n';
 
-import { COUNTRY_CODES, type CountryCode } from './markets';
+import { isLaunched, type CountryCode } from './markets';
 import { supabase } from './supabase';
 import type { CategoryId } from './types';
+import { requiredChecks } from './verification';
 
 /**
  * Businesses sign themselves up and give their consent in the app or on the website.
@@ -47,6 +48,12 @@ export interface BusinessSignup {
   description: string;
   contactName: string;
   contactRole: string;
+  /** Asks for the free Verificeret badge (lib/verification.ts). */
+  verify: boolean;
+  /** Needed for the badge in trades that require one (el, VVS, kloak). */
+  authorizationNumber: string;
+  insurer: string;
+  guaranteeScheme: string;
   consent: Record<ConsentKey, boolean>;
 }
 
@@ -70,11 +77,20 @@ export function emptySignup(country: CountryCode): BusinessSignup {
     description: '',
     contactName: '',
     contactRole: '',
+    verify: false,
+    authorizationNumber: '',
+    insurer: '',
+    guaranteeScheme: '',
     consent: { listing: false, accurate: false, authority: false },
   };
 }
 
-export type SignupField = Exclude<keyof BusinessSignup, 'emergency'>;
+export type SignupField = Exclude<keyof BusinessSignup, 'emergency' | 'verify'>;
+
+/** Whether the trades need an authorisation number for the Verificeret badge. */
+export function needsAuthorization(trades: CategoryId[]): boolean {
+  return requiredChecks({ categories: trades }).includes('authorization');
+}
 
 const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 const PHONE = /^\+?[0-9 ()-]{6,20}$/;
@@ -84,7 +100,7 @@ const amount = (value: string) =>
 /** Problems with the form, by field, in the user's language. Empty when it can be sent. */
 export function signupErrors(signup: BusinessSignup): Partial<Record<SignupField, string>> {
   const errors: Partial<Record<SignupField, string>> = {};
-  if (!COUNTRY_CODES.includes(signup.country)) errors.country = t('Vælg et land.');
+  if (!isLaunched(signup.country)) errors.country = t('Vælg et land.');
   if (signup.companyName.trim().length < 2) errors.companyName = t('Skriv virksomhedens navn.');
   if (signup.registryNumber.replace(/\W/g, '').length < 4) errors.registryNumber = t('Skriv registreringsnummeret.');
   if (signup.trades.length === 0) errors.trades = t('Vælg mindst ét fag.');
@@ -106,6 +122,9 @@ export function signupErrors(signup: BusinessSignup): Partial<Record<SignupField
   if (fee !== undefined && !(Number.isInteger(fee) && fee >= 0))
     errors.calloutFee = t('Skriv kørselsgebyret som et helt tal.');
   if (signup.contactName.trim().length < 2) errors.contactName = t('Skriv dit navn.');
+  if (signup.verify && needsAuthorization(signup.trades) && signup.authorizationNumber.trim().length < 3) {
+    errors.authorizationNumber = t('Skriv autorisationsnummeret. Uden det kan vi ikke verificere jer.');
+  }
   if (!CONSENT_KEYS.every((key) => signup.consent[key]))
     errors.consent = t('Sæt flueben ved alle tre for at blive vist.');
   return errors;
@@ -136,6 +155,10 @@ export function signupRow(signup: BusinessSignup) {
     description: signup.description.trim() || null,
     contact_name: signup.contactName.trim(),
     contact_role: signup.contactRole.trim() || null,
+    verification_requested: signup.verify,
+    authorization_number: signup.verify ? signup.authorizationNumber.trim() || null : null,
+    insurer: signup.verify ? signup.insurer.trim() || null : null,
+    guarantee_scheme: signup.verify ? signup.guaranteeScheme.trim() || null : null,
     // The statements exactly as shown, so the consent can be documented later.
     consent: {
       ...signup.consent,

@@ -47,6 +47,11 @@ New: describe your problem in your own words, set a budget, and see which local 
 ```
 Need a plumber, electrician, carpenter, bricklayer or mechanic? FixMatch finds local businesses and compares them on what matters: price and distance. You save time and money, and you call them directly.
 
+QUOTE CHECK – IS THE PRICE FAIR?
+• Type in a quote, even one you got somewhere else, and see whether the price is low, normal or high
+• See what the Danish green tradesperson deduction gives back
+• Find verified businesses nearby that charge less for the same job
+
 DESCRIBE YOUR PROBLEM – WE MATCH YOUR BUDGET
 • Write in your own words, e.g. "the kitchen sink is blocked", and what you want to spend
 • FixMatch finds the right trade and shows who is within your budget – and who is close
@@ -69,6 +74,7 @@ COMPARE ON ONE SCREEN
 TRANSPARENT BY DESIGN
 • Nobody can pay for a better ranking. Ads are always clearly marked
 • We explain exactly how the ranking works, inside the app
+• The Verified badge: FixMatch has checked the company number, the owner and the licence
 • Registration numbers and licences on each business page, where they apply
 
 CALL DIRECTLY

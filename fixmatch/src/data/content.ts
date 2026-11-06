@@ -3,6 +3,7 @@ import { getLanguage } from '@/i18n';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { CLOSE_MARGIN, WORKSHOP_RADIUS_KM } from '@/lib/matcher';
 import { DISTANCE_SCALE_KM, NO_REVIEWS_SCORE, REVIEW_PRIOR_COUNT, REVIEW_PRIOR_MEAN } from '@/lib/ranking';
+import { TOP_RATED_MIN_REVIEWS, TOP_RATED_MIN_SCORE, VERIFICATION_VALID_DAYS } from '@/lib/verification';
 
 import { infoPagesEn } from './content-en';
 
@@ -71,7 +72,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
         {
           heading: 'Filtre',
           paragraphs: [
-            'Filtre som afstand, åbningstid, døgnvagt og autorisation skjuler virksomheder, men ændrer ikke deres score.',
+            'Filtre som afstand, åbningstid, døgnvagt, autorisation og Verificeret skjuler virksomheder, men ændrer ikke deres score. Verificeret-mærket giver heller ikke en bedre placering.',
           ],
         },
       ],
@@ -143,6 +144,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
               ? 'Du godkender dine oplysninger: kontakt, priser, åbningstider, billeder og din Trustpilot-profil.'
               : 'Du godkender dine oplysninger: kontakt, priser, åbningstider og billeder.',
             'Du giver samtykke, når du tilmelder dig, og kan til enhver tid trække det tilbage.',
+            'Vil du have Verificeret-mærket, sætter du flueben ved det i tilmeldingen. Det er gratis.',
             'Når en kunde ringer til dig gennem FixMatch, kan du se kundens navn og telefonnummer.',
           ],
         },
@@ -157,6 +159,50 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
         {
           heading: 'Kontakt',
           paragraphs: [`Skriv til ${APP_INFO.email}, hvis du vil med, eller hvis noget skal rettes.`],
+        },
+      ],
+    },
+    verificering: {
+      title: 'Sådan verificerer vi',
+      intro:
+        'Verificeret betyder, at FixMatch selv har tjekket, hvem virksomheden er – lidt som et blåt flueben, bare for håndværkere. Det er gratis, kriterierne er de samme for alle, og mærket giver ikke en bedre placering.',
+      sections: [
+        {
+          heading: 'Det tjekker vi',
+          bullets: [
+            'CVR: at CVR-nummeret er aktivt i CVR-registret og hører til virksomheden.',
+            'Ejeren: at den, der har tilmeldt virksomheden, er ejer eller må handle på dens vegne.',
+            'Autorisation: for el, VVS og kloak slår vi autorisationen op hos Sikkerhedsstyrelsen. Uden den får virksomheden ikke mærket.',
+            'Forsikring og garantiordning: står de på listen ved virksomheden, har den vist os forsikringen eller medlemskabet.',
+          ],
+        },
+        {
+          heading: 'Hvor længe gælder det?',
+          paragraphs: [
+            `Mærket gælder ${VERIFICATION_VALID_DAYS} dage fra den dag, vi tjekkede. Så tjekker vi igen. På virksomhedens side står datoen og alt det, vi har tjekket.`,
+          ],
+        },
+        ...(reviews
+          ? [
+              {
+                heading: 'Topbedømt',
+                paragraphs: [
+                  `Topbedømt får verificerede virksomheder med en TrustScore på mindst ${n(TOP_RATED_MIN_SCORE)} og mindst ${TOP_RATED_MIN_REVIEWS} anmeldelser på Trustpilot.`,
+                ],
+              },
+            ]
+          : []),
+        {
+          heading: 'Det betyder mærket ikke',
+          paragraphs: [
+            'Verificeret er ikke en garanti for kvaliteten af arbejdet. Bed stadig om et skriftligt tilbud, og tjek prisen med Tilbudstjek.',
+          ],
+        },
+        {
+          heading: 'Er du en virksomhed?',
+          paragraphs: [
+            `Sæt flueben ved "Verificér os" i tilmeldingen under Mere → Tilmeld din virksomhed, eller skriv til ${APP_INFO.email}. Det er gratis.`,
+          ],
         },
       ],
     },
@@ -227,6 +273,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
           heading: 'Oplysninger om virksomheder',
           paragraphs: [
             'Oplysninger om virksomheder og deres kontaktpersoner viser vi på grundlag af virksomhedens samtykke. Samtykket kan til enhver tid trækkes tilbage, og så fjerner vi oplysningerne.',
+            'Beder en virksomhed om Verificeret-mærket, gemmer vi også autorisationsnummer, forsikring og garantiordning, og hvad vi har tjekket og hvornår, så længe mærket gælder.',
           ],
         },
         {
@@ -263,6 +310,8 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
           heading: 'Hvorfor FixMatch?',
           bullets: [
             'Prisintervaller inkl. moms fra start – ikke først efter tre tilbud.',
+            'Tilbudstjek fortæller, om et tilbud, du har fået, er lavt, normalt eller højt.',
+            'Verificeret-mærket viser, hvilke virksomheder FixMatch selv har tjekket.',
             reviews
               ? 'Trustpilot-score, CVR og autorisation samlet på én side.'
               : 'CVR og autorisation samlet på én side.',

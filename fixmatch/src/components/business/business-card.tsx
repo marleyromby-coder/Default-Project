@@ -13,12 +13,14 @@ import { formatDistance, formatHourly, formatPriceRange, formatRating, speakable
 import { getOpenStatus } from '@/lib/opening-hours';
 import type { ScoredBusiness } from '@/lib/ranking';
 import type { JobType } from '@/lib/types';
+import { isTopRated, isVerified } from '@/lib/verification';
 import { useApp } from '@/state/app-state';
 
 import { BusinessMark } from './business-mark';
 import { MatchBadge } from './match-badge';
 import { OpenStatus } from './open-status';
 import { TrustpilotRating } from './trustpilot-rating';
+import { VerifiedMark } from './verified-mark';
 import { t } from '@/i18n';
 
 interface Props {
@@ -46,6 +48,8 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
       ? `${job?.name}: ${formatPriceRange(jobPrice.min, jobPrice.max, jobPrice.unit, currencyOf(business))}`
       : formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business)));
   const authorized = business.authorizations.length > 0;
+  const verified = isVerified(business);
+  const topRated = isTopRated(business);
   const open = getOpenStatus(business.hours, undefined, timeZoneOf(business));
 
   const onCompare = () => {
@@ -55,6 +59,8 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
   const summary = [
     rank ? t('Nummer {rank}', { rank }) : undefined,
     business.name,
+    verified ? t('verificeret af FixMatch') : undefined,
+    topRated ? t('topbedømt') : undefined,
     highlight?.label,
     t('match {score} ud af 100', { score }),
     !TRUSTPILOT_ENABLED
@@ -92,9 +98,12 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
         <View style={styles.body}>
           <View style={styles.titleRow}>
             <View style={styles.titleText}>
-              <AppText variant="headline" numberOfLines={2}>
-                {business.name}
-              </AppText>
+              <View style={styles.nameRow}>
+                <AppText variant="headline" numberOfLines={2} style={styles.flexShrink}>
+                  {business.name}
+                </AppText>
+                <VerifiedMark business={business} />
+              </View>
               <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
                 {businessText(business).tagline}
               </AppText>
@@ -123,6 +132,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
       <View style={[styles.footer, { borderTopColor: colors.border }]}>
         <View style={styles.badges}>
           {highlight ? <Badge label={highlight.label} tone={highlight.tone} icon={highlight.icon} /> : null}
+          {topRated ? <Badge label={t('Topbedømt')} tone="brand" icon="star" /> : null}
           {authorized ? <Badge label={t('Autoriseret')} tone="success" icon="shield" /> : null}
           {business.emergency ? <Badge label={t('Døgnvagt')} tone="warning" icon="bolt" /> : null}
         </View>
@@ -179,6 +189,7 @@ const styles = StyleSheet.create({
   body: { flex: 1, gap: 5 },
   titleRow: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.sm },
   titleText: { flex: 1, gap: 1 },
+  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   metaRow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   flexShrink: { flexShrink: 1 },
   noShrink: { flexShrink: 0 },

@@ -7,7 +7,7 @@ import { openCountries } from '@/lib/business-text';
 import { bundledBusinesses, parseBusinesses, REMOTE_DATA_URL } from '@/lib/data-source';
 import { DEFAULT_FILTERS } from '@/lib/filters';
 import { setDistanceUnit } from '@/lib/format';
-import { getMarket, isCountryCode, type CountryCode, type Market } from '@/lib/markets';
+import { getMarket, isLaunched, type CountryCode, type Market } from '@/lib/markets';
 import { DEFAULT_PRIORITIES } from '@/lib/ranking';
 import type { Business, Filters, Priorities, UserLocation } from '@/lib/types';
 import { syncWidgets } from '@/widgets/sync';
@@ -106,7 +106,10 @@ function sanitize(raw: unknown): Partial<Persisted> {
   const value = raw as Partial<Persisted>;
   const out: Partial<Persisted> = {};
   if (typeof value.onboarded === 'boolean') out.onboarded = value.onboarded;
-  if (value.location && typeof value.location.coords?.lat === 'number') out.location = value.location;
+  // A place saved in a country FixMatch is not live in (yet) falls back to the default.
+  if (value.location && typeof value.location.coords?.lat === 'number' && isLaunched(value.location.country ?? 'DK')) {
+    out.location = value.location;
+  }
   if (value.priorities && typeof value.priorities.price === 'number') out.priorities = value.priorities;
   if (Array.isArray(value.favorites)) out.favorites = value.favorites.filter((x) => typeof x === 'string');
   if (Array.isArray(value.compare))
@@ -143,10 +146,10 @@ interface AppContextValue {
 
 const AppContext = createContext<AppContextValue | null>(null);
 
-/** The user's country, if FixMatch lists businesses there. */
+/** The user's country, if FixMatch is live there. */
 export function userCountry(location: UserLocation): CountryCode | undefined {
   const country = location.country ?? 'DK';
-  return isCountryCode(country) ? country : undefined;
+  return isLaunched(country) ? country : undefined;
 }
 
 export function AppStateProvider({ children }: PropsWithChildren) {

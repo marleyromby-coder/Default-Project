@@ -3,6 +3,7 @@ import { formatRating } from './format';
 import { isOpenNow } from './opening-hours';
 import { priceLevel, type ScoredBusiness } from './ranking';
 import type { Business, CategoryId, Filters } from './types';
+import { isVerified } from './verification';
 import { t } from '@/i18n';
 
 export const DEFAULT_FILTERS: Filters = {
@@ -12,6 +13,7 @@ export const DEFAULT_FILTERS: Filters = {
   openNow: false,
   emergency: false,
   authorizedOnly: false,
+  verifiedOnly: false,
   trustpilotOnly: false,
 };
 
@@ -49,6 +51,7 @@ export function applyFilters(
     if (filters.trustpilotOnly && !business.trustpilot) return false;
     if (filters.emergency && !business.emergency) return false;
     if (filters.authorizedOnly && business.authorizations.length === 0) return false;
+    if (filters.verifiedOnly && !isVerified(business, now)) return false;
     if (filters.openNow && !isOpenNow(business.hours, now, timeZoneOf(business)) && !business.emergency) return false;
     if (filters.priceLevel !== null && priceLevel(business, context.all, context.category) !== filters.priceLevel) {
       return false;
@@ -66,6 +69,7 @@ export function activeFilterCount(filters: Filters): number {
   if (filters.openNow) count += 1;
   if (filters.emergency) count += 1;
   if (filters.authorizedOnly) count += 1;
+  if (filters.verifiedOnly) count += 1;
   if (filters.trustpilotOnly) count += 1;
   return count;
 }

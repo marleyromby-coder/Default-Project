@@ -50,6 +50,10 @@ The app loads the businesses' own pictures and (if switched on) an updated list 
 
 We show information about businesses (such as name, company number, phone number and prices) that the businesses themselves have approved. For sole traders this can be personal data about the owner. The legal basis is the business's consent (GDPR Article 6(1)(a)). If a business signs itself up in the app or on the website, we keep the sign-up with the consent wording and time with Supabase in the EU as proof. The consent can be withdrawn at any time by writing to {{email}}, and we then remove the information within 2 working days. Contact persons' names and email addresses are only used to manage the listing and are kept for as long as the listing exists, and for 12 months after that as proof of the consent.
 
+**The Verified badge.** If a business asks for the badge, we also keep its licence number, insurance company and guarantee scheme, and what we checked and when (company number, owner, licence, insurance and guarantee scheme). We only use this to give and renew the badge. The legal basis is the agreement with the business about the badge (GDPR Article 6(1)(b)). We delete the information when the badge is no longer renewed or the business leaves FixMatch.
+
+> Check the legal basis and retention period for verification with your lawyer (see the GDPR preparation).
+
 ## 11. When you write to us
 
 If you write to us, we use your email address and what you write to answer you. We delete the message no later than 12 months after the matter is closed.

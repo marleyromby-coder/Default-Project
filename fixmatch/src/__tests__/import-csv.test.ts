@@ -97,6 +97,27 @@ describe('CSV import', () => {
   });
 });
 
+describe('CSV import of the Verificeret check', () => {
+  const header =
+    'navn;kategorier;cvr;telefon;postnummer;by;timepris_min;timepris_max;autorisationer;samtykke_dato;verificeret;verificeret_tjek';
+  const parse = (values: string) => csv.rowToBusiness(csv.parseCsv(`${header}\n${values}`)[0], context);
+  const base = 'Test VVS;vvs;12345674;22334455;2200;København N;550;650;vvs:12345;2026-10-01';
+
+  it('reads the date and the checks', () => {
+    const { business, errors } = parse(`${base};2026-10-15;"cvr|ejer|autorisation|forsikring"`);
+    expect(errors).toEqual([]);
+    expect(business.verified).toEqual({ date: '2026-10-15', checks: ['cvr', 'identity', 'authorization', 'insurance'] });
+    expect(parse(`${base};;`).business.verified).toBeUndefined();
+  });
+
+  it('explains a bad date, an unknown check and missing required checks', () => {
+    const { errors } = parse(`${base};15/10;"cvr|blåt flueben"`);
+    expect(errors).toHaveLength(3);
+    expect(errors.join(' ')).toMatch(/ÅÅÅÅ-MM-DD/);
+    expect(errors.join(' ')).toMatch(/cvr og ejer/);
+  });
+});
+
 describe('CSV import abroad', () => {
   const cities = [['London', 'GB', 51.5085, -0.1257, 8961989]];
   const header =

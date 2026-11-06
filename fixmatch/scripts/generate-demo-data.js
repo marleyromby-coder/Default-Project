@@ -510,6 +510,18 @@ function main() {
     if (candidate) candidate.promoted = true;
   }
 
+  // The Verificeret badge (src/lib/verification.ts) for about two thirds of the businesses,
+  // checked in August–October 2026. A separate random stream, so the rest stays the same.
+  const verifyRandom = mulberry32(20261106);
+  for (const business of businesses) {
+    if (verifyRandom() > 0.65) continue;
+    const checks = ['cvr', 'identity'];
+    if (business.authorizations.length > 0) checks.push('authorization');
+    if (verifyRandom() < 0.8) checks.push('insurance');
+    if (business.memberships.length > 0) checks.push('guarantee');
+    business.verified = { date: isoDay(8 + Math.floor(verifyRandom() * 3), 1 + Math.floor(verifyRandom() * 28)), checks };
+  }
+
   const outPath = path.join(__dirname, '..', 'src', 'data', 'demo-businesses.json');
   fs.writeFileSync(outPath, JSON.stringify(businesses, null, 2) + '\n');
   console.log(`Wrote ${businesses.length} demo businesses to ${path.relative(process.cwd(), outPath)}`);

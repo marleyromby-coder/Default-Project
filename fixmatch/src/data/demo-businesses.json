@@ -123,7 +123,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "verified": {
+      "date": "2026-10-06",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "kobberkilden-vvs",
@@ -389,7 +398,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "verified": {
+      "date": "2026-08-17",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "hjertevarme-vvs-og-blik",
@@ -522,7 +540,17 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "verified": {
+      "date": "2026-10-24",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "dryp-stop-doegnservice",
@@ -659,7 +687,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "verified": {
+      "date": "2026-09-12",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "boelgevand-roerteknik",
@@ -788,7 +825,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-18"
+    "updatedAt": "2026-10-18",
+    "verified": {
+      "date": "2026-09-06",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization"
+      ]
+    }
   },
   {
     "id": "kildeklar-vvs",
@@ -923,7 +968,17 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "verified": {
+      "date": "2026-09-07",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "radiatorlauget",
@@ -1052,7 +1107,17 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "verified": {
+      "date": "2026-10-16",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "klitvand-vvs",
@@ -1182,7 +1247,17 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-18"
+    "updatedAt": "2026-10-18",
+    "verified": {
+      "date": "2026-09-13",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "stroemhvirvel-roer-og-varme",
@@ -1591,7 +1666,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "verified": {
+      "date": "2026-09-24",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "aadalens-roerservice",
@@ -1724,7 +1808,17 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "verified": {
+      "date": "2026-09-18",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "lysfalken-el",
@@ -1984,7 +2078,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "verified": {
+      "date": "2026-09-28",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization"
+      ]
+    }
   },
   {
     "id": "nordlys-elteknik",
@@ -2629,7 +2731,17 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "verified": {
+      "date": "2026-10-17",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "amperelauget",
@@ -2895,7 +3007,17 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "verified": {
+      "date": "2026-10-27",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "stroemlinjen-el",
@@ -3022,7 +3144,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "verified": {
+      "date": "2026-10-01",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "lysbuen-el",
@@ -3525,7 +3656,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "verified": {
+      "date": "2026-08-25",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "hoevlspaanen-toemrer-og-snedker",
@@ -3770,7 +3910,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "verified": {
+      "date": "2026-09-07",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "bjaelkelauget",
@@ -4265,7 +4413,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-18"
+    "updatedAt": "2026-10-18",
+    "verified": {
+      "date": "2026-10-14",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "boegebakken-toemrer",
@@ -4393,7 +4550,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "verified": {
+      "date": "2026-09-05",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "vinkeljernet",
@@ -4518,7 +4684,14 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "verified": {
+      "date": "2026-10-03",
+      "checks": [
+        "cvr",
+        "identity"
+      ]
+    }
   },
   {
     "id": "tapsporet-toemrer",
@@ -4769,7 +4942,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-18"
+    "updatedAt": "2026-10-18",
+    "verified": {
+      "date": "2026-08-09",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "kvistlauget",
@@ -4889,7 +5070,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "verified": {
+      "date": "2026-10-12",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "laftehuset-toemrer",
@@ -5015,7 +5205,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "verified": {
+      "date": "2026-08-24",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "teglvaerket-murerne",
@@ -5139,7 +5338,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "verified": {
+      "date": "2026-08-14",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "murskeen-og-co",
@@ -5265,7 +5473,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "verified": {
+      "date": "2026-08-12",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "lodsnoren-murerfirma",
@@ -5390,7 +5607,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "verified": {
+      "date": "2026-10-15",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "kalk-og-kvarts-murer",
@@ -5518,7 +5744,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "verified": {
+      "date": "2026-10-01",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "moertellauget",
@@ -5642,7 +5877,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "verified": {
+      "date": "2026-09-28",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "fugen-murerservice",
@@ -5768,7 +6012,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "verified": {
+      "date": "2026-10-10",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "roedsten-murerne",
@@ -5890,7 +6142,14 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-18"
+    "updatedAt": "2026-10-18",
+    "verified": {
+      "date": "2026-09-25",
+      "checks": [
+        "cvr",
+        "identity"
+      ]
+    }
   },
   {
     "id": "klinkerkompagniet",
@@ -6018,7 +6277,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "verified": {
+      "date": "2026-09-03",
+      "checks": [
+        "cvr",
+        "identity",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "flisefalken",
@@ -6137,7 +6404,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "verified": {
+      "date": "2026-09-15",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "facadelauget",
@@ -6498,7 +6774,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "verified": {
+      "date": "2026-09-11",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "teglbakken-murer",
@@ -6621,7 +6906,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "verified": {
+      "date": "2026-08-26",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "stempel-og-soen-autoservice",
@@ -6877,7 +7170,14 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "verified": {
+      "date": "2026-10-20",
+      "checks": [
+        "cvr",
+        "identity"
+      ]
+    }
   },
   {
     "id": "gearkassen-auto",
@@ -6992,7 +7292,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "verified": {
+      "date": "2026-10-25",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "ventilen-bilservice",
@@ -7117,7 +7425,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "verified": {
+      "date": "2026-09-17",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "faelgen-autocenter",
@@ -7491,7 +7808,14 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "verified": {
+      "date": "2026-08-04",
+      "checks": [
+        "cvr",
+        "identity"
+      ]
+    }
   },
   {
     "id": "hjulspind-autoservice",
@@ -7614,7 +7938,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "verified": {
+      "date": "2026-10-22",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "kobling-og-co",
@@ -8224,7 +8556,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "verified": {
+      "date": "2026-10-17",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "penselstroeget",
@@ -8345,7 +8685,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "verified": {
+      "date": "2026-08-07",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "rullen-og-soen",
@@ -8460,7 +8808,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "verified": {
+      "date": "2026-10-03",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "farvelauget",
@@ -8587,7 +8943,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "verified": {
+      "date": "2026-10-16",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "kalkmalerne",
@@ -8829,7 +9194,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "verified": {
+      "date": "2026-09-27",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "spartel-og-co",
@@ -8952,7 +9326,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "verified": {
+      "date": "2026-09-12",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "glans-og-mat-malere",
@@ -9313,7 +9695,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "verified": {
+      "date": "2026-09-09",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "okker-malerfirma",
@@ -9943,7 +10334,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "verified": {
+      "date": "2026-09-14",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "tagpapfalken",
@@ -10067,7 +10467,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "verified": {
+      "date": "2026-08-20",
+      "checks": [
+        "cvr",
+        "identity",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "kvistlyset-tag",
@@ -10191,7 +10599,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "verified": {
+      "date": "2026-08-21",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "rygningen-tagservice",
@@ -10315,7 +10732,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "verified": {
+      "date": "2026-09-10",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "tagfladen",
@@ -10439,7 +10865,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "verified": {
+      "date": "2026-08-10",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "skifer-og-soen",
@@ -10688,7 +11122,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "verified": {
+      "date": "2026-09-02",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "vindskeden-tag",
@@ -11060,7 +11503,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "verified": {
+      "date": "2026-08-15",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "tagfoden",
@@ -11424,7 +11876,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "verified": {
+      "date": "2026-09-22",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "noeglehullet-laaseservice",
@@ -11550,7 +12011,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "verified": {
+      "date": "2026-10-01",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "cylinderen-laasesmed",
@@ -11679,7 +12148,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "verified": {
+      "date": "2026-09-03",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "dirk-og-soen-laase",
@@ -11931,7 +12408,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "verified": {
+      "date": "2026-08-16",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "fallen-laaseservice",
@@ -12561,7 +13046,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "verified": {
+      "date": "2026-09-06",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "sikkerhedslauget",
@@ -12810,7 +13303,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "verified": {
+      "date": "2026-08-09",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "hasp-og-haengsel",
@@ -12936,7 +13437,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "verified": {
+      "date": "2026-10-06",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "noeglekompagniet",
@@ -13064,7 +13573,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "verified": {
+      "date": "2026-09-03",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "kopparkallan-vvs",
@@ -13192,7 +13709,14 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "verified": {
+      "date": "2026-08-25",
+      "checks": [
+        "cvr",
+        "identity"
+      ]
+    }
   },
   {
     "id": "vattenfallet-vvs",
@@ -13580,7 +14104,17 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "verified": {
+      "date": "2026-09-11",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "stromkretsen-el",
@@ -13713,7 +14247,17 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "verified": {
+      "date": "2026-09-12",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "gnistan-el",
@@ -13844,7 +14388,17 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "verified": {
+      "date": "2026-09-04",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "ekspaanet-snickeri",
@@ -14354,7 +14908,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "verified": {
+      "date": "2026-10-20",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "kalkstenen-mureri",
@@ -14732,7 +15295,14 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "verified": {
+      "date": "2026-10-05",
+      "checks": [
+        "cvr",
+        "identity"
+      ]
+    }
   },
   {
     "id": "kugghjulet-bilverkstad",
@@ -14990,7 +15560,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "verified": {
+      "date": "2026-09-22",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "fargklicken-maaleri",
@@ -15117,7 +15695,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "verified": {
+      "date": "2026-08-19",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "penseldraget-maaleri",
@@ -15246,7 +15833,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "verified": {
+      "date": "2026-08-14",
+      "checks": [
+        "cvr",
+        "identity",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "fargglad-maaleri",
@@ -15619,7 +16214,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "verified": {
+      "date": "2026-10-25",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "hangrannan-tak",
@@ -16006,7 +16609,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "verified": {
+      "date": "2026-09-28",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "regelfast-laas",
@@ -16136,7 +16747,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "verified": {
+      "date": "2026-09-04",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "kobberbekken-roer",
@@ -16387,7 +17007,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "verified": {
+      "date": "2026-09-26",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "roerverket-roer",
@@ -16512,7 +17141,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-18"
+    "updatedAt": "2026-10-18",
+    "verified": {
+      "date": "2026-10-22",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "lysgnisten-elektro",
@@ -16775,7 +17413,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "verified": {
+      "date": "2026-10-07",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "gnisten-elektro",
@@ -16904,7 +17551,17 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-18"
+    "updatedAt": "2026-10-18",
+    "verified": {
+      "date": "2026-08-22",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "eikesponet-snekkeri",
@@ -17030,7 +17687,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "verified": {
+      "date": "2026-08-03",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "hoevelbenken-snekkeri",
@@ -17275,7 +17940,14 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "verified": {
+      "date": "2026-08-27",
+      "checks": [
+        "cvr",
+        "identity"
+      ]
+    }
   },
   {
     "id": "teglroed-mur",
@@ -17785,7 +18457,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "verified": {
+      "date": "2026-10-24",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "tannhjulet-bilverksted",
@@ -17908,7 +18589,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "verified": {
+      "date": "2026-08-24",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "veivakselen-bilverksted",
@@ -18163,7 +18853,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "verified": {
+      "date": "2026-08-24",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "penselstroeket-maler",
@@ -18415,7 +19113,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "verified": {
+      "date": "2026-10-13",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "skiferhatten-tak",
@@ -18669,7 +19376,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "verified": {
+      "date": "2026-10-19",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "takrenna-tak",
@@ -18795,7 +19510,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-18"
+    "updatedAt": "2026-10-18",
+    "verified": {
+      "date": "2026-09-25",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "laasbolten-laasservice",
@@ -19057,7 +19780,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "verified": {
+      "date": "2026-09-04",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "regelfast-laasservice",
@@ -19314,7 +20046,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "verified": {
+      "date": "2026-08-10",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "wasserlauf-haustechnik",
@@ -19440,7 +20181,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "verified": {
+      "date": "2026-08-27",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "rohrwerk-haustechnik",
@@ -19818,7 +20567,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "verified": {
+      "date": "2026-08-01",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "funkenflug-elektrotechnik",
@@ -20068,7 +20826,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "verified": {
+      "date": "2026-09-27",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "hobelbank-zimmerei",
@@ -20190,7 +20956,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "verified": {
+      "date": "2026-10-03",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "balkenwerk-zimmerei",
@@ -20443,7 +21218,14 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "verified": {
+      "date": "2026-10-04",
+      "checks": [
+        "cvr",
+        "identity"
+      ]
+    }
   },
   {
     "id": "kalkstein-maurerbetrieb",
@@ -20695,7 +21477,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "verified": {
+      "date": "2026-10-09",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "kolbenwerk-kfz-werkstatt",
@@ -20823,7 +21613,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "verified": {
+      "date": "2026-08-05",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "zahnrad-kfz-werkstatt",
@@ -20955,7 +21754,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "verified": {
+      "date": "2026-09-03",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "kurbelwelle-kfz-werkstatt",
@@ -21207,7 +22015,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "verified": {
+      "date": "2026-10-15",
+      "checks": [
+        "cvr",
+        "identity",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "pinselstrich-malerbetrieb",
@@ -21328,7 +22144,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "verified": {
+      "date": "2026-10-22",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "farbenfroh-malerbetrieb",
@@ -21449,7 +22274,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "verified": {
+      "date": "2026-08-26",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "schieferhut-dachdeckerei",
@@ -21706,7 +22540,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "verified": {
+      "date": "2026-10-21",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "regenrinne-dachdeckerei",
@@ -22080,7 +22923,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "verified": {
+      "date": "2026-10-07",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "schliesswerk-schlusseldienst",
@@ -22346,7 +23198,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "verified": {
+      "date": "2026-09-24",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "tidewell-plumbing-and-heating",
@@ -22477,7 +23338,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "verified": {
+      "date": "2026-08-20",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization"
+      ]
+    }
   },
   {
     "id": "millbrook-plumbing-and-heating",
@@ -22610,7 +23479,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-18"
+    "updatedAt": "2026-10-18",
+    "verified": {
+      "date": "2026-09-14",
+      "checks": [
+        "cvr",
+        "identity",
+        "authorization",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "brightwire-electrical",
@@ -22734,7 +23612,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "verified": {
+      "date": "2026-09-23",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "ambervolt-electrical",
@@ -22860,7 +23746,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "verified": {
+      "date": "2026-09-11",
+      "checks": [
+        "cvr",
+        "identity",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "sparkhill-electrical",
@@ -22990,7 +23884,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "verified": {
+      "date": "2026-10-26",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "oakgrain-carpentry",
@@ -23111,7 +24014,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-18"
+    "updatedAt": "2026-10-18",
+    "verified": {
+      "date": "2026-08-21",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "larchwood-carpentry",
@@ -23239,7 +24151,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "verified": {
+      "date": "2026-09-09",
+      "checks": [
+        "cvr",
+        "identity",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "timberline-carpentry",
@@ -23495,7 +24415,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "verified": {
+      "date": "2026-08-04",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "flintmoor-brickwork-and-tiling",
@@ -23621,7 +24550,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "verified": {
+      "date": "2026-09-15",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "mortarby-brickwork-and-tiling",
@@ -23747,7 +24684,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "verified": {
+      "date": "2026-08-10",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "torquelane-motors",
@@ -23875,7 +24821,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "verified": {
+      "date": "2026-08-19",
+      "checks": [
+        "cvr",
+        "identity",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "gearwright-motors",
@@ -24000,7 +24954,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "verified": {
+      "date": "2026-10-02",
+      "checks": [
+        "cvr",
+        "identity",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "pistonbay-motors",
@@ -24129,7 +25091,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "verified": {
+      "date": "2026-08-26",
+      "checks": [
+        "cvr",
+        "identity",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "freshcoat-decorators",
@@ -24381,7 +25351,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "verified": {
+      "date": "2026-08-07",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "brushfield-decorators",
@@ -24498,7 +25477,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "verified": {
+      "date": "2026-08-15",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance"
+      ]
+    }
   },
   {
     "id": "slatecrest-roofing",
@@ -24754,7 +25741,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "verified": {
+      "date": "2026-08-23",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "eavesford-roofing",
@@ -24882,7 +25878,16 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "verified": {
+      "date": "2026-10-10",
+      "checks": [
+        "cvr",
+        "identity",
+        "insurance",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "keyhaven-locksmiths",
@@ -25146,7 +26151,15 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "verified": {
+      "date": "2026-08-14",
+      "checks": [
+        "cvr",
+        "identity",
+        "guarantee"
+      ]
+    }
   },
   {
     "id": "boltwise-locksmiths",

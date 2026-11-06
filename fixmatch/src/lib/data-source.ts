@@ -1,8 +1,9 @@
 import demoJson from '@/data/demo-businesses.json';
 import liveJson from '@/data/live-businesses.json';
 
-import { isCountryCode } from './markets';
+import { isCountryCode, isLaunched } from './markets';
 import type { Business } from './types';
+import { isValidVerification } from './verification';
 
 /**
  * Where business listings come from:
@@ -54,11 +55,15 @@ export function isValidBusiness(value: unknown): value is Business {
   );
 }
 
-/** Valid listings only. Live builds also drop demo records, e.g. from a hosted feed. */
+/**
+ * Valid listings in the launched countries only. Live builds also drop demo records, e.g. from
+ * a hosted feed. Listings for countries that are not launched yet are kept in the data for later.
+ */
 export function parseBusinesses(value: unknown, allowDemo = DATA_MODE === 'demo'): Business[] {
   if (!Array.isArray(value)) return [];
   return value
     .filter(isValidBusiness)
+    .filter((business) => isLaunched(business.country ?? 'DK'))
     .filter((business) => allowDemo || !business.demo)
     .map((business) => ({
       ...business,
@@ -66,6 +71,8 @@ export function parseBusinesses(value: unknown, allowDemo = DATA_MODE === 'demo'
       memberships: business.memberships ?? [],
       services: business.services ?? [],
       emergency: business.emergency ?? false,
+      // A malformed check never shows a badge; the listing itself stays.
+      verified: isValidVerification(business.verified) ? business.verified : undefined,
     }));
 }
 

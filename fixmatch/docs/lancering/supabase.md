@@ -18,7 +18,7 @@ FixMatch gemmer brugere (navn, telefon, e-mail), hvem der har ringet til hvilken
 ## 2. Lav tabellerne
 
 1. Åbn **SQL Editor** → **New query**.
-2. Kopiér hele indholdet af `fixmatch/supabase/migrations/20261030120000_accounts_and_signups.sql`, sæt det ind, og tryk **Run**.
+2. Kopiér hele indholdet af `fixmatch/supabase/migrations/20261030120000_accounts_and_signups.sql`, sæt det ind, og tryk **Run**. Gør det samme med `20261106120000_verification.sql` bagefter (Verificeret-mærket).
 3. Der skal stå "Success. No rows returned".
 
 Det laver tabellerne `profiles` (navn og telefon), `contacts` (hvem ringede til hvem), `business_signups` (tilmeldinger med samtykke), funktionen `delete_account` (sletning af bruger) og to visninger til jer: `contacts_with_profile` og `business_signups_export`. Alle tabeller er låst med "row level security", så appen kun kan det, den skal.
@@ -88,6 +88,7 @@ Det laver tabellerne `profiles` (navn og telefon), `contacts` (hvem ringede til 
 - **Gratis-planen sætter projektet på pause efter en uge uden aktivitet.** Det kan genstartes med ét klik i dashboardet. Før lanceringen bør I skifte til **Pro** (ca. 25 USD/md.), som aldrig går i pause og har daglig backup.
 - Mister telefonen forbindelsen, viser appen en fejl og prøver igen næste gang. Intet går tabt.
 - Skemaet ligger i `supabase/migrations/`. Ændrer I det, så lav en ny fil med en senere dato, og kør den i SQL Editor.
+- **Verificeret-mærket:** Tilmeldinger, der beder om mærket, har teksten "Ønsker Verificeret" i kolonnen `verificering_oensket` i eksporten, med autorisationsnummer, forsikring og garantiordning. Tjek CVR på datacvr.virk.dk, ring til ejeren (senere MitID Erhverv), slå autorisationen op hos Sikkerhedsstyrelsen og se forsikringen. Skriv så datoen i `verificeret` og tjekkene i `verificeret_tjek` (fx `cvr|ejer|autorisation|forsikring|garanti`) før `npm run import:businesses`. Mærket gælder et år.
 
 ## Hvis noget går galt
 

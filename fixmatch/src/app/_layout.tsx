@@ -109,6 +109,7 @@ function RootNavigator() {
           }}
         />
         <Stack.Screen name="beskriv" options={{ title: t('Beskriv dit problem') }} />
+        <Stack.Screen name="tilbudstjek" options={{ title: t('Tilbudstjek') }} />
         <Stack.Screen name="match" options={{ title: t('Dit match') }} />
         <Stack.Screen name="placering" options={{ presentation: 'modal', title: t('Vælg placering') }} />
         <Stack.Screen name="konto" options={{ presentation: 'modal', title: t('Din bruger') }} />

@@ -12,23 +12,27 @@ import { isPhotoKey } from '@/data/photos';
 import { openCountries } from '@/lib/business-text';
 import { isValidBusiness, parseBusinesses } from '@/lib/data-source';
 import { isInDenmark } from '@/lib/geo';
-import { getMarket, MARKETS } from '@/lib/markets';
+import { getMarket, LAUNCHED_COUNTRIES, MARKETS } from '@/lib/markets';
+import type { Business } from '@/lib/types';
 import { summarizeJobPrice } from '@/lib/prices';
 import { search } from '@/lib/search';
 
+/** What the app shows: the launched countries (Denmark). */
 const businesses = parseBusinesses(demo);
+/** The whole demo file, including the markets that open later. */
+const everyMarket = (demo as unknown[]).filter(isValidBusiness) as Business[];
 
 describe('demo data', () => {
   it('is valid and complete', () => {
-    expect(businesses).toHaveLength(demo.length);
-    expect(new Set(businesses.map((b) => b.id)).size).toBe(businesses.length);
+    expect(everyMarket).toHaveLength(demo.length);
+    expect(new Set(everyMarket.map((b) => b.id)).size).toBe(everyMarket.length);
     for (const category of CATEGORIES) {
-      expect(businesses.filter((b) => !b.country && b.categories.includes(category.id)).length).toBeGreaterThanOrEqual(
+      expect(everyMarket.filter((b) => !b.country && b.categories.includes(category.id)).length).toBeGreaterThanOrEqual(
         10,
       );
       for (const country of ['SE', 'NO', 'DE', 'GB']) {
         expect(
-          businesses.filter((b) => b.country === country && b.categories.includes(category.id)).length,
+          everyMarket.filter((b) => b.country === country && b.categories.includes(category.id)).length,
         ).toBeGreaterThanOrEqual(3);
       }
     }
@@ -44,7 +48,7 @@ describe('demo data', () => {
       DE: /^\+490\d+$/,
       GB: /^\+447700900\d{3}$/,
     };
-    for (const b of businesses) {
+    for (const b of everyMarket) {
       const country = b.country ?? 'DK';
       expect(b.demo).toBe(true);
       expect(b.contact.phone).toMatch(fakePhone[country]);
@@ -57,7 +61,7 @@ describe('demo data', () => {
   });
 
   it('has sane prices, places, photos and texts in both languages', () => {
-    for (const b of businesses) {
+    for (const b of everyMarket) {
       const market = getMarket(b.country);
       expect(nearestPlace(b.coords).country).toBe(market.country);
       expect(b.pricing.currency ?? 'DKK').toBe(market.currency);
@@ -73,13 +77,19 @@ describe('demo data', () => {
       expect(other?.tagline).toBeTruthy();
       expect(other?.services?.length).toBe(b.services.length);
     }
-    expect(new Set(businesses.map((b) => b.country ?? 'DK')).size).toBe(5);
-    for (const b of businesses.filter((x) => !x.country)) expect(isInDenmark(b.coords)).toBe(true);
+    expect(new Set(everyMarket.map((b) => b.country ?? 'DK')).size).toBe(5);
+    for (const b of everyMarket.filter((x) => !x.country)) expect(isInDenmark(b.coords)).toBe(true);
   });
 
   it('keeps demo records out of live data', () => {
     expect(parseBusinesses(demo, false)).toHaveLength(0);
-    expect(parseBusinesses(demo, true)).toHaveLength(demo.length);
+    expect(parseBusinesses(demo, true)).toHaveLength(everyMarket.filter((b) => !b.country).length);
+  });
+
+  it('shows only the launched countries (Denmark first)', () => {
+    expect(LAUNCHED_COUNTRIES).toEqual(['DK']);
+    expect(businesses.length).toBeGreaterThan(100);
+    expect(businesses.every((b) => (b.country ?? 'DK') === 'DK')).toBe(true);
   });
 
   it('rejects malformed records', () => {
@@ -93,9 +103,10 @@ describe('demo data', () => {
 
 describe('markets', () => {
   it('opens only the countries that have businesses', () => {
-    expect(openCountries(businesses)).toEqual(['DK', 'SE', 'NO', 'DE', 'GB']);
-    expect(openCountries(businesses.filter((b) => !b.country))).toEqual(['DK']);
-    expect(openCountries([])).toHaveLength(Object.keys(MARKETS).length);
+    expect(openCountries(businesses)).toEqual(['DK']);
+    // Listings for markets that are not launched yet never open them.
+    expect(openCountries(everyMarket)).toEqual(['DK']);
+    expect(openCountries([])).toEqual(LAUNCHED_COUNTRIES);
   });
 });
 
@@ -130,11 +141,13 @@ describe('places', () => {
     for (const p of DANISH_PLACES) expect(isInDenmark(p)).toBe(true);
   });
 
-  it('has cities abroad too', () => {
+  it('knows cities abroad but only offers places in Denmark', () => {
     expect(PLACES.length).toBeGreaterThan(3000);
-    expect(searchPlaces('london')[0]).toMatchObject({ name: 'London', country: 'GB' });
+    expect(PLACES.some((p) => p.name === 'London' && p.country === 'GB')).toBe(true);
     expect(nearestPlace({ lat: 52.52, lon: 13.4 }).country).toBe('DE');
-    expect(INTERNATIONAL_PLACES.map((p) => p.country)).toEqual(['SE', 'NO', 'DE', 'GB']);
+    expect(searchPlaces('london').every((p) => p.country === 'DK')).toBe(true);
+    expect(searchPlaces('aarhus')[0]).toMatchObject({ name: 'Aarhus C', country: 'DK' });
+    expect(INTERNATIONAL_PLACES).toEqual([]);
   });
 
   it('searches by name and number', () => {

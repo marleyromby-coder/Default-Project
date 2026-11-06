@@ -330,6 +330,20 @@ function rowToBusiness(row, context) {
     warnings.push("VVS'er uden VVS-autorisation – tjek Sikkerhedsstyrelsens register");
   }
 
+  // The Verificeret badge: the day FixMatch checked the business and what it checked.
+  const VERIFICATION_WORDS = { cvr: 'cvr', ejer: 'identity', autorisation: 'authorization', forsikring: 'insurance', garanti: 'guarantee' };
+  let verified;
+  if (row.verificeret || row.verificeret_tjek) {
+    const checks = [];
+    for (const word of String(row.verificeret_tjek ?? '').split(/[|,;]/).map((x) => fold(x.trim())).filter(Boolean)) {
+      if (VERIFICATION_WORDS[word]) checks.push(VERIFICATION_WORDS[word]);
+      else errors.push(`Verificeret tjek "${word}" findes ikke (brug ${Object.keys(VERIFICATION_WORDS).join(', ')})`);
+    }
+    if (!isIsoDate(row.verificeret ?? '')) errors.push('Verificeret skal være datoen for tjekket (ÅÅÅÅ-MM-DD)');
+    if (!checks.includes('cvr') || !checks.includes('identity')) errors.push('Verificeret kræver mindst tjekkene cvr og ejer');
+    verified = { date: row.verificeret, checks: [...new Set(checks)] };
+  }
+
   const consentDate = row.samtykke_dato;
   if (!isIsoDate(consentDate ?? '')) {
     errors.push('Samtykke mangler: udfyld samtykke_dato (ÅÅÅÅ-MM-DD), når virksomheden har underskrevet');
@@ -377,6 +391,7 @@ function rowToBusiness(row, context) {
     photo: photo || `${categories[0] === 'elektriker' ? 'el' : (categories[0] ?? 'vvs')}-1`,
     ...(yes(row.annonce) ? { promoted: true } : {}),
     consent: { date: consentDate, ...(row.samtykke_kontakt ? { contact: row.samtykke_kontakt } : {}) },
+    ...(verified ? { verified } : {}),
     updatedAt: today,
   };
 

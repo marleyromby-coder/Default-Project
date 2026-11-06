@@ -151,6 +151,22 @@ export default function HomeScreen() {
         <Icon name="chevronRight" size={16} color={colors.onInkSoft} weight="semibold" />
       </Tappable>
 
+      <Tappable
+        onPress={() => router.push('/tilbudstjek')}
+        accessibilityLabel={t('Tilbudstjek: se om et tilbud, du har fået, er lavt, normalt eller højt')}
+        style={[styles.quoteCheck, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.describeIcon, { backgroundColor: colors.accentSoft }]}>
+          <Icon name="receipt" size={19} color={colors.brandText} weight="semibold" />
+        </View>
+        <View style={styles.flex}>
+          <AppText variant="headline">{t('Tilbudstjek')}</AppText>
+          <AppText variant="footnote" tone="textSecondary">
+            {t('Har du fået et tilbud? Se om prisen er fair – og hvad fradraget giver.')}
+          </AppText>
+        </View>
+        <Icon name="chevronRight" size={16} color={colors.textTertiary} weight="semibold" />
+      </Tappable>
+
       {state.location.source === 'default' ? (
         <View style={[styles.notice, { backgroundColor: colors.infoSoft }]}>
           <Icon name="info" size={16} color={colors.info} weight="semibold" />
@@ -447,6 +463,16 @@ const styles = StyleSheet.create({
     marginHorizontal: ScreenPadding,
     marginTop: -Spacing.sm,
     borderRadius: Radius.lg,
+    padding: Spacing.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.md,
+  },
+  quoteCheck: {
+    marginHorizontal: ScreenPadding,
+    marginTop: -Spacing.sm,
+    borderRadius: Radius.lg,
+    borderWidth: StyleSheet.hairlineWidth,
     padding: Spacing.md,
     flexDirection: 'row',
     alignItems: 'center',

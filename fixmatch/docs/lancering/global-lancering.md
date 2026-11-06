@@ -5,7 +5,8 @@
 ## Kort fortalt
 
 - **I kan godt udgive appen uden CVR-nummer.** En personlig Apple Developer-konto er nok. Jeres navn står så som udgiver i App Store.
-- **Appen er klar til Europa:** dansk og engelsk, fem lande med egen valuta (Danmark, Sverige, Norge, Tyskland og Storbritannien), miles i UK, og byer i hele verden kan vælges som placering.
+- **Danmark først (november 2026).** Efter råd fra jeres konsulent lancerer FixMatch kun i Danmark. Appen viser kun landene i `LAUNCHED_COUNTRIES` i `src/lib/markets.ts`, i dag `['DK']`.
+- **Resten af Europa ligger klar:** dansk og engelsk, fem lande med egen valuta (Danmark, Sverige, Norge, Tyskland og Storbritannien) og miles i UK. Et nyt land slås til ved at tilføje det i `LAUNCHED_COUNTRIES`. Så følger virksomheder, byer, tilmeldingen og kortet med.
 - **Der er kun én ting, der blokerer App Store: rigtige virksomheder.** Demoversionen med fiktive virksomheder må ikke ligge i App Store (retningslinje 2.2), men den må gerne ligge på TestFlight.
 - **Til konkurrencen: brug TestFlight.** Så kan juryen installere appen på deres egen iPhone. Expo Go og iOS-simulatoren er alternativer.
 
@@ -37,7 +38,7 @@ Selve appen overtræder ikke noget. Det, der mangler, er rigtige data og et par 
 
 **Widgets** vises kun i TestFlight-buildet (ikke i Expo Go, simulatoren uden Mac eller webdemoen). Læg "Hurtig hjælp" på hjemmeskærmen og låseskærmen før fremvisningen.
 
-**Tip til juryen:** Vis appen på dansk i København. Skift så placering til London (Mere → Placering, søg "London") og sprog til engelsk (Mere → Sprog → Åbn Indstillinger). Så ser de pund, miles og engelske tekster. I webdemoen skifter Mere → Sprog med det samme.
+**Tip til juryen:** Vis appen på dansk i København. Åbn **Tilbudstjek** på forsiden, vælg Tømrer → Montering af vindue, skriv 3 stk. og 31.000 kr., og slå Grøn energiforbedring til med 12.000 kr. i arbejdsløn. Så ser de, at tilbuddet er for højt, hvad fradraget giver, og hvilke verificerede tømrere der tager mindre. Vis bagefter flueben-mærket på en virksomhed og "Sådan verificerer vi". Engelsk: Mere → Sprog → Åbn Indstillinger (i webdemoen skifter det med det samme).
 
 ## Udgivelse uden CVR
 

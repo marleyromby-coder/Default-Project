@@ -1,7 +1,7 @@
 import { getLocales } from 'expo-localization';
 
 import { distanceKm } from '@/lib/geo';
-import { countryName, getMarket, isCountryCode } from '@/lib/markets';
+import { countryName, getMarket, isLaunched, LAUNCHED_COUNTRIES } from '@/lib/markets';
 import { loose } from '@/lib/text';
 import type { Coords, UserLocation } from '@/lib/types';
 
@@ -38,6 +38,8 @@ export const WORLD_PLACES: Place[] = (worldJson as WorldRow[]).map(([name, count
   population,
 }));
 export const PLACES: Place[] = [...DANISH_PLACES, ...WORLD_PLACES];
+/** Places in the countries FixMatch is live in: the ones a user can pick. */
+const SEARCHABLE_PLACES: Place[] = PLACES.filter((p) => isLaunched(p.country));
 
 const CAPITALS: Record<string, string> = {
   DK: 'København K',
@@ -73,7 +75,7 @@ function defaultPlace(): Place {
   } catch {
     region = undefined;
   }
-  const country = isCountryCode(region) ? region : 'DK';
+  const country = isLaunched(region) ? region : 'DK';
   return (
     findPlace(country, CAPITALS[country]) ?? DANISH_PLACES.find((p) => p.name === 'København K') ?? DANISH_PLACES[0]
   );
@@ -92,7 +94,7 @@ export function findPlaceByPostalCode(code: string): Place | undefined {
   });
 }
 
-/** Danish postal code, or a town or city name anywhere. Danish towns and big cities come first. */
+/** Danish postal code, or a town or city name in a country FixMatch is live in. Danish towns come first. */
 export function searchPlaces(query: string, limit = 30): Place[] {
   const q = query.trim();
   if (!q) return [];
@@ -106,7 +108,7 @@ export function searchPlaces(query: string, limit = 30): Place[] {
   const needle = loose(q);
   const starts: Place[] = [];
   const contains: Place[] = [];
-  for (const place of PLACES) {
+  for (const place of SEARCHABLE_PLACES) {
     const name = loose(place.name);
     if (name.startsWith(needle)) starts.push(place);
     else if (name.includes(needle) || (place.kommune && loose(place.kommune).startsWith(needle))) contains.push(place);
@@ -143,12 +145,12 @@ export const POPULAR_PLACES: Place[] = [
   .map((name) => DANISH_PLACES.find((p) => p.name === name))
   .filter((p): p is Place => p !== undefined);
 
-/** One city per country outside Denmark where FixMatch has businesses. */
-export const INTERNATIONAL_PLACES: Place[] = (['SE', 'NO', 'DE', 'GB'] as const)
+/** One city per launched country outside Denmark. Empty while FixMatch is only in Denmark. */
+export const INTERNATIONAL_PLACES: Place[] = LAUNCHED_COUNTRIES.filter((country) => country !== 'DK')
   .map((country) => findPlace(country, CAPITALS[country]))
   .filter((p): p is Place => p !== undefined)
   .sort(
     (a, b) =>
-      getMarket(isCountryCode(a.country) ? a.country : undefined).phase -
-      getMarket(isCountryCode(b.country) ? b.country : undefined).phase,
+      getMarket(isLaunched(a.country) ? a.country : undefined).phase -
+      getMarket(isLaunched(b.country) ? b.country : undefined).phase,
   );
