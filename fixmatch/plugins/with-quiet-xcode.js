@@ -15,7 +15,10 @@
  *    target (ours and the pods) also gets `-Xcc -w`.
  * 5. Hermes warns about React Native's own globals when it compiles the JavaScript for an
  *    archive; it runs with -w.
- * 6. In Release, pods' debug-only files compile to nothing, and libtool warns "'X.o' has no
+ * 6. Expo's template says it was last checked by Xcode 11.3, so Xcode keeps offering "Update
+ *    to recommended settings" (and its iOS deployment target change would break the app). The
+ *    project and its scheme are marked as checked by the Xcode CI builds with.
+ * 7. In Release, pods' debug-only files compile to nothing, and libtool warns "'X.o' has no
  *    symbols" for each; the pods' libtool runs with -no_warning_for_no_symbols.
  */
 const fs = require('node:fs');
@@ -27,6 +30,9 @@ const MARK = '# Added by plugins/with-quiet-xcode.js';
 const EXPO_CORE_WARNING = 'is internal, so the generated modules provider cannot reference it';
 /** Silences the C and Objective-C headers that Swift imports. */
 const SWIFT_HEADER_FLAGS = '-Xcc -w';
+/** Xcode 27.1, written as Xcode stores it: the version the project is up to date with. */
+const CHECKED_BY_XCODE = '2710';
+
 /** Static libraries whose files are empty in Release (debug-only code). */
 const LIBTOOL_FLAGS = '-no_warning_for_no_symbols';
 
@@ -87,6 +93,18 @@ const withQuietXcode = (config) => {
       fs.writeFileSync(podfile, patchPodfile(fs.readFileSync(podfile, 'utf8')));
 
       fs.writeFileSync(path.join(ios, 'hermesc-quiet.sh'), HERMESC, { mode: 0o755 });
+
+      for (const project of fs.readdirSync(ios).filter((name) => name.endsWith('.xcodeproj'))) {
+        const schemes = path.join(ios, project, 'xcshareddata', 'xcschemes');
+        for (const name of fs.existsSync(schemes) ? fs.readdirSync(schemes) : []) {
+          const file = path.join(schemes, name);
+          const scheme = fs.readFileSync(file, 'utf8');
+          fs.writeFileSync(
+            file,
+            scheme.replace(/LastUpgradeVersion = "\d+"/, `LastUpgradeVersion = "${CHECKED_BY_XCODE}"`),
+          );
+        }
+      }
       const env = path.join(ios, '.xcode.env');
       const current = fs.existsSync(env) ? fs.readFileSync(env, 'utf8') : '';
       if (!current.includes(MARK)) {
@@ -100,6 +118,8 @@ const withQuietXcode = (config) => {
   ]);
 
   return withXcodeProject(config, (config) => {
+    const project = config.modResults.getFirstProject().firstProject;
+    project.attributes = { ...project.attributes, LastUpgradeCheck: Number(CHECKED_BY_XCODE) };
     for (const configuration of Object.values(config.modResults.pbxXCBuildConfigurationSection())) {
       if (typeof configuration !== 'object' || !configuration.buildSettings) continue;
       configuration.buildSettings.GCC_WARN_INHIBIT_ALL_WARNINGS = 'YES';
