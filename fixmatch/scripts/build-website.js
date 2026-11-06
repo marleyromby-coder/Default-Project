@@ -3,7 +3,10 @@
  * Builds the public website: front page, privacy policy, terms, support and the sign-up
  * form for businesses, in Danish and English. Apple needs public privacy policy and support URLs.
  *
- *   npm run website:build   → dist-website/, ready for Netlify Drop or GitHub Pages
+ *   npm run website:build   → dist-website/, ready for Netlify Drop (docs/lancering/hjemmeside.md)
+ *
+ * Besides the pages it writes what a public site needs: a description and a sharing image
+ * for search engines and links, robots.txt, sitemap.xml, a 404 page and Netlify's _headers.
  *
  * The texts come from docs/jura (the legal templates) and website/. Fields in
  * {{…}} are filled in from src/constants/app-info.ts. Lines starting with ">"
@@ -54,6 +57,7 @@ function appInfo(root = ROOT) {
     name: field('name'),
     company: field('company'),
     email: field('email'),
+    website: field('website').replace(/\/$/, ''),
     updated: field('legalUpdated'),
     unfinished: source.includes('TODO'),
   };
@@ -62,6 +66,12 @@ function appInfo(root = ROOT) {
 const escape = (text) =>
   text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+/**
+ * An e-mail address written as HTML character references, so the simplest address
+ * harvesters miss it. Browsers show and follow it as normal.
+ */
+const obfuscate = (email) => [...email].map((c) => `&#${c.codePointAt(0)};`).join('');
+
 /** Inline markdown: links, bold, italics, code and plain email addresses. */
 function inline(text, link) {
   return escape(text)
@@ -69,7 +79,10 @@ function inline(text, link) {
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/\*([^*]+)\*/g, '<em>$1</em>')
     .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, label, href) => `<a href="${link(href)}">${label}</a>`)
-    .replace(/(^|[\s(])([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/g, '$1<a href="mailto:$2">$2</a>');
+    .replace(
+      /(^|[\s(])([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/g,
+      (_, before, email) => `${before}<a href="${obfuscate(`mailto:${email}`)}">${obfuscate(email)}</a>`,
+    );
 }
 
 /** The small part of Markdown the texts use: headings, paragraphs, lists and notes. */
@@ -121,6 +134,25 @@ function fill(text, values, file) {
   return filled;
 }
 
+/**
+ * The page's first paragraph as plain text, at most 155 characters, for search engines and
+ * link previews. An e-mail address becomes "os"/"us", so it never appears in plain text.
+ */
+function summary(markdown, lang = 'da') {
+  const first = markdown
+    .split(/\n\s*\n/)
+    .map((block) => block.trim())
+    .find((block) => block && !/^(#|>|-|\d+\.|\{\{|\*)/.test(block));
+  const text = (first ?? '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/[*`]/g, '')
+    .replace(/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g, lang === 'da' ? 'os' : 'us')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (text.length <= 155) return text;
+  return `${text.slice(0, 154).replace(/\s+\S*$/, '')}…`;
+}
+
 function formatDate(iso, locale) {
   const date = new Date(`${iso}T12:00:00Z`);
   return new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(
@@ -155,7 +187,7 @@ footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-bottom: 8px; 
 @media (max-width: 520px) { main { padding: 4px 18px 20px; border-radius: 16px; } h1 { font-size: 28px; } }
 `;
 
-function page({ lang, html, title, here, other, info }) {
+function page({ lang, html, title, description, here, other, info, notFound = false }) {
   const rel = (to) => path.posix.relative(here || '.', to || '.') || '.';
   const ui = UI[lang];
   const target = (dir) => `${rel(dir)}/`.replace(/^\.\/$/, './').replace(/\/\/$/, '/');
@@ -166,13 +198,26 @@ function page({ lang, html, title, here, other, info }) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escape(title)} – ${escape(info.name)}</title>
-<link rel="alternate" hreflang="${lang === 'da' ? 'en' : 'da'}" href="${target(other)}">
+${notFound ? '<base href="/">\n<meta name="robots" content="noindex">' : `<meta name="description" content="${escape(description)}">
+<link rel="canonical" href="${info.website}/${here}">
+<link rel="alternate" hreflang="${lang}" href="${info.website}/${here}">
+<link rel="alternate" hreflang="${lang === 'da' ? 'en' : 'da'}" href="${info.website}/${other}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="${escape(info.name)}">
+<meta property="og:title" content="${escape(title)} – ${escape(info.name)}">
+<meta property="og:description" content="${escape(description)}">
+<meta property="og:url" content="${info.website}/${here}">
+<meta property="og:image" content="${info.website}/icon.png">
+<meta property="og:locale" content="${UI[lang].locale.replace('-', '_')}">`}
+<meta name="theme-color" content="#F4F1EA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#11130F" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="${rel('favicon.png')}">
+<link rel="apple-touch-icon" href="${rel('icon.png')}">
 <style>${STYLE.replaceAll('{{fonts}}', rel('fonts') + '/')}${html.includes('id="signup"') ? FORM_STYLE : ''}</style>
 </head>
 <body>
 <header>
-<a class="brand" href="${target(lang === 'da' ? '' : 'en/')}" aria-label="${escape(info.name)}"><img src="${rel('favicon.png')}" alt="">${escape(info.name.toLowerCase())}<span class="dot">.</span></a>
+<a class="brand" href="${target(lang === 'da' ? '' : 'en/')}" aria-label="${escape(info.name)}"><img src="${rel('favicon.png')}" alt=""><span>${escape(info.name.toLowerCase())}<span class="dot">.</span></span></a>
 <a href="${target(other)}" hreflang="${lang === 'da' ? 'en' : 'da'}">${ui.other}</a>
 </header>
 <main>
@@ -185,7 +230,7 @@ ${html}
 <a href="${target(links[2])}">${ui.support}</a>
 <a href="${target(links[3])}">${ui.business}</a>
 </nav>
-© ${new Date().getFullYear()} ${escape(info.company)}
+© ${new Date().getFullYear()} ${escape(info.company)} · <a href="${obfuscate(`mailto:${info.email}`)}">${obfuscate(info.email)}</a>
 </footer>
 </body>
 </html>
@@ -195,7 +240,9 @@ ${html}
 function buildWebsite(out = OUT, root = ROOT) {
   const info = appInfo(root);
   fs.rmSync(out, { recursive: true, force: true });
+  if (!/^https:\/\/[^/]+$/.test(info.website)) throw new Error('src/constants/app-info.ts: website skal være en https-adresse');
   const written = [];
+  const urls = [];
   for (const entry of PAGES) {
     for (const lang of ['da', 'en']) {
       const [source, here] = entry[lang];
@@ -217,11 +264,43 @@ function buildWebsite(out = OUT, root = ROOT) {
       const title = markdown.match(/^# (.*)$/m)?.[1] ?? info.name;
       const file = path.join(out, here, 'index.html');
       fs.mkdirSync(path.dirname(file), { recursive: true });
-      fs.writeFileSync(file, page({ lang, html, title, here, other, info }));
+      fs.writeFileSync(file, page({ lang, html, title, description: summary(markdown, lang), here, other, info }));
       written.push(path.relative(out, file));
+      urls.push(`${info.website}/${here}`);
     }
   }
   fs.copyFileSync(path.join(root, 'assets/images/favicon.png'), path.join(out, 'favicon.png'));
+  // The app icon: home screen bookmark on iPhone, and the picture when a link is shared.
+  fs.copyFileSync(path.join(root, 'assets/images/icon.png'), path.join(out, 'icon.png'));
+
+  // Netlify (and most hosts) show 404.html for an address that does not exist.
+  const notFound = `<h1>Siden findes ikke</h1>
+<p>Linket virker ikke længere. <a href="./">Gå til forsiden</a> eller <a href="support/">skriv til os</a>.</p>
+<h2 lang="en">Page not found</h2>
+<p lang="en">The link no longer works. <a href="en/">Go to the front page</a> or <a href="en/support/">contact us</a>.</p>`;
+  fs.writeFileSync(
+    path.join(out, '404.html'),
+    page({ lang: 'da', html: notFound, title: 'Siden findes ikke', here: '', other: 'en/', info, notFound: true }),
+  );
+  fs.writeFileSync(path.join(out, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${info.website}/sitemap.xml\n`);
+  fs.writeFileSync(
+    path.join(out, 'sitemap.xml'),
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
+      .map((url) => `  <url><loc>${url}</loc></url>`)
+      .join('\n')}\n</urlset>\n`,
+  );
+  // Netlify reads _headers: basic security headers, and the fonts never change.
+  fs.writeFileSync(
+    path.join(out, '_headers'),
+    `/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+`,
+  );
   // Fraunces (SIL Open Font License), the serif of the logo, for the headings.
   fs.mkdirSync(path.join(out, 'fonts'));
   for (const weight of ['600SemiBold', '700Bold']) {
@@ -232,7 +311,7 @@ function buildWebsite(out = OUT, root = ROOT) {
     require.resolve('@expo-google-fonts/fraunces/LICENSE_FONT', { paths: [root] }),
     path.join(out, 'fonts', 'OFL.txt'),
   );
-  return { written, info };
+  return { written, info, urls };
 }
 
 if (require.main === module) {
@@ -242,7 +321,9 @@ if (require.main === module) {
     console.warn(
       'Bemærk: src/constants/app-info.ts har stadig TODO-felter, så siden viser pladsholder-navn og -e-mail.',
     );
-  console.log('Læg mappen online, fx ved at trække den ind på https://app.netlify.com/drop');
+  console.log(
+    `Læg mappen online ved at trække den ind på https://app.netlify.com/drop – den skal ligge på ${info.website}/ (se docs/lancering/hjemmeside.md).`,
+  );
 }
 
-module.exports = { buildWebsite, fill, markdownToHtml };
+module.exports = { buildWebsite, fill, markdownToHtml, summary };

@@ -108,9 +108,9 @@ The first version of FixMatch: find, compare and call local tradespeople and mec
 
 | Field | URL |
 | --- | --- |
-| Support URL | `https://fixmatch.dk/en/support/` |
-| Marketing URL | `https://fixmatch.dk/en/` |
-| Privacy Policy URL | `https://fixmatch.dk/en/privacy/` |
+| Support URL | `https://fixmatch.netlify.app/en/support/` |
+| Marketing URL | `https://fixmatch.netlify.app/en/` |
+| Privacy Policy URL | `https://fixmatch.netlify.app/en/privacy/` |
 
 The pages are built with `npm run website:build` from `docs/jura/privacy-policy.en.md`, `docs/jura/terms.en.md` and `website/` (see README → Hjemmeside).
 

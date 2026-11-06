@@ -42,7 +42,7 @@ Det laver tabellerne `profiles` (navn og telefon), `contacts` (hvem ringede til 
 
    Emne: `Din kode til FixMatch`.
 
-3. **Egen e-mailafsender (SMTP).** Supabase' indbyggede afsender sender kun til e-mails i jeres eget Supabase-team og kun få i timen. Til rigtige brugere skal I bruge jeres egen: **Authentication → Emails → SMTP Settings**, med fx [Brevo](https://www.brevo.com) eller [Resend](https://resend.com) (begge har en gratis plan). Afsender: fx `login@fixmatch.dk`.
+3. **Egen e-mailafsender (SMTP).** Supabase' indbyggede afsender sender kun til e-mails i jeres eget Supabase-team og kun få i timen. Til rigtige brugere skal I bruge jeres egen: **Authentication → Emails → SMTP Settings**, med fx [Brevo](https://www.brevo.com) eller [Resend](https://resend.com) (begge har en gratis plan). Afsender: fx `login@fixmatch.dk`, når I har et domæne.
 
    Indtil SMTP er på plads, virker **Log ind med Apple** for alle, og e-mail-login virker for jer selv.
 

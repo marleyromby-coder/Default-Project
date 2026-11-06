@@ -6,7 +6,19 @@ Skriv til {{email}}. Vi svarer inden for 2 hverdage.
 
 ### Koster FixMatch noget?
 
-Nej. Appen er gratis og kræver ikke login. Du betaler kun virksomheden for arbejdet, og prisen aftaler du direkte med den.
+Nej. Appen er gratis. Du betaler kun virksomheden for arbejdet, og prisen aftaler du direkte med den.
+
+### Skal jeg oprette en bruger?
+
+Du kan se og sammenligne alt uden bruger. Første gang du ringer til en virksomhed gennem FixMatch, opretter du en med Log ind med Apple eller din e-mail, dit navn og dit telefonnummer, så virksomheden ved, hvem den taler med. Du kan slette brugeren under *Mere → Slet bruger*.
+
+### Hvad betyder fluebenet ved navnet?
+
+At virksomheden er verificeret: FixMatch har selv tjekket CVR-nummeret, ejeren og autorisationen (for el, VVS og kloak), og nogle gange også forsikring og garantiordning. Mærket gælder et år og giver ikke en bedre placering. Det er ikke en garanti for kvaliteten af arbejdet.
+
+### Hvordan virker Tilbudstjek?
+
+Du vælger opgaven og skriver prisen fra dit tilbud. FixMatch sammenligner med de priser, virksomhederne i nærheden selv har oplyst, og siger lav, normal eller høj. Vurderingen er vejledende, og det, du skriver, bliver på din telefon.
 
 ### Hvordan bestemmer I rækkefølgen?
 
@@ -14,7 +26,7 @@ Efter FixMatch-scoren, som du selv kan justere under *Mere → Dine prioriteter*
 
 ### Hvorfor er der ingen virksomheder, hvor jeg bor?
 
-Vi åbner by for by og viser kun virksomheder, der selv har sagt ja. Skriv til os, hvis du gerne vil have FixMatch, hvor du bor.
+FixMatch er kun i Danmark indtil videre. Vi åbner by for by og viser kun virksomheder, der selv har sagt ja. Skriv til os, hvis du gerne vil have FixMatch, hvor du bor.
 
 ### Hvordan skifter jeg sprog?
 

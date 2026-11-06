@@ -97,9 +97,9 @@ Første version af FixMatch: find, sammenlign og ring til lokale håndværkere o
 
 | Felt | Dansk | Engelsk |
 | --- | --- | --- |
-| Support-URL | `https://fixmatch.dk/support/` | `https://fixmatch.dk/en/support/` |
-| Marketing-URL | `https://fixmatch.dk/` | `https://fixmatch.dk/en/` |
-| Privatlivspolitik-URL | `https://fixmatch.dk/privatliv/` | `https://fixmatch.dk/en/privacy/` |
+| Support-URL | `https://fixmatch.netlify.app/support/` | `https://fixmatch.netlify.app/en/support/` |
+| Marketing-URL | `https://fixmatch.netlify.app/` | `https://fixmatch.netlify.app/en/` |
+| Privatlivspolitik-URL | `https://fixmatch.netlify.app/privatliv/` | `https://fixmatch.netlify.app/en/privacy/` |
 
 Siderne bygges med `npm run website:build` ud fra `docs/jura/` og `website/` (se README → Hjemmeside). Har I ikke domænet endnu, så brug den gratis adresse, Netlify giver jer, og ret domænet i `src/constants/app-info.ts` og her.
 

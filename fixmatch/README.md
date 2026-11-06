@@ -82,12 +82,13 @@ To widgets, bygget med [expo-widgets](https://docs.expo.dev/versions/v58.0.0/sdk
 Apple kræver en offentlig privatlivspolitik og en support-side. De bygges ud fra de samme tekster som skabelonerne i `docs/jura/`:
 
 ```bash
-npm run website:build   # → dist-website/ med forside, privatliv, vilkår og support på dansk og engelsk
+npm run website:build   # → dist-website/ med forside, privatliv, vilkår, support og tilmelding på dansk og engelsk
 ```
 
-1. Udfyld først navn og e-mail i `src/constants/app-info.ts`. Felterne i `{{…}}` i teksterne udfyldes derfra, og linjer, der starter med `>`, er noter til jer og kommer ikke med.
-2. Læg mappen online. Den nemmeste vej er [Netlify Drop](https://app.netlify.com/drop): træk `dist-website/` ind, og I får en gratis adresse. Domænet `fixmatch.dk` kan kobles på senere.
-3. Ret domænet i `src/constants/app-info.ts`, hvis I bruger en anden adresse. Stierne (`/privatliv/`, `/en/privacy/` osv.) skal være de samme.
+- Siden er klar til [Netlify Drop](https://app.netlify.com/drop) på **https://fixmatch.netlify.app**. Trin for trin: `docs/lancering/hjemmeside.md`.
+- Udgiver (Marley Romby Sangill), e-mail og adresse står i `src/constants/app-info.ts`. Felterne i `{{…}}` i teksterne udfyldes derfra, og linjer, der starter med `>`, er noter til jer og kommer ikke med.
+- Med siden følger beskrivelser og delingsbillede, `sitemap.xml`, `robots.txt`, en 404-side og Netlify-`_headers`. E-mailadressen er skjult for de simpleste spam-robotter.
+- Køber I et domæne, retter I adressen i `app-info.ts` og bygger igen. Stierne (`/privatliv/`, `/en/privacy/` osv.) skal være de samme.
 
 ## Rigtige virksomheder: fra regneark til app
 

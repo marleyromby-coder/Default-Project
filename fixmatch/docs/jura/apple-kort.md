@@ -50,7 +50,7 @@ Idéen (et stort kort med pins og kort, man kan swipe i bunden) er ikke beskytte
 1. **Virksomhed og D-U-N-S-nummer.** Apple kræver et D-U-N-S-nummer for organisationer. Det er gratis og kan slås op eller oprettes via Apples [D-U-N-S-opslag](https://developer.apple.com/enroll/duns-lookup/).
 2. **Tilmeld Apple Developer Program som organisation** (99 USD om året). Accepter DPLA'en. **Det er tilladelsen til Apple Kort.** Gem dato og version som dokumentation.
 3. **Ingen ekstra ansøgning for iPhone-appen.** MapKit er slået til for alle apps.
-4. **(Valgfrit) Web:** opret et Maps ID og en MapKit JS-nøgle under *Certificates, Identifiers & Profiles → Keys*, før kortet kommer på fixmatch.dk.
+4. **(Valgfrit) Web:** opret et Maps ID og en MapKit JS-nøgle under *Certificates, Identifiers & Profiles → Keys*, før kortet kommer på hjemmesiden.
 5. **Test på en rigtig iPhone** (`eas build --profile testflight`): Apple-logoet og "Legal" skal være synlige over kortene i bunden, også med stor tekst og i mørk tilstand.
 6. **Noter til App Review:** skriv, at kortet er Apple MapKit, at pins er virksomhedernes egne adresser, som de har givet samtykke til, og at appen ikke gemmer kortdata. Teksten står i `docs/app-store/app-store-tekster.md`.
 7. **Når Apple opdaterer DPLA'en**, skal den accepteres igen i udviklerkontoen. Ellers kan I ikke indsende opdateringer. Læs bilag 6 igen ved hver ny version.

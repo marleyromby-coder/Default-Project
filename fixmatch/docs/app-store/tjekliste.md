@@ -10,7 +10,7 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 - [ ] Accepter den nyeste Apple Developer Program License Agreement. Det er tilladelsen til Apple Kort (bilag 6). Gem dato og version (`docs/jura/apple-kort.md`).
 - [ ] Angiv **trader-status** i App Store Connect (Business → Compliance → Digital Services Act). Gratis app uden indtægter: ikke erhvervsdrivende. Tjener I penge: erhvervsdrivende, og så vises adresse, telefon og e-mail på App Store-siden i EU.
 - [ ] Vælg kun de lande i App Store Connect (Pricing and Availability), hvor der er rigtige virksomheder.
-- [ ] Registrér domænet `fixmatch.dk` (punktum.dk) til privatlivspolitik og support.
+- [ ] Læg hjemmesiden online på https://fixmatch.netlify.app med Netlify Drop (`docs/lancering/hjemmeside.md`). Et eget domæne kan komme senere.
 - [ ] Senere, når der kommer indtægter: stift en enkeltmandsvirksomhed (gratis på virk.dk), momsregistrér ved over 50.000 kr. i momspligtigt salg, og overvej varemærkeregistrering af "FixMatch".
 
 ## 2. Indhold og rettigheder

@@ -6,7 +6,19 @@ Write to {{email}}. We reply within 2 working days.
 
 ### Does FixMatch cost anything?
 
-No. The app is free and needs no login. You only pay the business for the work, and you agree the price directly with them.
+No. The app is free. You only pay the business for the work, and you agree the price directly with them.
+
+### Do I need an account?
+
+You can look at and compare everything without one. The first time you call a business through FixMatch, you create one with Sign in with Apple or your e-mail, your name and your phone number, so the business knows who it is talking to. You can delete it under *More → Delete account*.
+
+### What does the tick next to the name mean?
+
+That the business is verified: FixMatch has checked its company number, the owner and the licence (for electrical, plumbing and drainage work), and sometimes its insurance and guarantee scheme too. The badge lasts a year and does not give a better position. It is not a guarantee of the quality of the work.
+
+### How does Quote check work?
+
+You choose the job and type in the price from your quote. FixMatch compares it with the prices nearby businesses have listed themselves and says low, normal or high. It is a guide, and what you type stays on your phone.
 
 ### How do you decide the order?
 
@@ -14,7 +26,7 @@ By the FixMatch score, which you can adjust under *More → Your priorities*. No
 
 ### Why are there no businesses where I live?
 
-We open city by city and only show businesses that have agreed to be listed. Write to us if you would like FixMatch where you live.
+FixMatch is only in Denmark for now. We open city by city and only show businesses that have agreed to be listed. Write to us if you would like FixMatch where you live.
 
 ### How do I change the language?
 
