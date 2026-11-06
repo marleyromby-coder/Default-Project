@@ -28,9 +28,9 @@ Hvis de siger nej: tak for snakken, notér "ønsker ikke kontakt" og ring ikke i
 
 Virksomheden tilmelder sig selv og sætter selv flueben ved samtykket. Samtykket gemmes automatisk med ordlyd og tidspunkt (se `docs/lancering/supabase.md`), så I slipper for papirer og underskrifter.
 
-- **Ved besøg:** lad dem udfylde det på jeres telefon (FixMatch → Mere → Tilmeld din virksomhed), eller vis en QR-kode til `fixmatch.netlify.app/tilmeld/`. Det tager 3 minutter, og I kan hjælpe med priserne.
+- **Ved besøg:** lad dem udfylde det på jeres telefon (FixMatch → Mere → Tilmeld din virksomhed), eller vis en QR-kode til `fixmatch-app.netlify.app/tilmeld/`. Det tager 3 minutter, og I kan hjælpe med priserne.
 - **I telefonen:** spørg, om I må sende linket. Siger de ja, har de bedt om den ene SMS eller mail, og så må I sende den. Skriv i jeres liste, at de sagde ja, og hvornår.
-- **Engelsktalende virksomheder i Danmark:** linket er `fixmatch.netlify.app/en/sign-up/`. Siden og appen findes på engelsk.
+- **Engelsktalende virksomheder i Danmark:** linket er `fixmatch-app.netlify.app/en/sign-up/`. Siden og appen findes på engelsk.
 - **Mål:** 20–30 virksomheder i én by (fx København eller London) er nok til at vise appen frem. Tag de fag, folk har mest brug for akut, først: VVS, el og låsesmed.
 
 Regler uden for Danmark (kort fortalt – få en lokal advokat til at se på det før en stor kampagne):

@@ -2,7 +2,7 @@
 
 *Skabelon. Ikke juridisk rådgivning – lad en advokat læse den igennem før brug (fx via jeres uddannelsessted, Erhvervshus eller en startup-advokat).*
 
-> Den hurtigste vej er den selvbetjente tilmelding i appen (Mere → Tilmeld din virksomhed) eller på `fixmatch.netlify.app/tilmeld/`: virksomheden sætter flueben ved tre udsagn, og ordlyd og tidspunkt gemmes automatisk. Brug denne skabelon, når I hellere vil have en underskrevet aftale, fx med større virksomheder.
+> Den hurtigste vej er den selvbetjente tilmelding i appen (Mere → Tilmeld din virksomhed) eller på `fixmatch-app.netlify.app/tilmeld/`: virksomheden sætter flueben ved tre udsagn, og ordlyd og tidspunkt gemmes automatisk. Brug denne skabelon, når I hellere vil have en underskrevet aftale, fx med større virksomheder.
 
 Udfyldes og underskrives (gerne digitalt, fx via e-mail-bekræftelse eller e-signatur) af virksomheden, **før** den vises i FixMatch. Gem det underskrevne samtykke – I skal kunne dokumentere det. Datoen skrives i kolonnen `samtykke_dato` i regnearket.
 

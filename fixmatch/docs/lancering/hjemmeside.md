@@ -4,17 +4,17 @@
 
 Hjemmesiden har forside, privatlivspolitik, vilkår, support og tilmelding for virksomheder på dansk og engelsk. Apple kræver adressen på privatlivspolitikken og support-siden, før appen kan komme i App Store.
 
-Indtil I køber et domæne, ligger siden gratis hos Netlify på **https://fixmatch.netlify.app**. Kontakt-e-mailen er Marleys egen, og udgiveren er Marley Romby Sangill (`src/constants/app-info.ts`).
+Indtil I køber et domæne, ligger siden gratis hos Netlify på **https://fixmatch-app.netlify.app**. Kontakt-e-mailen er Marleys egen, og udgiveren er Marley Romby Sangill (`src/constants/app-info.ts`).
 
 ## Første gang (10 minutter)
 
 1. Byg siden: `cd fixmatch && npm run website:build`. Den færdige side ligger i mappen `fixmatch/dist-website`.
 2. Gå ind på https://app.netlify.com/drop, og opret en gratis konto (fx med GitHub eller e-mail), så siden bliver liggende.
 3. Træk mappen `dist-website` ind i feltet på siden. Efter nogle sekunder er siden online på en tilfældig adresse som `glittering-otter-123.netlify.app`.
-4. Gå til **Site configuration → Change site name**, og skriv `fixmatch`. Så er adressen https://fixmatch.netlify.app.
+4. Gå til **Site configuration → Change site name**, og skriv `fixmatch-app`. Så er adressen https://fixmatch-app.netlify.app. (Navnet `fixmatch` var ikke vores. Netlify-sitet startede som steady-moxie-cef7e6.)
 5. Åbn adressen, og tjek forsiden, privatlivspolitikken og tilmeldingen på telefonen.
 
-**Er navnet `fixmatch` taget?** Vælg et andet, fx `fixmatch-app`. Ret så linjen `const WEBSITE = …` og `website: …` i `src/constants/app-info.ts` til den nye adresse, og byg siden igen (punkt 1). Adressen står i appen, i privatlivspolitikken og i sitemap'en, så den skal passe.
+**Er navnet `fixmatch-app` taget?** Vælg et andet. Ret så linjen `const WEBSITE = …` og `website: …` i `src/constants/app-info.ts` til den nye adresse, og byg siden igen (punkt 1). Adressen står i appen, i privatlivspolitikken og i sitemap'en, så den skal passe.
 
 ## Når noget ændres
 
@@ -31,9 +31,9 @@ Byg siden igen, når `.env` er udfyldt, så formularen sender til databasen.
 
 | Felt | Dansk | Engelsk |
 | --- | --- | --- |
-| Support-URL | https://fixmatch.netlify.app/support/ | https://fixmatch.netlify.app/en/support/ |
-| Marketing-URL | https://fixmatch.netlify.app/ | https://fixmatch.netlify.app/en/ |
-| Privatlivspolitik | https://fixmatch.netlify.app/privatliv/ | https://fixmatch.netlify.app/en/privacy/ |
+| Support-URL | https://fixmatch-app.netlify.app/support/ | https://fixmatch-app.netlify.app/en/support/ |
+| Marketing-URL | https://fixmatch-app.netlify.app/ | https://fixmatch-app.netlify.app/en/ |
+| Privatlivspolitik | https://fixmatch-app.netlify.app/privatliv/ | https://fixmatch-app.netlify.app/en/privacy/ |
 
 ## Når I køber et domæne
 
