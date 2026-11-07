@@ -10,7 +10,7 @@ Nej. Appen er gratis. Du betaler kun virksomheden for arbejdet, og prisen aftale
 
 ### Skal jeg oprette en bruger?
 
-Du kan se og sammenligne alt uden bruger. Første gang du ringer til en virksomhed gennem FixMatch, opretter du en med Log ind med Apple eller din e-mail, dit navn og dit telefonnummer, så virksomheden ved, hvem den taler med. Du kan slette brugeren under *Mere → Slet bruger*.
+Du kan se og sammenligne alt uden bruger. Første gang du ringer til en virksomhed gennem FixMatch, opretter du en med Log ind med Apple eller din e-mail, dit navn og dit telefonnummer, så virksomheden ved, hvem den taler med. Du kan slette brugeren under *Profil → Slet bruger*.
 
 ### Hvad betyder fluebenet ved navnet?
 
@@ -22,7 +22,7 @@ Du vælger opgaven og skriver prisen fra dit tilbud. FixMatch sammenligner med d
 
 ### Hvordan bestemmer I rækkefølgen?
 
-Efter FixMatch-scoren, som du selv kan justere under *Mere → Dine prioriteter*. Ingen virksomhed kan betale sig til en bedre placering. Den præcise beskrivelse står under *Mere → Sådan rangerer vi* i appen.
+Efter FixMatch-scoren, som du selv kan justere under *Profil → Dine prioriteter*. Ingen virksomhed kan betale sig til en bedre placering. Den præcise beskrivelse står under *Mere → Sådan rangerer vi* i appen.
 
 ### Hvorfor er der ingen virksomheder, hvor jeg bor?
 

@@ -79,7 +79,7 @@ Det laver tabellerne `profiles` (navn og telefon), `contacts` (hvem ringede til 
 
 ### Sletning
 
-- Brugere sletter selv deres konto i appen (Mere → Slet bruger). Navn, telefon og opkaldsliste slettes med det samme.
+- Brugere sletter selv deres konto i appen (Profil → Slet bruger). Navn, telefon og opkaldsliste slettes med det samme.
 - Slet brugere, der ikke har logget ind i 24 måneder, mindst én gang om året: **Authentication → Users**, sortér efter "Last sign in" (det står i privatlivspolitikken).
 - Vil en virksomhed fjernes, så fjern den fra `live-businesses.json` (og evt. regnearket), og sæt `status` til `rejected` i `business_signups`. Behold selve rækken som dokumentation i 12 måneder.
 

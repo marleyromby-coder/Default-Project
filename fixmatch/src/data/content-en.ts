@@ -231,14 +231,14 @@ export function infoPagesEn(
         {
           heading: 'Stored on your phone',
           paragraphs: [
-            'Your saved businesses, chosen town and priorities are stored on your phone so they are there next time. You can delete it all under More → Reset app data, or by deleting the app.',
+            'Your saved businesses, chosen town, priorities and the list of businesses you have contacted (under Profile) are stored on your phone so they are there next time. You can delete it all under More → Reset app data, or by deleting the app.',
           ],
         },
         {
           heading: 'Your account',
           paragraphs: [
             'You can browse and compare without an account. The first time you call a business, we ask you to create one. We store your e-mail (or your Apple ID), your name, your phone number and which businesses you have called and when – with Supabase on servers in the EU (Frankfurt).',
-            'Only the business you call sees your name and number. We never sell them. You delete it all under More → Delete account.',
+            'Only the business you call sees your name and number. We never sell them. You delete it all under Profile → Delete account.',
           ],
         },
         {

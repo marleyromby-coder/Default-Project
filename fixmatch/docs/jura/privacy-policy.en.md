@@ -26,7 +26,7 @@ The text you write and your budget are only processed on your phone, to find the
 
 ## 6. Data stored on your phone
 
-Your saved businesses, your chosen city, your priorities and your comparison list are stored on your phone so they are there next time. They do not leave your phone. You delete them under *More → Reset app data* or by deleting the app.
+Your saved businesses, your chosen city, your priorities, your comparison list and the list of businesses you have contacted (under Profile) are stored on your phone so they are there next time. They do not leave your phone. You delete them under *More → Reset app data* or by deleting the app.
 
 ## 7. Your account
 
@@ -36,7 +36,7 @@ You can browse and compare businesses without an account. The first time you cal
 - **Why:** so you can sign in, and so the business can see the name and number of whoever contacted it through FixMatch. The legal basis is our agreement with you to use FixMatch (GDPR Article 6(1)(b)).
 - **Who sees it:** only the business you called sees your name, phone number and the time. We never sell the information or use it for advertising.
 - **Where:** with our processor Supabase on servers in the EU (Frankfurt, Germany).
-- **How long:** until you delete your account under *More → Delete account*. The account, name, phone number and list of calls are then deleted straight away. We delete accounts that have not been used for 24 months.
+- **How long:** until you delete your account under *Profile → Delete account*. The account, name, phone number and list of calls are then deleted straight away. We delete accounts that have not been used for 24 months.
 
 ## 8. When you contact a business
 

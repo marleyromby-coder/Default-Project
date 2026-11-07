@@ -10,7 +10,7 @@ No. The app is free. You only pay the business for the work, and you agree the p
 
 ### Do I need an account?
 
-You can look at and compare everything without one. The first time you call a business through FixMatch, you create one with Sign in with Apple or your e-mail, your name and your phone number, so the business knows who it is talking to. You can delete it under *More → Delete account*.
+You can look at and compare everything without one. The first time you call a business through FixMatch, you create one with Sign in with Apple or your e-mail, your name and your phone number, so the business knows who it is talking to. You can delete it under *Profile → Delete account*.
 
 ### What does the tick next to the name mean?
 
@@ -22,7 +22,7 @@ You choose the job and type in the price from your quote. FixMatch compares it w
 
 ### How do you decide the order?
 
-By the FixMatch score, which you can adjust under *More → Your priorities*. No business can pay for a better position. The exact description is under *More → How we rank* in the app.
+By the FixMatch score, which you can adjust under *Profile → Your priorities*. No business can pay for a better position. The exact description is under *More → How we rank* in the app.
 
 ### Why are there no businesses where I live?
 

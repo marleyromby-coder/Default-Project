@@ -25,6 +25,13 @@ export default function AppTabs() {
         <NativeTabs.Trigger.Icon sf={{ default: 'heart', selected: 'heart.fill' }} md="favorite" />
         <NativeTabs.Trigger.Badge hidden={saved === 0}>{String(saved)}</NativeTabs.Trigger.Badge>
       </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="profil">
+        <NativeTabs.Trigger.Label>{t('Profil')}</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          sf={{ default: 'person.crop.circle', selected: 'person.crop.circle.fill' }}
+          md="person"
+        />
+      </NativeTabs.Trigger>
       <NativeTabs.Trigger name="mere">
         <NativeTabs.Trigger.Label>{t('Mere')}</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon

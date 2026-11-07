@@ -133,11 +133,11 @@ Udfyld byen i firkantede parenteser med den by, hvor I har rigtige virksomheder.
 FixMatch helps people find and compare local tradespeople (plumbers, electricians, carpenters, bricklayers, mechanics, painters, roofers, locksmiths) by price range and distance, and contact them directly by phone or website.
 
 • You can skip sign-up ("Spring over" / "Skip") and browse everything. An account is only required to call a business, so the business knows who is calling. To test it, use Sign in with Apple, or tap "Continue with e-mail" and enter the code from the e-mail.
-• The account can be deleted in the app: More → Delete account.
+• The account can be deleted in the app: Profile → Delete account.
 • Businesses sign themselves up and give consent under More → Sign up your business.
 • The app is in English and Danish and follows the device language (Settings → FixMatch → Language).
-• Businesses are currently listed in [Copenhagen, Denmark]. If you review from another country, open More → Location and search for "[København]" to see the listings. Elsewhere the app says that FixMatch is not in that country yet.
-• Location permission is optional. Without it, the user picks a city manually (More → Location). Location is processed on the device only.
+• Businesses are currently listed in [Copenhagen, Denmark]. If you review from another country, open Profile → Location and search for "[København]" to see the listings. Elsewhere the app says that FixMatch is not in that country yet.
+• Location permission is optional. Without it, the user picks a city manually (Profile → Location). Location is processed on the device only.
 • All listed businesses have given written consent to be listed. Prices are provided by the businesses.
 • The map uses Apple MapKit. The pins are the businesses' own addresses; the app does not store any map data.
 • "Describe your problem" matches the user's text and budget on the device; the text is not sent anywhere.

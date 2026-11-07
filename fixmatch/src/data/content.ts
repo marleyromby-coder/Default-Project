@@ -253,14 +253,14 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
         {
           heading: 'Gemt på din telefon',
           paragraphs: [
-            'Dine gemte virksomheder, din valgte by og dine prioriteter gemmes lokalt på telefonen, så de er der næste gang. Du kan slette det hele under Mere → Nulstil app-data, eller ved at slette appen.',
+            'Dine gemte virksomheder, din valgte by, dine prioriteter og listen over virksomheder, du har kontaktet (under Profil), gemmes lokalt på telefonen, så de er der næste gang. Du kan slette det hele under Mere → Nulstil app-data, eller ved at slette appen.',
           ],
         },
         {
           heading: 'Din bruger',
           paragraphs: [
             'Du kan se og sammenligne uden en bruger. Første gang du ringer til en virksomhed, beder vi dig oprette en. Vi gemmer din e-mail (eller dit Apple-id), dit navn, dit telefonnummer og hvilke virksomheder du har ringet til og hvornår – hos Supabase på servere i EU (Frankfurt).',
-            'Kun den virksomhed, du ringer til, ser dit navn og nummer. Vi sælger dem aldrig. Du sletter det hele under Mere → Slet bruger.',
+            'Kun den virksomhed, du ringer til, ser dit navn og nummer. Vi sælger dem aldrig. Du sletter det hele under Profil → Slet bruger.',
           ],
         },
         {

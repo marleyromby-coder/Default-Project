@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSyncExternalStore } from 'react';
 import { Appearance, Platform } from 'react-native';
 
-/** Light, dark, or follow the phone (Mere → Udseende). */
+/** Light, dark, or follow the phone (Profil → Udseende). */
 export type AppearancePreference = 'system' | 'light' | 'dark';
 
 const STORAGE_KEY = 'fixmatch:appearance';

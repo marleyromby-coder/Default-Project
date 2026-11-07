@@ -29,7 +29,7 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 - ✅ Placering kun "mens appen bruges", med dansk forklaring. Ingen baggrundsplacering.
 - ✅ Appen virker uden placering (manuel by).
 - ✅ Privacy manifest (`ios.privacyManifests` i `app.json`) og `ITSAppUsesNonExemptEncryption = false` (ingen eksportdokumentation nødvendig).
-- ✅ Brugere kan slette deres konto i appen (Mere → Slet bruger), som retningslinje 5.1.1(v) kræver. Log ind med Apple er med, og login kan springes over.
+- ✅ Brugere kan slette deres konto i appen (Profil → Slet bruger), som retningslinje 5.1.1(v) kræver. Log ind med Apple er med, og login kan springes over.
 - ✅ Privatlivspolitik er tilgængelig inde i appen (Mere → Privatlivspolitik).
 - ✅ Mørk tilstand, Dynamic Type og VoiceOver-labels.
 - ✅ Kun iPhone (`supportsTablet: false`) – ingen iPad-skærmbilleder nødvendige.
@@ -59,7 +59,7 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 | --- | --- | --- |
 | 2.1 App Completeness | Demodata eller tomme lister | Indsend kun med rigtige, samtykkede virksomheder |
 | 2.2 Beta Testing | Demoversion i App Store | Demoer og betaversioner hører hjemme på TestFlight |
-| 2.1 Review fra USA | Apple tester ofte fra USA og ser en tom app | Skriv i review-noterne, hvilken by de skal vælge (Mere → Placering), og vælg kun lande med virksomheder |
+| 2.1 Review fra USA | Apple tester ofte fra USA og ser en tom app | Skriv i review-noterne, hvilken by de skal vælge (Profil → Placering), og vælg kun lande med virksomheder |
 | 4.2 Minimum Functionality | "Bare en hjemmeside" | Appen har native kort, sammenligning, filtre, placering – fremhæv det i review-noterne |
 | 5.1.1 Privacy | Manglende privatlivspolitik | Link i appen ✅ og i App Store Connect |
 | 5.2.2 Tredjepartsindhold | Trustpilot-data uden tilladelse | Partneraftale med Trustpilot – Apple kan bede om dokumentation |

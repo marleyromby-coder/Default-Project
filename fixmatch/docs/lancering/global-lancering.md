@@ -38,7 +38,7 @@ Selve appen overtræder ikke noget. Det, der mangler, er rigtige data og et par 
 
 **Widgets** vises kun i TestFlight-buildet (ikke i Expo Go, simulatoren uden Mac eller webdemoen). Læg "Hurtig hjælp" på hjemmeskærmen og låseskærmen før fremvisningen.
 
-**Tip til juryen:** Vis appen på dansk i København. Åbn **Tilbudstjek** på forsiden, vælg Tømrer → Montering af vindue, skriv 3 stk. og 31.000 kr., og slå Grøn energiforbedring til med 12.000 kr. i arbejdsløn. Så ser de, at tilbuddet er for højt, hvad fradraget giver, og hvilke verificerede tømrere der tager mindre. Vis bagefter flueben-mærket på en virksomhed og "Sådan verificerer vi". Engelsk: Mere → Sprog → Åbn Indstillinger (i webdemoen skifter det med det samme).
+**Tip til juryen:** Vis appen på dansk i København. Åbn **Tilbudstjek** på forsiden, vælg Tømrer → Montering af vindue, skriv 3 stk. og 31.000 kr., og slå Grøn energiforbedring til med 12.000 kr. i arbejdsløn. Så ser de, at tilbuddet er for højt, hvad fradraget giver, og hvilke verificerede tømrere der tager mindre. Vis bagefter flueben-mærket på en virksomhed og "Sådan verificerer vi". Engelsk: Profil → Sprog → Åbn Indstillinger (i webdemoen skifter det med det samme).
 
 ## Udgivelse uden CVR
 

@@ -32,6 +32,9 @@ export default function AppTabs() {
         <TabTrigger name="gemte" href="/gemte" asChild>
           <TabButton icon="heartFill" label={t('Gemte')} badge={state.favorites.length} />
         </TabTrigger>
+        <TabTrigger name="profil" href="/profil" asChild>
+          <TabButton icon="person" label={t('Profil')} />
+        </TabTrigger>
         <TabTrigger name="mere" href="/mere" asChild>
           <TabButton icon="list" label={t('Mere')} />
         </TabTrigger>

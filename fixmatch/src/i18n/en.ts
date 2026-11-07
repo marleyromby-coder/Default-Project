@@ -585,12 +585,7 @@ const en: Record<string, string> = {
   'Brugeren blev ikke slettet. Tjek internettet, og prøv igen.':
     'The account was not deleted. Check your internet connection and try again.',
   'Din bruger': 'Your account',
-  'Virksomheder, du ringer til gennem FixMatch, ser dit navn og telefonnummer.':
-    'Businesses you call through FixMatch see your name and phone number.',
   'Tilføj navn og telefonnummer': 'Add name and phone number',
-  'Ret navn og telefonnummer': 'Edit name and phone number',
-  'Du skal have en bruger for at ringe til virksomhederne, så de ved, hvem de taler med.':
-    'You need an account to call businesses, so they know who they are talking to.',
   'Opret bruger eller log ind': 'Create account or sign in',
   'Gratis. Udfyld oplysningerne, og giv samtykke på et par minutter.':
     'Free. Fill in your details and give your consent in a few minutes.',
@@ -778,6 +773,28 @@ const en: Record<string, string> = {
   'Er med i en garantiordning': 'Is part of a guarantee scheme',
   'Normal pris': 'Normal price',
   'Lidt højt': 'A bit high',
+  'Ryd listen?': 'Clear the list?',
+  'Listen over virksomheder, du har kontaktet, slettes fra telefonen.':
+    'The list of businesses you have contacted is deleted from your phone.',
+  Profil: 'Profile',
+  '{name}. Ret navn og telefonnummer': '{name}. Edit name and phone number',
+  'Du er ikke logget ind': 'You are not signed in',
+  'Virksomhederne skal kunne se, hvem der ringer.': 'Businesses need to see who is calling.',
+  'Opret en bruger, så virksomhederne kan se dit navn og nummer, når du ringer.':
+    'Create an account so businesses can see your name and number when you call.',
+  'Dine opkald': 'Your calls',
+  'Listen ligger kun på din telefon. Virksomheden ser dit navn og nummer, når du ringer.':
+    'The list stays on your phone. The business sees your name and number when you call.',
+  'Virksomheder, du ringer til eller skriver til gennem FixMatch, vises her.':
+    'Businesses you call or write to through FixMatch appear here.',
+  'Du har ikke kontaktet nogen endnu.': 'You have not contacted anyone yet.',
+  'Find en håndværker': 'Find a tradesperson',
+  '{name}, {when}': '{name}, {when}',
+  'Ringet {date}': 'Called {date}',
+  'Kontaktet {date}': 'Contacted {date}',
+  'Ryd listen': 'Clear the list',
+  'Sletter du brugeren, slettes navn, telefonnummer og dine opkald for altid.':
+    'Deleting the account deletes your name, phone number and calls for good.',
 };
 
 export default en;

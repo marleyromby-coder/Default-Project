@@ -28,7 +28,7 @@ Teksten, du skriver, og dit budget behandles kun på din telefon for at finde fa
 
 ## 6. Oplysninger gemt på din telefon
 
-Dine gemte virksomheder, din valgte by, dine prioriteter og din sammenligningsliste gemmes lokalt på telefonen, så de er der næste gang. De forlader ikke telefonen. Du sletter dem under *Mere → Nulstil app-data* eller ved at slette appen.
+Dine gemte virksomheder, din valgte by, dine prioriteter, din sammenligningsliste og listen over virksomheder, du har kontaktet (under Profil) gemmes lokalt på telefonen, så de er der næste gang. De forlader ikke telefonen. Du sletter dem under *Mere → Nulstil app-data* eller ved at slette appen.
 
 ## 7. Din bruger
 
@@ -38,7 +38,7 @@ Du kan se og sammenligne virksomheder uden en bruger. Første gang du ringer til
 - **Hvorfor:** så du kan logge ind, og så virksomheden kan se navn og nummer på den, der har kontaktet den gennem FixMatch. Retsgrundlaget er aftalen med dig om at bruge FixMatch (GDPR art. 6, stk. 1, litra b).
 - **Hvem ser det:** kun den virksomhed, du har ringet til, ser dit navn, dit telefonnummer og tidspunktet. Vi sælger aldrig oplysningerne og bruger dem ikke til reklame.
 - **Hvor:** hos vores databehandler Supabase på servere i EU (Frankfurt, Tyskland).
-- **Hvor længe:** indtil du sletter din bruger under *Mere → Slet bruger*. Så slettes brugeren, navn, telefonnummer og listen over opkald med det samme. Brugere, der ikke har været brugt i 24 måneder, sletter vi.
+- **Hvor længe:** indtil du sletter din bruger under *Profil → Slet bruger*. Så slettes brugeren, navn, telefonnummer og listen over opkald med det samme. Brugere, der ikke har været brugt i 24 måneder, sletter vi.
 
 > Indgå Supabase' databehandleraftale (DPA) i dashboardet under Settings → Legal Documents, og vælg region Frankfurt (eu-central-1), når projektet oprettes. Slet inaktive brugere mindst én gang om året (se docs/lancering/supabase.md).
 

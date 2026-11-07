@@ -28,6 +28,29 @@ const SKIPPED_KEY = 'fixmatch:account-skipped';
  * the last known name and phone number, so starting without internet doesn't ask again.
  */
 const ACCOUNT_KEY = 'fixmatch:account';
+/** The businesses the user contacted, kept on the phone for the Profil tab (newest first). */
+const CONTACTS_KEY = 'fixmatch:contacts';
+const MAX_CONTACTS = 50;
+
+export interface ContactRecord {
+  businessId: string;
+  channel: ContactChannel;
+  /** ISO date and time. */
+  at: string;
+}
+
+let contacts: ContactRecord[] = [];
+AsyncStorage.getItem(CONTACTS_KEY)
+  .then((value) => {
+    const parsed: unknown = value ? JSON.parse(value) : [];
+    if (Array.isArray(parsed)) {
+      contacts = parsed.filter(
+        (c): c is ContactRecord => typeof c?.businessId === 'string' && typeof c?.at === 'string',
+      );
+      emit();
+    }
+  })
+  .catch(() => undefined);
 
 let account: Account = { status: 'loading' };
 let skipped = false;
@@ -200,10 +223,14 @@ export async function deleteAccount(): Promise<void> {
     await supabase.auth.signOut({ scope: 'local' }).catch(() => undefined);
   }
   save({ status: 'signedOut' });
+  clearContacts();
 }
 
 /** Records that the user contacted a business, so the business can see who it was. */
 export function logContact(business: Business, channel: ContactChannel) {
+  contacts = [{ businessId: business.id, channel, at: new Date().toISOString() }, ...contacts].slice(0, MAX_CONTACTS);
+  emit();
+  AsyncStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts)).catch(() => undefined);
   if (!supabase || account.status !== 'signedIn' || business.demo) return;
   supabase
     .from('contacts')
@@ -212,6 +239,18 @@ export function logContact(business: Business, channel: ContactChannel) {
       () => undefined,
       () => undefined,
     );
+}
+
+/** The businesses the user has contacted from this phone, newest first. */
+export function useContacts(): ContactRecord[] {
+  return useSyncExternalStore(subscribe, () => contacts);
+}
+
+/** Forgets the list of contacted businesses on this phone. */
+export function clearContacts() {
+  contacts = [];
+  emit();
+  AsyncStorage.removeItem(CONTACTS_KEY).catch(() => undefined);
 }
 
 let pending: ((ok: boolean) => void) | null = null;
