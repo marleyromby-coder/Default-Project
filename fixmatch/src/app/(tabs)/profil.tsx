@@ -24,6 +24,7 @@ import type { Business } from '@/lib/types';
 import { getLanguage, LANGUAGES, t } from '@/i18n';
 import { clearContacts, deleteAccount, signOut, useAccount, useContacts, type ContactRecord } from '@/state/account';
 import { useApp } from '@/state/app-state';
+import { forgetManagedBusiness, useManagedBusiness } from '@/state/business-account';
 import { clearCommunity } from '@/state/community';
 import { setAppearance, useAppearance } from '@/state/appearance';
 
@@ -41,6 +42,8 @@ export default function ProfileScreen() {
   const account = useAccount();
   const contacts = useContacts();
   const appearance = useAppearance();
+  const managed = useManagedBusiness();
+  const managedName = state.businesses.find((b) => b.id === managed?.businessId)?.name;
   const weights = weightsFromPriorities(state.priorities);
   const openAccount = (reason: 'settings' | 'profile') => () => router.push({ pathname: '/konto', params: { reason } });
   const signedIn = account.status === 'signedIn';
@@ -53,6 +56,7 @@ export default function ProfileScreen() {
         text: t('Log ud'),
         onPress: () => {
           clearCommunity();
+          forgetManagedBusiness();
           signOut();
         },
       },
@@ -69,7 +73,10 @@ export default function ProfileScreen() {
           style: 'destructive',
           onPress: () =>
             deleteAccount()
-              .then(clearCommunity)
+              .then(() => {
+                clearCommunity();
+                forgetManagedBusiness();
+              })
               .catch(() =>
                 showDialog(t('Det lykkedes ikke'), t('Brugeren blev ikke slettet. Tjek internettet, og prøv igen.')),
               ),
@@ -184,6 +191,21 @@ export default function ProfileScreen() {
             ))
           )}
           {recent.length > 0 ? <ListRow icon="trash" title={t('Ryd listen')} onPress={confirmClearContacts} /> : null}
+        </ListSection>
+
+        <ListSection
+          title={t('Er du håndværker?')}
+          footer={
+            managedName
+              ? t('Se opkald, meld ledig tid og ret jeres priser.')
+              : t('Log ind med koden fra FixMatch for at se opkald og melde ledig tid. Gratis.')
+          }>
+          <ListRow
+            icon="store"
+            title={managedName ? t('Min virksomhed') : t('Log ind som virksomhed')}
+            value={managedName}
+            onPress={() => router.push(managedName ? '/min-virksomhed' : '/virksomhed-login')}
+          />
         </ListSection>
 
         <ListSection title={t('Gemte')}>

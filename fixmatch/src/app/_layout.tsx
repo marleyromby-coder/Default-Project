@@ -132,6 +132,10 @@ function RootNavigator() {
         <Stack.Screen name="placering" options={{ presentation: 'modal', title: t('Vælg placering') }} />
         <Stack.Screen name="konto" options={{ presentation: 'modal', title: t('Din bruger') }} />
         <Stack.Screen name="tilmeld" options={{ presentation: 'modal', title: t('Tilmeld din virksomhed') }} />
+        <Stack.Screen name="virksomhed-login" options={{ presentation: 'modal', title: t('Log ind som virksomhed') }} />
+        <Stack.Screen name="min-virksomhed/index" options={{ title: t('Min virksomhed') }} />
+        <Stack.Screen name="min-virksomhed/ret" options={{ title: t('Ret oplysninger') }} />
+        <Stack.Screen name="tryghed/[id]" options={{ title: t('Tryghed') }} />
       </Stack.Protected>
       <Stack.Protected guard={accountStepDone && !state.onboarded}>
         <Stack.Screen name="velkommen" options={{ headerShown: false, animation: 'fade' }} />

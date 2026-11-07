@@ -132,7 +132,8 @@
         "authorization",
         "guarantee"
       ]
-    }
+    },
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "kobberkilden-vvs",
@@ -265,7 +266,9 @@
     },
     "demo": true,
     "updatedAt": "2026-10-10",
-    "promoted": true
+    "promoted": true,
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "roerfalken",
@@ -407,7 +410,8 @@
         "authorization",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "hjertevarme-vvs-og-blik",
@@ -550,7 +554,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "dryp-stop-doegnservice",
@@ -696,7 +702,9 @@
         "authorization",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "boelgevand-roerteknik",
@@ -978,7 +986,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "radiatorlauget",
@@ -1117,7 +1127,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "klitvand-vvs",
@@ -1257,7 +1269,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "stroemhvirvel-roer-og-varme",
@@ -1394,7 +1408,9 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "lyngkilde-vvs",
@@ -1531,7 +1547,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-18"
+    "updatedAt": "2026-10-18",
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "isbjerg-varme-og-sanitet",
@@ -1675,7 +1692,8 @@
         "authorization",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "aadalens-roerservice",
@@ -1818,7 +1836,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "lysfalken-el",
@@ -1950,7 +1970,8 @@
     },
     "demo": true,
     "updatedAt": "2026-10-14",
-    "promoted": true
+    "promoted": true,
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "gnist-og-soen",
@@ -2215,7 +2236,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "voltkompagniet",
@@ -2346,7 +2368,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "spaendingsfeltet",
@@ -2475,7 +2498,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "kobbertraad-el",
@@ -2741,7 +2765,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "amperelauget",
@@ -3017,7 +3043,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "stroemlinjen-el",
@@ -3153,7 +3181,8 @@
         "authorization",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "lysbuen-el",
@@ -3282,7 +3311,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "watt-og-co-elservice",
@@ -3404,7 +3434,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
   },
   {
     "id": "elvaerkstedet-gloed",
@@ -3532,7 +3563,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "egeknasten-toemrer",
@@ -3665,7 +3697,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "hoevlspaanen-toemrer-og-snedker",
@@ -3918,7 +3952,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "bjaelkelauget",
@@ -4285,7 +4320,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "laerkehoevl-byg",
@@ -4422,7 +4458,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "boegebakken-toemrer",
@@ -4559,7 +4597,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "vinkeljernet",
@@ -4691,7 +4731,8 @@
         "cvr",
         "identity"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "tapsporet-toemrer",
@@ -4818,7 +4859,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "stolpe-og-spaer",
@@ -4950,7 +4992,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "kvistlauget",
@@ -5079,7 +5122,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "laftehuset-toemrer",
@@ -5214,7 +5259,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "teglvaerket-murerne",
@@ -5347,7 +5394,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "murskeen-og-co",
@@ -5482,7 +5531,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "lodsnoren-murerfirma",
@@ -5616,7 +5667,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "kalk-og-kvarts-murer",
@@ -5753,7 +5806,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "moertellauget",
@@ -5886,7 +5941,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "fugen-murerservice",
@@ -6020,7 +6077,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "roedsten-murerne",
@@ -6149,7 +6207,8 @@
         "cvr",
         "identity"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "klinkerkompagniet",
@@ -6285,7 +6344,8 @@
         "identity",
         "guarantee"
       ]
-    }
+    },
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "flisefalken",
@@ -6413,7 +6473,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "facadelauget",
@@ -6537,7 +6599,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-18"
+    "updatedAt": "2026-10-18",
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "puds-og-pensel-murer",
@@ -6783,7 +6846,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "teglbakken-murer",
@@ -6914,7 +6979,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "stempel-og-soen-autoservice",
@@ -7042,7 +7108,8 @@
     },
     "demo": true,
     "updatedAt": "2026-10-17",
-    "promoted": true
+    "promoted": true,
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "krumtap-autovaerksted",
@@ -7177,7 +7244,8 @@
         "cvr",
         "identity"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "gearkassen-auto",
@@ -7300,7 +7368,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "ventilen-bilservice",
@@ -7434,7 +7503,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos AutoBranchen Danmark"
   },
   {
     "id": "faelgen-autocenter",
@@ -7557,7 +7628,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "guaranteeScheme": "garantiordningen hos AutoBranchen Danmark"
   },
   {
     "id": "taendroeret-auto",
@@ -7685,7 +7757,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "kardan-auto",
@@ -7946,7 +8019,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "kobling-og-co",
@@ -8190,7 +8264,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "servo-autovaerksted",
@@ -8435,7 +8510,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "knastaksel-auto",
@@ -8564,7 +8640,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "penselstroeget",
@@ -8693,7 +8770,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "rullen-og-soen",
@@ -8816,7 +8894,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "farvelauget",
@@ -8952,7 +9031,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos Danske Malermestre"
   },
   {
     "id": "kalkmalerne",
@@ -9075,7 +9156,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "guaranteeScheme": "garantiordningen hos Danske Malermestre"
   },
   {
     "id": "daekfarven",
@@ -9203,7 +9285,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos Danske Malermestre"
   },
   {
     "id": "spartel-og-co",
@@ -9334,7 +9418,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "glans-og-mat-malere",
@@ -9704,7 +9789,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos Danske Malermestre"
   },
   {
     "id": "okker-malerfirma",
@@ -10083,7 +10170,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "skygge-og-lys-malere",
@@ -10208,7 +10296,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "tagrenden-tagdaekning",
@@ -10343,7 +10432,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "tagpapfalken",
@@ -10475,7 +10566,8 @@
         "identity",
         "guarantee"
       ]
-    }
+    },
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "kvistlyset-tag",
@@ -10608,7 +10700,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "rygningen-tagservice",
@@ -10741,7 +10835,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "tagfladen",
@@ -10873,7 +10969,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "skifer-og-soen",
@@ -11131,7 +11228,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "vindskeden-tag",
@@ -11377,7 +11476,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "nedloebet-tagservice",
@@ -11512,7 +11612,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "tagfoden",
@@ -11885,7 +11987,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos DI Byggeri"
   },
   {
     "id": "noeglehullet-laaseservice",
@@ -12019,7 +12123,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "cylinderen-laasesmed",
@@ -12156,7 +12261,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "dirk-og-soen-laase",
@@ -12416,7 +12522,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "fallen-laaseservice",
@@ -12793,7 +12900,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "laasefalken",
@@ -13054,7 +13162,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "sikkerhedslauget",
@@ -13311,7 +13420,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "hasp-og-haengsel",
@@ -13445,7 +13555,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "noeglekompagniet",
@@ -13581,7 +13692,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "kopparkallan-vvs",
@@ -14114,7 +14226,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos Installatörsföretagen"
   },
   {
     "id": "stromkretsen-el",
@@ -14257,7 +14371,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos Installatörsföretagen"
   },
   {
     "id": "gnistan-el",
@@ -14398,7 +14514,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos Installatörsföretagen"
   },
   {
     "id": "ekspaanet-snickeri",
@@ -14656,7 +14774,9 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos Byggföretagen"
   },
   {
     "id": "bjalklaget-snickeri",
@@ -14917,7 +15037,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos Byggföretagen"
   },
   {
     "id": "kalkstenen-mureri",
@@ -15170,7 +15292,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "kolvverket-bilverkstad",
@@ -15430,7 +15553,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "vevaxeln-bilverkstad",
@@ -15568,7 +15692,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "fargklicken-maaleri",
@@ -15704,7 +15829,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos Måleriföretagen"
   },
   {
     "id": "penseldraget-maaleri",
@@ -15841,7 +15968,8 @@
         "identity",
         "guarantee"
       ]
-    }
+    },
+    "guaranteeScheme": "garantiordningen hos Måleriföretagen"
   },
   {
     "id": "fargglad-maaleri",
@@ -15964,7 +16092,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "skifferhatten-tak",
@@ -16088,7 +16217,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "taknocken-tak",
@@ -16222,7 +16352,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "hangrannan-tak",
@@ -16348,7 +16479,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-12"
+    "updatedAt": "2026-10-12",
+    "guaranteeScheme": "garantiordningen hos Plåt & Ventföretagen"
   },
   {
     "id": "laaskolven-laas",
@@ -16481,7 +16613,9 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos Sveriges Låssmeders Riksförening"
   },
   {
     "id": "nyckelknippan-laas",
@@ -16617,7 +16751,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "regelfast-laas",
@@ -16756,7 +16891,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos Sveriges Låssmeders Riksförening"
   },
   {
     "id": "kobberbekken-roer",
@@ -16879,7 +17016,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "fossefallet-roer",
@@ -17016,7 +17154,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos Rørentreprenørene Norge"
   },
   {
     "id": "roerverket-roer",
@@ -17150,7 +17290,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos Rørentreprenørene Norge"
   },
   {
     "id": "lysgnisten-elektro",
@@ -17283,7 +17425,9 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos Nelfo"
   },
   {
     "id": "stroemkretsen-elektro",
@@ -17422,7 +17566,8 @@
         "authorization",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "gnisten-elektro",
@@ -17561,7 +17706,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos Nelfo"
   },
   {
     "id": "eikesponet-snekkeri",
@@ -17695,7 +17842,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "hoevelbenken-snekkeri",
@@ -17947,7 +18095,8 @@
         "cvr",
         "identity"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "teglroed-mur",
@@ -18466,7 +18615,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos Norges Bilbransjeforbund"
   },
   {
     "id": "tannhjulet-bilverksted",
@@ -18598,7 +18749,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos Norges Bilbransjeforbund"
   },
   {
     "id": "veivakselen-bilverksted",
@@ -18730,7 +18883,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "guaranteeScheme": "garantiordningen hos Norges Bilbransjeforbund"
   },
   {
     "id": "fargeklatten-maler",
@@ -18861,7 +19015,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "penselstroeket-maler",
@@ -19122,7 +19277,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos Mesterbrev"
   },
   {
     "id": "skiferhatten-tak",
@@ -19384,7 +19541,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "takrenna-tak",
@@ -19518,7 +19676,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "laasbolten-laasservice",
@@ -19650,7 +19809,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "guaranteeScheme": "garantiordningen hos Mesterbrev"
   },
   {
     "id": "noekkelknippet-laasservice",
@@ -19789,7 +19949,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos Mesterbrev"
   },
   {
     "id": "regelfast-laasservice",
@@ -20055,7 +20217,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos Handwerkskammer Berlin"
   },
   {
     "id": "wasserlauf-haustechnik",
@@ -20189,7 +20353,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "rohrwerk-haustechnik",
@@ -20316,7 +20481,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-18"
+    "updatedAt": "2026-10-18",
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "lichtfunke-elektrotechnik",
@@ -20441,7 +20607,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "guaranteeScheme": "garantiordningen hos Handwerkskammer Berlin"
   },
   {
     "id": "stromkreis-elektrotechnik",
@@ -20576,7 +20743,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos Handwerkskammer Berlin"
   },
   {
     "id": "funkenflug-elektrotechnik",
@@ -20702,7 +20871,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "guaranteeScheme": "garantiordningen hos Handwerkskammer Berlin"
   },
   {
     "id": "eichenspan-zimmerei",
@@ -20834,7 +21004,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "hobelbank-zimmerei",
@@ -20965,7 +21136,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos Handwerkskammer Berlin"
   },
   {
     "id": "balkenwerk-zimmerei",
@@ -21094,7 +21267,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-11"
+    "updatedAt": "2026-10-11",
+    "guaranteeScheme": "garantiordningen hos Handwerkskammer Berlin"
   },
   {
     "id": "ziegelrot-maurerbetrieb",
@@ -21485,7 +21659,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "kolbenwerk-kfz-werkstatt",
@@ -21622,7 +21797,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos Kfz-Innung Berlin"
   },
   {
     "id": "zahnrad-kfz-werkstatt",
@@ -21763,7 +21940,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos Kfz-Innung Berlin"
   },
   {
     "id": "kurbelwelle-kfz-werkstatt",
@@ -22023,7 +22202,9 @@
         "identity",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos Handwerkskammer Berlin"
   },
   {
     "id": "pinselstrich-malerbetrieb",
@@ -22153,7 +22334,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos Handwerkskammer Berlin"
   },
   {
     "id": "farbenfroh-malerbetrieb",
@@ -22283,7 +22466,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos Handwerkskammer Berlin"
   },
   {
     "id": "schieferhut-dachdeckerei",
@@ -22549,7 +22734,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos Handwerkskammer Berlin"
   },
   {
     "id": "regenrinne-dachdeckerei",
@@ -22673,7 +22860,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "insurer": "Kyst Forsikring"
   },
   {
     "id": "riegelfest-schlusseldienst",
@@ -22932,7 +23120,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos Handwerkskammer Berlin"
   },
   {
     "id": "schliesswerk-schlusseldienst",
@@ -23064,7 +23254,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-17"
+    "updatedAt": "2026-10-17",
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "copperleaf-plumbing-and-heating",
@@ -23207,7 +23398,8 @@
         "authorization",
         "guarantee"
       ]
-    }
+    },
+    "guaranteeScheme": "garantiordningen hos Gas Safe Register"
   },
   {
     "id": "tidewell-plumbing-and-heating",
@@ -23488,7 +23680,9 @@
         "authorization",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos Gas Safe Register"
   },
   {
     "id": "brightwire-electrical",
@@ -23620,7 +23814,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "ambervolt-electrical",
@@ -23754,7 +23949,9 @@
         "identity",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos NICEIC"
   },
   {
     "id": "sparkhill-electrical",
@@ -23893,7 +24090,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos NICEIC"
   },
   {
     "id": "oakgrain-carpentry",
@@ -24023,7 +24222,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos Federation of Master Builders"
   },
   {
     "id": "larchwood-carpentry",
@@ -24159,7 +24360,9 @@
         "identity",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos Federation of Master Builders"
   },
   {
     "id": "timberline-carpentry",
@@ -24424,7 +24627,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Kyst Forsikring",
+    "guaranteeScheme": "garantiordningen hos Federation of Master Builders"
   },
   {
     "id": "flintmoor-brickwork-and-tiling",
@@ -24558,7 +24763,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring"
   },
   {
     "id": "mortarby-brickwork-and-tiling",
@@ -24693,7 +24899,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos Federation of Master Builders"
   },
   {
     "id": "torquelane-motors",
@@ -24829,7 +25037,8 @@
         "identity",
         "guarantee"
       ]
-    }
+    },
+    "guaranteeScheme": "garantiordningen hos The Motor Ombudsman"
   },
   {
     "id": "gearwright-motors",
@@ -24962,7 +25171,8 @@
         "identity",
         "guarantee"
       ]
-    }
+    },
+    "guaranteeScheme": "garantiordningen hos The Motor Ombudsman"
   },
   {
     "id": "pistonbay-motors",
@@ -25099,7 +25309,8 @@
         "identity",
         "guarantee"
       ]
-    }
+    },
+    "guaranteeScheme": "garantiordningen hos The Motor Ombudsman"
   },
   {
     "id": "freshcoat-decorators",
@@ -25360,7 +25571,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Håndværkernes Forsikring",
+    "guaranteeScheme": "garantiordningen hos Painting & Decorating Association"
   },
   {
     "id": "brushfield-decorators",
@@ -25485,7 +25698,8 @@
         "identity",
         "insurance"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "slatecrest-roofing",
@@ -25611,7 +25825,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "guaranteeScheme": "garantiordningen hos National Federation of Roofing Contractors"
   },
   {
     "id": "ridgeline-roofing",
@@ -25750,7 +25965,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos National Federation of Roofing Contractors"
   },
   {
     "id": "eavesford-roofing",
@@ -25887,7 +26104,9 @@
         "insurance",
         "guarantee"
       ]
-    }
+    },
+    "insurer": "Nordisk Erhvervsforsikring",
+    "guaranteeScheme": "garantiordningen hos National Federation of Roofing Contractors"
   },
   {
     "id": "keyhaven-locksmiths",
@@ -26018,7 +26237,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-16"
+    "updatedAt": "2026-10-16",
+    "insurer": "Nordisk Erhvervsforsikring"
   },
   {
     "id": "latchley-locksmiths",
@@ -26159,7 +26379,8 @@
         "identity",
         "guarantee"
       ]
-    }
+    },
+    "guaranteeScheme": "garantiordningen hos Master Locksmiths Association"
   },
   {
     "id": "boltwise-locksmiths",

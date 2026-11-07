@@ -433,7 +433,7 @@ export default function BusinessScreen() {
           </Card>
 
           <Card>
-            <CardTitle title={t('Verificering')} icon="verified" />
+            <CardTitle title={t('Tryghed')} icon="verified" />
             {verified && business.verified ? (
               <>
                 <InfoRow
@@ -507,6 +507,15 @@ export default function BusinessScreen() {
               label={t('Samtykke')}
               value={t('Godkendt af virksomheden {date}', { date: formatDate(business.consent.date) })}
             />
+            <View style={styles.spaced}>
+              <Button
+                title={t('Se tryghed og klagevej')}
+                icon="shield"
+                variant="secondary"
+                onPress={() => router.push({ pathname: '/tryghed/[id]', params: { id: business.id } })}
+                block
+              />
+            </View>
           </Card>
 
           <View style={styles.footer}>

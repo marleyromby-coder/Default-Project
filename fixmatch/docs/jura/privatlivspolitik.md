@@ -38,7 +38,7 @@ Du kan se og sammenligne virksomheder uden en bruger. Første gang du ringer til
 
 - **Det gemmer vi:** din e-mail (eller det id og den e-mail, Apple giver os, når du bruger "Log ind med Apple" – Apple kan skjule din rigtige e-mail), dit navn, dit telefonnummer, og hvilke virksomheder du har ringet til gennem FixMatch og hvornår.
 - **Hvorfor:** så du kan logge ind, og så virksomheden kan se navn og nummer på den, der har kontaktet den gennem FixMatch. Retsgrundlaget er aftalen med dig om at bruge FixMatch (GDPR art. 6, stk. 1, litra b).
-- **Hvem ser det:** kun den virksomhed, du har ringet til, ser dit navn, dit telefonnummer og tidspunktet. Vi sælger aldrig oplysningerne og bruger dem ikke til reklame.
+- **Hvem ser det:** kun den virksomhed, du har ringet til, ser dit navn, dit telefonnummer og tidspunktet. Virksomheden ser det på sin egen side i FixMatch i 90 dage efter, du kontaktede den, og må kun bruge det til at svare dig. Vi sælger aldrig oplysningerne og bruger dem ikke til reklame.
 - **Hvor:** hos vores databehandler Supabase på servere i EU (Frankfurt, Tyskland).
 - **Hvor længe:** indtil du sletter din bruger under *Profil → Slet bruger*. Så slettes brugeren, navn, telefonnummer og listen over opkald med det samme. Brugere, der ikke har været brugt i 24 måneder, sletter vi.
 

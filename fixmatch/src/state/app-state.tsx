@@ -173,6 +173,8 @@ interface AppContextValue {
   toggleCompare: (id: string) => boolean;
   clearCompare: () => void;
   setFilters: (filters: Filters) => void;
+  /** A business's free days, right after its owner changed them on "Min virksomhed". */
+  setAvailability: (businessId: string, days: string[]) => void;
   resetAll: () => void;
 }
 
@@ -276,6 +278,8 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       },
       clearCompare: () => dispatch({ type: 'compare-clear' }),
       setFilters: (filters) => dispatch({ type: 'filters', filters }),
+      setAvailability: (businessId, days) =>
+        dispatch({ type: 'availability', availability: { ...state.availability, [businessId]: days } }),
       resetAll: () => {
         AsyncStorage.multiRemove([STORAGE_KEY, REMOTE_CACHE_KEY]).catch(() => undefined);
         dispatch({ type: 'reset' });

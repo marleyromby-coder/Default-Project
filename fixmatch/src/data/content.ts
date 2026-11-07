@@ -179,7 +179,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
               : 'Du godkender dine oplysninger: kontakt, priser, åbningstider og billeder.',
             'Du giver samtykke, når du tilmelder dig, og kan til enhver tid trække det tilbage.',
             'Vil du have Verificeret-mærket, sætter du flueben ved det i tilmeldingen i appen eller på hjemmesiden. Det er gratis.',
-            'Når en kunde ringer til dig gennem FixMatch, kan du se kundens navn og telefonnummer.',
+            'Når en kunde ringer til dig gennem FixMatch, kan du se kundens navn og telefonnummer under Profil → Log ind som virksomhed. Der kan du også melde ledig tid, se den månedlige opgørelse og bede os rette dine priser og åbningstider. Du logger ind med koden fra os.',
             `Har du tid i dag eller i morgen, så tryk "Ledig i dag" på dit personlige link (${APP_INFO.website}/ledig/). Så står du under "Hvem har tid i dag?", og kunder, hvor det haster, ser dig først. Det forsvinder af sig selv ved midnat. Linket får du fra os.`,
           ],
         },

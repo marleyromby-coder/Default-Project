@@ -112,6 +112,10 @@ export interface Business {
   memberships: string[];
   /** FixMatch's own check of the business: the Verificeret badge. */
   verified?: Verification;
+  /** Name of the business's liability insurer, as stated (checked if `verified` has "insurance"). */
+  insurer?: string;
+  /** Name of the guarantee scheme the business belongs to (checked if `verified` has "guarantee"). */
+  guaranteeScheme?: string;
   services: string[];
   hours: WeekHours;
   /** IANA time zone of the opening hours, when it differs from the country's. */

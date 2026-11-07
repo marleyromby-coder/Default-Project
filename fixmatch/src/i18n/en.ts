@@ -753,7 +753,6 @@ const en: Record<string, string> = {
   'Fx Byg Garanti eller TEKNIQ': 'E.g. Byg Garanti or TEKNIQ',
   Topbedømt: 'Top rated',
   'Har du fået et tilbud? Tjek prisen': 'Got a quote? Check the price',
-  Verificering: 'Verification',
   'Verificeret af FixMatch': 'Verified by FixMatch',
   'Tjekket {date} · gælder til {until}': 'Checked {date} · valid until {until}',
   'Ikke verificeret endnu': 'Not verified yet',
@@ -908,6 +907,188 @@ const en: Record<string, string> = {
     'Messages opens with your description and pictures, ready to send to the business.',
   'Beskrivelsen er kopieret, så du kan indsætte den i en besked.':
     'The description is copied, so you can paste it into a message.',
+  'Log ind som virksomhed': 'Log in as a business',
+  'Er du håndværker?': 'Are you a tradesperson?',
+  'Se opkald, meld ledig tid og ret jeres priser.': 'See calls, mark free time and change your prices.',
+  'Log ind med koden fra FixMatch for at se opkald og melde ledig tid. Gratis.':
+    'Log in with the code from FixMatch to see calls and mark free time. Free.',
+  'Min virksomhed': 'My business',
+  'Ret oplysninger': 'Edit details',
+  Tryghed: 'Safety',
+  'I dag og i morgen': 'Today and tomorrow',
+  'Ikke ledig': 'Not free',
+  'Du er ikke logget ind som virksomhed': 'You are not logged in as a business',
+  'Log ind med koden fra FixMatch for at se jeres opkald og melde ledig tid.':
+    'Log in with the code from FixMatch to see your calls and mark free time.',
+  'Den er ikke på FixMatch lige nu. Skriv til os, hvis det er en fejl.':
+    'It is not on FixMatch right now. Write to us if this is a mistake.',
+  'Log ud af virksomheden': 'Log out of the business',
+  'Det blev ikke gemt': 'It was not saved',
+  'Tjek internettet, og prøv igen.': 'Check your internet connection and try again.',
+  'Log ud af virksomheden?': 'Log out of the business?',
+  'Du kan logge ind igen med koden fra FixMatch. Din egen bruger bliver ikke slettet.':
+    'You can log in again with the code from FixMatch. Your own account is not deleted.',
+  'Eksempel: opkaldene er opdigtede': 'Example: the calls are made up',
+  'Se jeres side, som kunderne ser den': 'See your page as customers see it',
+  'Har I tid?': 'Do you have time?',
+  'Kunder, hvor det haster, ser jer først. Det forsvinder af sig selv ved midnat.':
+    'Customers with something urgent see you first. It disappears by itself at midnight.',
+  'Gemmer…': 'Saving…',
+  Opgørelse: 'Summary',
+  'Opgørelsen kunne ikke hentes.': 'The summary could not be loaded.',
+  'Prøv igen': 'Try again',
+  'opkald i {month}': 'calls in {month}',
+  'stjerner fra {count} kunder': 'stars from {count} customers',
+  'ingen anmeldelser endnu': 'no reviews yet',
+  'priser delt af kunder': 'prices shared by customers',
+  '{calls} opkald · {messages} beskeder': '{calls} calls · {messages} messages',
+  'Kundernes priser vises, når mindst {min} har delt for samme opgave.':
+    'Customers’ prices are shown once at least {min} have shared for the same job.',
+  'Hvem har kontaktet jer': 'Who has contacted you',
+  'Henter…': 'Loading…',
+  'Ingen har kontaktet jer gennem FixMatch de sidste 90 dage.':
+    'Nobody has contacted you through FixMatch in the last 90 days.',
+  '{name}, {when}. Ring tilbage': '{name}, {when}. Call back',
+  Ukendt: 'Unknown',
+  'Vis alle {count}': 'Show all {count}',
+  'Kunderne har sagt ja til, at I ser navn og nummer, når de kontakter jer gennem FixMatch. Brug dem kun til at svare på henvendelsen. Listen viser de sidste 90 dage.':
+    'Customers have agreed that you see their name and number when they contact you through FixMatch. Only use them to answer the enquiry. The list shows the last 90 days.',
+  'Jeres oplysninger': 'Your details',
+  'Sendt {date}. Vi tjekker og lægger det ind inden for 2 hverdage.':
+    'Sent {date}. We check it and add it within 2 working days.',
+  'Vi tjekker ændringerne og lægger dem ind inden for 2 hverdage.':
+    'We check the changes and add them within 2 working days.',
+  'Ret priser, åbningstider og tekst': 'Change prices, opening hours and text',
+  'Bliv verificeret': 'Get verified',
+  'Log ind med koden fra FixMatch for at rette jeres oplysninger.':
+    'Log in with the code from FixMatch to change your details.',
+  'pr. m²': 'per m²',
+  'pr. stk.': 'per item',
+  'pr. opgave': 'per job',
+  'Intet er ændret': 'Nothing has changed',
+  'Ret et felt, eller skriv en besked til os nederst.': 'Change a field, or write a message to us at the bottom.',
+  'Tak, det er sendt': 'Thank you, it has been sent',
+  'I den rigtige app tjekker FixMatch ændringerne og lægger dem ind inden for 2 hverdage.':
+    'In the real app FixMatch checks the changes and adds them within 2 working days.',
+  'Ændringerne blev ikke sendt. Tjek internettet, og prøv igen.':
+    'The changes were not sent. Check your internet connection and try again.',
+  'Ret det, der skal ændres. Alle priser er inklusive moms. FixMatch tjekker ændringerne, før de vises.':
+    'Change what needs changing. All prices include VAT. FixMatch checks the changes before they are shown.',
+  'Fra ({currency})': 'From ({currency})',
+  'Til ({currency})': 'To ({currency})',
+  'Kørsel eller opstart ({currency}, valgfrit)': 'Call-out or start-up fee ({currency}, optional)',
+  'Priser på opgaver': 'Prices for jobs',
+  'Typisk pris fra–til. Lad felterne stå tomme, hvis I ikke laver opgaven.':
+    'Typical price from–to. Leave the fields empty if you do not do the job.',
+  Fra: 'From',
+  Til: 'To',
+  'Udfyld fra og til, og fra skal være lavest.': 'Fill in from and to, and from must be the lowest.',
+  'Skriv fx 7-16 eller 07.30-15.30. Tomt betyder lukket.': 'Write e.g. 7-16 or 07.30-15.30. Empty means closed.',
+  'Åbningstid {day}': 'Opening hours {day}',
+  'Skriv fx 7-16': 'Write e.g. 7-16',
+  'I tager telefonen uden for åbningstid': 'You answer the phone outside opening hours',
+  Beskrivelse: 'Description',
+  'Andet, vi skal rette (valgfrit)': 'Anything else we should change (optional)',
+  'Fx nyt telefonnummer, ny adresse eller nye billeder': 'E.g. a new phone number, a new address or new photos',
+  'Send ændringerne': 'Send the changes',
+  'Tjekket af FixMatch': 'Checked by FixMatch',
+  'Oplyst af virksomheden': 'Stated by the business',
+  'Ikke oplyst': 'Not stated',
+  'CVR {number}. Du kan selv se, om virksomheden er aktiv, og hvem der ejer den.':
+    'Company number {number}. You can check yourself whether the business is active and who owns it.',
+  'FixMatch har talt med ejeren og bekræftet, at det er dem, der står bag.':
+    'FixMatch has spoken to the owner and confirmed that they are behind it.',
+  'FixMatch har ikke bekræftet, hvem ejeren er.': 'FixMatch has not confirmed who the owner is.',
+  'Arbejde med el, VVS og kloak kræver autorisation. Spørg efter autorisationsnummeret, før arbejdet går i gang.':
+    'Electrical, plumbing and drainage work requires a licence. Ask for the licence number before the work starts.',
+  'Autorisationsnummer: {numbers}. Du kan selv slå det op hos Sikkerhedsstyrelsen.':
+    'Licence number: {numbers}. You can look it up yourself at the Danish Safety Technology Authority.',
+  'Spørg, om virksomheden har en erhvervsansvarsforsikring, der dækker skader på dit hjem.':
+    'Ask whether the business has public liability insurance that covers damage to your home.',
+  'Forsikret hos {name}. Den dækker, hvis virksomheden kommer til at skade dit hjem.':
+    'Insured with {name}. It covers you if the business damages your home.',
+  'Virksomheden har en erhvervsansvarsforsikring. Den dækker, hvis den kommer til at skade dit hjem.':
+    'The business has public liability insurance. It covers you if it damages your home.',
+  'Uden en garantiordning kan det være svært at få rettet fejl, hvis virksomheden lukker.':
+    'Without a guarantee scheme it can be hard to get faults fixed if the business closes.',
+  'Med i {name}. Den kan dække fejl ved arbejdet, også hvis virksomheden lukker.':
+    'Member of {name}. It can cover faults in the work, even if the business closes.',
+  'Med i en garantiordning, der kan dække fejl ved arbejdet.':
+    'Member of a guarantee scheme that can cover faults in the work.',
+  'Få et skriftligt tilbud med fast pris eller et overslag, før arbejdet går i gang.':
+    'Get a written quote with a fixed price or an estimate before the work starts.',
+  'Aftal, hvad der sker, hvis opgaven bliver større end ventet.':
+    'Agree what happens if the job turns out bigger than expected.',
+  'Aftal, hvornår arbejdet starter og er færdigt.': 'Agree when the work starts and when it is finished.',
+  'Betal ikke det hele på forhånd. Betal efter regning, når arbejdet er gjort.':
+    'Do not pay everything up front. Pay on invoice when the work is done.',
+  'Bed om en faktura med timer og materialer hver for sig. Den skal bruges til håndværkerfradraget.':
+    'Ask for an invoice with hours and materials listed separately. You need it for the tax deduction.',
+  '{checked} af {total} punkter er tjekket af FixMatch': '{checked} of {total} points are checked by FixMatch',
+  'Her er det, du bør vide, før du siger ja. Vi skriver altid, om FixMatch selv har tjekket det, eller om virksomheden bare har oplyst det.':
+    'This is what you should know before you say yes. We always say whether FixMatch has checked it, or the business has only stated it.',
+  'Tjekket af FixMatch {date}': 'Checked by FixMatch on {date}',
+  'Slå op i CVR-registret': 'Look up in the company register',
+  'Tjek hos Sikkerhedsstyrelsen': 'Check with the Safety Technology Authority',
+  'Før du siger ja': 'Before you say yes',
+  'Klag skriftligt til virksomheden, og giv den mulighed for at rette fejlen.':
+    'Complain in writing to the business, and give it the chance to fix the fault.',
+  'Kan I ikke blive enige, kan du klage til et ankenævn:':
+    'If you cannot agree, you can complain to a complaints board:',
+  'Gå til {name}': 'Go to {name}',
+  'Hvilket nævn der kan tage sagen, afhænger af opgaven og af virksomhedens medlemskab.':
+    'Which board can take the case depends on the job and on the business’s membership.',
+  'Se dine rettigheder og andre klagemuligheder på forbrug.dk.':
+    'See your rights and other ways to complain on forbrug.dk.',
+  'Gå til forbrug.dk': 'Go to forbrug.dk',
+  'Er oplysningerne her forkerte, så sig det til os. Vi svarer inden for 2 hverdage.':
+    'If the information here is wrong, tell us. We answer within 2 working days.',
+  'FixMatch er ikke part i aftalen mellem dig og virksomheden.':
+    'FixMatch is not a party to the agreement between you and the business.',
+  'Se tryghed og klagevej': 'See safety and how to complain',
+  'Koden passer ikke': 'The code does not match',
+  'Brug koden fra linket, I har fået fra FixMatch.': 'Use the code from the link you got from FixMatch.',
+  'Log ind først': 'Log in first',
+  'Log ind med din egen bruger, så kobler vi den til virksomheden.':
+    'Log in with your own account, and we link it to the business.',
+  'Ikke klar endnu': 'Not ready yet',
+  'Virksomheder kan logge ind, når FixMatch er klar til rigtige virksomheder.':
+    'Businesses can log in once FixMatch is ready for real businesses.',
+  'Se hvem der har ringet, meld ledig tid, og ret jeres priser og åbningstider. Det er gratis. I skal bruge koden fra linket, I har fået fra FixMatch.':
+    'See who has called, mark free time, and change your prices and opening hours. It is free. You need the code from the link you got from FixMatch.',
+  'Log ind med din egen bruger først. Så kobler vi den til virksomheden.':
+    'Log in with your own account first. Then we link it to the business.',
+  'Log ind eller opret bruger': 'Log in or create an account',
+  Skift: 'Change',
+  'Det er en eksempelvirksomhed, så I kan prøve uden kode. Opkaldene er opdigtede.':
+    'This is an example business, so you can try it without a code. The calls are made up.',
+  'Jeres kode': 'Your code',
+  'Står i linket fra FixMatch efter "kode=".': 'It is in the link from FixMatch after "kode=".',
+  'Prøv som {name}': 'Try as {name}',
+  'Log ind': 'Log in',
+  'Find jeres virksomhed': 'Find your business',
+  'Navn eller CVR-nummer': 'Name or company number',
+  'Vælg {name}': 'Choose {name}',
+  'Vi kan ikke finde den. Er I ikke på FixMatch endnu, så tilmeld jer først.':
+    'We cannot find it. If you are not on FixMatch yet, sign up first.',
+  'Prøv med en eksempelvirksomhed': 'Try with an example business',
+  'Har I ikke fået en kode? Skriv til {email}.': 'No code yet? Write to {email}.',
+  'Virksomheden findes': 'The business exists',
+  'Ejeren er bekræftet': 'The owner is confirmed',
+  Erhvervsansvarsforsikring: 'Public liability insurance',
+  Garantiordning: 'Guarantee scheme',
+  'Byggeriets Ankenævn': 'Byggeriets Ankenævn (building complaints board)',
+  'Klager over byggearbejde.': 'Complaints about building work.',
+  'Håndværkets Ankenævn': 'Håndværkets Ankenævn (craft complaints board)',
+  'Klager over håndværksarbejde.': 'Complaints about craft work.',
+  'Ankenævnet for Tekniske Installationer': 'Ankenævnet for Tekniske Installationer (installations complaints board)',
+  'Klager over el, VVS og andre installationer.': 'Complaints about electrical, plumbing and other installations.',
+  'Ankenævnet for biler': 'Ankenævnet for biler (car complaints board)',
+  'Reparation af privatbiler, når regningen er over 3.000 kr.':
+    'Repairs of private cars when the bill is over DKK 3,000.',
+  Forbrugerklagenævnet: 'Forbrugerklagenævnet (Consumer Complaints Board)',
+  'Når intet andet nævn kan tage sagen. Klag via Nævnenes Hus.':
+    'When no other board can take the case. Complain via Nævnenes Hus.',
 };
 
 export default en;

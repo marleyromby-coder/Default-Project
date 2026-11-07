@@ -115,3 +115,17 @@ export function summarizeHours(hours: WeekHours): { days: string; time: string }
     return { days, time: `${formatTime(from)}–${formatTime(to)}` };
   });
 }
+
+/** "7-16", "07.00–16.00" or "07:00 - 16:30" → ["07:00", "16:00"]. Empty or "lukket" → null. */
+export function parseHours(text: string): [string, string] | null | 'invalid' {
+  const value = text.trim().toLowerCase();
+  if (!value || value === 'lukket' || value === 'closed') return null;
+  const match = value.match(/^(\d{1,2})(?:[.:](\d{2}))?\s*[-–]\s*(\d{1,2})(?:[.:](\d{2}))?$/);
+  if (!match) return 'invalid';
+  const [, h1, m1 = '00', h2, m2 = '00'] = match;
+  const pad = (h: string, m: string) => `${h.padStart(2, '0')}:${m}`;
+  const from = pad(h1, m1);
+  const to = pad(h2, m2);
+  if (Number(h1) > 23 || Number(h2) > 24 || Number(m1) > 59 || Number(m2) > 59 || from >= to) return 'invalid';
+  return [from, to];
+}

@@ -73,6 +73,11 @@ export function parseBusinesses(value: unknown, allowDemo = DATA_MODE === 'demo'
       emergency: business.emergency ?? false,
       // A malformed check never shows a badge; the listing itself stays.
       verified: isValidVerification(business.verified) ? business.verified : undefined,
+      insurer: typeof business.insurer === 'string' && business.insurer.trim() ? business.insurer.trim() : undefined,
+      guaranteeScheme:
+        typeof business.guaranteeScheme === 'string' && business.guaranteeScheme.trim()
+          ? business.guaranteeScheme.trim()
+          : undefined,
     }));
 }
 

@@ -161,7 +161,7 @@ export function infoPagesEn(
               : 'You approve your details: contact, prices, opening hours and photos.',
             'You give your consent when you sign up and can withdraw it at any time.',
             'If you want the Verified badge, tick it when you sign up in the app or on the website. It is free.',
-            'When a customer calls you through FixMatch, you can see the customer’s name and phone number.',
+            'When a customer calls you through FixMatch, you can see the customer’s name and phone number under Profile → Log in as a business. There you can also mark free time, see the monthly summary and ask us to change your prices and opening hours. You log in with the code from us.',
             `If you have time today or tomorrow, tap "Free today" on your personal link (${APP_INFO.website}/en/available/). You then appear under "Who has time today?", and customers with something urgent see you first. It disappears by itself at midnight. We send you the link.`,
           ],
         },

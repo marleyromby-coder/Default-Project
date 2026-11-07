@@ -174,6 +174,55 @@ export function formatDate(iso: string): string {
   return language === 'da' ? `${day}. ${MONTHS.da[month - 1]} ${year}` : `${day} ${MONTHS.en[month - 1]} ${year}`;
 }
 
+const MONTH_NAMES = {
+  da: [
+    'januar',
+    'februar',
+    'marts',
+    'april',
+    'maj',
+    'juni',
+    'juli',
+    'august',
+    'september',
+    'oktober',
+    'november',
+    'december',
+  ],
+  en: [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ],
+};
+
+/** "2026-11-01" → "november 2026" or "November 2026" */
+export function formatMonth(iso: string): string {
+  const [year, month] = iso.slice(0, 7).split('-').map(Number);
+  if (!year || !month || month > 12) return iso;
+  return `${MONTH_NAMES[getLanguage()][month - 1]} ${year}`;
+}
+
+/** A timestamp in the phone's time: "7. nov. 2026 kl. 14.05" or "7 Nov 2026, 14:05" */
+export function formatDateTime(timestamp: string): string {
+  const date = new Date(timestamp);
+  if (Number.isNaN(date.getTime())) return timestamp;
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const day = formatDate(`${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`);
+  return getLanguage() === 'da'
+    ? `${day} kl. ${pad(date.getHours())}.${pad(date.getMinutes())}`
+    : `${day}, ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
 /** (1, "anmeldelse", "anmeldelser") → "1 anmeldelse" */
 export function pluralize(count: number, singular: string, plural: string): string {
   return `${formatNumber(count)} ${count === 1 ? singular : plural}`;

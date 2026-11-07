@@ -18,7 +18,7 @@ FixMatch gemmer brugere (navn, telefon, e-mail), hvem der har ringet til hvilken
 ## 2. Lav tabellerne
 
 1. Åbn **SQL Editor** → **New query**.
-2. Kopiér hele indholdet af `fixmatch/supabase/migrations/20261030120000_accounts_and_signups.sql`, sæt det ind, og tryk **Run**. Gør det samme med `20261106120000_verification.sql` (Verificeret-mærket) `20261107120000_prices_and_reviews.sql` (anmeldelser og "Del, hvad du betalte") og `20261108120000_availability.sql` ("Hvem har tid i dag?") bagefter, i den rækkefølge.
+2. Kopiér hele indholdet af `fixmatch/supabase/migrations/20261030120000_accounts_and_signups.sql`, sæt det ind, og tryk **Run**. Gør det samme med `20261106120000_verification.sql` (Verificeret-mærket) `20261107120000_prices_and_reviews.sql` (anmeldelser og "Del, hvad du betalte") `20261108120000_availability.sql` ("Hvem har tid i dag?") og `20261109120000_business_accounts.sql` ("Min virksomhed") bagefter, i den rækkefølge.
 3. Der skal stå "Success. No rows returned".
 
 Det laver tabellerne `profiles` (navn og telefon), `contacts` (hvem ringede til hvem), `business_signups` (tilmeldinger med samtykke), funktionen `delete_account` (sletning af bruger) og to visninger til jer: `contacts_with_profile` og `business_signups_export`. Den sidste fil laver `price_reports` og `reviews` og visningerne `shared_prices`, `public_reviews` og `review_summary`, som appen læser. Databasen tjekker selv, at brugeren har ringet til virksomheden, før en anmeldelse eller pris kan gemmes. Alle tabeller er låst med "row level security", så appen kun kan det, den skal.
@@ -87,6 +87,12 @@ Virksomhederne melder ledig tid på hjemmesiden uden login, med et personligt li
 4. Har de mistet linket, så kør linje 1 igen. Den gamle kode holder op med at virke.
 
 **Table Editor → availability** viser, hvem der har meldt ledig tid og hvornår. Appen viser kun i dag og i morgen, og den henter listen, hver gang den åbnes.
+
+### "Min virksomhed": virksomheden logger ind i appen
+
+Koden fra linket ovenfor er også virksomhedens login i appen. Ejeren opretter en almindelig bruger, går til **Profil → Log ind som virksomhed**, finder virksomheden og skriver koden. Så ser de, hvem der har ringet de sidste 90 dage, kan melde ledig tid og se den månedlige opgørelse.
+
+Beder de om at rette priser, åbningstider eller tekst, kommer det i **Table Editor → business_change_requests** (kolonnen `changes`). Ret virksomheden i regnearket eller `live-businesses.json`, og sæt `status` til `applied` (eller `rejected`). Lov virksomhederne svar inden for 2 hverdage. **Table Editor → business_members** viser, hvem der er logget ind som hvilken virksomhed; slet rækken for at lukke adgangen.
 
 ### Anmeldelser, der bliver rapporteret
 

@@ -36,7 +36,7 @@ You can browse and compare businesses without an account. The first time you cal
 
 - **What we store:** your e-mail (or the ID and e-mail Apple gives us when you use "Sign in with Apple" – Apple can hide your real e-mail), your name, your phone number, and which businesses you have called through FixMatch and when.
 - **Why:** so you can sign in, and so the business can see the name and number of whoever contacted it through FixMatch. The legal basis is our agreement with you to use FixMatch (GDPR Article 6(1)(b)).
-- **Who sees it:** only the business you called sees your name, phone number and the time. We never sell the information or use it for advertising.
+- **Who sees it:** only the business you called sees your name, phone number and the time. The business sees it on its own page in FixMatch for 90 days after you contacted it, and may only use it to answer you. We never sell the information or use it for advertising.
 - **Where:** with our processor Supabase on servers in the EU (Frankfurt, Germany).
 - **How long:** until you delete your account under *Profile → Delete account*. The account, name, phone number and list of calls are then deleted straight away. We delete accounts that have not been used for 24 months.
 

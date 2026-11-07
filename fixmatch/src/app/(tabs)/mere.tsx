@@ -76,6 +76,7 @@ export default function MoreScreen() {
           title={t('For virksomheder')}
           footer={t('Gratis. Udfyld oplysningerne, og giv samtykke på et par minutter.')}>
           <ListRow icon="store" title={t('Tilmeld din virksomhed')} onPress={() => router.push('/tilmeld')} />
+          <ListRow icon="person" title={t('Log ind som virksomhed')} onPress={() => router.push('/virksomhed-login')} />
           <ListRow icon="info" title={t('Sådan fungerer det for virksomheder')} onPress={info('virksomheder')} />
           <ListRow icon="flag" title={t('Ret eller fjern oplysninger')} onPress={() => reportProblem()} />
         </ListSection>

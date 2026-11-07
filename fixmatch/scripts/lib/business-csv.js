@@ -392,6 +392,9 @@ function rowToBusiness(row, context) {
     ...(yes(row.annonce) ? { promoted: true } : {}),
     consent: { date: consentDate, ...(row.samtykke_kontakt ? { contact: row.samtykke_kontakt } : {}) },
     ...(verified ? { verified } : {}),
+    // For the safety page ("Tryghed"): the names, as the business stated them.
+    ...(row.forsikringsselskab ? { insurer: String(row.forsikringsselskab).trim().slice(0, 120) } : {}),
+    ...(row.garantiordning ? { guaranteeScheme: String(row.garantiordning).trim().slice(0, 120) } : {}),
     updatedAt: today,
   };
 
