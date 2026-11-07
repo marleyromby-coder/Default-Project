@@ -18,7 +18,7 @@ FixMatch gemmer brugere (navn, telefon, e-mail), hvem der har ringet til hvilken
 ## 2. Lav tabellerne
 
 1. Åbn **SQL Editor** → **New query**.
-2. Kopiér hele indholdet af `fixmatch/supabase/migrations/20261030120000_accounts_and_signups.sql`, sæt det ind, og tryk **Run**. Gør det samme med `20261106120000_verification.sql` (Verificeret-mærket) og `20261107120000_prices_and_reviews.sql` (anmeldelser og "Del, hvad du betalte") bagefter, i den rækkefølge.
+2. Kopiér hele indholdet af `fixmatch/supabase/migrations/20261030120000_accounts_and_signups.sql`, sæt det ind, og tryk **Run**. Gør det samme med `20261106120000_verification.sql` (Verificeret-mærket) `20261107120000_prices_and_reviews.sql` (anmeldelser og "Del, hvad du betalte") og `20261108120000_availability.sql` ("Hvem har tid i dag?") bagefter, i den rækkefølge.
 3. Der skal stå "Success. No rows returned".
 
 Det laver tabellerne `profiles` (navn og telefon), `contacts` (hvem ringede til hvem), `business_signups` (tilmeldinger med samtykke), funktionen `delete_account` (sletning af bruger) og to visninger til jer: `contacts_with_profile` og `business_signups_export`. Den sidste fil laver `price_reports` og `reviews` og visningerne `shared_prices`, `public_reviews` og `review_summary`, som appen læser. Databasen tjekker selv, at brugeren har ringet til virksomheden, før en anmeldelse eller pris kan gemmes. Alle tabeller er låst med "row level security", så appen kun kan det, den skal.
@@ -76,6 +76,17 @@ Det laver tabellerne `profiles` (navn og telefon), `contacts` (hvem ringede til 
 3. **Table Editor → business_signups_export → Export → CSV** giver de nye tilmeldinger i præcis de kolonner, importen bruger.
 4. `npm run import:businesses -- ~/Downloads/business_signups_export_rows.csv`. Importen kan læse alle fem lande, og byer som London får koordinater fra bylisten. Tilføj gerne præcise koordinater, prisexempler og autorisationer i regnearket først.
 5. Sæt `status` til `published` på de importerede rækker, så de ikke kommer med i næste eksport.
+
+### "Hvem har tid i dag?": giv en virksomhed sit link
+
+Virksomhederne melder ledig tid på hjemmesiden uden login, med et personligt link. Lav linket sådan, når virksomheden er med i appen:
+
+1. **SQL Editor → New query**, skriv `select public.issue_business_key('fjordvand-vvs');` med virksomhedens id (fra `live-businesses.json`), og tryk **Run**.
+2. Svaret er koden. Den vises kun denne ene gang; databasen gemmer kun en hash.
+3. Send linket til virksomheden, fx som sms: `https://fixmatchh.netlify.app/ledig/?id=fjordvand-vvs#kode=KODEN`. Bed dem gemme det på hjemmeskærmen.
+4. Har de mistet linket, så kør linje 1 igen. Den gamle kode holder op med at virke.
+
+**Table Editor → availability** viser, hvem der har meldt ledig tid og hvornår. Appen viser kun i dag og i morgen, og den henter listen, hver gang den åbnes.
 
 ### Anmeldelser, der bliver rapporteret
 

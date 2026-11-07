@@ -118,6 +118,8 @@ export interface Business {
   timeZone?: string;
   /** Answers the phone outside opening hours (døgnvagt). */
   emergency: boolean;
+  /** Days (YYYY-MM-DD) the business has marked as free: "Hvem har tid i dag?". Set at runtime. */
+  availableOn?: string[];
   responseTime?: string;
   founded?: number;
   employees?: string;
@@ -168,4 +170,6 @@ export interface Filters {
   authorizedOnly: boolean;
   verifiedOnly: boolean;
   trustpilotOnly: boolean;
+  /** Only businesses that have marked free time today or tomorrow. */
+  availableSoon: boolean;
 }

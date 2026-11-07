@@ -1,8 +1,9 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Switch, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { ProblemPhotos } from '@/components/problem-photos';
 import { Button } from '@/components/ui/button';
 import { Chip } from '@/components/ui/chip';
 import { Icon } from '@/components/ui/icon';
@@ -21,6 +22,7 @@ import { t } from '@/i18n';
 import { countryOf } from '@/lib/business-text';
 import { taxNote } from '@/lib/markets';
 import { useApp, useMarket } from '@/state/app-state';
+import { getProblem, setProblemText } from '@/state/problem';
 
 /** Budget suggestions in DKK; scaled to the local currency with Market.fromDkk. */
 const BUDGET_PRESETS_DKK = [1000, 2500, 5000, 10000, 25000];
@@ -39,7 +41,9 @@ export default function DescribeProblemScreen() {
   const { state } = useApp();
   const { country, market } = useMarket();
   const params = useLocalSearchParams<{ tekst?: string }>();
-  const [text, setText] = useState(params.tekst ?? '');
+  const [text, setText] = useState(() => params.tekst ?? getProblem().text);
+  // Kept for the business page, where the user can send it with the pictures.
+  useEffect(() => setProblemText(text), [text]);
   const [pickedCategory, setPickedCategory] = useState<CategoryId>();
   const [pickedJob, setPickedJob] = useState<string | null>();
   const [budgetText, setBudgetText] = useState<string>();
@@ -151,6 +155,8 @@ export default function DescribeProblemScreen() {
             {text.length}/{MAX_TEXT}
           </AppText>
         </View>
+
+        <ProblemPhotos />
 
         {text.trim().length === 0 ? (
           <View style={styles.block}>
@@ -329,7 +335,7 @@ export default function DescribeProblemScreen() {
           <View style={styles.flex}>
             <AppText variant="headline">{t('Det haster')}</AppText>
             <AppText variant="footnote" tone="textSecondary">
-              {t('Virksomheder med døgnvagt vises først')}
+              {t('Døgnvagt og dem, der er ledige i dag, vises først')}
             </AppText>
           </View>
           <Switch
@@ -344,7 +350,7 @@ export default function DescribeProblemScreen() {
           <Icon name="privacy" size={14} color={colors.textSecondary} />
           <AppText variant="caption" tone="textSecondary" style={styles.flexShrink}>
             {t(
-              'Din beskrivelse bliver på telefonen. Den sendes ikke til FixMatch eller til virksomhederne – du bestemmer selv, om du vil dele den, når du kontakter dem.',
+              'Din beskrivelse og dine billeder bliver på telefonen. De sendes ikke til FixMatch – du bestemmer selv, om du vil sende dem til en virksomhed, når du kontakter den.',
             )}
           </AppText>
         </View>

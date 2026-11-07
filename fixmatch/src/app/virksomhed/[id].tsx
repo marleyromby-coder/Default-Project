@@ -4,8 +4,10 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BusinessMark } from '@/components/business/business-mark';
+import { AvailabilityBadge } from '@/components/business/availability-badge';
 import { VerifiedMark } from '@/components/business/verified-mark';
 import { CustomerCard } from '@/components/business/customer-card';
+import { PhotoStrip } from '@/components/problem-photos';
 import { OpenStatus } from '@/components/business/open-status';
 import { PriceLevel } from '@/components/business/price-level';
 import { ScoreBars } from '@/components/business/score-bars';
@@ -25,6 +27,7 @@ import { useLayout } from '@/hooks/use-layout';
 import {
   AUTHORIZATION_REGISTER_URL,
   callBusiness,
+  sendProblem,
   registryUrl,
   openCvr,
   openDirections,
@@ -34,6 +37,7 @@ import {
   reportProblem,
   shareBusiness,
 } from '@/lib/contact';
+import { availableWhen } from '@/lib/availability';
 import { showDialog } from '@/lib/dialog';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import {
@@ -55,6 +59,7 @@ import { businessText, countryOf, currencyOf } from '@/lib/business-text';
 import { getMarket, taxNote } from '@/lib/markets';
 import { CHECK_TEXT, isTopRated, isVerified, passedChecks, verificationExpiry } from '@/lib/verification';
 import { MAX_COMPARE, useApp, useBusiness } from '@/state/app-state';
+import { hasProblem, useProblem } from '@/state/problem';
 
 /** How far the header scrolls before the compact title bar appears. */
 const HEADER_SCROLL = 150;
@@ -68,6 +73,7 @@ export default function BusinessScreen() {
   const ids = useMemo(() => (id ? [id] : []), [id]);
   const [scored] = useScored(ids);
   const { state, toggleFavorite, toggleCompare } = useApp();
+  const problem = useProblem();
   const [scrolled, setScrolled] = useState(false);
 
   if (!business || !scored) {
@@ -97,6 +103,8 @@ export default function BusinessScreen() {
   const level = priceLevel(business, state.businesses);
 
   const today = mondayIndex(new Date());
+  const free = availableWhen(business);
+
   const tradePlural = (category?.plural ?? t('virksomheder')).toLowerCase();
 
   const goBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
@@ -140,6 +148,7 @@ export default function BusinessScreen() {
           </View>
           <View style={styles.heroBadges}>
             {category ? <Badge label={category.name} tone="neutral" icon={category.id} /> : null}
+            <AvailabilityBadge business={business} />
             {verified ? <Badge label={t('Verificeret')} tone="success" icon="verified" /> : null}
             {isTopRated(business) ? <Badge label={t('Topbedømt')} tone="brand" icon="star" /> : null}
             {business.demo ? <Badge label={t('Eksempel')} tone="warning" /> : null}
@@ -189,6 +198,34 @@ export default function BusinessScreen() {
               selected={comparing}
             />
           </View>
+
+          {hasProblem(problem) ? (
+            <Card>
+              <CardTitle title={t('Dit problem')} icon="camera" />
+              {problem.text.trim() ? (
+                <AppText variant="subhead" tone="textSecondary" numberOfLines={3} style={styles.spaced}>
+                  “{problem.text.trim()}”
+                </AppText>
+              ) : null}
+              <View style={styles.spaced}>
+                <PhotoStrip size={64} />
+              </View>
+              <View style={styles.spaced}>
+                <Button
+                  title={problem.photos.length > 0 ? t('Send billeder og beskrivelse') : t('Send beskrivelsen')}
+                  icon="message"
+                  variant="secondary"
+                  onPress={() => sendProblem(business, problem)}
+                  block
+                />
+              </View>
+              <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
+                {t('Sendes som en besked fra din egen telefon til {phone}. FixMatch ser den ikke.', {
+                  phone: formatPhone(business.contact.phone),
+                })}
+              </AppText>
+            </Card>
+          ) : null}
 
           <Card>
             <CardTitle title={t('Kontakt')} icon="phone" />
@@ -357,6 +394,18 @@ export default function BusinessScreen() {
                 </AppText>
               </View>
             ))}
+            {free ? (
+              <View style={[styles.notice, styles.spaced, { backgroundColor: colors.successSoft }]}>
+                <Icon name="calendar" size={15} color={colors.success} weight="semibold" />
+                <AppText variant="footnote" style={styles.flex}>
+                  {free === 'today'
+                    ? t('Ledig i dag: virksomheden har selv meldt, at den har tid i dag. Ring og aftal et tidspunkt.')
+                    : t(
+                        'Ledig i morgen: virksomheden har selv meldt, at den har tid i morgen. Ring og aftal et tidspunkt.',
+                      )}
+                </AppText>
+              </View>
+            ) : null}
             {business.emergency ? (
               <View style={[styles.notice, styles.spaced, { backgroundColor: colors.warningSoft }]}>
                 <Icon name="bolt" size={15} color={colors.warning} weight="semibold" />

@@ -1,6 +1,7 @@
 import { CATEGORIES } from '@/data/categories';
 import { pick, t } from '@/i18n';
 
+import { availableWhen } from './availability';
 import type { ScoredBusiness } from './ranking';
 import { SYNONYMS } from './search';
 import { loose } from './text';
@@ -376,9 +377,9 @@ const FIT_ORDER: Record<BudgetFit, number> = {
  * Orders businesses by budget fit: those whose price fits first, then those
  * close to it, then those without a price for the job, then the rest. Inside
  * each group the FixMatch score decides, and with "det haster" businesses with
- * døgnvagt come first. Payment never changes the order.
+ * døgnvagt come first, then those with free time today. Payment never changes the order.
  */
-export function matchBudget(input: BudgetMatchInput, scored: ScoredBusiness[]): BudgetMatch[] {
+export function matchBudget(input: BudgetMatchInput, scored: ScoredBusiness[], now = new Date()): BudgetMatch[] {
   const quantity = input.quantity ?? (input.job ? defaultQuantity(input.job) : 1);
   const matches: BudgetMatch[] = scored
     .filter((item) => item.business.categories.includes(input.category))
@@ -391,6 +392,10 @@ export function matchBudget(input: BudgetMatchInput, scored: ScoredBusiness[]): 
     const group = FIT_ORDER[a.fit] - FIT_ORDER[b.fit];
     if (group !== 0) return group;
     if (input.urgent && a.business.emergency !== b.business.emergency) return a.business.emergency ? -1 : 1;
+    if (input.urgent) {
+      const free = (m: BudgetMatch) => (availableWhen(m.business, now) === 'today' ? 1 : 0);
+      if (free(a) !== free(b)) return free(b) - free(a);
+    }
     if (a.fit === 'close' || a.fit === 'over') return (a.overBy ?? 0) - (b.overBy ?? 0);
     return b.score - a.score;
   });

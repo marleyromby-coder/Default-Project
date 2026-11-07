@@ -4,6 +4,7 @@ import { ScrollView, Share, StyleSheet, View } from 'react-native';
 
 import { BusinessCard } from '@/components/business/business-card';
 import { CompareTray } from '@/components/business/compare-tray';
+import { PhotoStrip } from '@/components/problem-photos';
 import type { BadgeTone } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -22,6 +23,7 @@ import { t } from '@/i18n';
 import { currencyOf } from '@/lib/business-text';
 import { taxNote } from '@/lib/markets';
 import { MAX_COMPARE, useApp, useMarket } from '@/state/app-state';
+import { useProblem } from '@/state/problem';
 
 type Group = {
   id: string;
@@ -76,6 +78,7 @@ export default function MatchScreen() {
   const budget = params.budget ? Number(params.budget) : undefined;
   const quantity = params.antal ? Number(params.antal) : undefined;
   const urgent = params.akut === '1';
+  const problem = useProblem();
   const [showOver, setShowOver] = useState(false);
   const [showFar, setShowFar] = useState(false);
 
@@ -127,6 +130,7 @@ export default function MatchScreen() {
 
   const share = () =>
     Share.share({
+      url: problem.photos[0]?.uri,
       message: [
         params.tekst,
         budget
@@ -180,7 +184,13 @@ export default function MatchScreen() {
               “{params.tekst}”
             </AppText>
           ) : null}
-          {params.tekst ? (
+          <PhotoStrip size={64} />
+          {problem.photos.length > 0 ? (
+            <AppText variant="footnote" tone="textSecondary">
+              {t('Åbn en virksomhed, og tryk "Send billeder og beskrivelse", så får de dem som en besked fra dig.')}
+            </AppText>
+          ) : null}
+          {params.tekst && problem.photos.length === 0 ? (
             <Button
               title={t('Del beskrivelsen med en virksomhed')}
               icon="share"

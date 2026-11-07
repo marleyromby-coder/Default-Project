@@ -24,6 +24,8 @@ The map is shown with Apple Maps (MapKit). To show it, your iPhone loads map ima
 
 The text you write and your budget are only processed on your phone, to find the trade and the businesses that fit. The text is not sent to FixMatch or to the businesses. If you tap "Share the description with a business", you decide who to send it to.
 
+You can add up to three pictures of the problem. The app only uses the camera or your photos when you tap "Take picture" or "Choose from photos" yourself, and only sees the pictures you choose. FixMatch does not store the pictures, and the app forgets them when it closes. If you tap "Send pictures and description" on a business's page, your phone's Messages app opens and you send them to the business's number yourself. FixMatch never receives them.
+
 ## 6. Data stored on your phone
 
 Your saved businesses, your chosen city, your priorities, your comparison list and the list of businesses you have contacted (under Profile) are stored on your phone so they are there next time. They do not leave your phone. You delete them under *More → Reset app data* or by deleting the app.
@@ -61,6 +63,8 @@ The app loads the businesses' own pictures and (if switched on) an updated list 
 ## 11. Information about businesses
 
 We show information about businesses (such as name, company number, phone number and prices) that the businesses themselves have approved. For sole traders this can be personal data about the owner. The legal basis is the business's consent (GDPR Article 6(1)(a)). If a business signs itself up in the app or on the website, we keep the sign-up with the consent wording and time with Supabase in the EU as proof. The consent can be withdrawn at any time by writing to {{email}}, and we then remove the information within 2 working days. Contact persons' names and email addresses are only used to manage the listing and are kept for as long as the listing exists, and for 12 months after that as proof of the consent.
+
+**Free today.** If a business marks free time on its personal link, we store the days it is free and when it last marked them. They are shown to everyone in the app, and old days are never shown. We only store the code in the link as a hash.
 
 **The Verified badge.** If a business asks for the badge, we also keep its licence number, insurance company and guarantee scheme, and what we checked and when (company number, owner, licence, insurance and guarantee scheme). We only use this to give and renew the badge. The legal basis is the agreement with the business about the badge (GDPR Article 6(1)(b)). We delete the information when the badge is no longer renewed or the business leaves FixMatch.
 

@@ -41,7 +41,7 @@ export function infoPagesEn(
         {
           heading: 'When you describe your problem',
           paragraphs: [
-            `Under "Describe your problem" the app works out the trade and the job from your words. Each business’s own price for the job (times the number of m² or pieces) is compared with your budget, and the businesses are split into four groups in this order: "Within budget" and "Could fit", "Close to budget" (at most ${Math.round(CLOSE_MARGIN * 100)} % over), "Price on request" (the business has not given a price for the job) and "Over budget". Within each group the FixMatch score decides. If it is urgent, businesses with a 24-hour service come first.`,
+            `Under "Describe your problem" the app works out the trade and the job from your words. Each business’s own price for the job (times the number of m² or pieces) is compared with your budget, and the businesses are split into four groups in this order: "Within budget" and "Could fit", "Close to budget" (at most ${Math.round(CLOSE_MARGIN * 100)} % over), "Price on request" (the business has not given a price for the job) and "Over budget". Within each group the FixMatch score decides. If it is urgent, businesses with a 24-hour service come first, then those that have marked free time today.`,
             `We only show businesses that cover your address (within their own service area). Mechanics are shown within ${WORKSHOP_RADIUS_KM} km, because you drive there yourself. Your description stays on your phone and is not sent to FixMatch or the businesses.`,
           ],
         },
@@ -162,6 +162,7 @@ export function infoPagesEn(
             'You give your consent when you sign up and can withdraw it at any time.',
             'If you want the Verified badge, tick it when you sign up in the app or on the website. It is free.',
             'When a customer calls you through FixMatch, you can see the customer’s name and phone number.',
+            `If you have time today or tomorrow, tap "Free today" on your personal link (${APP_INFO.website}/en/available/). You then appear under "Who has time today?", and customers with something urgent see you first. It disappears by itself at midnight. We send you the link.`,
           ],
         },
         {
@@ -260,6 +261,7 @@ export function infoPagesEn(
           heading: 'The map and "Describe your problem"',
           paragraphs: [
             'The map is Apple Maps. To show it, your iPhone loads map images directly from Apple under Apple’s privacy policy. What you write under "Describe your problem" is processed on your phone only and is not sent to FixMatch or the businesses.',
+            'Pictures of the problem stay on your phone and are forgotten when the app closes. If you send them to a business, it happens as a message from your own phone. FixMatch never receives them.',
           ],
         },
         {

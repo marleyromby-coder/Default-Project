@@ -10,8 +10,7 @@ import { CONSENT_VERSION, emptySignup, signupRow } from '@/lib/business-signup';
 const { buildWebsite, fill, markdownToHtml, summary } = require('../../scripts/build-website');
 
 /** The text as a browser shows it: e-mail addresses are written as character references. */
-const decode = (html: string) =>
-  html.replace(/&#(\d+);/g, (_, code: string) => String.fromCodePoint(Number(code)));
+const decode = (html: string) => html.replace(/&#(\d+);/g, (_, code: string) => String.fromCodePoint(Number(code)));
 
 describe('website', () => {
   it('converts the Markdown the legal texts use', () => {
@@ -32,7 +31,7 @@ describe('website', () => {
   it('builds every page in Danish and English, filled in and without team notes', () => {
     const out = fs.mkdtempSync(path.join(os.tmpdir(), 'fixmatch-site-'));
     const { written, info } = buildWebsite(out);
-    expect(written).toHaveLength(10);
+    expect(written).toHaveLength(12);
     for (const file of written) {
       const html = fs.readFileSync(path.join(out, file), 'utf8');
       expect(html).toMatch(/<html lang="(da|en)">/);
@@ -55,7 +54,7 @@ describe('website', () => {
     expect(fs.existsSync(path.join(out, 'icon.png'))).toBe(true);
     expect(fs.readFileSync(path.join(out, 'robots.txt'), 'utf8')).toContain(`Sitemap: ${info.website}/sitemap.xml`);
     const sitemap = fs.readFileSync(path.join(out, 'sitemap.xml'), 'utf8');
-    expect(urls).toHaveLength(10);
+    expect(urls).toHaveLength(12);
     for (const url of urls) expect(sitemap).toContain(`<loc>${url}</loc>`);
     const notFound = fs.readFileSync(path.join(out, '404.html'), 'utf8');
     expect(notFound).toContain('<base href="/">');
@@ -94,5 +93,18 @@ describe('website', () => {
     expect(da).toContain('"authorizationTrades":["vvs","elektriker"]');
     // Every column the app sends, the website sends too.
     for (const key of Object.keys(signupRow(emptySignup('DK')))) expect(da).toMatch(new RegExp(`\\b${key}[:,]`));
+  });
+
+  it('has a page where businesses mark free time with their personal link', () => {
+    const out = fs.mkdtempSync(path.join(os.tmpdir(), 'fixmatch-site-'));
+    buildWebsite(out);
+    const da = fs.readFileSync(path.join(out, 'ledig/index.html'), 'utf8');
+    const en = fs.readFileSync(path.join(out, 'en/available/index.html'), 'utf8');
+    expect(da).toContain('id="availability"');
+    expect(da).toContain('Ledig i dag');
+    expect(en).toContain('Free today');
+    expect(da).toContain('/rest/v1/rpc/set_availability');
+    // The code is read from the link's #fragment, which is never sent to a server.
+    expect(da).toContain("hash.get('kode')");
   });
 });

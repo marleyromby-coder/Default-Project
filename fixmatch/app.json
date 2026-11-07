@@ -145,6 +145,14 @@
       "expo-web-browser",
       "expo-apple-authentication",
       [
+        "expo-image-picker",
+        {
+          "cameraPermission": "FixMatch uses the camera when you take a picture of the problem, so you can send it to a tradesperson. The picture stays on your phone until you send it.",
+          "photosPermission": "FixMatch opens your photos when you choose a picture of the problem, so you can send it to a tradesperson. The picture stays on your phone until you send it.",
+          "microphonePermission": false
+        }
+      ],
+      [
         "expo-localization",
         {
           "supportedLocales": {

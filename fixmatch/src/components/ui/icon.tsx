@@ -65,6 +65,8 @@ const ICONS = {
   receipt: { ios: 'list.bullet.rectangle', web: 'receipt_long' },
   euro: { ios: 'creditcard', web: 'credit_card' },
   photo: { ios: 'photo', web: 'image' },
+  camera: { ios: 'camera.fill', web: 'photo_camera' },
+  message: { ios: 'message.fill', web: 'sms' },
   // Trades
   vvs: { ios: TRADE_SYMBOLS.vvs, web: 'plumbing' },
   elektriker: { ios: TRADE_SYMBOLS.elektriker, web: 'electrical_services' },

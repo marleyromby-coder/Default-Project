@@ -15,6 +15,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
+const { AVAILABILITY_STYLE, availabilityForm } = require('./lib/availability-form');
 const { FORM_STYLE, signupForm } = require('./lib/signup-form');
 
 const ROOT = path.join(__dirname, '..');
@@ -28,6 +29,8 @@ const PAGES = [
   { da: ['website/support.md', 'support/'], en: ['website/support.en.md', 'en/support/'] },
   // Businesses sign up and give their consent here ({{form}}, scripts/lib/signup-form.js).
   { da: ['website/tilmeld.md', 'tilmeld/'], en: ['website/signup.en.md', 'en/sign-up/'] },
+  // "Hvem har tid i dag?": businesses mark free time with their personal link (scripts/lib/availability-form.js).
+  { da: ['website/ledig.md', 'ledig/'], en: ['website/available.en.md', 'en/available/'] },
 ];
 
 const UI = {
@@ -198,7 +201,10 @@ function page({ lang, html, title, description, here, other, info, notFound = fa
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escape(title)} – ${escape(info.name)}</title>
-${notFound ? '<base href="/">\n<meta name="robots" content="noindex">' : `<meta name="description" content="${escape(description)}">
+${
+  notFound
+    ? '<base href="/">\n<meta name="robots" content="noindex">'
+    : `<meta name="description" content="${escape(description)}">
 <link rel="canonical" href="${info.website}/${here}">
 <link rel="alternate" hreflang="${lang}" href="${info.website}/${here}">
 <link rel="alternate" hreflang="${lang === 'da' ? 'en' : 'da'}" href="${info.website}/${other}">
@@ -208,12 +214,13 @@ ${notFound ? '<base href="/">\n<meta name="robots" content="noindex">' : `<meta 
 <meta property="og:description" content="${escape(description)}">
 <meta property="og:url" content="${info.website}/${here}">
 <meta property="og:image" content="${info.website}/icon.png">
-<meta property="og:locale" content="${UI[lang].locale.replace('-', '_')}">`}
+<meta property="og:locale" content="${UI[lang].locale.replace('-', '_')}">`
+}
 <meta name="theme-color" content="#F4F1EA" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#11130F" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="${rel('favicon.png')}">
 <link rel="apple-touch-icon" href="${rel('icon.png')}">
-<style>${STYLE.replaceAll('{{fonts}}', rel('fonts') + '/')}${html.includes('id="signup"') ? FORM_STYLE : ''}</style>
+<style>${STYLE.replaceAll('{{fonts}}', rel('fonts') + '/')}${html.includes('id="signup"') || html.includes('id="availability"') ? FORM_STYLE : ''}${html.includes('id="availability"') ? AVAILABILITY_STYLE : ''}</style>
 </head>
 <body>
 <header>
@@ -240,7 +247,8 @@ ${html}
 function buildWebsite(out = OUT, root = ROOT) {
   const info = appInfo(root);
   fs.rmSync(out, { recursive: true, force: true });
-  if (!/^https:\/\/[^/]+$/.test(info.website)) throw new Error('src/constants/app-info.ts: website skal være en https-adresse');
+  if (!/^https:\/\/[^/]+$/.test(info.website))
+    throw new Error('src/constants/app-info.ts: website skal være en https-adresse');
   const written = [];
   const urls = [];
   for (const entry of PAGES) {
@@ -252,15 +260,16 @@ function buildWebsite(out = OUT, root = ROOT) {
         email: info.email,
         updated: formatDate(info.updated, UI[lang].locale),
         form: '{{form}}',
+        availability: '{{availability}}',
       };
       const markdown = fill(fs.readFileSync(path.join(root, source), 'utf8'), values, source);
       const link = (href) =>
         /^(https?:|mailto:|#)/.test(href)
           ? href
           : `${path.posix.relative(here || '.', href) || '.'}/`.replace(/\/\/$/, '/');
-      const html = markdownToHtml(markdown, link).replace('<p>{{form}}</p>', () =>
-        signupForm(lang, { root, email: info.email }),
-      );
+      const html = markdownToHtml(markdown, link)
+        .replace('<p>{{form}}</p>', () => signupForm(lang, { root, email: info.email }))
+        .replace('<p>{{availability}}</p>', () => availabilityForm(lang, { root }));
       const title = markdown.match(/^# (.*)$/m)?.[1] ?? info.name;
       const file = path.join(out, here, 'index.html');
       fs.mkdirSync(path.dirname(file), { recursive: true });

@@ -1,11 +1,13 @@
 import * as Clipboard from 'expo-clipboard';
 import * as Haptics from 'expo-haptics';
+import * as SMS from 'expo-sms';
 import * as WebBrowser from 'expo-web-browser';
 import { Linking, Platform, Share } from 'react-native';
 
 import { APP_INFO } from '@/constants/app-info';
 import { t } from '@/i18n';
 import { logContact, requireContactProfile } from '@/state/account';
+import type { Problem } from '@/state/problem';
 
 import { showDialog } from './dialog';
 import { formatPhone, phoneHref } from './format';
@@ -162,5 +164,53 @@ export async function reportProblem(business?: Business): Promise<void> {
   } catch {
     await Clipboard.setStringAsync(SUPPORT_EMAIL).catch(() => undefined);
     showDialog(t('Skriv til os'), t('Send en mail til {SUPPORT_EMAIL}. Adressen er kopieret.', { SUPPORT_EMAIL }));
+  }
+}
+
+/** The text sent with the problem's pictures. */
+export function problemMessage(business: Business, problem: Problem): string {
+  return [
+    t('Hej {name}. Jeg har fundet jer på FixMatch.', { name: business.name }),
+    problem.text.trim() || undefined,
+    problem.photos.length > 0
+      ? problem.photos.length === 1
+        ? t('Jeg har vedhæftet et billede af problemet.')
+        : t('Jeg har vedhæftet {count} billeder af problemet.', { count: problem.photos.length })
+      : undefined,
+    t('Har I mulighed for at hjælpe, og hvad vil det koste?'),
+  ]
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+/**
+ * "Foto af problemet": sends the description and pictures to the business as a text message
+ * (iMessage or SMS) from the user's own phone. FixMatch never receives the pictures.
+ * Without Messages (iPad without SIM, web) the share sheet opens instead.
+ */
+export async function sendProblem(business: Business, problem: Problem): Promise<void> {
+  tap();
+  if (!(await requireContactProfile())) return;
+  if (business.demo) {
+    demoNotice(business, t('åbner Beskeder med din beskrivelse og dine billeder, klar til at sende til virksomheden.'));
+    return;
+  }
+  const message = problemMessage(business, problem);
+  try {
+    if (Platform.OS !== 'web' && (await SMS.isAvailableAsync())) {
+      const { result } = await SMS.sendSMSAsync([business.contact.phone], message, {
+        attachments: problem.photos.map((photo, index) => ({
+          uri: photo.uri,
+          mimeType: photo.mimeType ?? 'image/jpeg',
+          filename: photo.fileName ?? `problem-${index + 1}.jpg`,
+        })),
+      });
+      if (result !== 'cancelled') logContact(business, 'message');
+      return;
+    }
+    await Share.share({ message, url: problem.photos[0]?.uri, title: business.name });
+  } catch {
+    await Clipboard.setStringAsync(message).catch(() => undefined);
+    showDialog(t('Kopieret'), t('Beskrivelsen er kopieret, så du kan indsætte den i en besked.'));
   }
 }

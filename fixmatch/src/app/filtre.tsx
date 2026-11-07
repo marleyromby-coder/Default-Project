@@ -100,6 +100,13 @@ export default function FiltersScreen() {
           />
           <Divider inset={Spacing.lg} />
           <SwitchRow
+            label={t('Ledig i dag eller i morgen')}
+            hint={t('Virksomheden har selv meldt, at den har tid')}
+            value={draft.availableSoon}
+            onChange={(v) => update({ availableSoon: v })}
+          />
+          <Divider inset={Spacing.lg} />
+          <SwitchRow
             label={t('Kun autoriserede')}
             hint={t('Fx autoriseret til el, VVS eller gas')}
             value={draft.authorizedOnly}

@@ -1,6 +1,8 @@
 {
   "ios": {
     "CFBundleDisplayName": "FixMatch",
-    "NSLocationWhenInUseUsageDescription": "FixMatch bruger din placering, mens appen er åben, til at vise håndværkere og værksteder nær dig og beregne afstanden til dem. Placeringen bliver på din telefon."
+    "NSLocationWhenInUseUsageDescription": "FixMatch bruger din placering, mens appen er åben, til at vise håndværkere og værksteder nær dig og beregne afstanden til dem. Placeringen bliver på din telefon.",
+    "NSCameraUsageDescription": "FixMatch bruger kameraet, når du tager et billede af problemet, så du kan sende det til en håndværker. Billedet bliver på din telefon, til du sender det.",
+    "NSPhotoLibraryUsageDescription": "FixMatch åbner dine billeder, når du vælger et billede af problemet, så du kan sende det til en håndværker. Billedet bliver på din telefon, til du sender det."
   }
 }

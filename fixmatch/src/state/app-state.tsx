@@ -3,12 +3,14 @@ import { AppState } from 'react-native';
 import { createContext, type PropsWithChildren, useContext, useEffect, useMemo, useReducer } from 'react';
 
 import { DEFAULT_LOCATION } from '@/data/places';
+import { type AvailabilityMap, demoAvailability, parseAvailability, withAvailability } from '@/lib/availability';
 import { openCountries } from '@/lib/business-text';
 import { bundledBusinesses, parseBusinesses, REMOTE_DATA_URL } from '@/lib/data-source';
 import { DEFAULT_FILTERS } from '@/lib/filters';
 import { setDistanceUnit } from '@/lib/format';
 import { getMarket, isLaunched, type CountryCode, type Market } from '@/lib/markets';
 import { DEFAULT_PRIORITIES } from '@/lib/ranking';
+import { supabase } from '@/lib/supabase';
 import type { Business, Filters, Priorities, UserLocation } from '@/lib/types';
 import { syncWidgets } from '@/widgets/sync';
 
@@ -29,11 +31,14 @@ interface State extends Persisted {
   ready: boolean;
   businesses: Business[];
   filters: Filters;
+  /** Free days the businesses marked on the server ("Hvem har tid i dag?"). */
+  availability: AvailabilityMap;
 }
 
 type Action =
   | { type: 'hydrate'; persisted: Partial<Persisted> }
   | { type: 'businesses'; businesses: Business[] }
+  | { type: 'availability'; availability?: AvailabilityMap }
   | { type: 'onboarded'; value: boolean }
   | { type: 'location'; location: UserLocation }
   | { type: 'priorities'; priorities: Priorities }
@@ -51,8 +56,19 @@ const INITIAL_PERSISTED: Persisted = {
   compare: [],
 };
 
+/** The businesses with their free days: the server's, and made-up ones for demo businesses. */
+function available(businesses: Business[], server: AvailabilityMap): Business[] {
+  return withAvailability(businesses, { ...demoAvailability(businesses), ...server });
+}
+
 function initialState(): State {
-  return { ...INITIAL_PERSISTED, ready: false, businesses: bundledBusinesses(), filters: DEFAULT_FILTERS };
+  return {
+    ...INITIAL_PERSISTED,
+    ready: false,
+    businesses: available(bundledBusinesses(), {}),
+    filters: DEFAULT_FILTERS,
+    availability: {},
+  };
 }
 
 function toggle(list: string[], id: string): string[] {
@@ -67,10 +83,14 @@ function reducer(state: State, action: Action): State {
       const ids = new Set(action.businesses.map((b) => b.id));
       return {
         ...state,
-        businesses: action.businesses,
+        businesses: available(action.businesses, state.availability),
         favorites: state.favorites.filter((id) => ids.has(id)),
         compare: state.compare.filter((id) => ids.has(id)),
       };
+    }
+    case 'availability': {
+      const availability = action.availability ?? state.availability;
+      return { ...state, availability, businesses: available(state.businesses, availability) };
     }
     case 'onboarded':
       return { ...state, onboarded: action.value };
@@ -95,7 +115,7 @@ function reducer(state: State, action: Action): State {
     case 'filters':
       return { ...state, filters: action.filters };
     case 'reset':
-      return { ...initialState(), businesses: state.businesses, ready: true };
+      return { ...initialState(), businesses: state.businesses, availability: state.availability, ready: true };
     default:
       return state;
   }
@@ -115,6 +135,18 @@ function sanitize(raw: unknown): Partial<Persisted> {
   if (Array.isArray(value.compare))
     out.compare = value.compare.filter((x) => typeof x === 'string').slice(0, MAX_COMPARE);
   return out;
+}
+
+/** Free days from the last few days' marks. Without a server only the demo days are used. */
+async function fetchAvailability(): Promise<AvailabilityMap | null> {
+  if (!supabase) return null;
+  const since = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString();
+  const { data, error } = await supabase
+    .from('availability')
+    .select('business_id, available_on')
+    .gte('updated_at', since)
+    .limit(5000);
+  return error ? null : parseAvailability(data);
 }
 
 async function fetchRemoteBusinesses(url: string): Promise<Business[] | null> {
@@ -186,6 +218,20 @@ export function AppStateProvider({ children }: PropsWithChildren) {
     return () => {
       cancelled = true;
     };
+  }, []);
+
+  // "Hvem har tid i dag?": fetched at start and whenever the app comes back, so a business
+  // that marks free time is seen within minutes. Coming back also rolls the demo days over.
+  useEffect(() => {
+    const refresh = () =>
+      fetchAvailability()
+        .then((availability) => dispatch({ type: 'availability', availability: availability ?? undefined }))
+        .catch(() => undefined);
+    refresh();
+    const subscription = AppState.addEventListener('change', (next) => {
+      if (next === 'active') refresh();
+    });
+    return () => subscription.remove();
   }, []);
 
   useEffect(() => {

@@ -121,7 +121,7 @@ Vælg disse datatyper. For hver: **Knyttet til brugeren: Ja**, **Bruges til spor
 | Køb | Købshistorik | Hvad brugeren betalte for en opgave ("Del, hvad du betalte"). Vises kun samlet og uden navn |
 | Brugerindhold | Andet brugerindhold | Anmeldelser (stjerner og tekst). Vises med forbogstav |
 
-Ikke indsamlet: placering (bruges kun på telefonen), søgninger og teksten i "Beskriv dit problem" (bliver på telefonen), gemte virksomheder, analyse, reklamer og crash-rapporter.
+Ikke indsamlet: placering (bruges kun på telefonen), søgninger, teksten og billederne i "Beskriv dit problem" (bliver på telefonen og sendes kun af brugeren selv som en besked), gemte virksomheder, analyse, reklamer og crash-rapporter.
 
 Virksomhedernes egne tilmeldinger (Mere → Tilmeld din virksomhed) er oplysninger om virksomheden og dens kontaktperson. Kontaktpersonens navn og e-mail er også "Kontaktoplysninger → Navn / E-mailadresse" og er allerede med i tabellen.
 

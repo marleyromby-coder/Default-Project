@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { AvailabilityBadge } from '@/components/business/availability-badge';
 import { BusinessMark } from '@/components/business/business-mark';
 import { MatchBadge } from '@/components/business/match-badge';
 import { TrustpilotRating } from '@/components/business/trustpilot-rating';
@@ -18,6 +19,7 @@ import { CATEGORIES, getCategory } from '@/data/categories';
 import { useGps, GPS_MESSAGES } from '@/hooks/use-gps';
 import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
+import { availableWhen } from '@/lib/availability';
 import { DATA_MODE } from '@/lib/data-source';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { showDialog } from '@/lib/dialog';
@@ -79,6 +81,16 @@ export default function HomeScreen() {
         .slice(0, 6),
     [local, origin],
   );
+
+  // "Hvem har tid i dag?": businesses nearby that marked free time, today first, then nearest.
+  const freeSoon = useMemo(() => {
+    const now = new Date();
+    return local
+      .map((b) => ({ business: b, km: distanceKm(origin, b.coords), when: availableWhen(b, now) }))
+      .filter((x) => x.when !== undefined && x.km <= NEARBY_KM)
+      .sort((a, b) => (a.when === b.when ? a.km - b.km : a.when === 'today' ? -1 : 1))
+      .slice(0, 10);
+  }, [local, origin]);
 
   const promoted = useMemo(() => {
     const ads = local.filter((b) => b.promoted && distanceKm(origin, b.coords) <= NEARBY_KM);
@@ -248,6 +260,39 @@ export default function HomeScreen() {
           ))}
         </View>
       </Section>
+
+      {freeSoon.length > 0 ? (
+        <Section title={t('Hvem har tid i dag?')} subtitle={t('Virksomheder nær dig, der selv har meldt ledig tid')}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
+            {freeSoon.map(({ business, km, when }) => (
+              <Tappable
+                key={business.id}
+                onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
+                accessibilityLabel={t('{name}, {trade}, {when}, {distance} væk', {
+                  name: business.name,
+                  trade: getCategory(business.categories[0])?.name ?? '',
+                  when: when === 'today' ? t('ledig i dag') : t('ledig i morgen'),
+                  distance: formatDistance(km),
+                })}
+                style={[styles.topCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                <View style={styles.topBody}>
+                  <BusinessMark business={business} size={40} />
+                  <AppText variant="caption" tone="textSecondary" weight="600">
+                    {getCategory(business.categories[0])?.name}
+                  </AppText>
+                  <AppText variant="subhead" weight="600" numberOfLines={1}>
+                    {business.name}
+                  </AppText>
+                  <AvailabilityBadge business={business} />
+                  <AppText variant="caption" tone="textSecondary">
+                    {formatDistance(km)}
+                  </AppText>
+                </View>
+              </Tappable>
+            ))}
+          </ScrollView>
+        </Section>
+      ) : null}
 
       <Section
         title={t('Hvad koster det typisk?')}

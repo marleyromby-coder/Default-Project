@@ -60,7 +60,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
         {
           heading: 'Når du beskriver dit problem',
           paragraphs: [
-            `Under "Beskriv dit problem" finder appen faget og opgaven ud fra dine ord. Virksomhedernes egen pris for opgaven (gange antal m² eller stk.) sammenlignes med dit budget, og de deles i fire grupper i denne rækkefølge: "Inden for budget" og "Kan passe", "Tæt på budget" (højst ${Math.round(CLOSE_MARGIN * 100)} % over), "Pris på forespørgsel" (virksomheden har ikke oplyst en pris for opgaven) og "Over budget". Inden for hver gruppe afgør FixMatch-scoren rækkefølgen. Haster det, kommer virksomheder med døgnvagt først.`,
+            `Under "Beskriv dit problem" finder appen faget og opgaven ud fra dine ord. Virksomhedernes egen pris for opgaven (gange antal m² eller stk.) sammenlignes med dit budget, og de deles i fire grupper i denne rækkefølge: "Inden for budget" og "Kan passe", "Tæt på budget" (højst ${Math.round(CLOSE_MARGIN * 100)} % over), "Pris på forespørgsel" (virksomheden har ikke oplyst en pris for opgaven) og "Over budget". Inden for hver gruppe afgør FixMatch-scoren rækkefølgen. Haster det, kommer virksomheder med døgnvagt først og derefter dem, der selv har meldt ledig tid i dag.`,
             `Vi viser kun virksomheder, der kører ud til din adresse (inden for deres eget område). Mekanikere vises inden for ${WORKSHOP_RADIUS_KM} km, fordi du selv kører derhen. Din beskrivelse bliver på telefonen og sendes ikke til FixMatch eller virksomhederne.`,
           ],
         },
@@ -180,6 +180,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
             'Du giver samtykke, når du tilmelder dig, og kan til enhver tid trække det tilbage.',
             'Vil du have Verificeret-mærket, sætter du flueben ved det i tilmeldingen i appen eller på hjemmesiden. Det er gratis.',
             'Når en kunde ringer til dig gennem FixMatch, kan du se kundens navn og telefonnummer.',
+            `Har du tid i dag eller i morgen, så tryk "Ledig i dag" på dit personlige link (${APP_INFO.website}/ledig/). Så står du under "Hvem har tid i dag?", og kunder, hvor det haster, ser dig først. Det forsvinder af sig selv ved midnat. Linket får du fra os.`,
           ],
         },
         {
@@ -282,6 +283,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
           heading: 'Kortet og "Beskriv dit problem"',
           paragraphs: [
             'Kortet er Apple Kort. For at vise det henter din iPhone kortbilleder direkte fra Apple efter Apples privatlivspolitik. Det, du skriver under "Beskriv dit problem", behandles kun på telefonen og sendes ikke til FixMatch eller virksomhederne.',
+            'Billeder af problemet bliver på telefonen og glemmes, når appen lukkes. Sender du dem til en virksomhed, sker det som en besked fra din egen telefon. FixMatch får dem aldrig.',
           ],
         },
         {

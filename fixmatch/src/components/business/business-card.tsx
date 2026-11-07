@@ -10,12 +10,14 @@ import { useTheme } from '@/hooks/use-theme';
 import { businessText, currencyOf, timeZoneOf } from '@/lib/business-text';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { formatDistance, formatHourly, formatPriceRange, formatRating, speakablePrice } from '@/lib/format';
+import { availableWhen } from '@/lib/availability';
 import { getOpenStatus } from '@/lib/opening-hours';
 import type { ScoredBusiness } from '@/lib/ranking';
 import type { JobType } from '@/lib/types';
 import { isTopRated, isVerified } from '@/lib/verification';
 import { useApp } from '@/state/app-state';
 
+import { AvailabilityBadge } from './availability-badge';
 import { BusinessMark } from './business-mark';
 import { MatchBadge } from './match-badge';
 import { OpenStatus } from './open-status';
@@ -51,6 +53,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
   const verified = isVerified(business);
   const topRated = isTopRated(business);
   const open = getOpenStatus(business.hours, undefined, timeZoneOf(business));
+  const free = availableWhen(business);
 
   const onCompare = () => {
     if (!toggleCompare(business.id)) onCompareLimit?.();
@@ -71,6 +74,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
     speakablePrice(priceText),
     t('{distance} væk', { distance: formatDistance(distanceKm) }),
     open.label,
+    free === 'today' ? t('ledig i dag') : free === 'tomorrow' ? t('ledig i morgen') : undefined,
     authorized ? t('autoriseret') : undefined,
     business.demo ? t('eksempelvirksomhed') : undefined,
   ]
@@ -132,6 +136,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
       <View style={[styles.footer, { borderTopColor: colors.border }]}>
         <View style={styles.badges}>
           {highlight ? <Badge label={highlight.label} tone={highlight.tone} icon={highlight.icon} /> : null}
+          <AvailabilityBadge business={business} />
           {topRated ? <Badge label={t('Topbedømt')} tone="brand" icon="star" /> : null}
           {authorized ? <Badge label={t('Autoriseret')} tone="success" icon="shield" /> : null}
           {business.emergency ? <Badge label={t('Døgnvagt')} tone="warning" icon="bolt" /> : null}

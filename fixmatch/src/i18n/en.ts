@@ -90,8 +90,6 @@ const en: Record<string, string> = {
     'There are no {plural} on FixMatch yet. We are working on adding more.',
   'Der er {countText} længere væk.': 'There are {countText} further away.',
   'Det haster': "It's urgent",
-  'Din beskrivelse bliver på telefonen. Den sendes ikke til FixMatch eller til virksomhederne – du bestemmer selv, om du vil dele den, når du kontakter dem.':
-    'Your description stays on your phone. It is not sent to FixMatch or the businesses – you decide whether to share it when you contact them.',
   'Din søgning': 'Your search',
   'Din valgte placering': 'Your chosen location',
   'Din vægtning lige nu': 'Your weighting right now',
@@ -469,7 +467,6 @@ const en: Record<string, string> = {
     'The business has no reviews on Trustpilot yet, so it is ranked with a neutral score.',
   Virksomheder: 'Businesses',
   'Virksomheder med døgnvagt tæller med': 'Businesses with a 24/7 service count too',
-  'Virksomheder med døgnvagt vises først': 'Businesses with a 24/7 service come first',
   'Vis alle lande': 'Show all countries',
   'Vis dem alligevel': 'Show them anyway',
   'Vis hele landet': 'Show the whole country',
@@ -867,6 +864,50 @@ const en: Record<string, string> = {
   'Rapportér anmeldelsen': 'Report the review',
   Rapportér: 'Report',
   'Sådan virker anmeldelserne': 'How reviews work',
+  'Hvem har tid i dag?': 'Who has time today?',
+  'Virksomheder nær dig, der selv har meldt ledig tid': 'Businesses near you that have marked free time',
+  '{name}, {trade}, {when}, {distance} væk': '{name}, {trade}, {when}, {distance} away',
+  'ledig i dag': 'free today',
+  'ledig i morgen': 'free tomorrow',
+  'Døgnvagt og dem, der er ledige i dag, vises først': '24-hour service and those free today come first',
+  'Din beskrivelse og dine billeder bliver på telefonen. De sendes ikke til FixMatch – du bestemmer selv, om du vil sende dem til en virksomhed, når du kontakter den.':
+    'Your description and pictures stay on your phone. They are not sent to FixMatch – you decide whether to send them to a business when you contact it.',
+  'Ledig i dag eller i morgen': 'Free today or tomorrow',
+  'Virksomheden har selv meldt, at den har tid': 'The business has marked that it has time',
+  'Åbn en virksomhed, og tryk "Send billeder og beskrivelse", så får de dem som en besked fra dig.':
+    'Open a business and tap "Send pictures and description", and they get them as a message from you.',
+  'Dit problem': 'Your problem',
+  'Send billeder og beskrivelse': 'Send pictures and description',
+  'Send beskrivelsen': 'Send the description',
+  'Sendes som en besked fra din egen telefon til {phone}. FixMatch ser den ikke.':
+    'Sent as a message from your own phone to {phone}. FixMatch does not see it.',
+  'Ledig i dag: virksomheden har selv meldt, at den har tid i dag. Ring og aftal et tidspunkt.':
+    'Free today: the business has marked that it has time today. Call and agree a time.',
+  'Ledig i morgen: virksomheden har selv meldt, at den har tid i morgen. Ring og aftal et tidspunkt.':
+    'Free tomorrow: the business has marked that it has time tomorrow. Call and agree a time.',
+  'Ledig i dag': 'Free today',
+  'Har selv meldt ledig tid i dag': 'Has marked free time today',
+  'Ledig i morgen': 'Free tomorrow',
+  'Har selv meldt ledig tid i morgen': 'Has marked free time tomorrow',
+  'FixMatch må ikke bruge kameraet': 'FixMatch may not use the camera',
+  'Slå kameraet til for FixMatch i Indstillinger.': 'Turn on the camera for FixMatch in Settings.',
+  'Billede {number} af problemet': 'Picture {number} of the problem',
+  'Fjern billede {number}': 'Remove picture {number}',
+  'Billeder af problemet': 'Pictures of the problem',
+  'Et billede siger mere end ord. Send det til håndværkeren, når du kontakter dem.':
+    'A picture says more than words. Send it to the tradesperson when you contact them.',
+  'Tag billede': 'Take picture',
+  'Tilføj flere': 'Add more',
+  'Vælg fra billeder': 'Choose from photos',
+  'Højst {count} billeder.': 'At most {count} pictures.',
+  'Hej {name}. Jeg har fundet jer på FixMatch.': 'Hi {name}. I found you on FixMatch.',
+  'Jeg har vedhæftet et billede af problemet.': 'I have attached a picture of the problem.',
+  'Jeg har vedhæftet {count} billeder af problemet.': 'I have attached {count} pictures of the problem.',
+  'Har I mulighed for at hjælpe, og hvad vil det koste?': 'Can you help, and what would it cost?',
+  'åbner Beskeder med din beskrivelse og dine billeder, klar til at sende til virksomheden.':
+    'Messages opens with your description and pictures, ready to send to the business.',
+  'Beskrivelsen er kopieret, så du kan indsætte den i en besked.':
+    'The description is copied, so you can paste it into a message.',
 };
 
 export default en;

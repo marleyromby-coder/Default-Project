@@ -1,3 +1,4 @@
+import { availableWhen } from './availability';
 import { timeZoneOf } from './business-text';
 import { formatRating } from './format';
 import { isOpenNow } from './opening-hours';
@@ -15,6 +16,7 @@ export const DEFAULT_FILTERS: Filters = {
   authorizedOnly: false,
   verifiedOnly: false,
   trustpilotOnly: false,
+  availableSoon: false,
 };
 
 const KM_PER_MILE = 1.609344;
@@ -52,6 +54,7 @@ export function applyFilters(
     if (filters.emergency && !business.emergency) return false;
     if (filters.authorizedOnly && business.authorizations.length === 0) return false;
     if (filters.verifiedOnly && !isVerified(business, now)) return false;
+    if (filters.availableSoon && !availableWhen(business, now)) return false;
     if (filters.openNow && !isOpenNow(business.hours, now, timeZoneOf(business)) && !business.emergency) return false;
     if (filters.priceLevel !== null && priceLevel(business, context.all, context.category) !== filters.priceLevel) {
       return false;
@@ -71,5 +74,6 @@ export function activeFilterCount(filters: Filters): number {
   if (filters.authorizedOnly) count += 1;
   if (filters.verifiedOnly) count += 1;
   if (filters.trustpilotOnly) count += 1;
+  if (filters.availableSoon) count += 1;
   return count;
 }
