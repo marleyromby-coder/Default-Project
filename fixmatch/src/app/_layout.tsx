@@ -110,6 +110,24 @@ function RootNavigator() {
         />
         <Stack.Screen name="beskriv" options={{ title: t('Beskriv dit problem') }} />
         <Stack.Screen name="tilbudstjek" options={{ title: t('Tilbudstjek') }} />
+        <Stack.Screen
+          name="anmeld"
+          options={{
+            presentation: 'formSheet',
+            sheetAllowedDetents: [0.85, 1],
+            sheetGrabberVisible: true,
+            title: t('Anmeldelse'),
+          }}
+        />
+        <Stack.Screen
+          name="del-pris"
+          options={{
+            presentation: 'formSheet',
+            sheetAllowedDetents: [0.85, 1],
+            sheetGrabberVisible: true,
+            title: t('Del, hvad du betalte'),
+          }}
+        />
         <Stack.Screen name="match" options={{ title: t('Dit match') }} />
         <Stack.Screen name="placering" options={{ presentation: 'modal', title: t('Vælg placering') }} />
         <Stack.Screen name="konto" options={{ presentation: 'modal', title: t('Din bruger') }} />

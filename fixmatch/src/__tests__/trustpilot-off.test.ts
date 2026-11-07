@@ -5,22 +5,22 @@ import { PRIORITY_PRESETS, weightsFromPriorities, weightsText } from '@/lib/rank
 // The App Store build runs without Trustpilot until there is a partner agreement.
 jest.mock('@/lib/features', () => ({ TRUSTPILOT_ENABLED: false }));
 
-const REVIEW_WORDS = /trustpilot|trustscore|anmeld|review/i;
+// FixMatch's own reviews stay; only Trustpilot goes.
+const TRUSTPILOT_WORDS = /trustpilot|trustscore/i;
 
 describe('without Trustpilot', () => {
-  it('leaves reviews out of the info pages', () => {
+  it('leaves Trustpilot out of the info pages', () => {
     for (const pages of [infoPagesDa(), infoPagesEn()]) {
       for (const [slug, page] of Object.entries(pages)) {
-        // "Om anmeldelser" cannot be opened when Trustpilot is off.
-        if (slug === 'anmeldelser') continue;
-        expect({ slug, text: JSON.stringify(page).match(REVIEW_WORDS)?.[0] }).toEqual({ slug, text: undefined });
+        expect({ slug, text: JSON.stringify(page).match(TRUSTPILOT_WORDS)?.[0] }).toEqual({ slug, text: undefined });
       }
     }
   });
 
-  it('hides the page about reviews', () => {
-    expect(isInfoSlug('anmeldelser')).toBe(false);
+  it('keeps the page about FixMatch reviews', () => {
+    expect(isInfoSlug('anmeldelser')).toBe(true);
     expect(isInfoSlug('rangering')).toBe(true);
+    expect(JSON.stringify(infoPagesDa().anmeldelser)).toContain('kontaktet virksomheden gennem FixMatch');
   });
 
   it('ranks by price and distance only', () => {

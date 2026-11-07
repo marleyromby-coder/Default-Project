@@ -46,7 +46,7 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 ## 4. App Store Connect
 
 - [ ] Tekster, søgeord og noter fra `app-store-tekster.md` (dansk) og `app-store-texts-en.md` (engelsk, til alle andre lande).
-- [ ] App Privacy: datatyperne fra `app-store-tekster.md` → App Privacy (navn, e-mail, telefon, bruger-id, produktinteraktion).
+- [ ] App Privacy: datatyperne fra `app-store-tekster.md` → App Privacy (navn, e-mail, telefon, bruger-id, produktinteraktion, købshistorik, andet brugerindhold).
 - [ ] Supabase er sat op (`docs/lancering/supabase.md`), og `fixmatch/.env` har URL og publishable key i den build, der indsendes.
 - [ ] Aldersgrænse 4+.
 - [ ] Skærmbilleder (6,9").

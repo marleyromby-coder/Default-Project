@@ -2,6 +2,7 @@ import { APP_INFO } from '@/constants/app-info';
 import { getLanguage } from '@/i18n';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { CLOSE_MARGIN, WORKSHOP_RADIUS_KM } from '@/lib/matcher';
+import { MIN_PAID_PRICES } from '@/lib/prices';
 import { DISTANCE_SCALE_KM, NO_REVIEWS_SCORE, REVIEW_PRIOR_COUNT, REVIEW_PRIOR_MEAN } from '@/lib/ranking';
 import { TOP_RATED_MIN_REVIEWS, TOP_RATED_MIN_SCORE, VERIFICATION_VALID_DAYS } from '@/lib/verification';
 
@@ -72,7 +73,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
         {
           heading: 'Filtre',
           paragraphs: [
-            'Filtre som afstand, åbningstid, døgnvagt, autorisation og Verificeret skjuler virksomheder, men ændrer ikke deres score. Verificeret-mærket giver heller ikke en bedre placering.',
+            'Filtre som afstand, åbningstid, døgnvagt, autorisation og Verificeret skjuler virksomheder, men ændrer ikke deres score. Verificeret-mærket og anmeldelser skrevet i FixMatch giver heller ikke en bedre placering.',
           ],
         },
       ],
@@ -80,38 +81,71 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
     anmeldelser: {
       title: 'Om anmeldelser',
       intro:
-        'Anmeldelserne i FixMatch kommer fra Trustpilot. Vi skriver, ændrer og sorterer ikke i anmeldelser – vi viser virksomhedens samlede TrustScore og antallet af anmeldelser.',
+        'Anmeldelserne under "Kundernes erfaringer" kommer kun fra kunder, der har kontaktet virksomheden gennem FixMatch. Ingen kan købe, skrive eller fjerne anmeldelser for en virksomhed.',
       sections: [
+        {
+          heading: 'Hvem kan anmelde?',
+          paragraphs: [
+            'Kun brugere, der har ringet eller skrevet til virksomheden gennem FixMatch. Hver bruger kan anmelde en virksomhed én gang og kan rette sin anmeldelse senere. Andre ser kun dit forbogstav, aldrig dit navn.',
+          ],
+        },
         {
           heading: 'Kontrollerer FixMatch anmeldelserne?',
           paragraphs: [
-            'Nej. FixMatch kontrollerer ikke selv, om anmeldelserne stammer fra kunder, der faktisk har brugt virksomheden. Trustpilot beskriver selv, hvordan de opdager og fjerner falske anmeldelser.',
+            'Ja, delvist. Vi tjekker, at du har kontaktet virksomheden gennem FixMatch, før du kan anmelde den. Vi kan ikke se, om opgaven blev udført, eller hvad I aftalte. Vi viser alle anmeldelser, også de dårlige, med de nyeste først, og vi ændrer aldrig i teksten.',
           ],
         },
         {
-          heading: 'Hvor gamle er tallene?',
+          heading: 'Hvornår skjuler vi en anmeldelse?',
+          bullets: [
+            'Den indeholder navne, telefonnumre eller andre personoplysninger.',
+            'Den er krænkende eller truende, eller den handler ikke om virksomheden.',
+            'Den er skrevet af virksomheden selv, dens ansatte eller en konkurrent.',
+          ],
           paragraphs: [
-            'Ved hver virksomhed står det, hvornår TrustScoren sidst blev opdateret. Tryk på "Se anmeldelser på Trustpilot" for at læse de enkelte anmeldelser.',
+            `Mener du, at en anmeldelse bryder reglerne, så tryk "Rapportér" ved anmeldelsen eller skriv til ${APP_INFO.email}. Virksomheden kan ikke selv fjerne anmeldelser.`,
           ],
         },
         {
-          heading: 'Hvad betyder TrustScore?',
+          heading: 'Påvirker anmeldelserne rækkefølgen?',
           paragraphs: [
-            'TrustScore er Trustpilots samlede vurdering fra 1 til 5. Den tager blandt andet højde for, hvor nye anmeldelserne er. Den kan derfor afvige fra et simpelt gennemsnit af stjernerne.',
+            reviews
+              ? 'Nej. Anmeldelser skrevet i FixMatch påvirker ikke FixMatch-scoren eller rækkefølgen. Scoren bruger kun TrustScoren fra Trustpilot (se "Sådan rangerer vi").'
+              : 'Nej. Anmeldelser skrevet i FixMatch påvirker ikke FixMatch-scoren eller rækkefølgen. De står på virksomhedens side, så du selv kan læse dem.',
           ],
         },
+        ...(reviews
+          ? [
+              {
+                heading: 'Anmeldelser fra Trustpilot',
+                paragraphs: [
+                  'TrustScoren kommer fra Trustpilot. Vi viser den samlede TrustScore og antallet af anmeldelser, men skriver, ændrer og sorterer ikke i dem. FixMatch kontrollerer ikke selv, om Trustpilot-anmeldelserne stammer fra rigtige kunder; Trustpilot beskriver selv, hvordan de opdager og fjerner falske anmeldelser.',
+                  'Ved hver virksomhed står det, hvornår TrustScoren sidst blev opdateret. TrustScoren er Trustpilots samlede vurdering fra 1 til 5 og vægter blandt andet nye anmeldelser højere, så den kan afvige fra et simpelt gennemsnit.',
+                ],
+              },
+            ]
+          : []),
       ],
-      links: [{ label: 'Sådan arbejder Trustpilot med anmeldelser', url: 'https://corporate.trustpilot.com/trust' }],
+      links: reviews
+        ? [{ label: 'Sådan arbejder Trustpilot med anmeldelser', url: 'https://corporate.trustpilot.com/trust' }]
+        : [],
     },
     priser: {
       title: 'Om priserne',
       intro:
-        'Alle priser er oplyst af virksomhederne selv. De er inklusive moms og vejledende – den endelige pris aftaler du med virksomheden.',
+        'Timepriser og eksempelpriser er oplyst af virksomhederne selv. "Det har kunder betalt" kommer fra kunder. Alle priser er inklusive moms og vejledende – den endelige pris aftaler du med virksomheden.',
       sections: [
         {
           heading: 'Timepris og eksempler',
           paragraphs: [
             'Timeprisen er det interval, virksomheden typisk tager. Nogle har også et fast gebyr for kørsel eller opstart, som står ved timeprisen. Eksempelpriserne er typiske priser for almindelige opgaver; materialer kan komme oveni.',
+          ],
+        },
+        {
+          heading: 'Det har kunder betalt',
+          paragraphs: [
+            `Har du kontaktet en virksomhed gennem FixMatch, kan du dele, hvad opgaven kostede. Når mindst ${MIN_PAID_PRICES} har delt en pris for samme opgave, viser vi intervallet for de midterste 60 % – vi ser bort fra de 20 % billigste og de 20 % dyreste, så enkelte ekstreme priser ikke trækker skævt. Vi bruger priser fra de seneste 24 måneder, og Tilbudstjek sammenligner også med dem.`,
+            'Vi viser aldrig, hvem der har delt en pris, og kun de to første cifre i postnummeret.',
           ],
         },
         {
@@ -264,6 +298,12 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
           ],
         },
         {
+          heading: 'Anmeldelser og priser, du deler',
+          paragraphs: [
+            'Anmelder du en virksomhed eller deler, hvad du betalte, gemmer vi det sammen med din bruger hos Supabase i EU, så vi kan tjekke, at du har kontaktet virksomheden. Andre ser kun dit forbogstav ved anmeldelser, og priser vises kun samlet, når mindst 3 har delt. Det slettes, når du sletter din bruger.',
+          ],
+        },
+        {
           heading: 'Når du kontakter en virksomhed',
           paragraphs: [
             'Selve opkaldet og hjemmesider foregår uden om FixMatch, og virksomhedens egen privatlivspolitik gælder. Har en virksomhed sit eget billede på FixMatch, hentes det fra internettet, og serveren kan se din IP-adresse.',
@@ -340,7 +380,7 @@ export type InfoSlug = keyof ReturnType<typeof infoPagesDa>;
 /** The pages in the app's language. */
 export const INFO_PAGES: Record<InfoSlug, InfoPage> = getLanguage() === 'da' ? infoPagesDa() : infoPagesEn();
 
-/** A page that can be opened. "Om anmeldelser" only exists while Trustpilot is on. */
+/** A page that can be opened. */
 export function isInfoSlug(value: string): value is InfoSlug {
-  return value in INFO_PAGES && (TRUSTPILOT_ENABLED || value !== 'anmeldelser');
+  return value in INFO_PAGES;
 }

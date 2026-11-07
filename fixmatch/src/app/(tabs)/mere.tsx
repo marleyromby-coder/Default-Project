@@ -14,7 +14,6 @@ import { useLayout } from '@/hooks/use-layout';
 import { reportProblem } from '@/lib/contact';
 import { DATA_MODE } from '@/lib/data-source';
 import { showDialog } from '@/lib/dialog';
-import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { getLanguage, t } from '@/i18n';
 import { useApp } from '@/state/app-state';
 
@@ -68,9 +67,7 @@ export default function MoreScreen() {
           footer={t('Ingen kan betale sig til en bedre placering i søgeresultaterne.')}>
           <ListRow icon="list" title={t('Sådan rangerer vi')} onPress={info('rangering')} />
           <ListRow icon="verified" title={t('Sådan verificerer vi')} onPress={info('verificering')} />
-          {TRUSTPILOT_ENABLED ? (
-            <ListRow icon="star" title={t('Om anmeldelser')} onPress={info('anmeldelser')} />
-          ) : null}
+          <ListRow icon="star" title={t('Om anmeldelser')} onPress={info('anmeldelser')} />
           <ListRow icon="tag" title={t('Om priserne')} onPress={info('priser')} />
           <ListRow icon="scale" title={t('Hvis noget går galt')} onPress={info('hjaelp')} />
         </ListSection>

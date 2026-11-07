@@ -10,7 +10,7 @@
 
 ## 2. In short
 
-FixMatch has no ads and no tracking. If you create an account, we store your e-mail, name and phone number in the EU, so the businesses you call through FixMatch know who they are talking to (section 7). Everything else stays on your phone.
+FixMatch has no ads and no tracking. If you create an account, we store your e-mail, name and phone number in the EU, so the businesses you call through FixMatch know who they are talking to (section 7). Reviews and prices you choose to share are stored too (section 9). Everything else stays on your phone.
 
 ## 3. Location
 
@@ -42,11 +42,23 @@ You can browse and compare businesses without an account. The first time you cal
 
 The call itself, websites and directions happen in your phone's own apps or in a browser, and the privacy policy of the business, Apple or the browser then applies. If you have an account, FixMatch records that you called, so the business can see your name and number (section 7).
 
-## 9. Images and data from the internet
+## 9. Reviews and prices you share
+
+If you contacted a business through FixMatch, you can review it and share what the job cost. This is voluntary.
+
+- **What we store:** your review (stars, text, job and date) and your price (amount, labour if given, job, number of m² or items, month and the first two digits of the business's postcode). Both are linked to your account, so you can only review and share once per business and job, and so we can check that you contacted the business.
+- **Who sees it:** everyone in the app sees the review with your initial, never your name. Prices are only shown together as a range, and only once at least 3 people have shared a price for the same job. Nobody can see who shared a price.
+- **Why:** so others can choose the right business and see what a job really costs. The legal basis is our agreement with you to use FixMatch (GDPR Article 6(1)(b)).
+- **Where and how long:** with Supabase in the EU (Frankfurt). Prices are shown for 24 months. You change your review or price by doing it again, and everything is deleted when you delete your account.
+- **Rules:** do not write names, phone numbers or other personal data in a review. We hide reviews that break the rules. We never change the text.
+
+> Without an account (for example in the demo) reviews and prices stay on the phone.
+
+## 10. Images and data from the internet
 
 The app loads the businesses' own pictures and (if switched on) an updated list of businesses from the internet. As is normal on the internet, the server sees your IP address for these requests. We do not store IP addresses when the business list is loaded.
 
-## 10. Information about businesses
+## 11. Information about businesses
 
 We show information about businesses (such as name, company number, phone number and prices) that the businesses themselves have approved. For sole traders this can be personal data about the owner. The legal basis is the business's consent (GDPR Article 6(1)(a)). If a business signs itself up in the app or on the website, we keep the sign-up with the consent wording and time with Supabase in the EU as proof. The consent can be withdrawn at any time by writing to {{email}}, and we then remove the information within 2 working days. Contact persons' names and email addresses are only used to manage the listing and are kept for as long as the listing exists, and for 12 months after that as proof of the consent.
 
@@ -54,14 +66,14 @@ We show information about businesses (such as name, company number, phone number
 
 > Check the legal basis and retention period for verification with your lawyer (see the GDPR preparation).
 
-## 11. When you write to us
+## 12. When you write to us
 
 If you write to us, we use your email address and what you write to answer you. We delete the message no later than 12 months after the matter is closed.
 
-## 12. Your rights
+## 13. Your rights
 
 You have the right of access, rectification, erasure, restriction and objection, and the right to data portability. Write to {{email}}. You can complain to the Danish Data Protection Agency (Datatilsynet), Carl Jacobsens Vej 35, 2500 Valby, Denmark, www.datatilsynet.dk. If you live in another country, you can also complain to the authority there, for example the ICO in the United Kingdom.
 
-## 13. Changes
+## 14. Changes
 
 If we change this policy, we update the date at the top and say so in the app's "What's New".

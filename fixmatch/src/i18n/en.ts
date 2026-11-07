@@ -795,6 +795,78 @@ const en: Record<string, string> = {
   'Ryd listen': 'Clear the list',
   'Sletter du brugeren, slettes navn, telefonnummer og dine opkald for altid.':
     'Deleting the account deletes your name, phone number and calls for good.',
+  Anmeldelse: 'Review',
+  'Del, hvad du betalte': 'Share what you paid',
+  'Meget dårligt': 'Very poor',
+  Dårligt: 'Poor',
+  Okay: 'Okay',
+  Godt: 'Good',
+  'Rigtig godt': 'Excellent',
+  'Ring til dem først': 'Contact them first',
+  'Kun kunder, der har kontaktet virksomheden gennem FixMatch, kan anmelde den. Så er alle anmeldelser ægte.':
+    'Only customers who contacted the business through FixMatch can review it. That way every review is real.',
+  'Tak for din anmeldelse': 'Thank you for your review',
+  'Den hjælper andre med at vælge den rette.': 'It helps others choose the right one.',
+  'Anmeldelsen blev ikke sendt. Tjek internettet, og prøv igen.':
+    'The review was not sent. Check your internet connection and try again.',
+  'Ret din anmeldelse': 'Edit your review',
+  'Anmeld {name}': 'Review {name}',
+  'Du kan anmelde, fordi du har kontaktet dem gennem FixMatch. Andre ser dit forbogstav, aldrig dit navn.':
+    'You can review them because you contacted them through FixMatch. Others see your initial, never your name.',
+  'Antal stjerner': 'Number of stars',
+  '{count} stjerner': '{count} stars',
+  'Tryk på en stjerne': 'Tap a star',
+  'Hvad lavede de? (valgfrit)': 'What did they do? (optional)',
+  'Fortæl lidt mere (valgfrit)': 'Tell us a bit more (optional)',
+  'Fx: Kom til tiden, gav fast pris og ryddede op efter sig.':
+    'E.g. On time, gave a fixed price and cleaned up afterwards.',
+  '{count} af {max} tegn. Skriv ikke navne eller telefonnumre.':
+    '{count} of {max} characters. Do not write names or phone numbers.',
+  'Gem anmeldelsen': 'Save the review',
+  'Send anmeldelsen': 'Send the review',
+  'Anmeldelser, der bryder reglerne, kan rapporteres og bliver skjult, hvis de gør. FixMatch ændrer aldrig dit indhold.':
+    'Reviews that break the rules can be reported and are hidden if they do. FixMatch never changes what you wrote.',
+  'Denne måned': 'This month',
+  'Sidste måned': 'Last month',
+  'For 2–6 måneder siden': '2–6 months ago',
+  'For mere end et halvt år siden': 'More than six months ago',
+  'Du kan dele, hvad du betalte, når du har kontaktet virksomheden gennem FixMatch.':
+    'You can share what you paid once you have contacted the business through FixMatch.',
+  'Tak, fordi du delte': 'Thank you for sharing',
+  'Din pris hjælper andre med at se, hvad opgaven koster.': 'Your price helps others see what the job costs.',
+  'Prisen blev ikke sendt. Tjek internettet, og prøv igen.':
+    'The price was not sent. Check your internet connection and try again.',
+  'Hvad betalte du?': 'What did you pay?',
+  'Del, hvad opgaven hos {name} kostede. Så kan andre se, hvad det rigtigt koster. Vi deler kun beløbet, opgaven, måneden og de to første cifre i postnummeret, aldrig hvem du er.':
+    'Share what the job with {name} cost, so others can see what it really costs. We only share the amount, the job, the month and the first two digits of the postcode, never who you are.',
+  'Samlet pris i {currency}, {tax}': 'Total price in {currency}, {tax}',
+  'Det, der står på fakturaen.': 'What the invoice says.',
+  'Heraf arbejdsløn (valgfrit)': 'Of which labour (optional)',
+  'Arbejdslønnen kan ikke være mere end den samlede pris.': 'The labour cannot be more than the total price.',
+  'Hvornår?': 'When?',
+  'Priser vises først, når mindst 3 har delt for samme opgave. Du kan rette din pris ved at dele igen.':
+    'Prices are shown once at least 3 people have shared for the same job. You can correct your price by sharing again.',
+  'Del prisen': 'Share the price',
+  'Bygger på {count} priser, som kunder har betalt.': 'Based on {count} prices customers have paid.',
+  'Kundernes erfaringer': "Customers' experiences",
+  '{rating} af 5 stjerner fra {count} kunder via FixMatch':
+    '{rating} out of 5 stars from {count} customers via FixMatch',
+  '1 anmeldelse fra en kunde via FixMatch': '1 review from a customer via FixMatch',
+  '{count} anmeldelser fra kunder via FixMatch': '{count} reviews from customers via FixMatch',
+  'Ingen anmeldelser endnu. Kun kunder, der har kontaktet virksomheden gennem FixMatch, kan anmelde.':
+    'No reviews yet. Only customers who contacted the business through FixMatch can review it.',
+  'Din anmeldelse': 'Your review',
+  'Det har kunder betalt': 'What customers paid',
+  'Fra fakturaer, kunder har delt. Vises fra {min} priser pr. opgave.':
+    'From invoices customers have shared. Shown from {min} prices per job.',
+  'Skriv en anmeldelse': 'Write a review',
+  'Når du har ringet til dem gennem FixMatch, kan du anmelde dem og dele, hvad du betalte.':
+    'Once you have called them through FixMatch, you can review them and share what you paid.',
+  'Rapportér anmeldelse af {name}': 'Report review of {name}',
+  'Anmeldelse {id} hos {name} bryder reglerne, fordi:': 'Review {id} of {name} breaks the rules because:',
+  'Rapportér anmeldelsen': 'Report the review',
+  Rapportér: 'Report',
+  'Sådan virker anmeldelserne': 'How reviews work',
 };
 
 export default en;

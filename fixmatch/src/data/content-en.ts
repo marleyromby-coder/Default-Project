@@ -1,6 +1,7 @@
 import { APP_INFO } from '@/constants/app-info';
 import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { CLOSE_MARGIN, WORKSHOP_RADIUS_KM } from '@/lib/matcher';
+import { MIN_PAID_PRICES } from '@/lib/prices';
 import { DISTANCE_SCALE_KM, NO_REVIEWS_SCORE, REVIEW_PRIOR_COUNT, REVIEW_PRIOR_MEAN } from '@/lib/ranking';
 import { TOP_RATED_MIN_REVIEWS, TOP_RATED_MIN_SCORE, VERIFICATION_VALID_DAYS } from '@/lib/verification';
 
@@ -53,7 +54,7 @@ export function infoPagesEn(
         {
           heading: 'Filters',
           paragraphs: [
-            'Filters such as distance, opening hours, 24-hour service, licences and Verified hide businesses but do not change their score. The Verified badge does not give a better position either.',
+            'Filters such as distance, opening hours, 24-hour service, licences and Verified hide businesses but do not change their score. The Verified badge and reviews written in FixMatch do not give a better position either.',
           ],
         },
       ],
@@ -61,38 +62,71 @@ export function infoPagesEn(
     anmeldelser: {
       title: 'About reviews',
       intro:
-        'Reviews in FixMatch come from Trustpilot. We do not write, edit or filter reviews – we show the business’s overall TrustScore and the number of reviews.',
+        'The reviews under "Customer experiences" only come from customers who contacted the business through FixMatch. Nobody can buy, write or remove reviews for a business.',
       sections: [
+        {
+          heading: 'Who can write a review?',
+          paragraphs: [
+            'Only users who called or wrote to the business through FixMatch. Each user can review a business once and can change the review later. Others only see your initial, never your name.',
+          ],
+        },
         {
           heading: 'Does FixMatch check the reviews?',
           paragraphs: [
-            'No. FixMatch does not check whether reviews come from customers who actually used the business. Trustpilot describes how it detects and removes fake reviews.',
+            'Yes, in part. We check that you contacted the business through FixMatch before you can review it. We cannot see whether the job was done or what you agreed. We show all reviews, the bad ones too, newest first, and we never change the text.',
           ],
         },
         {
-          heading: 'How old are the numbers?',
+          heading: 'When do we hide a review?',
+          bullets: [
+            'It contains names, phone numbers or other personal data.',
+            'It is offensive or threatening, or it is not about the business.',
+            'It was written by the business itself, its staff or a competitor.',
+          ],
           paragraphs: [
-            'Each business shows when its TrustScore was last updated. Tap "See reviews on Trustpilot" to read the individual reviews.',
+            `If you think a review breaks the rules, tap "Report" next to it or write to ${APP_INFO.email}. The business cannot remove reviews itself.`,
           ],
         },
         {
-          heading: 'What is a TrustScore?',
+          heading: 'Do reviews affect the order?',
           paragraphs: [
-            'The TrustScore is Trustpilot’s overall rating from 1 to 5. Among other things it gives more weight to recent reviews, so it can differ from a simple average of the stars.',
+            reviews
+              ? 'No. Reviews written in FixMatch do not affect the FixMatch score or the order. The score only uses the TrustScore from Trustpilot (see "How we rank").'
+              : 'No. Reviews written in FixMatch do not affect the FixMatch score or the order. They are on the business’s page so you can read them yourself.',
           ],
         },
+        ...(reviews
+          ? [
+              {
+                heading: 'Reviews from Trustpilot',
+                paragraphs: [
+                  'The TrustScore comes from Trustpilot. We show the overall TrustScore and the number of reviews, but we do not write, edit or filter them. FixMatch does not check whether Trustpilot reviews come from real customers; Trustpilot describes how it detects and removes fake reviews.',
+                  'Each business shows when its TrustScore was last updated. The TrustScore is Trustpilot’s overall rating from 1 to 5 and gives more weight to recent reviews, so it can differ from a simple average.',
+                ],
+              },
+            ]
+          : []),
       ],
-      links: [{ label: 'How Trustpilot handles reviews', url: 'https://corporate.trustpilot.com/trust' }],
+      links: reviews
+        ? [{ label: 'How Trustpilot handles reviews', url: 'https://corporate.trustpilot.com/trust' }]
+        : [],
     },
     priser: {
       title: 'About prices',
       intro:
-        'All prices come from the businesses themselves. They include VAT and are a guide – you agree the final price with the business.',
+        'Hourly rates and example prices come from the businesses themselves. "What customers paid" comes from customers. All prices include VAT and are a guide – you agree the final price with the business.',
       sections: [
         {
           heading: 'Hourly rate and examples',
           paragraphs: [
             'The hourly rate is the range the business usually charges. Some also have a fixed call-out fee, shown next to the hourly rate. The example prices are typical prices for common jobs; materials may come on top.',
+          ],
+        },
+        {
+          heading: 'What customers paid',
+          paragraphs: [
+            `If you contacted a business through FixMatch, you can share what the job cost. Once at least ${MIN_PAID_PRICES} people have shared a price for the same job, we show the range of the middle 60 % – we leave out the cheapest 20 % and the most expensive 20 %, so a few extreme prices do not skew it. We use prices from the last 24 months, and Quote check compares with them too.`,
+            'We never show who shared a price, and only the first two digits of the postcode.',
           ],
         },
         {
@@ -239,6 +273,12 @@ export function infoPagesEn(
           paragraphs: [
             'You can browse and compare without an account. The first time you call a business, we ask you to create one. We store your e-mail (or your Apple ID), your name, your phone number and which businesses you have called and when – with Supabase on servers in the EU (Frankfurt).',
             'Only the business you call sees your name and number. We never sell them. You delete it all under Profile → Delete account.',
+          ],
+        },
+        {
+          heading: 'Reviews and prices you share',
+          paragraphs: [
+            'If you review a business or share what you paid, we store it with your account at Supabase in the EU, so we can check that you contacted the business. Others only see your initial on reviews, and prices are only shown together once at least 3 people have shared. It is deleted when you delete your account.',
           ],
         },
         {

@@ -1,7 +1,7 @@
 import { countryOf } from './business-text';
 import { distanceKm } from './geo';
 import type { Market } from './markets';
-import { summarizeJobPrice } from './prices';
+import { type PaidPrice, summarizeJobPrice } from './prices';
 import type { ScoredBusiness } from './ranking';
 import type { Business, CategoryId, Coords, JobType } from './types';
 import { isVerified } from './verification';
@@ -32,9 +32,10 @@ export interface QuoteCheck {
   max: number;
   /** How far the quote is under the range (low) or over it (high), in whole percent. 0 when normal. */
   percent: number;
-  /** How many price examples the range is built on. 0 means FixMatch's own estimate. */
+  /** How many prices the range is built on. 0 means FixMatch's own estimate. */
   count: number;
   scope: 'nearby' | 'country';
+  source: 'paid' | 'listed' | 'estimate';
 }
 
 export interface QuoteInput {
@@ -46,21 +47,33 @@ export interface QuoteInput {
   businesses: Business[];
   market: Market;
   origin: Coords;
+  /** What users paid for jobs in the area, when FixMatch has it. */
+  paid?: PaidPrice[];
 }
 
 export function quoteFactor(job: JobType, quantity: number): number {
   return job.unit === 'opgave' ? 1 : Math.max(1, quantity);
 }
 
-export function checkQuote({ price, job, category, quantity, businesses, market, origin }: QuoteInput): QuoteCheck {
+export function checkQuote({
+  price,
+  job,
+  category,
+  quantity,
+  businesses,
+  market,
+  origin,
+  paid = [],
+}: QuoteInput): QuoteCheck {
   const inTrade = businesses.filter((b) => countryOf(b) === market.country && b.categories.includes(category));
   const nearby = summarizeJobPrice(
     job,
     inTrade.filter((b) => distanceKm(origin, b.coords) <= NEARBY_KM),
     market,
+    paid,
   );
   const useNearby = nearby.count >= MIN_NEARBY_PRICES;
-  const summary = useNearby ? nearby : summarizeJobPrice(job, inTrade, market);
+  const summary = useNearby ? nearby : summarizeJobPrice(job, inTrade, market, paid);
   const factor = quoteFactor(job, quantity);
   const min = summary.min * factor;
   const max = summary.max * factor;
@@ -74,7 +87,15 @@ export function checkQuote({ price, job, category, quantity, businesses, market,
     percent = Math.round((price / max - 1) * 100);
     verdict = price <= max * (1 + HIGH_MARGIN) ? 'high' : 'veryHigh';
   }
-  return { verdict, min, max, percent, count: summary.count, scope: useNearby ? 'nearby' : 'country' };
+  return {
+    verdict,
+    min,
+    max,
+    percent,
+    count: summary.count,
+    scope: summary.source === 'paid' || !useNearby ? 'country' : 'nearby',
+    source: summary.source,
+  };
 }
 
 /** Tax back on the labour of a green job: about 26 % of the labour, up to the yearly limit per adult. */

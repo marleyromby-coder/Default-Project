@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Switch, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -30,6 +30,7 @@ import {
 import { scoreBusinesses } from '@/lib/ranking';
 import type { CategoryId } from '@/lib/types';
 import { useApp, useMarket } from '@/state/app-state';
+import { loadSharedPrices, useSharedPrices } from '@/state/community';
 import { msg, t } from '@/i18n';
 
 /** "12.500 kr." typed in any way → 12500. Empty or zero → undefined. */
@@ -68,6 +69,10 @@ export default function QuoteCheckScreen() {
   const [priceText, setPriceText] = useState('');
   const [labourText, setLabourText] = useState('');
   const [greenValue, setGreenValue] = useState<boolean>();
+  const shared = useSharedPrices();
+  useEffect(() => {
+    loadSharedPrices(market.country).catch(() => undefined);
+  }, [market.country]);
 
   const category = categoryId ? getCategory(categoryId) : undefined;
   const job = category?.jobs.find((j) => j.id === jobId);
@@ -88,6 +93,7 @@ export default function QuoteCheckScreen() {
           businesses: state.businesses,
           market,
           origin: state.location.coords,
+          paid: shared.filter((r) => r.country === market.country),
         })
       : undefined;
 
@@ -126,14 +132,16 @@ export default function QuoteCheckScreen() {
             });
   const sourceText = !result
     ? ''
-    : result.count === 0
-      ? t('Ingen virksomheder har oplyst en pris for opgaven endnu, så det er FixMatch’ eget skøn.')
-      : result.scope === 'nearby'
-        ? t('Bygger på {count} priser fra virksomheder inden for {km} km.', { count: result.count, km: NEARBY_KM })
-        : t('Bygger på {count} priser fra virksomheder i hele {country}.', {
-            count: result.count,
-            country: t(market.name),
-          });
+    : result.source === 'paid'
+      ? t('Bygger på {count} priser, som kunder har betalt.', { count: result.count })
+      : result.count === 0
+        ? t('Ingen virksomheder har oplyst en pris for opgaven endnu, så det er FixMatch’ eget skøn.')
+        : result.scope === 'nearby'
+          ? t('Bygger på {count} priser fra virksomheder inden for {km} km.', { count: result.count, km: NEARBY_KM })
+          : t('Bygger på {count} priser fra virksomheder i hele {country}.', {
+              count: result.count,
+              country: t(market.name),
+            });
   const deduction = labour ? greenDeduction(labour) : undefined;
 
   return (

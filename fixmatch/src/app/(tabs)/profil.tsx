@@ -24,6 +24,7 @@ import type { Business } from '@/lib/types';
 import { getLanguage, LANGUAGES, t } from '@/i18n';
 import { clearContacts, deleteAccount, signOut, useAccount, useContacts, type ContactRecord } from '@/state/account';
 import { useApp } from '@/state/app-state';
+import { clearCommunity } from '@/state/community';
 import { setAppearance, useAppearance } from '@/state/appearance';
 
 import { changeLanguage } from './mere';
@@ -48,7 +49,13 @@ export default function ProfileScreen() {
   const confirmSignOut = () =>
     showDialog(t('Log ud?'), t('Du skal logge ind igen, før du kan kontakte en virksomhed.'), [
       { text: t('Annuller'), style: 'cancel' },
-      { text: t('Log ud'), onPress: () => signOut() },
+      {
+        text: t('Log ud'),
+        onPress: () => {
+          clearCommunity();
+          signOut();
+        },
+      },
     ]);
 
   const confirmDelete = () =>
@@ -61,9 +68,11 @@ export default function ProfileScreen() {
           text: t('Slet bruger'),
           style: 'destructive',
           onPress: () =>
-            deleteAccount().catch(() =>
-              showDialog(t('Det lykkedes ikke'), t('Brugeren blev ikke slettet. Tjek internettet, og prøv igen.')),
-            ),
+            deleteAccount()
+              .then(clearCommunity)
+              .catch(() =>
+                showDialog(t('Det lykkedes ikke'), t('Brugeren blev ikke slettet. Tjek internettet, og prøv igen.')),
+              ),
         },
       ],
     );

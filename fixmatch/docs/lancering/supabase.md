@@ -18,10 +18,10 @@ FixMatch gemmer brugere (navn, telefon, e-mail), hvem der har ringet til hvilken
 ## 2. Lav tabellerne
 
 1. Åbn **SQL Editor** → **New query**.
-2. Kopiér hele indholdet af `fixmatch/supabase/migrations/20261030120000_accounts_and_signups.sql`, sæt det ind, og tryk **Run**. Gør det samme med `20261106120000_verification.sql` bagefter (Verificeret-mærket).
+2. Kopiér hele indholdet af `fixmatch/supabase/migrations/20261030120000_accounts_and_signups.sql`, sæt det ind, og tryk **Run**. Gør det samme med `20261106120000_verification.sql` (Verificeret-mærket) og `20261107120000_prices_and_reviews.sql` (anmeldelser og "Del, hvad du betalte") bagefter, i den rækkefølge.
 3. Der skal stå "Success. No rows returned".
 
-Det laver tabellerne `profiles` (navn og telefon), `contacts` (hvem ringede til hvem), `business_signups` (tilmeldinger med samtykke), funktionen `delete_account` (sletning af bruger) og to visninger til jer: `contacts_with_profile` og `business_signups_export`. Alle tabeller er låst med "row level security", så appen kun kan det, den skal.
+Det laver tabellerne `profiles` (navn og telefon), `contacts` (hvem ringede til hvem), `business_signups` (tilmeldinger med samtykke), funktionen `delete_account` (sletning af bruger) og to visninger til jer: `contacts_with_profile` og `business_signups_export`. Den sidste fil laver `price_reports` og `reviews` og visningerne `shared_prices`, `public_reviews` og `review_summary`, som appen læser. Databasen tjekker selv, at brugeren har ringet til virksomheden, før en anmeldelse eller pris kan gemmes. Alle tabeller er låst med "row level security", så appen kun kan det, den skal.
 
 ## 3. Log ind med Apple
 
@@ -77,9 +77,17 @@ Det laver tabellerne `profiles` (navn og telefon), `contacts` (hvem ringede til 
 4. `npm run import:businesses -- ~/Downloads/business_signups_export_rows.csv`. Importen kan læse alle fem lande, og byer som London får koordinater fra bylisten. Tilføj gerne præcise koordinater, prisexempler og autorisationer i regnearket først.
 5. Sæt `status` til `published` på de importerede rækker, så de ikke kommer med i næste eksport.
 
+### Anmeldelser, der bliver rapporteret
+
+Rapporter kommer som e-mail med anmeldelsens id. Find den under **Table Editor → reviews** (filtrér på `id`). Bryder den reglerne (personoplysninger, krænkende, ikke om virksomheden, skrevet af virksomheden selv eller en konkurrent), så sæt `hidden` til `true`. Ret aldrig i teksten. Svar den, der rapporterede, og skriv kort til anmelderen, hvorfor den er skjult (DSA art. 16 og 17). Reglerne står på siden "Om anmeldelser" i appen.
+
+### Priser, kunder har delt
+
+**Table Editor → price_reports** viser alle delte priser. Appen viser kun priser fra de seneste 24 måneder og først fra 3 priser pr. opgave. Ligner en pris en fejl (fx 10 gange for meget), så slet rækken.
+
 ### Sletning
 
-- Brugere sletter selv deres konto i appen (Profil → Slet bruger). Navn, telefon og opkaldsliste slettes med det samme.
+- Brugere sletter selv deres konto i appen (Profil → Slet bruger). Navn, telefon, opkaldsliste, anmeldelser og delte priser slettes med det samme.
 - Slet brugere, der ikke har logget ind i 24 måneder, mindst én gang om året: **Authentication → Users**, sortér efter "Last sign in" (det står i privatlivspolitikken).
 - Vil en virksomhed fjernes, så fjern den fra `live-businesses.json` (og evt. regnearket), og sæt `status` til `rejected` i `business_signups`. Behold selve rækken som dokumentation i 12 måneder.
 

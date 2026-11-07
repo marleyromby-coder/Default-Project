@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BusinessMark } from '@/components/business/business-mark';
 import { VerifiedMark } from '@/components/business/verified-mark';
+import { CustomerCard } from '@/components/business/customer-card';
 import { OpenStatus } from '@/components/business/open-status';
 import { PriceLevel } from '@/components/business/price-level';
 import { ScoreBars } from '@/components/business/score-bars';
@@ -315,6 +316,8 @@ export default function BusinessScreen() {
               style={styles.alignStart}
             />
           </Card>
+
+          <CustomerCard business={business} />
 
           <Card>
             <CardTitle

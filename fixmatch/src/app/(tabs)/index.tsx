@@ -378,7 +378,7 @@ export default function HomeScreen() {
       <View style={styles.footerLinks}>
         <FooterLink label={t('Sådan rangerer vi')} slug="rangering" />
         <FooterLink label={t('Om priserne')} slug="priser" />
-        {TRUSTPILOT_ENABLED ? <FooterLink label={t('Om anmeldelser')} slug="anmeldelser" /> : null}
+        <FooterLink label={t('Om anmeldelser')} slug="anmeldelser" />
       </View>
     </ScrollView>
   );

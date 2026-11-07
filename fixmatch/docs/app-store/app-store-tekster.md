@@ -118,6 +118,8 @@ Vælg disse datatyper. For hver: **Knyttet til brugeren: Ja**, **Bruges til spor
 | Kontaktoplysninger | Telefonnummer | Virksomheden ser, hvem der ringer |
 | Id'er | Bruger-id | Brugerkontoen hos Supabase |
 | Brugsdata | Produktinteraktion | Hvilke virksomheder brugeren har ringet til, så virksomheden kan se det |
+| Køb | Købshistorik | Hvad brugeren betalte for en opgave ("Del, hvad du betalte"). Vises kun samlet og uden navn |
+| Brugerindhold | Andet brugerindhold | Anmeldelser (stjerner og tekst). Vises med forbogstav |
 
 Ikke indsamlet: placering (bruges kun på telefonen), søgninger og teksten i "Beskriv dit problem" (bliver på telefonen), gemte virksomheder, analyse, reklamer og crash-rapporter.
 
