@@ -10,7 +10,7 @@ import { Tappable } from '@/components/ui/tappable';
 import { Radius, Spacing } from '@/constants/theme';
 import { useIsDark } from '@/hooks/use-theme';
 import { showDialog } from '@/lib/dialog';
-import { SERVER_ENABLED } from '@/lib/supabase';
+import { EMAIL_LOGIN_ENABLED, SERVER_ENABLED } from '@/lib/supabase';
 import {
   isAppleSignInAvailable,
   saveProfile,
@@ -184,33 +184,42 @@ export function SignUpFlow({ reason, onDone, onSkip }: Props) {
               onPress={busy ? () => undefined : continueWithApple}
             />
           ) : null}
-          {apple ? (
+          {apple && EMAIL_LOGIN_ENABLED ? (
             <AppText variant="footnote" tone="textTertiary" align="center">
               {t('eller')}
             </AppText>
           ) : null}
-          <TextField
-            label={t('E-mail')}
-            value={email}
-            onChangeText={setEmail}
-            placeholder={t('navn@eksempel.dk')}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-            autoComplete="email"
-            textContentType="emailAddress"
-            returnKeyType="next"
-            onSubmitEditing={continueWithEmail}
-            error={showErrors && !emailValid ? t('Skriv en gyldig e-mailadresse.') : undefined}
-            hint={SERVER_ENABLED ? t('Vi sender dig en kode. Ingen adgangskode.') : undefined}
-          />
-          <Button
-            title={t('Fortsæt med e-mail')}
-            variant="secondary"
-            onPress={continueWithEmail}
-            loading={busy}
-            block
-          />
+          {!EMAIL_LOGIN_ENABLED && !apple ? (
+            <AppText variant="callout" tone="textSecondary">
+              {t('Log ind med Apple på en iPhone. Login med e-mail kommer snart.')}
+            </AppText>
+          ) : null}
+          {EMAIL_LOGIN_ENABLED ? (
+            <>
+              <TextField
+                label={t('E-mail')}
+                value={email}
+                onChangeText={setEmail}
+                placeholder={t('navn@eksempel.dk')}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+                autoComplete="email"
+                textContentType="emailAddress"
+                returnKeyType="next"
+                onSubmitEditing={continueWithEmail}
+                error={showErrors && !emailValid ? t('Skriv en gyldig e-mailadresse.') : undefined}
+                hint={SERVER_ENABLED ? t('Vi sender dig en kode. Ingen adgangskode.') : undefined}
+              />
+              <Button
+                title={t('Fortsæt med e-mail')}
+                variant="secondary"
+                onPress={continueWithEmail}
+                loading={busy}
+                block
+              />
+            </>
+          ) : null}
         </>
       ) : null}
 

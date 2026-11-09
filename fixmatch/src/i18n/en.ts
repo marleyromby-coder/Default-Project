@@ -1561,6 +1561,7 @@ const en: Record<string, string> = {
   'Hej {name}. Jeg har fundet jer på FixMatch og vil gerne have et videotjek på 5 minutter, så I kan se problemet og give et overslag.':
     'Hi {name}. I found you on FixMatch and would like a 5-minute video check, so you can see the problem and give an estimate.',
   'Hvornår passer det jer? Jeg kan ringe op på FaceTime.': 'When suits you? I can call on FaceTime.',
+  "Log ind med Apple på en iPhone. Login med e-mail kommer snart.": "Log in with Apple on an iPhone. E-mail login is coming soon.",
 };
 
 export default en;
