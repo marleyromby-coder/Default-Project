@@ -78,6 +78,7 @@ export function parseBusinesses(value: unknown, allowDemo = DATA_MODE === 'demo'
       // A malformed check never shows a badge; the listing itself stays.
       verified: isValidVerification(business.verified) ? business.verified : undefined,
       insurer: typeof business.insurer === 'string' && business.insurer.trim() ? business.insurer.trim() : undefined,
+      videoCheck: business.videoCheck === true,
       workPhotos: Array.isArray(business.workPhotos)
         ? business.workPhotos
             .filter((p): p is string => typeof p === 'string' && (p.startsWith('https://') || isPhotoKey(p)))

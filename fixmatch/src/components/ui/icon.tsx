@@ -68,6 +68,8 @@ const ICONS = {
   photo: { ios: 'photo', web: 'image' },
   camera: { ios: 'camera.fill', web: 'photo_camera' },
   home: { ios: 'house.fill', web: 'home' },
+  video: { ios: 'video.fill', web: 'videocam' },
+  siren: { ios: 'light.beacon.max.fill', web: 'emergency' },
   // Car warning lamps
   engine: { ios: 'engine.combustion.fill', web: 'car_repair' },
   oil: { ios: 'oilcan.fill', web: 'oil_barrel' },

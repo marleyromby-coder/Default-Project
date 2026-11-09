@@ -62,11 +62,15 @@ Har du kontaktet en virksomhed gennem FixMatch, kan du anmelde den og dele, hvad
 
 > Uden bruger (fx i demoen) bliver anmeldelser og priser kun på telefonen. Gennemgå reglerne for anmeldelser med jeres advokat (markedsføringslovens § 6 b og DSA art. 16 om anmeldelse af ulovligt indhold).
 
-## 10. Billeder og data fra internettet
+## 10. Naborabat
+
+Starter du en gruppe, gemmer vi opgaven, gaden eller området, som du selv skriver det, dit postnummer, perioden, din besked og en kode hos Supabase i EU, knyttet til din bruger. Melder du dig til en gruppe, gemmer vi, at din bruger er med. Alle i appen kan se opgaven, området, perioden og hvor mange der er med, men aldrig hvem. Grupper forsvinder fra listen efter 90 dage, og alt slettes, når du sletter din bruger. Beskeden til virksomheden sender du selv fra din telefon.
+
+## 11. Billeder og data fra internettet
 
 Appen henter virksomhedernes egne billeder og (hvis aktiveret) en opdateret virksomhedsliste fra internettet. Ved den slags forespørgsler ser serveren din IP-adresse, som det er normalt på internettet. Vi gemmer ikke IP-adresser i forbindelse med hentning af virksomhedslisten.
 
-## 11. Oplysninger om virksomheder
+## 12. Oplysninger om virksomheder
 
 Vi viser oplysninger om virksomheder (fx navn, CVR, telefonnummer og priser), som virksomhederne selv har godkendt. For enkeltmandsvirksomheder kan det være personoplysninger om ejeren. Retsgrundlaget er virksomhedens samtykke (GDPR art. 6, stk. 1, litra a). Tilmelder virksomheden sig selv i appen eller på hjemmesiden, gemmer vi tilmeldingen med samtykketeksten og tidspunktet hos Supabase i EU som dokumentation. Samtykket kan til enhver tid trækkes tilbage ved at skrive til {{email}}, og så fjerner vi oplysningerne inden for 2 hverdage. Kontaktpersoners navn og e-mail bruges kun til at administrere profilen og opbevares, så længe profilen findes, og 12 måneder derefter som dokumentation for samtykket.
 
@@ -76,14 +80,14 @@ Vi viser oplysninger om virksomheder (fx navn, CVR, telefonnummer og priser), so
 
 > Tjek retsgrundlag og opbevaringstid for verificeringen med jeres advokat (se GDPR-forberedelsen).
 
-## 12. Henvendelser til os
+## 13. Henvendelser til os
 
 Skriver du til os, bruger vi din e-mail og det, du skriver, til at svare dig. Vi sletter henvendelsen senest 12 måneder efter, sagen er afsluttet.
 
-## 13. Dine rettigheder
+## 14. Dine rettigheder
 
 Du har ret til indsigt, berigtigelse, sletning, begrænsning og indsigelse samt dataportabilitet. Skriv til {{email}}. Du kan klage til Datatilsynet, Carl Jacobsens Vej 35, 2500 Valby, www.datatilsynet.dk. Bor du i et andet land, kan du også klage til tilsynsmyndigheden dér, fx Integritetsskyddsmyndigheten i Sverige, Datatilsynet i Norge eller ICO i Storbritannien.
 
-## 14. Ændringer
+## 15. Ændringer
 
 Ændrer vi politikken, opdaterer vi datoen øverst og skriver det i appens "Hvad er nyt".

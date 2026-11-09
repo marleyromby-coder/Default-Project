@@ -107,6 +107,13 @@ export default function FiltersScreen() {
           />
           <Divider inset={Spacing.lg} />
           <SwitchRow
+            label={t('Tilbyder videotjek')}
+            hint={t('Ser problemet over FaceTime, før de kører ud')}
+            value={draft.videoCheckOnly}
+            onChange={(v) => update({ videoCheckOnly: v })}
+          />
+          <Divider inset={Spacing.lg} />
+          <SwitchRow
             label={t('Kun autoriserede')}
             hint={t('Fx autoriseret til el, VVS eller gas')}
             value={draft.authorizedOnly}

@@ -58,11 +58,15 @@ If you contacted a business through FixMatch, you can review it and share what t
 
 > Without an account (for example in the demo) reviews and prices stay on the phone.
 
-## 10. Images and data from the internet
+## 10. Neighbour discount
+
+If you start a group, we store the job, the street or area as you write it, your postcode, the period, your message and a code with Supabase in the EU, linked to your account. If you join a group, we store that your account is a member. Everyone in the app can see the job, the area, the period and how many are in, but never who. Groups leave the list after 90 days, and everything is deleted when you delete your account. You send the message to the business from your own phone yourself.
+
+## 11. Images and data from the internet
 
 The app loads the businesses' own pictures and (if switched on) an updated list of businesses from the internet. As is normal on the internet, the server sees your IP address for these requests. We do not store IP addresses when the business list is loaded.
 
-## 11. Information about businesses
+## 12. Information about businesses
 
 We show information about businesses (such as name, company number, phone number and prices) that the businesses themselves have approved. For sole traders this can be personal data about the owner. The legal basis is the business's consent (GDPR Article 6(1)(a)). If a business signs itself up in the app or on the website, we keep the sign-up with the consent wording and time with Supabase in the EU as proof. The consent can be withdrawn at any time by writing to {{email}}, and we then remove the information within 2 working days. Contact persons' names and email addresses are only used to manage the listing and are kept for as long as the listing exists, and for 12 months after that as proof of the consent.
 
@@ -72,14 +76,14 @@ We show information about businesses (such as name, company number, phone number
 
 > Check the legal basis and retention period for verification with your lawyer (see the GDPR preparation).
 
-## 12. When you write to us
+## 13. When you write to us
 
 If you write to us, we use your email address and what you write to answer you. We delete the message no later than 12 months after the matter is closed.
 
-## 13. Your rights
+## 14. Your rights
 
 You have the right of access, rectification, erasure, restriction and objection, and the right to data portability. Write to {{email}}. You can complain to the Danish Data Protection Agency (Datatilsynet), Carl Jacobsens Vej 35, 2500 Valby, Denmark, www.datatilsynet.dk. If you live in another country, you can also complain to the authority there, for example the ICO in the United Kingdom.
 
-## 14. Changes
+## 15. Changes
 
 If we change this policy, we update the date at the top and say so in the app's "What's New".

@@ -11,6 +11,7 @@ import { CategoryTile } from '@/components/category-tile';
 import { LocationPill } from '@/components/location-pill';
 import { Logo } from '@/components/logo';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
@@ -32,6 +33,7 @@ import { t } from '@/i18n';
 import { countryOf, currencyOf } from '@/lib/business-text';
 import { countryName, taxNote } from '@/lib/markets';
 import { useApp, useMarket } from '@/state/app-state';
+import { GROUP_DISCOUNT } from '@/state/groups';
 
 const POPULAR_JOBS: [CategoryId, string][] = [
   ['vvs', 'stoppet-afloeb'],
@@ -44,10 +46,11 @@ const POPULAR_JOBS: [CategoryId, string][] = [
   ['maler', 'vaerelse'],
 ];
 
-const URGENT: { label: string; category: CategoryId; icon: IconName }[] = [
-  { label: t('Vandskade'), category: 'vvs', icon: 'vvs' },
-  { label: t('Låst ude'), category: 'laasesmed', icon: 'laasesmed' },
-  { label: t('Strømsvigt'), category: 'elektriker', icon: 'elektriker' },
+/** The three most common emergencies; the rest are on the Akut hjælp screen. */
+const URGENT: { label: string; type: string; icon: IconName }[] = [
+  { label: t('Vandskade'), type: 'vandskade', icon: 'vvs' },
+  { label: t('Låst ude'), type: 'laast-ude', icon: 'laasesmed' },
+  { label: t('Strømsvigt'), type: 'stroem', icon: 'elektriker' },
 ];
 
 const NEARBY_KM = 25;
@@ -282,8 +285,8 @@ export default function HomeScreen() {
           {URGENT.map((item) => (
             <Tappable
               key={item.label}
-              onPress={() => router.push({ pathname: '/kategori/[id]', params: { id: item.category, akut: '1' } })}
-              accessibilityLabel={t('{label}: vis virksomheder med døgnvagt', { label: item.label })}
+              onPress={() => router.push({ pathname: '/akut', params: { type: item.type } })}
+              accessibilityLabel={t('{label}: første skridt og nærmeste døgnvagt', { label: item.label })}
               style={[styles.urgent, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               <View style={[styles.urgentIcon, { backgroundColor: colors.warningSoft }]}>
                 <Icon name={item.icon} size={18} color={colors.warning} weight="semibold" />
@@ -294,6 +297,13 @@ export default function HomeScreen() {
             </Tappable>
           ))}
         </View>
+        <Button
+          title={t('Alle akutte situationer')}
+          icon="siren"
+          variant="plain"
+          size="small"
+          onPress={() => router.push('/akut')}
+        />
       </Section>
 
       {freeSoon.length > 0 ? (
@@ -328,6 +338,25 @@ export default function HomeScreen() {
           </ScrollView>
         </Section>
       ) : null}
+
+      <Tappable
+        onPress={() => router.push('/faelles')}
+        accessibilityLabel={t('Naborabat: gå sammen med naboerne om en opgave, og få rabat')}
+        style={[styles.quoteCheck, styles.groupTile, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.describeIcon, { backgroundColor: colors.brandSoft }]}>
+          <Icon name="people" size={19} color={colors.brand} weight="semibold" />
+        </View>
+        <View style={styles.flex}>
+          <AppText variant="headline">{t('Naborabat')}</AppText>
+          <AppText variant="footnote" tone="textSecondary">
+            {t('Gå sammen med naboerne om tagrender eller service, og få {min}–{max} % rabat.', {
+              min: GROUP_DISCOUNT.min,
+              max: GROUP_DISCOUNT.max,
+            })}
+          </AppText>
+        </View>
+        <Icon name="chevronRight" size={16} color={colors.textTertiary} weight="semibold" />
+      </Tappable>
 
       <Section
         title={t('Hvad koster det typisk?')}
@@ -558,6 +587,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Spacing.md,
   },
+  groupTile: { marginTop: 0, marginBottom: Spacing.sm },
   smallTiles: { flexDirection: 'row', gap: Spacing.sm, marginHorizontal: ScreenPadding, marginTop: -Spacing.sm },
   smallTile: {
     flex: 1,

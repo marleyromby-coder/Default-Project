@@ -118,6 +118,8 @@ export interface Business {
   guaranteeScheme?: string;
   /** Photos of finished work, uploaded by the business: https URLs (demo data uses photo keys). */
   workPhotos?: string[];
+  /** Offers a short video call (FaceTime) to see the problem before coming out. */
+  videoCheck?: boolean;
   services: string[];
   hours: WeekHours;
   /** IANA time zone of the opening hours, when it differs from the country's. */
@@ -178,4 +180,6 @@ export interface Filters {
   trustpilotOnly: boolean;
   /** Only businesses that have marked free time today or tomorrow. */
   availableSoon: boolean;
+  /** Only businesses that offer a video check before the visit. */
+  videoCheckOnly: boolean;
 }

@@ -36,6 +36,7 @@ export interface ChangeRequest {
   hourlyMax?: number;
   calloutFee?: number | null;
   emergency?: boolean;
+  videoCheck?: boolean;
   /** Monday to Sunday, "07:00–16:00" or null for closed. */
   hours?: ([string, string] | null)[];
   description?: string;
@@ -225,6 +226,9 @@ export function changedFields(business: Business, wanted: ChangeRequest): Change
     changes.calloutFee = wanted.calloutFee;
   }
   if (wanted.emergency !== undefined && wanted.emergency !== business.emergency) changes.emergency = wanted.emergency;
+  if (wanted.videoCheck !== undefined && wanted.videoCheck !== (business.videoCheck ?? false)) {
+    changes.videoCheck = wanted.videoCheck;
+  }
   if (wanted.hours && JSON.stringify(wanted.hours) !== JSON.stringify(business.hours)) changes.hours = wanted.hours;
   if (wanted.description !== undefined && wanted.description.trim() !== business.description.trim()) {
     changes.description = wanted.description.trim();

@@ -1253,6 +1253,12 @@ function main() {
     business.workPhotos = picked;
   }
 
+  // About 40 % offer a video check before the visit (not locksmiths: they just come).
+  const videoRandom = mulberry32(20261112);
+  for (const business of businesses) {
+    if (business.categories[0] !== 'laasesmed' && videoRandom() < 0.4) business.videoCheck = true;
+  }
+
   const outPath = path.join(__dirname, '..', 'src', 'data', 'demo-businesses.json');
   fs.writeFileSync(outPath, JSON.stringify(businesses, null, 2) + '\n');
   console.log(`Wrote ${businesses.length} demo businesses to ${path.relative(process.cwd(), outPath)}`);

@@ -278,7 +278,8 @@
       "vvs-1",
       "vvs-3",
       "vvs-2"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "roerfalken",
@@ -724,7 +725,8 @@
       ]
     },
     "insurer": "Kyst Forsikring",
-    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne",
+    "videoCheck": true
   },
   {
     "id": "boelgevand-roerteknik",
@@ -866,7 +868,8 @@
       "vvs-1",
       "vvs-2",
       "vvs-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "kildeklar-vvs",
@@ -1450,7 +1453,8 @@
       "vvs-2",
       "vvs-1",
       "vvs-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "lyngkilde-vvs",
@@ -2169,7 +2173,8 @@
       "el-5",
       "el-4",
       "el-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "nordlys-elteknik",
@@ -2299,7 +2304,8 @@
     },
     "demo": true,
     "updatedAt": "2026-10-17",
-    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne",
+    "videoCheck": true
   },
   {
     "id": "voltkompagniet",
@@ -2431,7 +2437,8 @@
     },
     "demo": true,
     "updatedAt": "2026-10-15",
-    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne",
+    "videoCheck": true
   },
   {
     "id": "spaendingsfeltet",
@@ -2567,7 +2574,8 @@
       "el-5",
       "el-2",
       "el-1"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "kobbertraad-el",
@@ -2700,7 +2708,8 @@
       "el-1",
       "el-6",
       "el-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "fasekraft-elservice",
@@ -3139,7 +3148,8 @@
       "el-4",
       "el-5",
       "el-1"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "stroemlinjen-el",
@@ -3283,7 +3293,8 @@
       "el-5",
       "el-6",
       "el-4"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "lysbuen-el",
@@ -3676,7 +3687,8 @@
       "el-5",
       "el-6",
       "el-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "egeknasten-toemrer",
@@ -3816,7 +3828,8 @@
       "toemrer-1",
       "toemrer-4",
       "toemrer-6"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "hoevlspaanen-toemrer-og-snedker",
@@ -3944,7 +3957,8 @@
       "toemrer-3",
       "toemrer-6",
       "toemrer-2"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "spaer-og-soen",
@@ -4081,7 +4095,8 @@
       "toemrer-6",
       "toemrer-5",
       "toemrer-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "bjaelkelauget",
@@ -4340,7 +4355,8 @@
       "toemrer-4",
       "toemrer-3",
       "toemrer-5"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "fyrretrae-toemrerne",
@@ -4459,7 +4475,8 @@
     },
     "demo": true,
     "updatedAt": "2026-10-17",
-    "guaranteeScheme": "garantiordningen hos DI Byggeri"
+    "guaranteeScheme": "garantiordningen hos DI Byggeri",
+    "videoCheck": true
   },
   {
     "id": "laerkehoevl-byg",
@@ -4603,7 +4620,8 @@
       "toemrer-5",
       "toemrer-2",
       "toemrer-4"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "boegebakken-toemrer",
@@ -4888,7 +4906,8 @@
       "toemrer-6",
       "toemrer-5",
       "toemrer-2"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "tapsporet-toemrer",
@@ -5016,7 +5035,8 @@
     },
     "demo": true,
     "updatedAt": "2026-10-10",
-    "insurer": "Nordisk Erhvervsforsikring"
+    "insurer": "Nordisk Erhvervsforsikring",
+    "videoCheck": true
   },
   {
     "id": "stolpe-og-spaer",
@@ -5149,7 +5169,8 @@
         "insurance"
       ]
     },
-    "insurer": "Håndværkernes Forsikring"
+    "insurer": "Håndværkernes Forsikring",
+    "videoCheck": true
   },
   {
     "id": "kvistlauget",
@@ -5428,7 +5449,8 @@
       "toemrer-1",
       "toemrer-5",
       "toemrer-4"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "teglvaerket-murerne",
@@ -5846,7 +5868,8 @@
       "murer-2",
       "murer-5",
       "murer-4"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "kalk-og-kvarts-murer",
@@ -5985,7 +6008,8 @@
       ]
     },
     "insurer": "Nordisk Erhvervsforsikring",
-    "guaranteeScheme": "garantiordningen hos DI Byggeri"
+    "guaranteeScheme": "garantiordningen hos DI Byggeri",
+    "videoCheck": true
   },
   {
     "id": "moertellauget",
@@ -6126,7 +6150,8 @@
       "murer-1",
       "murer-3",
       "murer-5"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "fugen-murerservice",
@@ -6261,7 +6286,8 @@
         "insurance"
       ]
     },
-    "insurer": "Nordisk Erhvervsforsikring"
+    "insurer": "Nordisk Erhvervsforsikring",
+    "videoCheck": true
   },
   {
     "id": "roedsten-murerne",
@@ -6917,7 +6943,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-14"
+    "updatedAt": "2026-10-14",
+    "videoCheck": true
   },
   {
     "id": "gavlen-murerfirma",
@@ -7047,7 +7074,8 @@
       ]
     },
     "insurer": "Håndværkernes Forsikring",
-    "guaranteeScheme": "garantiordningen hos DI Byggeri"
+    "guaranteeScheme": "garantiordningen hos DI Byggeri",
+    "videoCheck": true
   },
   {
     "id": "teglbakken-murer",
@@ -7584,7 +7612,8 @@
       "mekaniker-4",
       "mekaniker-8",
       "mekaniker-9"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "ventilen-bilservice",
@@ -7856,7 +7885,8 @@
       "mekaniker-1",
       "mekaniker-7",
       "mekaniker-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "taendroeret-auto",
@@ -7991,7 +8021,8 @@
       "mekaniker-7",
       "mekaniker-8",
       "mekaniker-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "kardan-auto",
@@ -8394,7 +8425,8 @@
       "mekaniker-7",
       "mekaniker-1",
       "mekaniker-9"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "motorlauget",
@@ -8524,7 +8556,8 @@
       "mekaniker-5",
       "mekaniker-9",
       "mekaniker-7"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "servo-autovaerksted",
@@ -8647,7 +8680,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-18"
+    "updatedAt": "2026-10-18",
+    "videoCheck": true
   },
   {
     "id": "bremsefalken",
@@ -8900,7 +8934,8 @@
         "insurance"
       ]
     },
-    "insurer": "Kyst Forsikring"
+    "insurer": "Kyst Forsikring",
+    "videoCheck": true
   },
   {
     "id": "penselstroeget",
@@ -9433,7 +9468,8 @@
       "maler-5",
       "maler-2",
       "maler-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "daekfarven",
@@ -9706,7 +9742,8 @@
       "maler-4",
       "maler-2",
       "maler-5"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "glans-og-mat-malere",
@@ -9832,7 +9869,8 @@
       "maler-3",
       "maler-5",
       "maler-1"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "nuance-malerne",
@@ -10222,7 +10260,8 @@
       "maler-2",
       "maler-1",
       "maler-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "lasur-malerne",
@@ -10354,7 +10393,8 @@
       "maler-3",
       "maler-5",
       "maler-4"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "kuloer-og-kvalitet",
@@ -11588,7 +11628,8 @@
       "tagdaekker-4",
       "tagdaekker-2",
       "tagdaekker-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "vindskeden-tag",
@@ -11841,7 +11882,8 @@
       "tagdaekker-2",
       "tagdaekker-4",
       "tagdaekker-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "nedloebet-tagservice",
@@ -12224,7 +12266,8 @@
       "tagdaekker-3",
       "tagdaekker-1",
       "tagdaekker-2"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "sternbraedt-tag",
@@ -14684,7 +14727,8 @@
       "el-2",
       "el-5",
       "el-1"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "stromkretsen-el",
@@ -14977,7 +15021,8 @@
       "el-2",
       "el-1",
       "el-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "ekspaanet-snickeri",
@@ -15644,7 +15689,8 @@
       "murer-5",
       "murer-4",
       "murer-1"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "fogmastaren-mureri",
@@ -16051,7 +16097,8 @@
       "mekaniker-8",
       "mekaniker-4",
       "mekaniker-2"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "vevaxeln-bilverkstad",
@@ -16485,7 +16532,8 @@
       "maler-4",
       "maler-1",
       "maler-5"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "fargglad-maaleri",
@@ -16741,7 +16789,8 @@
     },
     "demo": true,
     "updatedAt": "2026-10-14",
-    "insurer": "Nordisk Erhvervsforsikring"
+    "insurer": "Nordisk Erhvervsforsikring",
+    "videoCheck": true
   },
   {
     "id": "taknocken-tak",
@@ -16876,7 +16925,8 @@
         "insurance"
       ]
     },
-    "insurer": "Kyst Forsikring"
+    "insurer": "Kyst Forsikring",
+    "videoCheck": true
   },
   {
     "id": "hangrannan-tak",
@@ -17840,7 +17890,8 @@
       "vvs-3",
       "vvs-2",
       "vvs-1"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "lysgnisten-elektro",
@@ -18263,7 +18314,8 @@
       ]
     },
     "insurer": "Nordisk Erhvervsforsikring",
-    "guaranteeScheme": "garantiordningen hos Nelfo"
+    "guaranteeScheme": "garantiordningen hos Nelfo",
+    "videoCheck": true
   },
   {
     "id": "eikesponet-snekkeri",
@@ -18801,7 +18853,8 @@
       "murer-2",
       "murer-4",
       "murer-5"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "kalksteinen-mur",
@@ -19064,7 +19117,8 @@
       "murer-1",
       "murer-5",
       "murer-4"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "stempelverket-bilverksted",
@@ -19880,7 +19934,8 @@
       "maler-5",
       "maler-3",
       "maler-4"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "skiferhatten-tak",
@@ -20008,7 +20063,8 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "videoCheck": true
   },
   {
     "id": "takmoenet-tak",
@@ -20288,7 +20344,8 @@
       "tagdaekker-2",
       "tagdaekker-1",
       "tagdaekker-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "laasbolten-laasservice",
@@ -20845,7 +20902,8 @@
       "vvs-1",
       "vvs-3",
       "vvs-2"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "wasserlauf-haustechnik",
@@ -20980,7 +21038,8 @@
         "insurance"
       ]
     },
-    "insurer": "Nordisk Erhvervsforsikring"
+    "insurer": "Nordisk Erhvervsforsikring",
+    "videoCheck": true
   },
   {
     "id": "rohrwerk-haustechnik",
@@ -21381,7 +21440,8 @@
       "el-4",
       "el-6",
       "el-2"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "funkenflug-elektrotechnik",
@@ -21514,7 +21574,8 @@
       "el-6",
       "el-4",
       "el-2"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "eichenspan-zimmerei",
@@ -22067,7 +22128,8 @@
       "murer-1",
       "murer-2",
       "murer-5"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "kalkstein-maurerbetrieb",
@@ -23021,7 +23083,8 @@
       "maler-4",
       "maler-2",
       "maler-5"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "farbenfroh-malerbetrieb",
@@ -23439,7 +23502,8 @@
       "tagdaekker-2",
       "tagdaekker-1",
       "tagdaekker-4"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "regenrinne-dachdeckerei",
@@ -23570,7 +23634,8 @@
       "tagdaekker-4",
       "tagdaekker-3",
       "tagdaekker-1"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "riegelfest-schlusseldienst",
@@ -24118,7 +24183,8 @@
         "guarantee"
       ]
     },
-    "guaranteeScheme": "garantiordningen hos Gas Safe Register"
+    "guaranteeScheme": "garantiordningen hos Gas Safe Register",
+    "videoCheck": true
   },
   {
     "id": "tidewell-plumbing-and-heating",
@@ -24691,7 +24757,8 @@
       "el-1",
       "el-2",
       "el-4"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "sparkhill-electrical",
@@ -24970,7 +25037,8 @@
       ]
     },
     "insurer": "Håndværkernes Forsikring",
-    "guaranteeScheme": "garantiordningen hos Federation of Master Builders"
+    "guaranteeScheme": "garantiordningen hos Federation of Master Builders",
+    "videoCheck": true
   },
   {
     "id": "larchwood-carpentry",
@@ -25108,7 +25176,8 @@
       ]
     },
     "insurer": "Nordisk Erhvervsforsikring",
-    "guaranteeScheme": "garantiordningen hos Federation of Master Builders"
+    "guaranteeScheme": "garantiordningen hos Federation of Master Builders",
+    "videoCheck": true
   },
   {
     "id": "timberline-carpentry",
@@ -25243,7 +25312,8 @@
       "toemrer-7",
       "toemrer-6",
       "toemrer-4"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "redkiln-brickwork-and-tiling",
@@ -26498,7 +26568,8 @@
       "maler-1",
       "maler-4",
       "maler-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "slatecrest-roofing",
@@ -26631,7 +26702,8 @@
       "tagdaekker-4",
       "tagdaekker-1",
       "tagdaekker-3"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "ridgeline-roofing",
@@ -26778,7 +26850,8 @@
       "tagdaekker-3",
       "tagdaekker-1",
       "tagdaekker-4"
-    ]
+    ],
+    "videoCheck": true
   },
   {
     "id": "eavesford-roofing",

@@ -18,7 +18,7 @@ FixMatch gemmer brugere (navn, telefon, e-mail), hvem der har ringet til hvilken
 ## 2. Lav tabellerne
 
 1. Åbn **SQL Editor** → **New query**.
-2. Kopiér hele indholdet af `fixmatch/supabase/migrations/20261030120000_accounts_and_signups.sql`, sæt det ind, og tryk **Run**. Gør det samme med `20261106120000_verification.sql` (Verificeret-mærket) `20261107120000_prices_and_reviews.sql` (anmeldelser og "Del, hvad du betalte") `20261108120000_availability.sql` ("Hvem har tid i dag?") `20261109120000_business_accounts.sql` ("Min virksomhed"), `20261110120000_call_answers.sql` ("Fik du fat i dem?") og `20261111120000_work_photos.sql` (billeder af udført arbejde) bagefter, i den rækkefølge.
+2. Kopiér hele indholdet af `fixmatch/supabase/migrations/20261030120000_accounts_and_signups.sql`, sæt det ind, og tryk **Run**. Gør det samme med `20261106120000_verification.sql` (Verificeret-mærket) `20261107120000_prices_and_reviews.sql` (anmeldelser og "Del, hvad du betalte") `20261108120000_availability.sql` ("Hvem har tid i dag?") `20261109120000_business_accounts.sql` ("Min virksomhed"), `20261110120000_call_answers.sql` ("Fik du fat i dem?") `20261111120000_work_photos.sql` (billeder af udført arbejde) og `20261112120000_group_jobs.sql` (Naborabat) bagefter, i den rækkefølge.
 3. Der skal stå "Success. No rows returned".
 
 Det laver tabellerne `profiles` (navn og telefon), `contacts` (hvem ringede til hvem), `business_signups` (tilmeldinger med samtykke), funktionen `delete_account` (sletning af bruger) og to visninger til jer: `contacts_with_profile` og `business_signups_export`. Den sidste fil laver `price_reports` og `reviews` og visningerne `shared_prices`, `public_reviews` og `review_summary`, som appen læser. Databasen tjekker selv, at brugeren har ringet til virksomheden, før en anmeldelse eller pris kan gemmes. Alle tabeller er låst med "row level security", så appen kun kan det, den skal.
@@ -101,6 +101,10 @@ Virksomhederne lægger selv billeder op fra "Min virksomhed". Filerne ligger i *
 ### "Fik du fat i dem?"
 
 Efter et opkald spørger appen kunden, om nogen tog telefonen. Svarene ligger i **call_answers**, og visningen **answer_rates** giver andelen pr. virksomhed. Appen viser først "Tager telefonen 9 ud af 10 gange" fra 5 svar. Ingen kan se, hvem der svarede hvad.
+
+### Naborabat
+
+Naboer går sammen om en opgave i **group_jobs** med en kode på 6 tegn, og **group_members** viser, hvem der er med (kun antallet er offentligt gennem visningen `open_group_jobs`). Grupper lukker af sig selv efter 90 dage. Ser I en gruppe med upassende tekst i `area` eller `note`, så sæt `status` til `closed`.
 
 ### Anmeldelser, der bliver rapporteret
 

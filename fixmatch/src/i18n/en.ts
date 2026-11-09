@@ -533,7 +533,6 @@ const en: Record<string, string> = {
   '{distance} væk': '{distance} away',
   '{fitting} af {countText} passer eller ligger tæt på dit budget':
     '{fitting} of {countText} fit or are close to your budget',
-  '{label}: vis virksomheder med døgnvagt': '{label}: show businesses with a 24/7 service',
   '{label}: {decimal} ud af 10, vægt {value} procent': '{label}: {decimal} out of 10, weight {value} percent',
   '{label}: {value}': '{label}: {value}',
   '{level} vigtigt': '{level}',
@@ -1365,6 +1364,203 @@ const en: Record<string, string> = {
   '1-års gennemgang': '1-year inspection',
   '5-års gennemgang': '5-year inspection',
   'Garantien udløber': 'The guarantee ends',
+  '{label}: første skridt og nærmeste døgnvagt': '{label}: first steps and the nearest 24-hour service',
+  'Alle akutte situationer': 'All emergencies',
+  'Naborabat: gå sammen med naboerne om en opgave, og få rabat':
+    'Neighbour discount: team up with the neighbours on a job and get a discount',
+  Naborabat: 'Neighbour discount',
+  'Gå sammen med naboerne om tagrender eller service, og få {min}–{max} % rabat.':
+    'Team up with the neighbours on gutters or a service, and get {min}–{max} % off.',
+  'Akut hjælp': 'Emergency help',
+  'Gå sammen med naboerne om en opgave, og få rabat.': 'Team up with the neighbours on a job and get a discount.',
+  'Mine grupper': 'My groups',
+  'Start en gruppe': 'Start a group',
+  'Ring {number} ved fare for liv eller brand': 'Call {number} in danger to life or fire',
+  'Fare for liv eller brand? Ring {number}.': 'Danger to life or fire? Call {number}.',
+  'Hvad er der sket? Så får du de første skridt, den nærmeste døgnvagt og plads til billeder til forsikringen.':
+    'What happened? You get the first steps, the nearest 24-hour service and room for pictures for the insurance.',
+  'Gør det her først': 'Do this first',
+  'Ring til nærmeste døgnvagt': 'Call the nearest 24-hour service',
+  'Ingen i nærheden har døgnvagt eller åbent lige nu. Se alle {plural} i stedet.':
+    'Nobody nearby has a 24-hour service or is open right now. See all {plural} instead.',
+  'Ring til {name}, {distance} væk': 'Call {name}, {distance} away',
+  'Se alle med døgnvagt': 'See all with 24-hour service',
+  'Spørg altid om prisen for akut udkald, før de kører. Den står også på virksomhedens side.':
+    "Always ask the price for an emergency call-out before they come. It is also on the business's page.",
+  'Ring til dit forsikringsselskab inden for 24 timer, og send dem billederne. Billederne bliver på din telefon, og du kan sende dem til håndværkeren fra virksomhedens side.':
+    "Call your insurance company within 24 hours and send them the pictures. The pictures stay on your phone, and you can send them to the tradesperson from the business's page.",
+  'Hej nabo! Vi går sammen om {job} i {area}, så vi får det lavet samme dag og billigere.':
+    'Hi neighbour! We are teaming up on {job} in {area}, so it gets done the same day and cheaper.',
+  'Vil du med? Åbn FixMatch → Naborabat, og skriv koden {code}. Eller hent appen på {website}.':
+    'Want to join? Open FixMatch → Neighbour discount and enter the code {code}. Or get the app at {website}.',
+  'Hej {name}. Vi er {count} husstande i {area}, {postal}, der gerne vil have {job} lavet samme dag, gerne mellem {from} og {to}.':
+    'Hi {name}. We are {count} households in {area}, {postal}, who would like {job} done the same day, preferably between {from} and {to}.',
+  'Kan I give en samlet pris med rabat, når I sparer kørslen? Vi har fundet jer på FixMatch.':
+    'Can you give a joint price with a discount, as you save the driving? We found you on FixMatch.',
+  'Gruppen findes ikke længere': 'The group no longer exists',
+  'Den er lukket, eller linket virker ikke.': 'It is closed, or the link does not work.',
+  'Beskeden er kopieret, så du kan sende den til naboerne.':
+    'The message is copied, so you can send it to the neighbours.',
+  'Opret en bruger eller log ind, så vi ved, at I er rigtige naboer.':
+    'Create an account or log in, so we know you are real neighbours.',
+  'Luk gruppen?': 'Close the group?',
+  'Forlad gruppen?': 'Leave the group?',
+  'Naboerne kan ikke længere melde sig til.': 'The neighbours can no longer join.',
+  'Du kan melde dig til igen med koden.': 'You can join again with the code.',
+  Forlad: 'Leave',
+  'Gruppen er oprettet. Send koden til naboerne, så I bliver mindst {min}.':
+    'The group is created. Send the code to the neighbours, so you become at least {min}.',
+  '{count} husstande med': '{count} households in',
+  'Sendt til virksomhed': 'Sent to a business',
+  'Koden til naboerne': 'The code for the neighbours',
+  'Kode {code}': 'Code {code}',
+  'I er nok til at få rabat. Flere kan stadig komme med.': 'You are enough to get a discount. More can still join.',
+  'I mangler {count} for at være {min}. Så giver virksomheder typisk {min_pct}–{max_pct} % rabat.':
+    'You need {count} more to be {min}. Then businesses typically give {min_pct}–{max_pct} % off.',
+  'Send koden til naboerne': 'Send the code to the neighbours',
+  Deltag: 'Join',
+  'Send forespørgslen til en virksomhed': 'Send the request to a business',
+  'Vælg en virksomhed, så sender vi en besked fra din telefon med antal, gade og periode. De svarer dig direkte.':
+    'Choose a business, and we send a message from your phone with the number, street and period. They answer you directly.',
+  'Vent gerne, til I er {min}. Du kan dog godt spørge nu.':
+    'You may want to wait until you are {min}. But you can ask now.',
+  'Vælg virksomhed': 'Choose a business',
+  'Send til {name}': 'Send to {name}',
+  'Se alle {plural}': 'See all {plural}',
+  'FixMatch er ikke part i aftalen. Rabatten aftaler I direkte med virksomheden, og hver husstand får sin egen faktura.':
+    'FixMatch is not a party to the agreement. You agree the discount directly with the business, and each household gets its own invoice.',
+  'Luk gruppen': 'Close the group',
+  'Forlad gruppen': 'Leave the group',
+  'Ingen gruppe med den kode': 'No group with that code',
+  'Tjek koden hos den nabo, der startede gruppen. Den er på 6 tegn.':
+    'Check the code with the neighbour who started the group. It has 6 characters.',
+  'Gå sammen med naboerne': 'Team up with the neighbours',
+  'Rensning af tagrender, service af fyret eller hjulskift: er I mindst {min} i samme gade, sparer håndværkeren kørslen og giver typisk {min_pct}–{max_pct} % rabat.':
+    'Gutter cleaning, boiler service or a tyre change: if you are at least {min} in the same street, the tradesperson saves the driving and typically gives {min_pct}–{max_pct} % off.',
+  'Har du fået en kode af en nabo?': 'Did a neighbour give you a code?',
+  'Dine grupper': 'Your groups',
+  'Åbne grupper nær {postal}': 'Open groups near {postal}',
+  'Ingen åbne grupper i dit område endnu. Start den første, og del koden med naboerne.':
+    'No open groups in your area yet. Start the first one and share the code with the neighbours.',
+  'Andre ser kun opgaven, gaden og hvor mange I er. Aldrig navne eller adresser. Prisen aftaler I selv med virksomheden.':
+    'Others only see the job, the street and how many you are. Never names or addresses. You agree the price with the business yourselves.',
+  'Inden for 2 uger': 'Within 2 weeks',
+  'Inden for en måned': 'Within a month',
+  'De næste 3 måneder': 'The next 3 months',
+  'Opret en bruger eller log ind, så naboerne ved, at gruppen er ægte.':
+    'Create an account or log in, so the neighbours know the group is real.',
+  'Gruppen blev ikke oprettet. Tjek internettet, og prøv igen.':
+    'The group was not created. Check your internet connection and try again.',
+  'Vælg opgaven, og skriv jeres gade. Så får du en kode, du kan sende til naboerne.':
+    'Choose the job and write your street. Then you get a code to send to the neighbours.',
+  'Opgaver, der egner sig': 'Jobs that suit it',
+  'Eller vælg et andet fag': 'Or choose another trade',
+  'Jeres gade eller område': 'Your street or area',
+  'Fx Stefansgade': 'E.g. Stefansgade',
+  'Naboerne skal kunne kende det. Skriv ikke husnumre.':
+    'The neighbours must recognise it. Do not write house numbers.',
+  'Hvornår passer det?': 'When does it suit?',
+  'Besked til naboerne (valgfrit)': 'Message to the neighbours (optional)',
+  'Fx: Vi er to huse, der gerne vil have det ordnet inden vinter.':
+    'E.g.: We are two houses that would like it done before winter.',
+  'Opret gruppen': 'Create the group',
+  'Tilbyder videotjek': 'Offers a video check',
+  'Ser problemet over FaceTime, før de kører ud': 'Sees the problem over FaceTime before coming out',
+  'Videotjek før besøg': 'Video check before the visit',
+  'Kunden viser problemet over FaceTime i 5 minutter, så I kan give et overslag uden at køre ud':
+    'The customer shows the problem over FaceTime for 5 minutes, so you can give an estimate without driving out',
+  Videotjek: 'Video check',
+  '{name} ser gerne problemet over FaceTime først. Det tager 5 minutter, er gratis, og du får et overslag uden at betale for en forgæves tur.':
+    '{name} prefers to see the problem over FaceTime first. It takes 5 minutes, is free, and you get an estimate without paying for a wasted trip.',
+  'Foreslå et tidspunkt': 'Suggest a time',
+  'Start FaceTime nu': 'Start FaceTime now',
+  'Tag gerne billeder under "Beskriv dit problem" først, så de kommer med i beskeden.':
+    'Take pictures under "Describe your problem" first, so they come with the message.',
+  'tilbyder videotjek': 'offers a video check',
+  '{title} i {area}, {count} deltagere, {from} til {to}': '{title} in {area}, {count} participants, {from} to {to}',
+  '{count} med': '{count} in',
+  'Din gruppe': 'Your group',
+  'Du er med': 'You are in',
+  'Vand løber ud': 'Water is running out',
+  'Luk for hovedhanen. Den sidder oftest ved vandmåleren i bryggers, kælder eller skab i entreen.':
+    'Shut off the main valve. It is usually by the water meter in the utility room, basement or a cupboard in the hall.',
+  'Sluk for strømmen i rummet på eltavlen, hvis vandet er nær stikkontakter eller lamper.':
+    'Cut the power to the room at the fuse board if the water is near sockets or lights.',
+  'Flyt ting væk fra vandet, og læg håndklæder. Tag billeder, før du tørrer op.':
+    'Move things away from the water and lay down towels. Take pictures before you mop up.',
+  'Ring til døgnvagten. Fortæl, hvor vandet kommer fra, og om hovedhanen er lukket.':
+    'Call the 24-hour service. Say where the water comes from and whether the main valve is shut.',
+  'Kloakken stiger op': 'The sewer is backing up',
+  'Stop med at bruge vand i huset: ingen skyl, bad eller vaskemaskine.':
+    'Stop using water in the house: no flushing, showers or washing machine.',
+  'Hold børn og kæledyr væk. Kloakvand er sundhedsfarligt; brug handsker og gummistøvler.':
+    'Keep children and pets away. Sewage is a health hazard; wear gloves and rubber boots.',
+  'Tag billeder af skaden til forsikringen, og ring til dem inden for 24 timer.':
+    'Take pictures of the damage for the insurance, and call them within 24 hours.',
+  'Ring til døgnvagten. Kommer vandet fra vejen, så ring også til kommunens forsyning.':
+    'Call the 24-hour service. If the water comes from the road, also call the municipal utility.',
+  'Strømmen er gået': 'The power is out',
+  'Tjek om naboerne også mangler strøm. Gør de det, er det netselskabet: se deres driftsinfo.':
+    'Check whether the neighbours have lost power too. If so, it is the grid company: see their outage info.',
+  'Se på eltavlen. Er HPFI-relæet slået fra, så træk alle stik ud, og slå det til igen.':
+    'Look at the fuse board. If the RCD has tripped, unplug everything and switch it back on.',
+  'Slår det fra igen, så sæt apparaterne i ét ad gangen. Det, der slår fra, er fejlen.':
+    'If it trips again, plug the appliances in one at a time. The one that trips it is the fault.',
+  'Lugter det brændt, eller er tavlen varm: rør den ikke. Ring til døgnvagten.':
+    'If it smells burnt or the board is hot: do not touch it. Call the 24-hour service.',
+  'Tjek alle døre og vinduer, og om en nabo eller familie har en nøgle.':
+    'Check every door and window, and whether a neighbour or family member has a key.',
+  'Bor du til leje, så ring til udlejer eller vicevært. Mange har en hovednøgle.':
+    'If you rent, call the landlord or caretaker. Many have a master key.',
+  'Ring til låsesmeden, og spørg om prisen, før de kører. Hav legitimation klar; de skal se, at du bor der.':
+    'Call the locksmith and ask the price before they come. Have ID ready; they must see that you live there.',
+  'Dagtid koster typisk 900–1.500 kr., aften og weekend mere.':
+    'Daytime typically costs DKK 900–1,500, evenings and weekends more.',
+  'Knust rude eller indbrud': 'Broken window or burglary',
+  'Ved indbrud: ring til politiet på 114, og rør ikke ved noget, før de har været der.':
+    'After a burglary: call the police on 114, and do not touch anything before they have been.',
+  'Tag billeder af skaden, før du rydder op. Forsikringen skal se den.':
+    'Take pictures of the damage before you clean up. The insurance company needs to see it.',
+  'Dæk hullet med plade eller kraftig plast, så huset er lukket for natten.':
+    'Cover the hole with a board or heavy plastic, so the house is closed for the night.',
+  'Ring til en tømrer med døgnvagt for en midlertidig lukning, og få et tilbud på den nye rude.':
+    'Call a carpenter with a 24-hour service for a temporary closure, and get a quote for the new pane.',
+  'Taget er utæt i storm': 'The roof leaks in a storm',
+  'Gå ikke op på taget i blæst eller regn. Sæt spande under, og flyt møbler.':
+    'Do not go on the roof in wind or rain. Put buckets underneath and move furniture.',
+  'Sluk for strømmen i rum, hvor der drypper nær lamper eller stik.':
+    'Cut the power in rooms where it drips near lights or sockets.',
+  'Tag billeder af skaden ude og inde. Stormskader dækkes ofte af forsikringen.':
+    'Take pictures of the damage outside and inside. Storm damage is often covered by the insurance.',
+  'Ring til en tagdækker med døgnvagt for en midlertidig afdækning. Den rigtige reparation venter til tørvejr.':
+    'Call a roofer with a 24-hour service for a temporary cover. The real repair waits for dry weather.',
+  'Det lugter af gas': 'It smells of gas',
+  'Gå ud af huset først. Tænd eller sluk intet, heller ikke lys eller telefonen indenfor. Ring til gasselskabets døgnvagt eller 112 udefra.':
+    "Leave the house first. Switch nothing on or off, not even lights or your phone indoors. Call the gas company's emergency line or 112 from outside.",
+  'Luk for gassen ved hanen på måleren, hvis du kan nå den på vej ud.':
+    'Shut off the gas at the valve on the meter if you can reach it on the way out.',
+  'Åbn vinduer og døre på vej ud, hvis det kan gøres hurtigt.':
+    'Open windows and doors on the way out if it can be done quickly.',
+  'Advar naboerne, og hold afstand, til gasselskabet siger, at det er sikkert.':
+    'Warn the neighbours and keep your distance until the gas company says it is safe.',
+  'Først når det er sikkert: ring til en autoriseret VVS-installatør for at finde og rette lækagen.':
+    'Only when it is safe: call a licensed plumber to find and fix the leak.',
+  'Bilen vil ikke starte': 'The car will not start',
+  'Lyser instrumenterne svagt eller slet ikke, er det batteriet. Startkabler fra en anden bil hjælper oftest.':
+    'If the instruments light up weakly or not at all, it is the battery. Jump leads from another car usually help.',
+  'Starter den, så kør mindst 30 minutter, eller få batteriet ladet. Et batteri holder 5–7 år.':
+    'If it starts, drive at least 30 minutes or have the battery charged. A battery lasts 5–7 years.',
+  'Drejer starteren, men motoren tænder ikke: tjek brændstof, og se efter lamper på panelet.':
+    'If the starter turns but the engine does not fire: check the fuel and look for lamps on the dashboard.',
+  'Ring til et værksted med døgnvagt eller dit vejhjælpsabonnement. Mange forsikringer har vejhjælp med.':
+    'Call a workshop with a 24-hour service or your roadside assistance. Many insurance policies include it.',
+  'starter et FaceTime-opkald til virksomheden, så de kan se problemet med det samme.':
+    'starts a FaceTime call to the business, so they can see the problem at once.',
+  'FaceTime virker ikke her': 'FaceTime does not work here',
+  'Ring i stedet til {number}, og aftal et videotjek.': 'Call {number} instead and agree a video check.',
+  'Hej {name}. Jeg har fundet jer på FixMatch og vil gerne have et videotjek på 5 minutter, så I kan se problemet og give et overslag.':
+    'Hi {name}. I found you on FixMatch and would like a 5-minute video check, so you can see the problem and give an estimate.',
+  'Hvornår passer det jer? Jeg kan ringe op på FaceTime.': 'When suits you? I can call on FaceTime.',
 };
 
 export default en;

@@ -56,6 +56,7 @@ function EditForm({ business }: { business: Business }) {
   const [hourlyMax, setHourlyMax] = useState(String(business.pricing.hourlyMax));
   const [callout, setCallout] = useState(business.pricing.calloutFee ? String(business.pricing.calloutFee) : '');
   const [emergency, setEmergency] = useState(business.emergency);
+  const [videoCheck, setVideoCheck] = useState(business.videoCheck ?? false);
   const [hours, setHours] = useState(business.hours.map(hoursText));
   const [description, setDescription] = useState(business.description);
   const [examples, setExamples] = useState(
@@ -96,6 +97,7 @@ function EditForm({ business }: { business: Business }) {
       hourlyMax: max,
       calloutFee: amount(callout) ?? null,
       emergency,
+      videoCheck,
       hours: parsedHours.map((h) => (h === 'invalid' ? null : h)),
       description,
       examples: examples
@@ -237,6 +239,20 @@ function EditForm({ business }: { business: Business }) {
               onValueChange={setEmergency}
               trackColor={{ true: colors.brandStrong }}
               accessibilityLabel={t('Døgnvagt')}
+            />
+          </View>
+          <View style={[styles.switchRow, styles.spaced]}>
+            <View style={styles.flex}>
+              <AppText variant="body">{t('Videotjek før besøg')}</AppText>
+              <AppText variant="footnote" tone="textSecondary">
+                {t('Kunden viser problemet over FaceTime i 5 minutter, så I kan give et overslag uden at køre ud')}
+              </AppText>
+            </View>
+            <Switch
+              value={videoCheck}
+              onValueChange={setVideoCheck}
+              trackColor={{ true: colors.brandStrong }}
+              accessibilityLabel={t('Videotjek før besøg')}
             />
           </View>
         </Card>

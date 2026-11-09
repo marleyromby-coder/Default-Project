@@ -27,6 +27,7 @@ import { useApp } from '@/state/app-state';
 import { clearAnswers } from '@/state/answers';
 import { forgetManagedBusiness, useManagedBusiness } from '@/state/business-account';
 import { clearCommunity } from '@/state/community';
+import { clearGroups, useMyGroups } from '@/state/groups';
 import { useHomeJobs } from '@/state/home';
 import { setAppearance, useAppearance } from '@/state/appearance';
 
@@ -46,6 +47,7 @@ export default function ProfileScreen() {
   const appearance = useAppearance();
   const managed = useManagedBusiness();
   const homeJobs = useHomeJobs();
+  const groups = useMyGroups();
   const managedName = state.businesses.find((b) => b.id === managed?.businessId)?.name;
   const weights = weightsFromPriorities(state.priorities);
   const openAccount = (reason: 'settings' | 'profile') => () => router.push({ pathname: '/konto', params: { reason } });
@@ -60,6 +62,7 @@ export default function ProfileScreen() {
         onPress: () => {
           clearCommunity();
           clearAnswers();
+          clearGroups();
           forgetManagedBusiness();
           signOut();
         },
@@ -80,6 +83,7 @@ export default function ProfileScreen() {
               .then(() => {
                 clearCommunity();
                 clearAnswers();
+                clearGroups();
                 forgetManagedBusiness();
               })
               .catch(() =>
@@ -221,6 +225,15 @@ export default function ProfileScreen() {
             title={t('Min bolig')}
             value={homeJobs.length > 0 ? String(homeJobs.length) : undefined}
             onPress={() => router.push('/min-bolig')}
+          />
+        </ListSection>
+
+        <ListSection title={t('Naborabat')} footer={t('Gå sammen med naboerne om en opgave, og få rabat.')}>
+          <ListRow
+            icon="people"
+            title={t('Mine grupper')}
+            value={groups.length > 0 ? String(groups.length) : undefined}
+            onPress={() => router.push('/faelles')}
           />
         </ListSection>
 

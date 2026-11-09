@@ -82,6 +82,8 @@ export default function MoreScreen() {
           <ListRow icon="star" title={t('Om anmeldelser')} onPress={info('anmeldelser')} />
           <ListRow icon="tag" title={t('Om priserne')} onPress={info('priser')} />
           <ListRow icon="leaf" title={t('Grøn guide')} onPress={() => router.push('/groen-guide')} />
+          <ListRow icon="people" title={t('Naborabat')} onPress={() => router.push('/faelles')} />
+          <ListRow icon="siren" title={t('Akut hjælp')} onPress={() => router.push('/akut')} />
           <ListRow icon="warning" title={t('Advarselslampe i bilen')} onPress={() => router.push('/advarselslamper')} />
           <ListRow icon="scale" title={t('Hvis noget går galt')} onPress={info('hjaelp')} />
         </ListSection>

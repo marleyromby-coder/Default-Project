@@ -81,6 +81,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
       ? t('tager telefonen {answered} ud af {outOf} gange', { answered: answers.answered, outOf: answers.outOf })
       : undefined,
     authorized ? t('autoriseret') : undefined,
+    business.videoCheck ? t('tilbyder videotjek') : undefined,
     business.demo ? t('eksempelvirksomhed') : undefined,
   ]
     .filter(Boolean)
@@ -145,6 +146,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
           {topRated ? <Badge label={t('Topbedømt')} tone="brand" icon="star" /> : null}
           {authorized ? <Badge label={t('Autoriseret')} tone="success" icon="shield" /> : null}
           {business.emergency ? <Badge label={t('Døgnvagt')} tone="warning" icon="bolt" /> : null}
+          {business.videoCheck ? <Badge label={t('Videotjek')} tone="info" icon="video" /> : null}
           {answers ? (
             <Badge
               label={t('Svarer {answered}/{outOf}', { answered: answers.answered, outOf: answers.outOf })}

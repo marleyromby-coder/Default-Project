@@ -140,6 +140,10 @@ function RootNavigator() {
         <Stack.Screen name="tryghed/[id]" options={{ title: t('Tryghed') }} />
         <Stack.Screen name="min-bolig/index" options={{ title: t('Min bolig') }} />
         <Stack.Screen name="groen-guide" options={{ title: t('Grøn guide') }} />
+        <Stack.Screen name="akut" options={{ title: t('Akut hjælp') }} />
+        <Stack.Screen name="faelles/index" options={{ title: t('Naborabat') }} />
+        <Stack.Screen name="faelles/ny" options={{ presentation: 'modal', title: t('Start en gruppe') }} />
+        <Stack.Screen name="faelles/[id]" options={{ title: '' }} />
         <Stack.Screen name="advarselslamper" options={{ title: t('Advarselslampe i bilen') }} />
         <Stack.Screen name="tilbud-foto" options={{ title: t('Tjek hele tilbuddet') }} />
         <Stack.Screen

@@ -169,6 +169,43 @@ export async function reportProblem(business?: Business): Promise<void> {
   }
 }
 
+/** Starts a FaceTime call to the business, for a video check before the visit. */
+export async function startFaceTime(business: Business): Promise<void> {
+  tap();
+  if (!(await requireContactProfile())) return;
+  if (business.demo) {
+    demoNotice(business, t('starter et FaceTime-opkald til virksomheden, så de kan se problemet med det samme.'));
+    return;
+  }
+  logContact(business, 'call');
+  const number = business.contact.phone.replace(/[^\d+]/g, '');
+  try {
+    await Linking.openURL(`facetime://${number}`);
+  } catch {
+    showDialog(
+      t('FaceTime virker ikke her'),
+      t('Ring i stedet til {number}, og aftal et videotjek.', { number: formatPhone(business.contact.phone) }),
+    );
+  }
+}
+
+/** Asks the business for a video check: a message with the problem and pictures, if any. */
+export async function requestVideoCheck(business: Business, problem: Problem): Promise<void> {
+  const text = [
+    t(
+      'Hej {name}. Jeg har fundet jer på FixMatch og vil gerne have et videotjek på 5 minutter, så I kan se problemet og give et overslag.',
+      {
+        name: business.name,
+      },
+    ),
+    problem.text.trim() || undefined,
+    t('Hvornår passer det jer? Jeg kan ringe op på FaceTime.'),
+  ]
+    .filter(Boolean)
+    .join('\n\n');
+  await sendProblem(business, { ...problem, text }, { plain: true });
+}
+
 /** The text sent with the problem's pictures. */
 export function problemMessage(business: Business, problem: Problem): string {
   return [
@@ -190,14 +227,19 @@ export function problemMessage(business: Business, problem: Problem): string {
  * (iMessage or SMS) from the user's own phone. FixMatch never receives the pictures.
  * Without Messages (iPad without SIM, web) the share sheet opens instead.
  */
-export async function sendProblem(business: Business, problem: Problem): Promise<void> {
+export async function sendProblem(
+  business: Business,
+  problem: Problem,
+  options: { plain?: boolean } = {},
+): Promise<void> {
   tap();
   if (!(await requireContactProfile())) return;
   if (business.demo) {
     demoNotice(business, t('åbner Beskeder med din beskrivelse og dine billeder, klar til at sende til virksomheden.'));
     return;
   }
-  const message = problemMessage(business, problem);
+  // `plain`: the text is the whole message already (video check), not a problem to wrap.
+  const message = options.plain ? problem.text : problemMessage(business, problem);
   try {
     if (Platform.OS !== 'web' && (await SMS.isAvailableAsync())) {
       const { result } = await SMS.sendSMSAsync([business.contact.phone], message, {

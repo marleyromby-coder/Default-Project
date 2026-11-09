@@ -441,6 +441,7 @@ function rowToBusiness(row, context) {
       .filter(Boolean),
     hours,
     emergency: yes(row.doegnvagt),
+    ...(yes(row.videotjek) ? { videoCheck: true } : {}),
     ...(row.svartid ? { responseTime: row.svartid } : {}),
     ...(founded > 1800 ? { founded } : {}),
     ...(row.ansatte ? { employees: row.ansatte } : {}),

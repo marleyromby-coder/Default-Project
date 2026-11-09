@@ -1,6 +1,6 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BusinessMark } from '@/components/business/business-mark';
@@ -28,7 +28,9 @@ import { useLayout } from '@/hooks/use-layout';
 import {
   AUTHORIZATION_REGISTER_URL,
   callBusiness,
+  requestVideoCheck,
   sendProblem,
+  startFaceTime,
   registryUrl,
   openCvr,
   openDirections,
@@ -154,6 +156,7 @@ export default function BusinessScreen() {
             <AvailabilityBadge business={business} />
             {verified ? <Badge label={t('Verificeret')} tone="success" icon="verified" /> : null}
             {isTopRated(business) ? <Badge label={t('Topbedømt')} tone="brand" icon="star" /> : null}
+            {business.videoCheck ? <Badge label={t('Videotjek')} tone="info" icon="video" /> : null}
             {business.demo ? <Badge label={t('Eksempel')} tone="warning" /> : null}
           </View>
           <View style={[styles.stats, { borderTopColor: colors.border }]}>
@@ -201,6 +204,38 @@ export default function BusinessScreen() {
               selected={comparing}
             />
           </View>
+
+          {business.videoCheck ? (
+            <Card>
+              <CardTitle title={t('Videotjek før besøg')} icon="video" />
+              <AppText variant="subhead" tone="textSecondary" style={styles.spaced}>
+                {t(
+                  '{name} ser gerne problemet over FaceTime først. Det tager 5 minutter, er gratis, og du får et overslag uden at betale for en forgæves tur.',
+                  { name: business.name },
+                )}
+              </AppText>
+              <View style={[styles.quickActions, styles.spaced]}>
+                <Button
+                  title={t('Foreslå et tidspunkt')}
+                  icon="message"
+                  size="small"
+                  onPress={() => requestVideoCheck(business, problem)}
+                />
+                {Platform.OS === 'ios' ? (
+                  <Button
+                    title={t('Start FaceTime nu')}
+                    icon="video"
+                    variant="secondary"
+                    size="small"
+                    onPress={() => startFaceTime(business)}
+                  />
+                ) : null}
+              </View>
+              <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
+                {t('Tag gerne billeder under "Beskriv dit problem" først, så de kommer med i beskeden.')}
+              </AppText>
+            </Card>
+          ) : null}
 
           {hasProblem(problem) ? (
             <Card>
