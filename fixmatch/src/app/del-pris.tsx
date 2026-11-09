@@ -110,7 +110,29 @@ export default function SharePriceScreen() {
         account.status === 'signedIn' ? account.userId : undefined,
       );
       router.back();
-      showDialog(t('Tak, fordi du delte'), t('Din pris hjælper andre med at se, hvad opgaven koster.'));
+      showDialog(
+        t('Tak, fordi du delte'),
+        t(
+          'Din pris hjælper andre med at se, hvad opgaven koster. Vil du også gemme opgaven i Min bolig med faktura og garanti?',
+        ),
+        [
+          { text: t('Nej tak'), style: 'cancel' },
+          {
+            text: t('Gem i Min bolig'),
+            onPress: () =>
+              router.push({
+                pathname: '/min-bolig/ny',
+                params: {
+                  virksomhed: business.id,
+                  opgave: picked.job.id,
+                  pris: String(total),
+                  ...(labour ? { loen: String(labour) } : {}),
+                  dato: monthsAgo(WHEN.at(when)?.months ?? 0),
+                },
+              }),
+          },
+        ],
+      );
     } catch {
       showDialog(t('Det lykkedes ikke'), t('Prisen blev ikke sendt. Tjek internettet, og prøv igen.'));
     } finally {

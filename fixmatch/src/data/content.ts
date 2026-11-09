@@ -289,7 +289,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
         {
           heading: 'Gemt på din telefon',
           paragraphs: [
-            'Dine gemte virksomheder, din valgte by, dine prioriteter og listen over virksomheder, du har kontaktet (under Profil), gemmes lokalt på telefonen, så de er der næste gang. Du kan slette det hele under Mere → Nulstil app-data, eller ved at slette appen.',
+            'Dine gemte virksomheder, din valgte by, dine prioriteter, alt i Min bolig og listen over virksomheder, du har kontaktet (under Profil), gemmes lokalt på telefonen, så de er der næste gang. Du kan slette det hele under Mere → Nulstil app-data, eller ved at slette appen.',
           ],
         },
         {
@@ -302,7 +302,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
         {
           heading: 'Anmeldelser og priser, du deler',
           paragraphs: [
-            'Anmelder du en virksomhed eller deler, hvad du betalte, gemmer vi det sammen med din bruger hos Supabase i EU, så vi kan tjekke, at du har kontaktet virksomheden. Andre ser kun dit forbogstav ved anmeldelser, og priser vises kun samlet, når mindst 3 har delt. Det slettes, når du sletter din bruger.',
+            'Anmelder du en virksomhed, deler, hvad du betalte, eller svarer på, om de tog telefonen, gemmer vi det sammen med din bruger hos Supabase i EU, så vi kan tjekke, at du har kontaktet virksomheden. Andre ser kun dit forbogstav ved anmeldelser, og priser vises kun samlet, når mindst 3 har delt. Det slettes, når du sletter din bruger.',
           ],
         },
         {

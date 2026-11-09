@@ -267,7 +267,7 @@ export function infoPagesEn(
         {
           heading: 'Stored on your phone',
           paragraphs: [
-            'Your saved businesses, chosen town, priorities and the list of businesses you have contacted (under Profile) are stored on your phone so they are there next time. You can delete it all under More → Reset app data, or by deleting the app.',
+            'Your saved businesses, chosen town, priorities, everything in My home and the list of businesses you have contacted (under Profile) are stored on your phone so they are there next time. You can delete it all under More → Reset app data, or by deleting the app.',
           ],
         },
         {
@@ -280,7 +280,7 @@ export function infoPagesEn(
         {
           heading: 'Reviews and prices you share',
           paragraphs: [
-            'If you review a business or share what you paid, we store it with your account at Supabase in the EU, so we can check that you contacted the business. Others only see your initial on reviews, and prices are only shown together once at least 3 people have shared. It is deleted when you delete your account.',
+            'If you review a business, share what you paid or say whether they answered the phone, we store it with your account at Supabase in the EU, so we can check that you contacted the business. Others only see your initial on reviews, and prices are only shown together once at least 3 people have shared. It is deleted when you delete your account.',
           ],
         },
         {

@@ -166,8 +166,6 @@ const en: Record<string, string> = {
   'Gem prioriteter': 'Save priorities',
   'Gem {name}': 'Save {name}',
   Gemte: 'Saved',
-  'Gemte virksomheder, valgt by og dine prioriteter slettes fra telefonen.':
-    'Saved businesses, chosen town and your priorities are deleted from the phone.',
   Gennemsigtighed: 'Transparency',
   'Gode anmeldelser': 'Good reviews',
   'Godkendt af virksomheden {date}': 'Approved by the business {date}',
@@ -829,7 +827,6 @@ const en: Record<string, string> = {
   'Du kan dele, hvad du betalte, når du har kontaktet virksomheden gennem FixMatch.':
     'You can share what you paid once you have contacted the business through FixMatch.',
   'Tak, fordi du delte': 'Thank you for sharing',
-  'Din pris hjælper andre med at se, hvad opgaven koster.': 'Your price helps others see what the job costs.',
   'Prisen blev ikke sendt. Tjek internettet, og prøv igen.':
     'The price was not sent. Check your internet connection and try again.',
   'Hvad betalte du?': 'What did you pay?',
@@ -1124,6 +1121,250 @@ const en: Record<string, string> = {
   'Dit svar viser andre, om de tager telefonen. Ingen ser, hvem der svarede.':
     'Your answer shows others whether they answer the phone. Nobody sees who answered.',
   'Nej, ingen svarede': 'No, nobody answered',
+  'Grøn guide: fradrag, tilskud og besparelser på grønne forbedringer':
+    'Green guide: deductions, subsidies and savings on green improvements',
+  'Grøn guide': 'Green guide',
+  'Fradrag og tilskud i kroner': 'Deductions and subsidies in kroner',
+  'Advarselslampe i bilen: hvad betyder den, og kan du køre videre':
+    'Warning lamp in the car: what it means and whether you can drive on',
+  'Lampe i bilen?': 'Lamp in the car?',
+  'Kan du køre videre?': 'Can you drive on?',
+  'Gemte virksomheder, valgt by, dine prioriteter og Min bolig slettes fra telefonen.':
+    'Saved businesses, chosen town, your priorities and My home are deleted from the phone.',
+  'Advarselslampe i bilen': 'Warning lamp in the car',
+  'Min bolig': 'My home',
+  'Faktura, billeder, garanti og fradrag for alt, du får lavet. Bliver på telefonen.':
+    'Invoice, pictures, guarantee and deduction for everything you have done. Stays on the phone.',
+  'Tjek hele tilbuddet': 'Check the whole quote',
+  'Ny opgave': 'New job',
+  'Lyser der en lampe? Find den her, og se, om du kan køre videre, og hvad det typisk koster at få ordnet.':
+    'Is a lamp on? Find it here and see whether you can drive on, and what it typically costs to fix.',
+  'Rød: stop': 'Red: stop',
+  'Gul: få det tjekket': 'Yellow: get it checked',
+  '{job} koster typisk {range}. Selve reparationen kommer oveni og ligger oftest på {cost}.':
+    '{job} typically costs {range}. The repair itself comes on top and is usually {cost}.',
+  'Det koster typisk {cost} at få ordnet, alt efter årsagen.':
+    'It typically costs {cost} to fix, depending on the cause.',
+  'Koster op til {cost}.': 'Costs up to {cost}.',
+  'Find nærmeste mekaniker': 'Find the nearest mechanic',
+  'Find en mekaniker': 'Find a mechanic',
+  'Generelle råd. Bilens instruktionsbog og værkstedet ved mest om netop din bil. Ved fare for liv: ring {number}.':
+    "General advice. The car's manual and the workshop know your car best. In danger to life: call {number}.",
+  'Din pris hjælper andre med at se, hvad opgaven koster. Vil du også gemme opgaven i Min bolig med faktura og garanti?':
+    'Your price helps others see what the job costs. Do you also want to save the job in My home with invoice and guarantee?',
+  'Gem i Min bolig': 'Save in My home',
+  'Det kan betale sig at gøre boligen grønnere. Staten betaler cirka 26 % af arbejdslønnen tilbage, op til {max} pr. voksen om året, og regningen falder hvert år bagefter. Her er det, der giver mest.':
+    'Making your home greener pays. The state pays back about 26 % of the labour, up to {max} per adult a year, and the bills fall every year after. Here is what gives the most.',
+  '1 voksen i husstanden': '1 adult in the household',
+  '2 voksne': '2 adults',
+  'Voksne i husstanden': 'Adults in the household',
+  '{amount} tilbage i skat': '{amount} back in tax',
+  'Sparer {range} om året': 'Saves {range} a year',
+  Tilskud: 'Subsidy',
+  'Typisk pris': 'Typical price',
+  'Heraf arbejdsløn, cirka': 'Of which labour, about',
+  'Håndværkerfradrag giver': 'Tax deduction gives',
+  'Tjent hjem efter': 'Paid back after',
+  'ca. {years} år': 'about {years} years',
+  'Find {plural}': 'Find {plural}',
+  'Tjek et tilbud': 'Check a quote',
+  'Priser og besparelser er typiske tal for et dansk parcelhus i 2026 og vejledende. Fradragets regler og puljerne ændrer sig hvert år. Tjek altid skat.dk og sparenergi.dk, og aftal tilskud, før arbejdet går i gang.':
+    'Prices and savings are typical figures for a Danish house in 2026 and a guide only. The deduction rules and the subsidy pools change every year. Always check skat.dk and sparenergi.dk, and agree subsidies before the work starts.',
+  'Fradraget på skat.dk': 'The deduction on skat.dk',
+  'Tilskud på sparenergi.dk': 'Subsidies on sparenergi.dk',
+  'Alt om dit hjem ét sted': 'Everything about your home in one place',
+  'Gem faktura og billeder, hver gang du får lavet noget. Så ved du, hvem der lavede hvad, hvornår garantien udløber, og hvad fradraget giver i år. Det bliver på din telefon.':
+    'Save the invoice and pictures every time you have work done. Then you know who did what, when the guarantee ends and what the deduction gives this year. It stays on your phone.',
+  'Tilføj en opgave': 'Add a job',
+  'Fradrag {year}': 'Deduction {year}',
+  'cirka tilbage i skat for arbejdsløn på {amount}': 'about back in tax for labour of {amount}',
+  '1 voksen': '1 adult',
+  'Loftet er nået. Bor I flere voksne, kan hver trække op til {green} fra for grøn istandsættelse og {service} for service.':
+    'The cap is reached. If more adults live here, each can deduct up to {green} for green renovation and {service} for services.',
+  'Kun arbejdsløn tæller, ikke materialer. Grøn istandsættelse op til {green} og service op til {service} pr. voksen. Indberet selv på skat.dk.':
+    'Only labour counts, not materials. Green renovation up to {green} and services up to {service} per adult. Report it yourself on skat.dk.',
+  'Brugt på boligen i {year}': 'Spent on the home in {year}',
+  Husk: 'Remember',
+  'Ved større byggearbejde har du ret til en gennemgang efter 1 og 5 år. Skriv til virksomheden i god tid.':
+    'For larger building work you have the right to an inspection after 1 and 5 years. Write to the business in good time.',
+  Tilføj: 'Add',
+  '{title} hos {name}, {date}, {price}': '{title} by {name}, {date}, {price}',
+  Håndværkerfradrag: 'Tax deduction',
+  Servicefradrag: 'Service deduction',
+  '{years} års garanti': '{years} years’ guarantee',
+  '{count} billeder': '{count} pictures',
+  'Alt i Min bolig bliver på din telefon og sendes ikke til FixMatch.':
+    'Everything in My home stays on your phone and is not sent to FixMatch.',
+  'Slet opgaven?': 'Delete the job?',
+  'Opgaven og dens billeder slettes fra telefonen.': 'The job and its pictures are deleted from the phone.',
+  Slet: 'Delete',
+  'Ret opgave': 'Edit job',
+  'Hvem lavede det?': 'Who did it?',
+  'Navn på virksomheden': 'Name of the business',
+  'Eller skriv selv (valgfrit)': 'Or write your own (optional)',
+  'Fx nyt badeværelse': 'E.g. new bathroom',
+  Dato: 'Date',
+  'Skriv datoen som dd.mm.åååå': 'Write the date as dd.mm.yyyy',
+  'Pris i alt ({currency})': 'Total price ({currency})',
+  'Mere end prisen': 'More than the price',
+  Fradrag: 'Deduction',
+  Intet: 'None',
+  Håndværker: 'Tradesperson',
+  Service: 'Service',
+  'Håndværkerfradraget gælder grøn istandsættelse, fx vinduer, isolering og varmepumpe. Servicefradraget gælder rengøring, vinduespudsning og havearbejde. Tjek på skat.dk.':
+    'The tradesperson deduction covers green renovation, e.g. windows, insulation and heat pumps. The service deduction covers cleaning, window cleaning and gardening. Check on skat.dk.',
+  'Garanti i år (valgfrit)': 'Guarantee in years (optional)',
+  'Ved byggearbejde over 5.000 kr. minder vi også om 1- og 5-års gennemgang.':
+    'For building work over DKK 5,000 we also remind you about the 1- and 5-year inspection.',
+  'Faktura og billeder': 'Invoice and pictures',
+  'Noter (valgfrit)': 'Notes (optional)',
+  'Gem ændringer': 'Save changes',
+  'Slet opgaven': 'Delete the job',
+  Lav: 'Low',
+  Normal: 'Normal',
+  'Lidt høj': 'A bit high',
+  Høj: 'High',
+  'Tag et billede af tilbuddet, og sæt teksten ind. Så tjekker vi hver linje mod det, opgaven normalt koster, og finder arbejdslønnen til fradraget.':
+    'Take a picture of the quote and paste the text. We check every line against what the job normally costs, and find the labour for the deduction.',
+  '1. Billede af tilbuddet': '1. Picture of the quote',
+  'Tag nyt billede': 'Take a new picture',
+  'Billedet bliver på telefonen. Det er kun til dig, så du har tilbuddet ved hånden.':
+    'The picture stays on the phone. It is only for you, so you have the quote at hand.',
+  '2. Teksten fra tilbuddet': '2. The text of the quote',
+  'Åbn billedet i Fotos, hold fingeren på teksten, vælg Kopiér, og sæt den ind her. Eller skriv linjerne selv.':
+    'Open the picture in Photos, hold your finger on the text, choose Copy, and paste it here. Or type the lines yourself.',
+  'Kopiér teksten fra tilbuddet, og sæt den ind her. Eller skriv linjerne selv.':
+    'Copy the text from the quote and paste it here. Or type the lines yourself.',
+  'Linjer med pris': 'Lines with a price',
+  'Sæt ind': 'Paste',
+  'Prøv med et eksempel': 'Try an example',
+  '3. Vores vurdering': '3. Our assessment',
+  '{count} af {total} linjer ligger over det normale. Spørg, hvad der er med i prisen.':
+    '{count} of {total} lines are above normal. Ask what is included in the price.',
+  'De opgaver, vi kender, ligger inden for det normale.': 'The jobs we know are within the normal range.',
+  'Vi genkender ingen af opgaverne. Skriv fx "Udskiftning af toilet 4.800" for at få dem tjekket.':
+    'We do not recognise any of the jobs. Write e.g. "Replace a toilet 4,800" to get them checked.',
+  '{job}: normalt {range}': '{job}: normally {range}',
+  'Arbejdsløn, tæller til fradraget': 'Labour, counts for the deduction',
+  'I alt': 'Total',
+  'Tilbuddet i alt': 'The quote in total',
+  'Arbejdsløn fundet: {labour}. Er det grøn istandsættelse, giver fradraget cirka {saving} tilbage.':
+    'Labour found: {labour}. If it is green renovation, the deduction gives about {saving} back.',
+  'Vi fandt ingen linje med arbejdsløn. Bed om at få den skrevet på, hvis du vil bruge fradraget.':
+    'We found no line with labour. Ask to have it written on if you want to use the deduction.',
+  'Tilbuddet nævner ikke moms. Spørg, om priserne er med moms.':
+    'The quote does not mention VAT. Ask whether the prices include VAT.',
+  'Se billigere for {job}': 'See cheaper for {job}',
+  'Vurderingen er vejledende. Billedet og teksten bliver på din telefon.':
+    'The assessment is a guide. The picture and the text stay on your phone.',
+  'Tjek hele tilbuddet med et billede': 'Check the whole quote with a picture',
+  'Stands bilen, så snart det er sikkert': 'Stop the car as soon as it is safe',
+  'Kør forsigtigt til værksted inden for få dage': 'Drive carefully to a workshop within a few days',
+  'Du kan køre videre, men få det tjekket': 'You can drive on, but get it checked',
+  Olietryk: 'Oil pressure',
+  'Motoren får ikke olie nok. Det kan være for lidt olie eller en defekt pumpe.':
+    'The engine is not getting enough oil. It can be too little oil or a faulty pump.',
+  'Sluk motoren med det samme. Kører du videre, kan motoren sætte sig fast. Tjek oliestanden, og fyld på, før du kører igen.':
+    'Switch off the engine at once. Driving on can seize the engine. Check the oil level and top up before you drive again.',
+  Motortemperatur: 'Engine temperature',
+  'Motoren er for varm. Ofte mangler der kølervæske, eller termostaten eller blæseren virker ikke.':
+    'The engine is too hot. Often coolant is low, or the thermostat or fan is not working.',
+  'Hold ind, og lad motoren køle af i mindst 30 minutter. Åbn aldrig kølerdækslet, mens motoren er varm.':
+    'Pull over and let the engine cool for at least 30 minutes. Never open the radiator cap while the engine is hot.',
+  Bremser: 'Brakes',
+  'Håndbremsen er trukket, bremsevæsken er lav, eller bremseklodserne er slidt ned.':
+    'The handbrake is on, the brake fluid is low, or the brake pads are worn down.',
+  'Er håndbremsen fri, så kør kun forsigtigt det nærmeste sted hen. Bremser er ikke noget, man venter med.':
+    'If the handbrake is off, drive carefully to the nearest place only. Brakes are not something to wait with.',
+  'Batteri og lader': 'Battery and charging',
+  'Generatoren lader ikke batteriet. Bilen kører på batteriet, til det er tomt.':
+    'The alternator is not charging the battery. The car runs on the battery until it is empty.',
+  'Sluk alt unødvendigt (varme, radio, lys), og kør direkte til værksted. Du har typisk under en time.':
+    'Switch off everything unnecessary (heating, radio, lights) and drive straight to a workshop. You typically have under an hour.',
+  Airbag: 'Airbag',
+  'Fejl i airbag eller selestrammer. Airbaggen virker måske ikke ved et uheld.':
+    'Fault in the airbag or seat belt tensioner. The airbag may not work in a crash.',
+  'Bilen kan køre, men sikkerheden er nedsat. Få fejlen læst hurtigt.':
+    'The car can drive, but safety is reduced. Have the fault read soon.',
+  'Motorlampe (check engine)': 'Engine lamp (check engine)',
+  'Motorstyringen har set en fejl. Det kan være alt fra en løs tankdæksel til en defekt sensor.':
+    'The engine management has seen a fault. It can be anything from a loose fuel cap to a faulty sensor.',
+  'Lyser den fast, kan du køre videre og få fejlkoden læst. Blinker den, så stop: det kan ødelægge katalysatoren.':
+    'If it is on steadily, you can drive on and have the fault code read. If it flashes, stop: it can ruin the catalytic converter.',
+  ABS: 'ABS',
+  'ABS-systemet er slået fra. Bremserne virker, men hjulene kan blokere ved hård opbremsning.':
+    'The ABS system is off. The brakes work, but the wheels can lock under hard braking.',
+  'Kør med god afstand, og få det tjekket. Ofte er det en hjulsensor.':
+    'Keep a good distance and get it checked. Often it is a wheel sensor.',
+  Dæktryk: 'Tyre pressure',
+  'Et eller flere dæk har for lidt luft, eller en sensor er defekt.':
+    'One or more tyres are low on air, or a sensor is faulty.',
+  'Tjek trykket på en tankstation. Taber dækket luft igen, er der en punktering.':
+    'Check the pressure at a petrol station. If the tyre loses air again, there is a puncture.',
+  'Partikelfilter (diesel)': 'Particle filter (diesel)',
+  'Filteret er ved at være fyldt. Mange korte ture forhindrer det i at rense sig selv.':
+    'The filter is getting full. Many short trips stop it from cleaning itself.',
+  'Kør 20–30 minutter på motorvej, så filteret brænder rent. Går lampen ikke ud, skal værkstedet rense det.':
+    'Drive 20–30 minutes on the motorway so the filter burns clean. If the lamp stays on, the workshop has to clean it.',
+  'Gløderør (diesel)': 'Glow plugs (diesel)',
+  'Lyser den efter start, er der fejl i gløderørene. Bilen kan være svær at starte i kulde.':
+    'If it stays on after starting, there is a fault in the glow plugs. The car can be hard to start in the cold.',
+  'Ikke farligt, men få det ordnet inden vinteren.': 'Not dangerous, but have it fixed before winter.',
+  Servostyring: 'Power steering',
+  'Styringen har mistet servohjælpen. Rattet bliver tungt, især ved lav fart.':
+    'The steering has lost its power assistance. The wheel gets heavy, especially at low speed.',
+  'Du kan køre, men parkering bliver hårdt arbejde. Få det tjekket inden længe.':
+    'You can drive, but parking becomes hard work. Get it checked before long.',
+  'AdBlue (diesel)': 'AdBlue (diesel)',
+  'AdBlue-tanken er ved at være tom. Er den helt tom, kan bilen ikke starte.':
+    'The AdBlue tank is nearly empty. If it is completely empty, the car cannot start.',
+  'Fyld AdBlue på fra en dunk eller på tanken. Det kan du selv.':
+    'Top up AdBlue from a can or at the pump. You can do that yourself.',
+  Brændstof: 'Fuel',
+  'Du har typisk 50–80 km tilbage.': 'You typically have 50–80 km left.',
+  'Tank snart. Kører du tør på en dieselbil, kan den skulle udluftes på værkstedet.':
+    'Fill up soon. If a diesel car runs dry, the workshop may have to bleed it.',
+  'Varmepumpe i stedet for olie- eller gasfyr': 'Heat pump instead of an oil or gas boiler',
+  'Den største besparelse i de fleste huse. En luft til vand-varmepumpe bruger en tredjedel af energien.':
+    'The biggest saving in most houses. An air-to-water heat pump uses a third of the energy.',
+  'Tilskud fra Varmepumpepuljen eller skrotningsordningen, når puljen er åben. Se sparenergi.dk.':
+    'Subsidy from the heat pump pool or the scrapping scheme when the pool is open. See sparenergi.dk.',
+  'Tilslutning til fjernvarme': 'Connection to district heating',
+  'Hvor der er fjernvarme i vejen, er det ofte billigst og kræver ingen pasning.':
+    'Where there is district heating in the road, it is often cheapest and needs no maintenance.',
+  'Mange fjernvarmeselskaber giver rabat på tilslutningen i kampagneperioder.':
+    'Many district heating companies give a discount on the connection in campaign periods.',
+  'Efterisolering af loft': 'Extra loft insulation',
+  'Det billigste energitiltag. 300 mm isolering på loftet betaler sig på få år.':
+    'The cheapest energy measure. 300 mm of insulation in the loft pays for itself in a few years.',
+  'Energitilskud fra energiselskaberne. Spørg før arbejdet går i gang.':
+    'Energy subsidy from the energy companies. Ask before the work starts.',
+  Hulmursisolering: 'Cavity wall insulation',
+  'Huse fra før 1980 har ofte tomme hulmure. Isoleringen blæses ind på en dag.':
+    'Houses from before 1980 often have empty cavity walls. The insulation is blown in in a day.',
+  'Energitilskud fra energiselskaberne.': 'Energy subsidy from the energy companies.',
+  'Nye energivinduer': 'New energy windows',
+  'Energiruder holder på varmen og fjerner træk. Størst gevinst ved gamle termoruder.':
+    'Energy glazing keeps the heat in and removes draughts. The biggest gain with old double glazing.',
+  'Solceller på taget': 'Solar panels on the roof',
+  'Dækker en stor del af elforbruget om dagen. Bedst sammen med varmepumpe eller elbil.':
+    'Covers a large part of the electricity use during the day. Best together with a heat pump or an electric car.',
+  'Ladestander til elbil': 'EV charger',
+  'Hjemmeopladning er billigst. Vælg en lader, der kan styres efter elprisen.':
+    'Charging at home is cheapest. Choose a charger that can follow the electricity price.',
+  'Elafgiften refunderes for strøm til bilen gennem en ladeoperatør.':
+    'The electricity tax is refunded for power to the car through a charging operator.',
+  'Regnvand væk fra kloakken': 'Rainwater away from the sewer',
+  'Faskine eller regnbed sikrer mod oversvømmet kælder og aflaster kloakken.':
+    'A soakaway or rain bed protects against a flooded basement and relieves the sewer.',
+  'Mange forsyninger betaler tilslutningsbidraget tilbage, ofte over 20.000 kr. Spørg jeres forsyning.':
+    'Many utilities refund the connection fee, often over DKK 20,000. Ask your utility.',
+  'Energimærke og rådgivning': 'Energy label and advice',
+  'En energikonsulent fortæller, hvad der kan betale sig i netop jeres hus.':
+    'An energy consultant tells you what pays off in your house.',
+  '1-års gennemgang': '1-year inspection',
+  '5-års gennemgang': '5-year inspection',
+  'Garantien udløber': 'The guarantee ends',
 };
 
 export default en;

@@ -138,6 +138,19 @@ function RootNavigator() {
         <Stack.Screen name="min-virksomhed/index" options={{ title: t('Min virksomhed') }} />
         <Stack.Screen name="min-virksomhed/ret" options={{ title: t('Ret oplysninger') }} />
         <Stack.Screen name="tryghed/[id]" options={{ title: t('Tryghed') }} />
+        <Stack.Screen name="min-bolig/index" options={{ title: t('Min bolig') }} />
+        <Stack.Screen name="groen-guide" options={{ title: t('Grøn guide') }} />
+        <Stack.Screen name="advarselslamper" options={{ title: t('Advarselslampe i bilen') }} />
+        <Stack.Screen name="tilbud-foto" options={{ title: t('Tjek hele tilbuddet') }} />
+        <Stack.Screen
+          name="min-bolig/ny"
+          options={{
+            presentation: 'formSheet',
+            sheetAllowedDetents: [1],
+            sheetGrabberVisible: true,
+            title: t('Ny opgave'),
+          }}
+        />
       </Stack.Protected>
       <Stack.Protected guard={accountStepDone && !state.onboarded}>
         <Stack.Screen name="velkommen" options={{ headerShown: false, animation: 'fade' }} />

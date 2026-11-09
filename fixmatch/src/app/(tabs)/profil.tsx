@@ -27,6 +27,7 @@ import { useApp } from '@/state/app-state';
 import { clearAnswers } from '@/state/answers';
 import { forgetManagedBusiness, useManagedBusiness } from '@/state/business-account';
 import { clearCommunity } from '@/state/community';
+import { useHomeJobs } from '@/state/home';
 import { setAppearance, useAppearance } from '@/state/appearance';
 
 import { changeLanguage } from './mere';
@@ -44,6 +45,7 @@ export default function ProfileScreen() {
   const contacts = useContacts();
   const appearance = useAppearance();
   const managed = useManagedBusiness();
+  const homeJobs = useHomeJobs();
   const managedName = state.businesses.find((b) => b.id === managed?.businessId)?.name;
   const weights = weightsFromPriorities(state.priorities);
   const openAccount = (reason: 'settings' | 'profile') => () => router.push({ pathname: '/konto', params: { reason } });
@@ -208,6 +210,17 @@ export default function ProfileScreen() {
             title={managedName ? t('Min virksomhed') : t('Log ind som virksomhed')}
             value={managedName}
             onPress={() => router.push(managedName ? '/min-virksomhed' : '/virksomhed-login')}
+          />
+        </ListSection>
+
+        <ListSection
+          title={t('Min bolig')}
+          footer={t('Faktura, billeder, garanti og fradrag for alt, du får lavet. Bliver på telefonen.')}>
+          <ListRow
+            icon="home"
+            title={t('Min bolig')}
+            value={homeJobs.length > 0 ? String(homeJobs.length) : undefined}
+            onPress={() => router.push('/min-bolig')}
           />
         </ListSection>
 

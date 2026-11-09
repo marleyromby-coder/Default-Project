@@ -16,6 +16,7 @@ import { DATA_MODE } from '@/lib/data-source';
 import { showDialog } from '@/lib/dialog';
 import { getLanguage, t } from '@/i18n';
 import { useApp } from '@/state/app-state';
+import { clearHomeJobs } from '@/state/home';
 
 /**
  * The app follows the phone's language. On iOS each app has its own language
@@ -46,10 +47,21 @@ export default function MoreScreen() {
   const { resetAll } = useApp();
   const info = (slug: string) => () => router.push({ pathname: '/info/[slug]', params: { slug } });
   const confirmReset = () =>
-    showDialog(t('Nulstil app-data?'), t('Gemte virksomheder, valgt by og dine prioriteter slettes fra telefonen.'), [
-      { text: t('Annuller'), style: 'cancel' },
-      { text: t('Nulstil'), style: 'destructive', onPress: resetAll },
-    ]);
+    showDialog(
+      t('Nulstil app-data?'),
+      t('Gemte virksomheder, valgt by, dine prioriteter og Min bolig slettes fra telefonen.'),
+      [
+        { text: t('Annuller'), style: 'cancel' },
+        {
+          text: t('Nulstil'),
+          style: 'destructive',
+          onPress: () => {
+            clearHomeJobs();
+            resetAll();
+          },
+        },
+      ],
+    );
 
   return (
     <ScrollView
@@ -69,6 +81,8 @@ export default function MoreScreen() {
           <ListRow icon="verified" title={t('Sådan verificerer vi')} onPress={info('verificering')} />
           <ListRow icon="star" title={t('Om anmeldelser')} onPress={info('anmeldelser')} />
           <ListRow icon="tag" title={t('Om priserne')} onPress={info('priser')} />
+          <ListRow icon="leaf" title={t('Grøn guide')} onPress={() => router.push('/groen-guide')} />
+          <ListRow icon="warning" title={t('Advarselslampe i bilen')} onPress={() => router.push('/advarselslamper')} />
           <ListRow icon="scale" title={t('Hvis noget går galt')} onPress={info('hjaelp')} />
         </ListSection>
 

@@ -26,9 +26,11 @@ The text you write and your budget are only processed on your phone, to find the
 
 You can add up to three pictures of the problem. The app only uses the camera or your photos when you tap "Take picture" or "Choose from photos" yourself, and only sees the pictures you choose. FixMatch does not store the pictures, and the app forgets them when it closes. If you tap "Send pictures and description" on a business's page, your phone's Messages app opens and you send them to the business's number yourself. FixMatch never receives them.
 
+After a call the app may ask whether anyone answered. If you answer, the answer is stored with your account at Supabase in the EU, so the business's answer rate can be shown. Nobody but FixMatch can see who answered what, and the figure is only shown from 5 answers.
+
 ## 6. Data stored on your phone
 
-Your saved businesses, your chosen city, your priorities, your comparison list and the list of businesses you have contacted (under Profile) are stored on your phone so they are there next time. They do not leave your phone. You delete them under *More → Reset app data* or by deleting the app.
+Your saved businesses, your chosen city, your priorities, your comparison list and the list of businesses you have contacted (under Profile) are stored on your phone so they are there next time. The same goes for everything in "My home" (jobs, amounts, invoices and pictures), your answers to "Did you reach them?" and pictures of quotes in Quote check. They do not leave your phone. You delete them under *More → Reset app data* or by deleting the app.
 
 ## 7. Your account
 

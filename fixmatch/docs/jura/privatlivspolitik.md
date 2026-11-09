@@ -28,9 +28,11 @@ Teksten, du skriver, og dit budget behandles kun på din telefon for at finde fa
 
 Du kan tilføje op til tre billeder af problemet. Appen bruger kun kameraet eller dine billeder, når du selv trykker "Tag billede" eller "Vælg fra billeder", og ser kun de billeder, du vælger. Billederne gemmes ikke af FixMatch og slettes fra appen, når den lukkes. Trykker du "Send billeder og beskrivelse" hos en virksomhed, åbner telefonens Beskeder-app, og du sender dem selv til virksomhedens nummer. FixMatch får dem aldrig.
 
+Efter et opkald kan appen spørge, om nogen tog telefonen. Svarer du, gemmes svaret sammen med din bruger hos Supabase i EU, så virksomhedens svarprocent kan vises. Ingen andre end FixMatch kan se, hvem der svarede hvad, og tallet vises først fra 5 svar.
+
 ## 6. Oplysninger gemt på din telefon
 
-Dine gemte virksomheder, din valgte by, dine prioriteter, din sammenligningsliste og listen over virksomheder, du har kontaktet (under Profil) gemmes lokalt på telefonen, så de er der næste gang. De forlader ikke telefonen. Du sletter dem under *Mere → Nulstil app-data* eller ved at slette appen.
+Dine gemte virksomheder, din valgte by, dine prioriteter, din sammenligningsliste og listen over virksomheder, du har kontaktet (under Profil) gemmes lokalt på telefonen, så de er der næste gang. Det samme gælder alt i "Min bolig" (opgaver, beløb, fakturaer og billeder), dine svar på "Fik du fat i dem?" og billeder af tilbud i Tilbudstjek. De forlader ikke telefonen. Du sletter dem under *Mere → Nulstil app-data* eller ved at slette appen.
 
 ## 7. Din bruger
 

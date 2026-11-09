@@ -179,6 +179,41 @@ export default function HomeScreen() {
         <Icon name="chevronRight" size={16} color={colors.textTertiary} weight="semibold" />
       </Tappable>
 
+      <View style={styles.smallTiles}>
+        <Tappable
+          onPress={() => router.push('/groen-guide')}
+          accessibilityLabel={t('Grøn guide: fradrag, tilskud og besparelser på grønne forbedringer')}
+          style={[styles.smallTile, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.smallIcon, { backgroundColor: colors.successSoft }]}>
+            <Icon name="leaf" size={17} color={colors.success} weight="semibold" />
+          </View>
+          <View style={styles.flex}>
+            <AppText variant="subhead" weight="600" numberOfLines={1}>
+              {t('Grøn guide')}
+            </AppText>
+            <AppText variant="caption" tone="textSecondary" numberOfLines={2}>
+              {t('Fradrag og tilskud i kroner')}
+            </AppText>
+          </View>
+        </Tappable>
+        <Tappable
+          onPress={() => router.push('/advarselslamper')}
+          accessibilityLabel={t('Advarselslampe i bilen: hvad betyder den, og kan du køre videre')}
+          style={[styles.smallTile, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.smallIcon, { backgroundColor: colors.warningSoft }]}>
+            <Icon name="warning" size={17} color={colors.warning} weight="semibold" />
+          </View>
+          <View style={styles.flex}>
+            <AppText variant="subhead" weight="600" numberOfLines={1}>
+              {t('Lampe i bilen?')}
+            </AppText>
+            <AppText variant="caption" tone="textSecondary" numberOfLines={2}>
+              {t('Kan du køre videre?')}
+            </AppText>
+          </View>
+        </Tappable>
+      </View>
+
       {state.location.source === 'default' ? (
         <View style={[styles.notice, { backgroundColor: colors.infoSoft }]}>
           <Icon name="info" size={16} color={colors.info} weight="semibold" />
@@ -523,6 +558,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Spacing.md,
   },
+  smallTiles: { flexDirection: 'row', gap: Spacing.sm, marginHorizontal: ScreenPadding, marginTop: -Spacing.sm },
+  smallTile: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+    padding: Spacing.sm,
+    borderRadius: Radius.lg,
+    borderWidth: StyleSheet.hairlineWidth,
+  },
+  smallIcon: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center' },
   describeIcon: {
     width: 40,
     height: 40,

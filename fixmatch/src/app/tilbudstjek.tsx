@@ -60,13 +60,13 @@ export default function QuoteCheckScreen() {
   const insets = useSafeAreaInsets();
   const { state } = useApp();
   const { country, market } = useMarket();
-  const params = useLocalSearchParams<{ kategori?: string; opgave?: string }>();
+  const params = useLocalSearchParams<{ kategori?: string; opgave?: string; pris?: string }>();
   const [categoryId, setCategoryId] = useState<CategoryId | undefined>(
     params.kategori && isCategoryId(params.kategori) ? params.kategori : undefined,
   );
   const [jobId, setJobId] = useState<string | undefined>(params.opgave);
   const [quantityText, setQuantityText] = useState('');
-  const [priceText, setPriceText] = useState('');
+  const [priceText, setPriceText] = useState(params.pris ?? '');
   const [labourText, setLabourText] = useState('');
   const [greenValue, setGreenValue] = useState<boolean>();
   const shared = useSharedPrices();
@@ -157,6 +157,12 @@ export default function QuoteCheckScreen() {
             'Har du fået et tilbud? Tast det ind, så ser du, om prisen er lav, normal eller høj i forhold til virksomhederne i FixMatch – også hvis tilbuddet kommer et andet sted fra.',
           )}
         </AppText>
+        <Button
+          title={t('Tjek hele tilbuddet med et billede')}
+          icon="camera"
+          variant="secondary"
+          onPress={() => router.push('/tilbud-foto')}
+        />
 
         <View style={styles.block}>
           <AppText variant="subhead" weight="600" tone="textSecondary" accessibilityRole="header">
