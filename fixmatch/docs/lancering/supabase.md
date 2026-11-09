@@ -1,5 +1,7 @@
 # Supabase: brugere og virksomhedstilmeldinger
 
+> **Status 9. november 2026:** Projektet `khhizugetbekalfjmyhr` i Frankfurt er oprettet, alle filer i `supabase/migrations/` er kørt, Log ind med Apple er slået til, og `.env` peger på projektet. Tilbage: databehandleraftalen (DPA), egen e-mailafsender (SMTP) og opgradering til Pro før lancering.
+
 FixMatch gemmer brugere (navn, telefon, e-mail), hvem der har ringet til hvilken virksomhed, og virksomhedernes egne tilmeldinger i **Supabase**. Serveren står i EU (Frankfurt). Det tager ca. 20 minutter at sætte op, og det er gratis at starte.
 
 **Uden Supabase virker appen stadig.** Brugeren gemmes så kun på telefonen, og en virksomhedstilmelding åbner en e-mail til jer. Det er nok til en TestFlight-demo. Til rigtige brugere skal Supabase være sat op.
@@ -44,7 +46,7 @@ Det laver tabellerne `profiles` (navn og telefon), `contacts` (hvem ringede til 
 
 3. **Egen e-mailafsender (SMTP).** Supabase' indbyggede afsender sender kun til e-mails i jeres eget Supabase-team og kun få i timen. Til rigtige brugere skal I bruge jeres egen: **Authentication → Emails → SMTP Settings**, med fx [Brevo](https://www.brevo.com) eller [Resend](https://resend.com) (begge har en gratis plan). Afsender: fx `login@fixmatch.dk`, når I har et domæne.
 
-   Indtil SMTP er på plads, virker **Log ind med Apple** for alle, og e-mail-login virker for jer selv.
+   Indtil SMTP er på plads, virker **Log ind med Apple** for alle. E-mail-login er skjult i appen med `EXPO_PUBLIC_EMAIL_LOGIN=off` i `.env`, fordi Supabase ikke må sende en kode på gratisplanen uden jeres egen afsender. Når SMTP virker og skabelonerne ovenfor er rettet, så sæt den til `on`, og byg appen igen.
 
 ## 5. Forbind appen
 
