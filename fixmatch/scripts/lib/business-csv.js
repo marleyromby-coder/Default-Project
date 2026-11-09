@@ -7,13 +7,23 @@ const CATEGORY_IDS = ['vvs', 'elektriker', 'toemrer', 'murer', 'mekaniker', 'mal
 
 /** Names people may type in the sheet, mapped to category ids. */
 const CATEGORY_ALIASES = {
-  vvs: 'vvs', "vvs'er": 'vvs', vvser: 'vvs', blikkenslager: 'vvs',
-  el: 'elektriker', elektriker: 'elektriker', elinstallatoer: 'elektriker',
-  toemrer: 'toemrer', tomrer: 'toemrer', snedker: 'toemrer',
+  vvs: 'vvs',
+  "vvs'er": 'vvs',
+  vvser: 'vvs',
+  blikkenslager: 'vvs',
+  el: 'elektriker',
+  elektriker: 'elektriker',
+  elinstallatoer: 'elektriker',
+  toemrer: 'toemrer',
+  tomrer: 'toemrer',
+  snedker: 'toemrer',
   murer: 'murer',
-  mekaniker: 'mekaniker', autovaerksted: 'mekaniker', vaerksted: 'mekaniker',
+  mekaniker: 'mekaniker',
+  autovaerksted: 'mekaniker',
+  vaerksted: 'mekaniker',
   maler: 'maler',
-  tagdaekker: 'tagdaekker', tag: 'tagdaekker',
+  tagdaekker: 'tagdaekker',
+  tag: 'tagdaekker',
   laasesmed: 'laasesmed',
 };
 
@@ -21,8 +31,22 @@ const AUTHORIZATION_KINDS = ['el', 'vvs', 'kloak', 'gas'];
 
 // Danish and English day names, so businesses abroad can write "Mon-Fri 07-16".
 const DAY_NAMES = {
-  man: 0, tir: 1, ons: 2, tor: 3, fre: 4, loer: 5, lor: 5, soen: 6, son: 6,
-  mon: 0, tue: 1, wed: 2, thu: 3, fri: 4, sat: 5, sun: 6,
+  man: 0,
+  tir: 1,
+  ons: 2,
+  tor: 3,
+  fre: 4,
+  loer: 5,
+  lor: 5,
+  soen: 6,
+  son: 6,
+  mon: 0,
+  tue: 1,
+  wed: 2,
+  thu: 3,
+  fri: 4,
+  sat: 5,
+  sun: 6,
 };
 
 /**
@@ -172,7 +196,9 @@ function parseHours(value, errors) {
         continue;
       }
       if (fromMinutes >= toMinutes) {
-        errors.push(`Åbningstider: lukketiden skal være efter åbningstiden i "${part.trim()}". Er der åbent om natten, så sæt doegnvagt=ja.`);
+        errors.push(
+          `Åbningstider: lukketiden skal være efter åbningstiden i "${part.trim()}". Er der åbent om natten, så sæt doegnvagt=ja.`,
+        );
         continue;
       }
       const pad = (h, m) => `${String(Number(h)).padStart(2, '0')}:${m ?? '00'}`;
@@ -225,7 +251,10 @@ function rowToBusiness(row, context) {
   const warnings = [];
 
   // Denmark unless the "land" column says otherwise (sign-ups from business_signups_export).
-  const country = String(row.land ?? '').trim().toUpperCase() || 'DK';
+  const country =
+    String(row.land ?? '')
+      .trim()
+      .toUpperCase() || 'DK';
   const market = COUNTRIES[country] ?? COUNTRIES.DK;
   if (!COUNTRIES[country]) errors.push(`Land skal være ${Object.keys(COUNTRIES).join(', ')}`);
   const abroad = country !== 'DK';
@@ -250,11 +279,17 @@ function rowToBusiness(row, context) {
   else if (!isValidCvr(cvr)) warnings.push('CVR-nummeret består ikke kontrolcifferet – tjek det i CVR');
 
   const phone = abroad ? normalizeIntlPhone(row.telefon, market.code) : normalizePhone(row.telefon);
-  if (!phone && abroad) errors.push(`Telefonnummer skal være et gyldigt nummer i ${country} (landekode +${market.code})`);
+  if (!phone && abroad)
+    errors.push(`Telefonnummer skal være et gyldigt nummer i ${country} (landekode +${market.code})`);
   else if (!phone) errors.push('Telefonnummer skal være et dansk nummer med 8 cifre');
 
-  const website = row.hjemmeside ? (/^https?:\/\//.test(row.hjemmeside) ? row.hjemmeside : `https://${row.hjemmeside}`) : undefined;
-  if (website && !/^https:\/\/[^\s.]+\.[^\s]+$/.test(website)) errors.push('Hjemmeside skal være en gyldig https-adresse');
+  const website = row.hjemmeside
+    ? /^https?:\/\//.test(row.hjemmeside)
+      ? row.hjemmeside
+      : `https://${row.hjemmeside}`
+    : undefined;
+  if (website && !/^https:\/\/[^\s.]+\.[^\s]+$/.test(website))
+    errors.push('Hjemmeside skal være en gyldig https-adresse');
 
   const hourlyMin = toNumber(row.timepris_min);
   const hourlyMax = toNumber(row.timepris_max) ?? hourlyMin;
@@ -296,7 +331,9 @@ function rowToBusiness(row, context) {
       errors.push(`Byen "${row.by ?? ''}" findes ikke i listen – udfyld breddegrad og laengdegrad`);
     }
   } else if (!(lat >= south && lat <= north && lon >= west && lon <= east)) {
-    errors.push(`Koordinaterne ligger ikke i ${country} (breddegrad ca. ${south}–${north}, længdegrad ca. ${west}–${east})`);
+    errors.push(
+      `Koordinaterne ligger ikke i ${country} (breddegrad ca. ${south}–${north}, længdegrad ca. ${west}–${east})`,
+    );
   }
 
   let trustpilot;
@@ -306,7 +343,8 @@ function rowToBusiness(row, context) {
     const url = row.trustpilot_url;
     if (!(score >= 1 && score <= 5)) errors.push('Trustpilot-score skal være mellem 1 og 5');
     if (!(reviews >= 0)) errors.push('Antal Trustpilot-anmeldelser skal være et tal');
-    if (!/^https:\/\/([a-z]+\.)?trustpilot\.com\//.test(url ?? '')) errors.push('Trustpilot-link skal starte med https://dk.trustpilot.com/');
+    if (!/^https:\/\/([a-z]+\.)?trustpilot\.com\//.test(url ?? ''))
+      errors.push('Trustpilot-link skal starte med https://dk.trustpilot.com/');
     const updatedAt = row.trustpilot_opdateret || today;
     if (!isIsoDate(updatedAt)) errors.push('Trustpilot opdateret skal være en dato (ÅÅÅÅ-MM-DD)');
     trustpilot = { score, reviews, url, updatedAt };
@@ -317,7 +355,9 @@ function rowToBusiness(row, context) {
     if (!part.trim()) continue;
     const [kind, number] = part.split(':').map((x) => x.trim());
     if (!AUTHORIZATION_KINDS.includes(fold(kind)) || !number) {
-      errors.push(`Autorisation "${part.trim()}" skal skrives som type:nummer, fx vvs:12345 (typer: ${AUTHORIZATION_KINDS.join(', ')})`);
+      errors.push(
+        `Autorisation "${part.trim()}" skal skrives som type:nummer, fx vvs:12345 (typer: ${AUTHORIZATION_KINDS.join(', ')})`,
+      );
     } else {
       authorizations.push({ kind: fold(kind), number });
     }
@@ -331,16 +371,26 @@ function rowToBusiness(row, context) {
   }
 
   // The Verificeret badge: the day FixMatch checked the business and what it checked.
-  const VERIFICATION_WORDS = { cvr: 'cvr', ejer: 'identity', autorisation: 'authorization', forsikring: 'insurance', garanti: 'guarantee' };
+  const VERIFICATION_WORDS = {
+    cvr: 'cvr',
+    ejer: 'identity',
+    autorisation: 'authorization',
+    forsikring: 'insurance',
+    garanti: 'guarantee',
+  };
   let verified;
   if (row.verificeret || row.verificeret_tjek) {
     const checks = [];
-    for (const word of String(row.verificeret_tjek ?? '').split(/[|,;]/).map((x) => fold(x.trim())).filter(Boolean)) {
+    for (const word of String(row.verificeret_tjek ?? '')
+      .split(/[|,;]/)
+      .map((x) => fold(x.trim()))
+      .filter(Boolean)) {
       if (VERIFICATION_WORDS[word]) checks.push(VERIFICATION_WORDS[word]);
       else errors.push(`Verificeret tjek "${word}" findes ikke (brug ${Object.keys(VERIFICATION_WORDS).join(', ')})`);
     }
     if (!isIsoDate(row.verificeret ?? '')) errors.push('Verificeret skal være datoen for tjekket (ÅÅÅÅ-MM-DD)');
-    if (!checks.includes('cvr') || !checks.includes('identity')) errors.push('Verificeret kræver mindst tjekkene cvr og ejer');
+    if (!checks.includes('cvr') || !checks.includes('identity'))
+      errors.push('Verificeret kræver mindst tjekkene cvr og ejer');
     verified = { date: row.verificeret, checks: [...new Set(checks)] };
   }
 
@@ -381,8 +431,14 @@ function rowToBusiness(row, context) {
     },
     ...(trustpilot ? { trustpilot } : {}),
     authorizations,
-    memberships: String(row.medlemskaber ?? '').split('|').map((x) => x.trim()).filter(Boolean),
-    services: String(row.ydelser ?? '').split('|').map((x) => x.trim()).filter(Boolean),
+    memberships: String(row.medlemskaber ?? '')
+      .split('|')
+      .map((x) => x.trim())
+      .filter(Boolean),
+    services: String(row.ydelser ?? '')
+      .split('|')
+      .map((x) => x.trim())
+      .filter(Boolean),
     hours,
     emergency: yes(row.doegnvagt),
     ...(row.svartid ? { responseTime: row.svartid } : {}),
@@ -395,10 +451,30 @@ function rowToBusiness(row, context) {
     // For the safety page ("Tryghed"): the names, as the business stated them.
     ...(row.forsikringsselskab ? { insurer: String(row.forsikringsselskab).trim().slice(0, 120) } : {}),
     ...(row.garantiordning ? { guaranteeScheme: String(row.garantiordning).trim().slice(0, 120) } : {}),
+    // Photos of finished work, as https addresses separated by |. At most 6.
+    ...(row.billeder_arbejde
+      ? {
+          workPhotos: String(row.billeder_arbejde)
+            .split('|')
+            .map((x) => x.trim())
+            .filter((x) => /^https:\/\//.test(x))
+            .slice(0, 6),
+        }
+      : {}),
     updatedAt: today,
   };
 
   return { business, errors, warnings };
 }
 
-module.exports = { parseCsv, rowToBusiness, parseHours, isValidCvr, normalizePhone, slugify, fold, toNumber, CATEGORY_IDS };
+module.exports = {
+  parseCsv,
+  rowToBusiness,
+  parseHours,
+  isValidCvr,
+  normalizePhone,
+  slugify,
+  fold,
+  toNumber,
+  CATEGORY_IDS,
+};

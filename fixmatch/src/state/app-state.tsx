@@ -10,6 +10,7 @@ import { DEFAULT_FILTERS } from '@/lib/filters';
 import { setDistanceUnit } from '@/lib/format';
 import { getMarket, isLaunched, type CountryCode, type Market } from '@/lib/markets';
 import { DEFAULT_PRIORITIES } from '@/lib/ranking';
+import { loadAnswerRates } from '@/state/answers';
 import { supabase } from '@/lib/supabase';
 import type { Business, Filters, Priorities, UserLocation } from '@/lib/types';
 import { syncWidgets } from '@/widgets/sync';
@@ -225,10 +226,12 @@ export function AppStateProvider({ children }: PropsWithChildren) {
   // "Hvem har tid i dag?": fetched at start and whenever the app comes back, so a business
   // that marks free time is seen within minutes. Coming back also rolls the demo days over.
   useEffect(() => {
-    const refresh = () =>
+    const refresh = () => {
       fetchAvailability()
         .then((availability) => dispatch({ type: 'availability', availability: availability ?? undefined }))
         .catch(() => undefined);
+      loadAnswerRates().catch(() => undefined);
+    };
     refresh();
     const subscription = AppState.addEventListener('change', (next) => {
       if (next === 'active') refresh();

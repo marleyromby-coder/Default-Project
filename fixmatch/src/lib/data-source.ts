@@ -1,3 +1,4 @@
+import { isPhotoKey } from '@/data/photos';
 import demoJson from '@/data/demo-businesses.json';
 import liveJson from '@/data/live-businesses.json';
 
@@ -59,6 +60,9 @@ export function isValidBusiness(value: unknown): value is Business {
  * Valid listings in the launched countries only. Live builds also drop demo records, e.g. from
  * a hosted feed. Listings for countries that are not launched yet are kept in the data for later.
  */
+/** At most this many photos of finished work per business. */
+export const MAX_WORK_PHOTOS = 6;
+
 export function parseBusinesses(value: unknown, allowDemo = DATA_MODE === 'demo'): Business[] {
   if (!Array.isArray(value)) return [];
   return value
@@ -74,6 +78,11 @@ export function parseBusinesses(value: unknown, allowDemo = DATA_MODE === 'demo'
       // A malformed check never shows a badge; the listing itself stays.
       verified: isValidVerification(business.verified) ? business.verified : undefined,
       insurer: typeof business.insurer === 'string' && business.insurer.trim() ? business.insurer.trim() : undefined,
+      workPhotos: Array.isArray(business.workPhotos)
+        ? business.workPhotos
+            .filter((p): p is string => typeof p === 'string' && (p.startsWith('https://') || isPhotoKey(p)))
+            .slice(0, MAX_WORK_PHOTOS)
+        : undefined,
       guaranteeScheme:
         typeof business.guaranteeScheme === 'string' && business.guaranteeScheme.trim()
           ? business.guaranteeScheme.trim()

@@ -64,3 +64,16 @@ export type PhotoKey = keyof typeof PHOTOS;
 export function isPhotoKey(value: string): value is PhotoKey {
   return value in PHOTOS;
 }
+
+/** The address of a photo: an https URL as it is, or a demo photo key as a Pexels image. */
+export function photoUrl(value: string, width = 800): string {
+  if (value.startsWith('https://')) return value;
+  if (!isPhotoKey(value)) return value;
+  const id = PHOTOS[value].pexelsId;
+  return `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${width}`;
+}
+
+/** The description of a photo for screen readers, when FixMatch has one. */
+export function photoAlt(value: string): string | undefined {
+  return isPhotoKey(value) ? PHOTOS[value].alt : undefined;
+}

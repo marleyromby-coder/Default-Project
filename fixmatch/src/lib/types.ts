@@ -116,6 +116,8 @@ export interface Business {
   insurer?: string;
   /** Name of the guarantee scheme the business belongs to (checked if `verified` has "guarantee"). */
   guaranteeScheme?: string;
+  /** Photos of finished work, uploaded by the business: https URLs (demo data uses photo keys). */
+  workPhotos?: string[];
   services: string[];
   hours: WeekHours;
   /** IANA time zone of the opening hours, when it differs from the country's. */

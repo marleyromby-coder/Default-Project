@@ -42,7 +42,12 @@ const SORT_OPTIONS = ALL_SORT_OPTIONS.filter((o) => TRUSTPILOT_ENABLED || o.valu
 export default function CategoryScreen() {
   const { column } = useLayout();
   const colors = useTheme();
-  const { id, job: jobId, akut } = useLocalSearchParams<{ id: string; job?: string; akut?: string }>();
+  const {
+    id,
+    job: jobId,
+    akut,
+    ledig,
+  } = useLocalSearchParams<{ id: string; job?: string; akut?: string; ledig?: string }>();
   const category = getCategory(id);
   const job = category?.jobs.find((j) => j.id === jobId);
   const { state, setFilters } = useApp();
@@ -53,8 +58,10 @@ export default function CategoryScreen() {
   // Opening from "Akut hjælp" turns on the døgnvagt filter once.
   useEffect(() => {
     if (akut === '1') setFilters({ ...DEFAULT_FILTERS, emergency: true });
+    // ... and "Fik du fat i dem?" the free-today filter.
+    if (ledig === '1') setFilters({ ...DEFAULT_FILTERS, availableSoon: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [akut]);
+  }, [akut, ledig]);
 
   const results = useResults(category?.id, sort);
   const filterCount = activeFilterCount(filters);

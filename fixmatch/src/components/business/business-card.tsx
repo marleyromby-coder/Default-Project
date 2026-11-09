@@ -15,6 +15,7 @@ import { getOpenStatus } from '@/lib/opening-hours';
 import type { ScoredBusiness } from '@/lib/ranking';
 import type { JobType } from '@/lib/types';
 import { isTopRated, isVerified } from '@/lib/verification';
+import { answerRateText, useAnswerRate } from '@/state/answers';
 import { useApp } from '@/state/app-state';
 
 import { AvailabilityBadge } from './availability-badge';
@@ -54,6 +55,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
   const topRated = isTopRated(business);
   const open = getOpenStatus(business.hours, undefined, timeZoneOf(business));
   const free = availableWhen(business);
+  const answers = answerRateText(useAnswerRate(business));
 
   const onCompare = () => {
     if (!toggleCompare(business.id)) onCompareLimit?.();
@@ -75,6 +77,9 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
     t('{distance} væk', { distance: formatDistance(distanceKm) }),
     open.label,
     free === 'today' ? t('ledig i dag') : free === 'tomorrow' ? t('ledig i morgen') : undefined,
+    answers
+      ? t('tager telefonen {answered} ud af {outOf} gange', { answered: answers.answered, outOf: answers.outOf })
+      : undefined,
     authorized ? t('autoriseret') : undefined,
     business.demo ? t('eksempelvirksomhed') : undefined,
   ]
@@ -140,6 +145,13 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
           {topRated ? <Badge label={t('Topbedømt')} tone="brand" icon="star" /> : null}
           {authorized ? <Badge label={t('Autoriseret')} tone="success" icon="shield" /> : null}
           {business.emergency ? <Badge label={t('Døgnvagt')} tone="warning" icon="bolt" /> : null}
+          {answers ? (
+            <Badge
+              label={t('Svarer {answered}/{outOf}', { answered: answers.answered, outOf: answers.outOf })}
+              tone="neutral"
+              icon="phone"
+            />
+          ) : null}
         </View>
         <Tappable
           onPress={() => toggleFavorite(business.id)}

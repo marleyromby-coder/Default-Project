@@ -1239,6 +1239,20 @@ function main() {
     }
   }
 
+  // Photos of finished work for about 70 % of the businesses: 3–5 stock photos of the trade,
+  // so the gallery can be shown in the demo. Real businesses upload their own.
+  const photoRandom = mulberry32(20261110);
+  for (const business of businesses) {
+    if (photoRandom() > 0.7) continue;
+    const pool = [...(CATEGORY_SETUP[business.categories[0]]?.photos ?? [])].filter((k) => !k.startsWith('vaerktoej'));
+    if (pool.length < 3) continue;
+    const count = 3 + Math.floor(photoRandom() * Math.min(3, pool.length - 2));
+    const picked = [];
+    while (picked.length < count && pool.length > 0)
+      picked.push(pool.splice(Math.floor(photoRandom() * pool.length), 1)[0]);
+    business.workPhotos = picked;
+  }
+
   const outPath = path.join(__dirname, '..', 'src', 'data', 'demo-businesses.json');
   fs.writeFileSync(outPath, JSON.stringify(businesses, null, 2) + '\n');
   console.log(`Wrote ${businesses.length} demo businesses to ${path.relative(process.cwd(), outPath)}`);

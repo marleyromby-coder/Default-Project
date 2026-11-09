@@ -940,7 +940,6 @@ const en: Record<string, string> = {
   'opkald i {month}': 'calls in {month}',
   'stjerner fra {count} kunder': 'stars from {count} customers',
   'ingen anmeldelser endnu': 'no reviews yet',
-  'priser delt af kunder': 'prices shared by customers',
   '{calls} opkald · {messages} beskeder': '{calls} calls · {messages} messages',
   'Kundernes priser vises, når mindst {min} har delt for samme opgave.':
     'Customers’ prices are shown once at least {min} have shared for the same job.',
@@ -1089,6 +1088,42 @@ const en: Record<string, string> = {
   Forbrugerklagenævnet: 'Forbrugerklagenævnet (Consumer Complaints Board)',
   'Når intet andet nævn kan tage sagen. Klag via Nævnenes Hus.':
     'When no other board can take the case. Complain via Nævnenes Hus.',
+  'gange I tog telefonen, ifølge kunder': 'times you answered, according to customers',
+  'for få svar om telefonen endnu': 'too few answers about the phone yet',
+  'Tager telefonen': 'Answers the phone',
+  '{answered} ud af {outOf} gange, ifølge kunder via FixMatch':
+    '{answered} out of {outOf} times, according to customers via FixMatch',
+  'tager telefonen {answered} ud af {outOf} gange': 'answers the phone {answered} out of {outOf} times',
+  'Svarer {answered}/{outOf}': 'Answers {answered}/{outOf}',
+  'Fjern billedet?': 'Remove the picture?',
+  'Billedet forsvinder fra jeres side.': 'The picture disappears from your page.',
+  Fjern: 'Remove',
+  'Billedet blev ikke fjernet. Tjek internettet, og prøv igen.':
+    'The picture was not removed. Check your internet connection and try again.',
+  'Billede {number} af udført arbejde': 'Picture {number} of finished work',
+  'Viser billedet stort': 'Shows the picture large',
+  'Billede af udført arbejde': 'Picture of finished work',
+  eksempelbillede: 'example picture',
+  'Udført arbejde': 'Finished work',
+  'Eksempelbilleder. Rigtige virksomheder lægger selv billeder af deres arbejde op.':
+    'Example pictures. Real businesses upload pictures of their own work.',
+  'Billederne er lagt op af virksomheden selv.': 'The pictures were uploaded by the business itself.',
+  'Billedet blev ikke lagt op. Tjek internettet, og prøv igen.':
+    'The picture was not uploaded. Check your internet connection and try again.',
+  'Billeder af jeres arbejde': 'Pictures of your work',
+  'Vis kunderne, hvad I kan: op til {max} billeder af færdige opgaver. Ingen personer eller adresser på billederne.':
+    'Show customers what you can do: up to {max} pictures of finished jobs. No people or addresses in the pictures.',
+  'Læg billeder op': 'Upload pictures',
+  'I eksemplet bliver billederne kun på denne telefon.': 'In the example the pictures stay on this phone only.',
+  'Ingen svarede': 'Nobody answered',
+  'Tak, det hjælper andre. Vil du se {plural}, der selv har meldt ledig tid i dag?':
+    'Thanks, that helps others. Do you want to see {plural} who have marked free time today?',
+  'Nej tak': 'No thanks',
+  'Vis dem': 'Show them',
+  'Fik du fat i {name}?': 'Did you reach {name}?',
+  'Dit svar viser andre, om de tager telefonen. Ingen ser, hvem der svarede.':
+    'Your answer shows others whether they answer the phone. Nobody sees who answered.',
+  'Nej, ingen svarede': 'No, nobody answered',
 };
 
 export default en;

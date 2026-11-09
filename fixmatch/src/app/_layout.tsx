@@ -10,6 +10,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { MaxContentWidth, SerifFonts } from '@/constants/theme';
 import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { canContact, useAccount, useAccountSkipped } from '@/state/account';
+import { CallFollowUp } from '@/components/call-follow-up';
 import { AppStateProvider, useApp } from '@/state/app-state';
 import { useAppearanceLoaded } from '@/state/appearance';
 import { getLanguage, t } from '@/i18n';
@@ -41,6 +42,7 @@ export default function RootLayout() {
       <AppStateProvider>
         <WebFrame>
           <RootNavigator />
+          <CallFollowUp />
         </WebFrame>
       </AppStateProvider>
       <StatusBar style="auto" />

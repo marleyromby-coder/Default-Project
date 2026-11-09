@@ -24,6 +24,7 @@ import type { Business } from '@/lib/types';
 import { getLanguage, LANGUAGES, t } from '@/i18n';
 import { clearContacts, deleteAccount, signOut, useAccount, useContacts, type ContactRecord } from '@/state/account';
 import { useApp } from '@/state/app-state';
+import { clearAnswers } from '@/state/answers';
 import { forgetManagedBusiness, useManagedBusiness } from '@/state/business-account';
 import { clearCommunity } from '@/state/community';
 import { setAppearance, useAppearance } from '@/state/appearance';
@@ -56,6 +57,7 @@ export default function ProfileScreen() {
         text: t('Log ud'),
         onPress: () => {
           clearCommunity();
+          clearAnswers();
           forgetManagedBusiness();
           signOut();
         },
@@ -75,6 +77,7 @@ export default function ProfileScreen() {
             deleteAccount()
               .then(() => {
                 clearCommunity();
+                clearAnswers();
                 forgetManagedBusiness();
               })
               .catch(() =>

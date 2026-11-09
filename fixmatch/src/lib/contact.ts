@@ -7,6 +7,7 @@ import { Linking, Platform, Share } from 'react-native';
 import { APP_INFO } from '@/constants/app-info';
 import { t } from '@/i18n';
 import { logContact, requireContactProfile } from '@/state/account';
+import { rememberCall } from '@/state/answers';
 import type { Problem } from '@/state/problem';
 
 import { showDialog } from './dialog';
@@ -74,6 +75,7 @@ export async function callBusiness(business: Business): Promise<void> {
     return;
   }
   logContact(business, 'call');
+  rememberCall(business);
   try {
     await Linking.openURL(phoneHref(business.contact.phone));
   } catch {

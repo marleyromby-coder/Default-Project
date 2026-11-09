@@ -7,6 +7,7 @@ import { BusinessMark } from '@/components/business/business-mark';
 import { AvailabilityBadge } from '@/components/business/availability-badge';
 import { VerifiedMark } from '@/components/business/verified-mark';
 import { CustomerCard } from '@/components/business/customer-card';
+import { WorkPhotosCard } from '@/components/business/work-photos';
 import { PhotoStrip } from '@/components/problem-photos';
 import { OpenStatus } from '@/components/business/open-status';
 import { PriceLevel } from '@/components/business/price-level';
@@ -59,6 +60,7 @@ import { businessText, countryOf, currencyOf } from '@/lib/business-text';
 import { getMarket, taxNote } from '@/lib/markets';
 import { CHECK_TEXT, isTopRated, isVerified, passedChecks, verificationExpiry } from '@/lib/verification';
 import { MAX_COMPARE, useApp, useBusiness } from '@/state/app-state';
+import { answerRateText, useAnswerRate } from '@/state/answers';
 import { hasProblem, useProblem } from '@/state/problem';
 
 /** How far the header scrolls before the compact title bar appears. */
@@ -74,6 +76,7 @@ export default function BusinessScreen() {
   const [scored] = useScored(ids);
   const { state, toggleFavorite, toggleCompare } = useApp();
   const problem = useProblem();
+  const answers = answerRateText(useAnswerRate(business));
   const [scrolled, setScrolled] = useState(false);
 
   if (!business || !scored) {
@@ -236,6 +239,19 @@ export default function BusinessScreen() {
               onPress={() => callBusiness(business)}
             />
             <Divider inset={30} />
+            {answers ? (
+              <>
+                <InfoRow
+                  icon="check"
+                  label={t('Tager telefonen')}
+                  value={t('{answered} ud af {outOf} gange, ifølge kunder via FixMatch', {
+                    answered: answers.answered,
+                    outOf: answers.outOf,
+                  })}
+                />
+                <Divider inset={30} />
+              </>
+            ) : null}
             {business.contact.website ? (
               <>
                 <InfoRow
@@ -415,6 +431,8 @@ export default function BusinessScreen() {
               </View>
             ) : null}
           </Card>
+
+          <WorkPhotosCard business={business} />
 
           <Card>
             <CardTitle title={t('Om virksomheden')} icon="store" />

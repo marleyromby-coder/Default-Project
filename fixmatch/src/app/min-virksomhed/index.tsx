@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BusinessMark } from '@/components/business/business-mark';
 import { VerifiedMark } from '@/components/business/verified-mark';
+import { ManageWorkPhotos } from '@/components/business/work-photos';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardTitle, Divider } from '@/components/ui/card';
@@ -33,6 +34,7 @@ import {
 import { MIN_PAID_PRICES } from '@/lib/prices';
 import type { Business } from '@/lib/types';
 import { t } from '@/i18n';
+import { answerRateText, useAnswerRate } from '@/state/answers';
 import { useApp, useBusiness } from '@/state/app-state';
 import {
   type BusinessContact,
@@ -102,6 +104,7 @@ function Dashboard({ managed, business }: { managed: ManagedBusiness; business: 
   const reviews = useReviewSummary(business.id);
   const shared = useSharedPrices().filter((r) => r.businessId === business.id);
   const lastRequest = useLastChangeRequest(business.id);
+  const answers = answerRateText(useAnswerRate(business));
 
   const fetchAll = useCallback(() => {
     loadReviews(business.id).catch(() => undefined);
@@ -244,7 +247,10 @@ function Dashboard({ managed, business }: { managed: ManagedBusiness; business: 
                   reviews ? t('stjerner fra {count} kunder', { count: reviews.reviews }) : t('ingen anmeldelser endnu')
                 }
               />
-              <Stat value={formatNumber(shared.length)} label={t('priser delt af kunder')} />
+              <Stat
+                value={answers ? `${answers.answered}/${answers.outOf}` : '–'}
+                label={answers ? t('gange I tog telefonen, ifølge kunder') : t('for få svar om telefonen endnu')}
+              />
             </View>
             {(months ?? []).slice(0, 6).map((month) => (
               <View key={month.month}>
@@ -328,6 +334,8 @@ function Dashboard({ managed, business }: { managed: ManagedBusiness; business: 
           )}
         </AppText>
       </Card>
+
+      <ManageWorkPhotos managed={managed} business={business} />
 
       <ListSection
         title={t('Jeres oplysninger')}
