@@ -1,4 +1,4 @@
-import { router, Stack } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -13,6 +13,7 @@ import { DEFAULT_LOCATION } from '@/data/places';
 import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { localDay } from '@/lib/availability';
+import { codeFromLink } from '@/lib/group-link';
 import { showDialog } from '@/lib/dialog';
 import { useAccount } from '@/state/account';
 import { useApp, useMarket } from '@/state/app-state';
@@ -29,7 +30,8 @@ import { t } from '@/i18n';
 
 /**
  * "Naborabat": the user's groups and the open ones nearby, a code field to join one, and a
- * button to start a new one.
+ * button to start a new one. The group's page on the website opens this screen with the code
+ * filled in, so the neighbour only has to tap "Deltag".
  */
 export default function GroupsScreen() {
   const colors = useTheme();
@@ -40,7 +42,8 @@ export default function GroupsScreen() {
   const account = useAccount();
   const mine = useMyGroups();
   const nearby = useNearbyGroups();
-  const [code, setCode] = useState('');
+  const params = useLocalSearchParams<{ kode?: string; code?: string }>();
+  const [code, setCode] = useState(() => codeFromLink(params.kode ?? params.code));
   const [busy, setBusy] = useState(false);
   const postalCode = state.location.postalCode ?? DEFAULT_LOCATION.postalCode ?? '';
 

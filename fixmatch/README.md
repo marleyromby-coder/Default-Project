@@ -82,7 +82,7 @@ To widgets, bygget med [expo-widgets](https://docs.expo.dev/versions/v58.0.0/sdk
 Apple kræver en offentlig privatlivspolitik og en support-side. De bygges ud fra de samme tekster som skabelonerne i `docs/jura/`:
 
 ```bash
-npm run website:build   # → dist-website/ med forside, privatliv, vilkår, support og tilmelding på dansk og engelsk
+npm run website:build   # → dist-website/ med forside, privatliv, vilkår, support, tilmelding, ledig i dag og naborabat på dansk og engelsk
 ```
 
 - Siden er klar til [Netlify Drop](https://app.netlify.com/drop) på **https://fixmatchh.netlify.app**. Trin for trin: `docs/lancering/hjemmeside.md`.
@@ -162,7 +162,7 @@ templates/          Regnearksskabelon til virksomheder
 docs/app-store/     App Store-tekster, privatlivs-svar og tjekliste
 docs/jura/          Samtykke, privatlivspolitik, vilkår, Trustpilot, Apple Kort og kontakt-regler
 docs/lancering/     Global lancering, udgivelse uden CVR og fremvisning
-website/            Forside og support til hjemmesiden (resten kommer fra docs/jura/)
+website/            Tekster og app-billeder til hjemmesiden (forsiden er scripts/lib/landing.js, jura fra docs/jura/)
 ```
 
 ## Sådan virker FixMatch-scoren

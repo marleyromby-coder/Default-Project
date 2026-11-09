@@ -3,11 +3,14 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
+import { CATEGORY_DATA } from '@/data/categories';
 import { CONSENT_VERSION, emptySignup, signupRow } from '@/lib/business-signup';
 
 // The website builder is plain Node.js (CommonJS) so it runs without a build step.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { buildWebsite, fill, markdownToHtml, summary } = require('../../scripts/build-website');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { readJobs } = require('../../scripts/lib/app-data');
 
 /** The text as a browser shows it: e-mail addresses are written as character references. */
 const decode = (html: string) => html.replace(/&#(\d+);/g, (_, code: string) => String.fromCodePoint(Number(code)));
@@ -31,7 +34,7 @@ describe('website', () => {
   it('builds every page in Danish and English, filled in and without team notes', () => {
     const out = fs.mkdtempSync(path.join(os.tmpdir(), 'fixmatch-site-'));
     const { written, info } = buildWebsite(out);
-    expect(written).toHaveLength(12);
+    expect(written).toHaveLength(14);
     for (const file of written) {
       const html = fs.readFileSync(path.join(out, file), 'utf8');
       expect(html).toMatch(/<html lang="(da|en)">/);
@@ -54,7 +57,7 @@ describe('website', () => {
     expect(fs.existsSync(path.join(out, 'icon.png'))).toBe(true);
     expect(fs.readFileSync(path.join(out, 'robots.txt'), 'utf8')).toContain(`Sitemap: ${info.website}/sitemap.xml`);
     const sitemap = fs.readFileSync(path.join(out, 'sitemap.xml'), 'utf8');
-    expect(urls).toHaveLength(12);
+    expect(urls).toHaveLength(14);
     for (const url of urls) expect(sitemap).toContain(`<loc>${url}</loc>`);
     const notFound = fs.readFileSync(path.join(out, '404.html'), 'utf8');
     expect(notFound).toContain('<base href="/">');
@@ -106,5 +109,53 @@ describe('website', () => {
     expect(da).toContain('/rest/v1/rpc/set_availability');
     // The code is read from the link's #fragment, which is never sent to a server.
     expect(da).toContain("hash.get('kode')");
+  });
+
+  it('reads the trades and jobs from the app, so the website names them the same way', () => {
+    const trades = readJobs(path.join(__dirname, '../..'));
+    expect(Object.keys(trades)).toEqual(CATEGORY_DATA.map((c) => c.id));
+    for (const category of CATEGORY_DATA) {
+      expect(Object.keys(trades[category.id].jobs)).toEqual(category.jobs.map((j) => j.id));
+    }
+    expect(trades.tagdaekker.jobs.tagrender).toEqual({ da: 'Rensning af tagrender', en: 'Gutter cleaning' });
+  });
+
+  it('has a front page with pictures from the app and live numbers from the public views only', () => {
+    const out = fs.mkdtempSync(path.join(os.tmpdir(), 'fixmatch-site-'));
+    buildWebsite(out);
+    for (const [file, lang] of [
+      ['index.html', 'da'],
+      ['en/index.html', 'en'],
+    ]) {
+      const html = fs.readFileSync(path.join(out, file), 'utf8');
+      const images = [...html.matchAll(/src="([^"]+\.webp)"/g)].map((m) => m[1]);
+      expect(images.length).toBeGreaterThanOrEqual(5);
+      for (const image of images) {
+        expect(image).toContain(`-${lang}.webp`);
+        expect(fs.existsSync(path.join(out, path.dirname(file), image))).toBe(true);
+      }
+      expect(html).toMatch(/<img [^>]*alt="[^"]{20,}"/);
+      // Fictional example businesses in the pictures are said to be fictional.
+      expect(html).toMatch(lang === 'da' ? /fiktive eksempler/ : /fictional examples/);
+      // Only counts from the views the app reads with the publishable key.
+      expect(html).toContain("Prefer: 'count=exact'");
+      expect(html).not.toMatch(/sb_secret|service_role/);
+      expect(html).not.toContain(`/rest/v1/business_signups`);
+    }
+  });
+
+  it('has a Naborabat page that shows a group from its code and opens the app', () => {
+    const out = fs.mkdtempSync(path.join(os.tmpdir(), 'fixmatch-site-'));
+    buildWebsite(out);
+    const da = fs.readFileSync(path.join(out, 'naborabat/index.html'), 'utf8');
+    const en = fs.readFileSync(path.join(out, 'en/neighbours/index.html'), 'utf8');
+    expect(da).toContain('id="group"');
+    expect(da).toContain("'fixmatch://faelles?kode='");
+    expect(da).toContain('/rest/v1/open_group_jobs?select=');
+    // Never who is in the group: the view has no member names, and the page does not ask for any.
+    expect(da).not.toMatch(/user_id|created_by/);
+    expect(da).toContain('Rensning af tagrender');
+    expect(en).toContain('Gutter cleaning');
+    expect(da).toContain('Er I mindst 3 i samme gade');
   });
 });

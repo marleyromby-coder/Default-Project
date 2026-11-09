@@ -2,10 +2,19 @@ import { makeBusiness } from '@/__fixtures__/business';
 import { getCategory } from '@/data/categories';
 import { EMERGENCIES } from '@/data/emergencies';
 import { applyFilters, DEFAULT_FILTERS } from '@/lib/filters';
+import { codeFromLink, groupLink } from '@/lib/group-link';
 import { createGroup, demoGroups, joinGroup, makeCode, resetGroups } from '@/state/groups';
 
 describe('Naborabat', () => {
   beforeEach(() => resetGroups());
+
+  it('links invites to the group page on the website, which opens the app with the code', () => {
+    expect(groupLink('ABC123', 'da')).toBe('https://fixmatchh.netlify.app/naborabat/?kode=ABC123');
+    expect(groupLink('ABC123', 'en')).toBe('https://fixmatchh.netlify.app/en/neighbours/?code=ABC123');
+    expect(codeFromLink('abc-123x')).toBe('ABC123');
+    expect(codeFromLink(['xyz789', 'nope'])).toBe('XYZ789');
+    expect(codeFromLink(undefined)).toBe('');
+  });
 
   it('makes readable 6-letter codes without look-alikes', () => {
     const code = makeCode(() => 0.999);

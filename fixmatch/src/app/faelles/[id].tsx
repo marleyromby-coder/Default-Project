@@ -12,7 +12,6 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { Icon } from '@/components/ui/icon';
 import { AppText } from '@/components/ui/text';
 import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
-import { APP_INFO } from '@/constants/app-info';
 import { getCategory } from '@/data/categories';
 import { DEFAULT_LOCATION } from '@/data/places';
 import { useTheme } from '@/hooks/use-theme';
@@ -22,6 +21,7 @@ import { countryOf } from '@/lib/business-text';
 import { sendProblem } from '@/lib/contact';
 import { showDialog } from '@/lib/dialog';
 import { formatDate } from '@/lib/format';
+import { groupLink } from '@/lib/group-link';
 import { scoreBusinesses } from '@/lib/ranking';
 import type { Business } from '@/lib/types';
 import { useAccount } from '@/state/account';
@@ -39,17 +39,15 @@ import {
 } from '@/state/groups';
 import { t } from '@/i18n';
 
-/** The message to the neighbours, with the code. */
+/** The message to the neighbours, with the link and the code. */
 export function inviteText(group: GroupJob, jobName: string): string {
   return [
     t('Hej nabo! Vi går sammen om {job} i {area}, så vi får det lavet samme dag og billigere.', {
       job: jobName.toLowerCase(),
       area: group.area,
     }),
-    t('Vil du med? Åbn FixMatch → Naborabat, og skriv koden {code}. Eller hent appen på {website}.', {
-      code: group.code,
-      website: APP_INFO.website,
-    }),
+    t('Vil du med? Se gruppen og deltag her: {link}', { link: groupLink(group.code) }),
+    t('Eller åbn FixMatch → Naborabat, og skriv koden {code}.', { code: group.code }),
   ].join('\n\n');
 }
 

@@ -1391,8 +1391,9 @@ const en: Record<string, string> = {
     "Call your insurance company within 24 hours and send them the pictures. The pictures stay on your phone, and you can send them to the tradesperson from the business's page.",
   'Hej nabo! Vi går sammen om {job} i {area}, så vi får det lavet samme dag og billigere.':
     'Hi neighbour! We are teaming up on {job} in {area}, so it gets done the same day and cheaper.',
-  'Vil du med? Åbn FixMatch → Naborabat, og skriv koden {code}. Eller hent appen på {website}.':
-    'Want to join? Open FixMatch → Neighbour discount and enter the code {code}. Or get the app at {website}.',
+  'Vil du med? Se gruppen og deltag her: {link}': 'Want to join? See the group and join here: {link}',
+  'Eller åbn FixMatch → Naborabat, og skriv koden {code}.':
+    'Or open FixMatch → Neighbour discount, and enter the code {code}.',
   'Hej {name}. Vi er {count} husstande i {area}, {postal}, der gerne vil have {job} lavet samme dag, gerne mellem {from} og {to}.':
     'Hi {name}. We are {count} households in {area}, {postal}, who would like {job} done the same day, preferably between {from} and {to}.',
   'Kan I give en samlet pris med rabat, når I sparer kørslen? Vi har fundet jer på FixMatch.':
@@ -1561,7 +1562,8 @@ const en: Record<string, string> = {
   'Hej {name}. Jeg har fundet jer på FixMatch og vil gerne have et videotjek på 5 minutter, så I kan se problemet og give et overslag.':
     'Hi {name}. I found you on FixMatch and would like a 5-minute video check, so you can see the problem and give an estimate.',
   'Hvornår passer det jer? Jeg kan ringe op på FaceTime.': 'When suits you? I can call on FaceTime.',
-  "Log ind med Apple på en iPhone. Login med e-mail kommer snart.": "Log in with Apple on an iPhone. E-mail login is coming soon.",
+  'Log ind med Apple på en iPhone. Login med e-mail kommer snart.':
+    'Log in with Apple on an iPhone. E-mail login is coming soon.',
 };
 
 export default en;

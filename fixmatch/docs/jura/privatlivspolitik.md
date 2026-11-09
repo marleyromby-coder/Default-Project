@@ -64,11 +64,15 @@ Har du kontaktet en virksomhed gennem FixMatch, kan du anmelde den og dele, hvad
 
 ## 10. Naborabat
 
-Starter du en gruppe, gemmer vi opgaven, gaden eller området, som du selv skriver det, dit postnummer, perioden, din besked og en kode hos Supabase i EU, knyttet til din bruger. Melder du dig til en gruppe, gemmer vi, at din bruger er med. Alle i appen kan se opgaven, området, perioden og hvor mange der er med, men aldrig hvem. Grupper forsvinder fra listen efter 90 dage, og alt slettes, når du sletter din bruger. Beskeden til virksomheden sender du selv fra din telefon.
+Starter du en gruppe, gemmer vi opgaven, gaden eller området, som du selv skriver det, dit postnummer, perioden, din besked og en kode hos Supabase i EU, knyttet til din bruger. Melder du dig til en gruppe, gemmer vi, at din bruger er med. Alle i appen og alle med gruppens link på hjemmesiden kan se opgaven, området, perioden, beskeden og hvor mange der er med, men aldrig hvem. Grupper forsvinder fra listen efter 90 dage, og alt slettes, når du sletter din bruger. Beskeden til virksomheden sender du selv fra din telefon.
 
 ## 11. Billeder og data fra internettet
 
 Appen henter virksomhedernes egne billeder og (hvis aktiveret) en opdateret virksomhedsliste fra internettet. Ved den slags forespørgsler ser serveren din IP-adresse, som det er normalt på internettet. Vi gemmer ikke IP-adresser i forbindelse med hentning af virksomhedslisten.
+
+Hjemmesiden ligger hos Netlify, som ser din IP-adresse, når du besøger den. På forsiden og Naborabat-siden henter din browser tal og grupper fra Supabase i EU, fx hvor mange virksomheder der har tid i dag. Det er de samme offentlige oplysninger som i appen, og der sendes intet om dig ud over det, enhver forespørgsel på internettet indeholder. Hjemmesiden bruger ingen cookies, statistik eller reklame. Siden "Ledig i dag" husker virksomhedens link på enheden, så et bogmærke er nok.
+
+> Note til teamet: Tjek Netlifys databehandleraftale og overførsel til USA med advokaten, før lanceringen.
 
 ## 12. Oplysninger om virksomheder
 

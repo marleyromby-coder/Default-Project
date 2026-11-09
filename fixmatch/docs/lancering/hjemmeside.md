@@ -1,8 +1,19 @@
 # Hjemmesiden – læg den online med Netlify Drop
 
-*Skrevet 6. november 2026.*
+*Skrevet 6. november 2026. Ny forside og Naborabat-side 9. november 2026.*
 
-Hjemmesiden har forside, privatlivspolitik, vilkår, support og tilmelding for virksomheder på dansk og engelsk. Apple kræver adressen på privatlivspolitikken og support-siden, før appen kan komme i App Store.
+Hjemmesiden har forside, privatlivspolitik, vilkår, support, tilmelding for virksomheder, "Ledig i dag" og Naborabat på dansk og engelsk. Apple kræver adressen på privatlivspolitikken og support-siden, før appen kan komme i App Store.
+
+## Sådan hænger siden sammen med appen
+
+- **Forsiden** viser, hvad appen kan, med billeder af appens egne skærme. Under overskriften står **Lige nu på FixMatch**: hvor mange virksomheder der har tid i dag, åbne naborabat-grupper, delte priser og anmeldelser. Tallene kommer direkte fra Supabase, fra de samme offentlige visninger som appen læser. Et tal vises først, når det er over 0.
+- **Naborabat** (`/naborabat/?kode=ABC123`): Når en nabo deler en gruppe i appen, får de andre et link hertil. Siden viser opgaven, gaden, perioden og hvor mange der er med, aldrig hvem. Knappen **Åbn i FixMatch og deltag** åbner appen på Naborabat med koden udfyldt.
+- **Tilmelding** og **Ledig i dag** gemmer i Supabase, ligesom appen.
+- Fag og opgaver, mindste gruppe og rabat læses fra appens kode, når siden bygges, så siden og appen siger det samme.
+
+Billederne ligger i `website/images` (WebP, 600 px brede). Tag nye, når skærmene i appen ændrer sig: kør appen på web (`npx expo export -p web`), tag skærmbilleder i 390 × 844, og gem dem med samme navne.
+
+**Links, der åbner appen direkte (universal links)** kræver jeres Team ID fra Apple. Indtil da åbner knappen appen med `fixmatch://`, og siden virker for alle uden appen.
 
 Indtil I køber et domæne, ligger siden gratis hos Netlify på **https://fixmatchh.netlify.app**. Kontakt-e-mailen er Marleys egen, og udgiveren er Marley Romby Sangill (`src/constants/app-info.ts`).
 

@@ -60,11 +60,15 @@ If you contacted a business through FixMatch, you can review it and share what t
 
 ## 10. Neighbour discount
 
-If you start a group, we store the job, the street or area as you write it, your postcode, the period, your message and a code with Supabase in the EU, linked to your account. If you join a group, we store that your account is a member. Everyone in the app can see the job, the area, the period and how many are in, but never who. Groups leave the list after 90 days, and everything is deleted when you delete your account. You send the message to the business from your own phone yourself.
+If you start a group, we store the job, the street or area as you write it, your postcode, the period, your message and a code with Supabase in the EU, linked to your account. If you join a group, we store that your account is a member. Everyone in the app, and anyone with the group's link on the website, can see the job, the area, the period, the message and how many are in, but never who. Groups leave the list after 90 days, and everything is deleted when you delete your account. You send the message to the business from your own phone yourself.
 
 ## 11. Images and data from the internet
 
 The app loads the businesses' own pictures and (if switched on) an updated list of businesses from the internet. As is normal on the internet, the server sees your IP address for these requests. We do not store IP addresses when the business list is loaded.
+
+The website is hosted by Netlify, which sees your IP address when you visit it. On the front page and the neighbour discount page, your browser loads numbers and groups from Supabase in the EU, such as how many businesses have time today. It is the same public information as in the app, and nothing about you is sent beyond what any request on the internet contains. The website uses no cookies, statistics or advertising. The "Free today" page remembers the business's link on the device, so a bookmark is enough.
+
+> Note for the team: check Netlify's data processing agreement and transfer to the US with the lawyer before launch.
 
 ## 12. Information about businesses
 

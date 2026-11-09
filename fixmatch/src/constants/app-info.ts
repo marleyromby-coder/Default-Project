@@ -28,5 +28,5 @@ export const APP_INFO = {
   supportUrl: `${WEBSITE}/support/`,
   supportUrlEn: `${WEBSITE}/en/support/`,
   /** Date the legal texts were last reviewed. */
-  legalUpdated: '2026-11-06',
+  legalUpdated: '2026-11-09',
 } as const;

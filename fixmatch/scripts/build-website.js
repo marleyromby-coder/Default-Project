@@ -1,29 +1,39 @@
 #!/usr/bin/env node
 /**
- * Builds the public website: front page, privacy policy, terms, support and the sign-up
- * form for businesses, in Danish and English. Apple needs public privacy policy and support URLs.
+ * Builds the public website: the front page with screenshots from the app, privacy policy, terms,
+ * support, the sign-up form for businesses, "Ledig i dag" and the Naborabat page that the app's
+ * invites link to, in Danish and English. Apple needs public privacy policy and support URLs.
+ * The pages use the same Supabase project as the app (fixmatch/.env).
  *
  *   npm run website:build   → dist-website/, ready for Netlify Drop (docs/lancering/hjemmeside.md)
  *
  * Besides the pages it writes what a public site needs: a description and a sharing image
  * for search engines and links, robots.txt, sitemap.xml, a 404 page and Netlify's _headers.
  *
- * The texts come from docs/jura (the legal templates) and website/. Fields in
+ * The front page is scripts/lib/landing.js; the other texts come from docs/jura (the legal
+ * templates) and website/, and the pictures from website/images. Fields in
  * {{…}} are filled in from src/constants/app-info.ts. Lines starting with ">"
  * are notes for the team and are left out.
  */
 const fs = require('node:fs');
 const path = require('node:path');
 
+const { readGroupDiscount, readNumber } = require('./lib/app-data');
 const { AVAILABILITY_STYLE, availabilityForm } = require('./lib/availability-form');
+const { GROUP_STYLE, groupPage } = require('./lib/group-page');
+const { LANDING_STYLE, landing } = require('./lib/landing');
 const { FORM_STYLE, signupForm } = require('./lib/signup-form');
 
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'dist-website');
 
-/** Each page in both languages: source file and the folder it is published in. */
+/**
+ * Each page in both languages: source file and the folder it is published in. LANDING is the
+ * front page (scripts/lib/landing.js). The header and footer link to pages by their place here.
+ */
+const LANDING = 'landing';
 const PAGES = [
-  { da: ['website/forside.md', ''], en: ['website/home.en.md', 'en/'] },
+  { da: [LANDING, ''], en: [LANDING, 'en/'] },
   { da: ['docs/jura/privatlivspolitik.md', 'privatliv/'], en: ['docs/jura/privacy-policy.en.md', 'en/privacy/'] },
   { da: ['docs/jura/vilkaar.md', 'vilkaar/'], en: ['docs/jura/terms.en.md', 'en/terms/'] },
   { da: ['website/support.md', 'support/'], en: ['website/support.en.md', 'en/support/'] },
@@ -31,6 +41,8 @@ const PAGES = [
   { da: ['website/tilmeld.md', 'tilmeld/'], en: ['website/signup.en.md', 'en/sign-up/'] },
   // "Hvem har tid i dag?": businesses mark free time with their personal link (scripts/lib/availability-form.js).
   { da: ['website/ledig.md', 'ledig/'], en: ['website/available.en.md', 'en/available/'] },
+  // Naborabat: the invites from the app link here with the group's code (scripts/lib/group-page.js).
+  { da: ['website/naborabat.md', 'naborabat/'], en: ['website/neighbours.en.md', 'en/neighbours/'] },
 ];
 
 const UI = {
@@ -39,6 +51,9 @@ const UI = {
     terms: 'Vilkår',
     support: 'Support',
     business: 'For virksomheder',
+    features: 'Funktioner',
+    featuresAnchor: 'funktioner',
+    groups: 'Naborabat',
     other: 'English',
     locale: 'da-DK',
   },
@@ -47,6 +62,9 @@ const UI = {
     terms: 'Terms',
     support: 'Support',
     business: 'For businesses',
+    features: 'Features',
+    featuresAnchor: 'features',
+    groups: 'Neighbour discount',
     other: 'Dansk',
     locale: 'en-GB',
   },
@@ -166,13 +184,18 @@ function formatDate(iso, locale) {
 const STYLE = `
 @font-face { font-family: Fraunces; font-weight: 600; font-display: swap; src: url("{{fonts}}Fraunces_600SemiBold.ttf") format("truetype"); }
 @font-face { font-family: Fraunces; font-weight: 700; font-display: swap; src: url("{{fonts}}Fraunces_700Bold.ttf") format("truetype"); }
-:root { --bg: #F4F1EA; --surface: #FFFDF9; --border: #E6E0D4; --text: #1C1A17; --muted: #5E574C; --brand: #1F5A46; --accent: #D09A2E; color-scheme: light dark; }
-@media (prefers-color-scheme: dark) { :root { --bg: #11130F; --surface: #1A1D18; --border: #30352D; --text: #F2EEE5; --muted: #B8B1A4; --brand: #8FCBAD; --accent: #E0AE4A; } }
+:root { --bg: #F4F1EA; --surface: #FFFDF9; --border: #E6E0D4; --text: #1C1A17; --muted: #5E574C; --brand: #1F5A46; --brand-strong: #1F4A3A; --brand-soft: #E2EBE4; --ink: #183A2E; --accent: #D09A2E; --danger: #B3261E; color-scheme: light dark; }
+@media (prefers-color-scheme: dark) { :root { --bg: #11130F; --surface: #1A1D18; --border: #30352D; --text: #F2EEE5; --muted: #B8B1A4; --brand: #8FCBAD; --brand-strong: #2F6B53; --brand-soft: #1D2C24; --ink: #1C3A2E; --accent: #E0AE4A; --danger: #F28B82; } }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 h1, h2, h3, .brand { font-family: Fraunces, Georgia, serif; font-weight: 600; letter-spacing: -0.01em; }
 header, main, footer { max-width: 760px; margin: 0 auto; padding: 0 20px; }
-header { display: flex; align-items: center; justify-content: space-between; padding-top: 20px; padding-bottom: 20px; }
+header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 20px; padding-bottom: 20px; }
+nav.top { display: flex; align-items: center; gap: 22px; }
+nav.top a { color: var(--text); text-decoration: none; font-weight: 500; white-space: nowrap; }
+nav.top .short { display: none; }
+nav.top a:hover { color: var(--brand); }
+nav.top .language { padding: 6px 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 700; font-size: 24px; text-decoration: none; }
 .brand .dot { color: var(--accent); }
 .brand img { width: 36px; height: 36px; border-radius: 9px; }
@@ -187,14 +210,17 @@ a { color: var(--brand); }
 code { font-size: 15px; }
 footer { padding-top: 24px; padding-bottom: 40px; color: var(--muted); font-size: 15px; }
 footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-bottom: 8px; }
-@media (max-width: 520px) { main { padding: 4px 18px 20px; border-radius: 16px; } h1 { font-size: 28px; } }
+@media (max-width: 640px) { nav.top .wide-only { display: none; } nav.top { gap: 12px; font-size: 15px; } }
+@media (max-width: 420px) { nav.top .long { display: none; } nav.top .short { display: inline; } nav.top .language { padding: 6px 12px; } }
+@media (max-width: 520px) { header, footer { padding-left: 16px; padding-right: 16px; } main { padding: 4px 18px 20px; border-radius: 16px; } h1 { font-size: 28px; } .brand { font-size: 21px; } .brand img { width: 30px; height: 30px; } }
 `;
 
-function page({ lang, html, title, description, here, other, info, notFound = false }) {
+function page({ lang, html, title, description, here, other, info, notFound = false, wide = false, script = '' }) {
   const rel = (to) => path.posix.relative(here || '.', to || '.') || '.';
   const ui = UI[lang];
   const target = (dir) => `${rel(dir)}/`.replace(/^\.\/$/, './').replace(/\/\/$/, '/');
   const links = PAGES.slice(1).map((p) => p[lang][1]);
+  const home = PAGES[0][lang][1];
   return `<!doctype html>
 <html lang="${lang}">
 <head>
@@ -220,22 +246,28 @@ ${
 <meta name="theme-color" content="#11130F" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="${rel('favicon.png')}">
 <link rel="apple-touch-icon" href="${rel('icon.png')}">
-<style>${STYLE.replaceAll('{{fonts}}', rel('fonts') + '/')}${html.includes('id="signup"') || html.includes('id="availability"') ? FORM_STYLE : ''}${html.includes('id="availability"') ? AVAILABILITY_STYLE : ''}</style>
+<style>${STYLE.replaceAll('{{fonts}}', rel('fonts') + '/')}${html.includes('id="signup"') || html.includes('id="availability"') ? FORM_STYLE : ''}${html.includes('id="availability"') ? AVAILABILITY_STYLE : ''}${html.includes('id="group"') ? GROUP_STYLE : ''}${wide ? LANDING_STYLE : ''}</style>
 </head>
-<body>
+<body${wide ? ' class="wide"' : ''}>
 <header>
-<a class="brand" href="${target(lang === 'da' ? '' : 'en/')}" aria-label="${escape(info.name)}"><img src="${rel('favicon.png')}" alt=""><span>${escape(info.name.toLowerCase())}<span class="dot">.</span></span></a>
-<a href="${target(other)}" hreflang="${lang === 'da' ? 'en' : 'da'}">${ui.other}</a>
+<a class="brand" href="${target(home)}" aria-label="${escape(info.name)}"><img src="${rel('favicon.png')}" alt=""><span>${escape(info.name.toLowerCase())}<span class="dot">.</span></span></a>
+<nav class="top" aria-label="${lang === 'da' ? 'Hovedmenu' : 'Main menu'}">
+<a class="wide-only" href="${here === home ? '' : target(home)}#${ui.featuresAnchor}">${ui.features}</a>
+<a href="${target(links[3])}">${ui.business}</a>
+<a class="language" href="${target(other)}" hreflang="${lang === 'da' ? 'en' : 'da'}" lang="${lang === 'da' ? 'en' : 'da'}" aria-label="${ui.other}"><span class="long">${ui.other}</span><span class="short">${lang === 'da' ? 'EN' : 'DA'}</span></a>
+</nav>
 </header>
-<main>
+<main${wide ? ' class="landing"' : ''}>
 ${html}
 </main>
+${script}
 <footer>
 <nav>
 <a href="${target(links[0])}">${ui.privacy}</a>
 <a href="${target(links[1])}">${ui.terms}</a>
 <a href="${target(links[2])}">${ui.support}</a>
 <a href="${target(links[3])}">${ui.business}</a>
+<a href="${target(links[5])}">${ui.groups}</a>
 </nav>
 © ${new Date().getFullYear()} ${escape(info.company)} · <a href="${obfuscate(`mailto:${info.email}`)}">${obfuscate(info.email)}</a>
 </footer>
@@ -251,16 +283,29 @@ function buildWebsite(out = OUT, root = ROOT) {
     throw new Error('src/constants/app-info.ts: website skal være en https-adresse');
   const written = [];
   const urls = [];
+  const discount = readGroupDiscount(root);
   for (const entry of PAGES) {
     for (const lang of ['da', 'en']) {
       const [source, here] = entry[lang];
       const other = entry[lang === 'da' ? 'en' : 'da'][1];
+      const file = path.join(out, here, 'index.html');
+      fs.mkdirSync(path.dirname(file), { recursive: true });
+      written.push(path.relative(out, file));
+      urls.push(`${info.website}/${here}`);
+      if (source === LANDING) {
+        const front = landing(lang, { root, assets: here ? '../'.repeat(here.split('/').filter(Boolean).length) : '' });
+        fs.writeFileSync(file, page({ lang, ...front, here, other, info, wide: true }));
+        continue;
+      }
       const values = {
         publisher: info.company,
         email: info.email,
         updated: formatDate(info.updated, UI[lang].locale),
         form: '{{form}}',
         availability: '{{availability}}',
+        group: '{{group}}',
+        min_group: String(readNumber(root, 'src/state/groups.ts', 'MIN_GROUP')),
+        discount: `${discount.min}–${discount.max}`,
       };
       const markdown = fill(fs.readFileSync(path.join(root, source), 'utf8'), values, source);
       const link = (href) =>
@@ -269,18 +314,17 @@ function buildWebsite(out = OUT, root = ROOT) {
           : `${path.posix.relative(here || '.', href) || '.'}/`.replace(/\/\/$/, '/');
       const html = markdownToHtml(markdown, link)
         .replace('<p>{{form}}</p>', () => signupForm(lang, { root, email: info.email }))
-        .replace('<p>{{availability}}</p>', () => availabilityForm(lang, { root }));
+        .replace('<p>{{availability}}</p>', () => availabilityForm(lang, { root }))
+        .replace('<p>{{group}}</p>', () => groupPage(lang, { root }));
       const title = markdown.match(/^# (.*)$/m)?.[1] ?? info.name;
-      const file = path.join(out, here, 'index.html');
-      fs.mkdirSync(path.dirname(file), { recursive: true });
       fs.writeFileSync(file, page({ lang, html, title, description: summary(markdown, lang), here, other, info }));
-      written.push(path.relative(out, file));
-      urls.push(`${info.website}/${here}`);
     }
   }
   fs.copyFileSync(path.join(root, 'assets/images/favicon.png'), path.join(out, 'favicon.png'));
   // The app icon: home screen bookmark on iPhone, and the picture when a link is shared.
   fs.copyFileSync(path.join(root, 'assets/images/icon.png'), path.join(out, 'icon.png'));
+  // Screenshots from the app for the front page.
+  fs.cpSync(path.join(root, 'website/images'), path.join(out, 'images'), { recursive: true });
 
   // Netlify (and most hosts) show 404.html for an address that does not exist.
   const notFound = `<h1>Siden findes ikke</h1>
@@ -308,6 +352,8 @@ function buildWebsite(out = OUT, root = ROOT) {
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
+/images/*
+  Cache-Control: public, max-age=604800
 `,
   );
   // Fraunces (SIL Open Font License), the serif of the logo, for the headings.
