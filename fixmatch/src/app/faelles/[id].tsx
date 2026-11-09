@@ -1,6 +1,6 @@
 import * as Clipboard from 'expo-clipboard';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Platform, ScrollView, Share, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -14,8 +14,10 @@ import { AppText } from '@/components/ui/text';
 import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { APP_INFO } from '@/constants/app-info';
 import { getCategory } from '@/data/categories';
+import { DEFAULT_LOCATION } from '@/data/places';
 import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
+import { localDay } from '@/lib/availability';
 import { countryOf } from '@/lib/business-text';
 import { sendProblem } from '@/lib/contact';
 import { showDialog } from '@/lib/dialog';
@@ -30,6 +32,7 @@ import {
   type GroupJob,
   joinGroup,
   leaveGroup,
+  loadGroups,
   markGroupSent,
   MIN_GROUP,
   useGroup,
@@ -78,12 +81,23 @@ export default function GroupScreen() {
   const { column } = useLayout();
   const { id, ny } = useLocalSearchParams<{ id: string; ny?: string }>();
   const { state } = useApp();
-  const { country } = useMarket();
+  const { country, market } = useMarket();
   const account = useAccount();
   const group = useGroup(id);
   const [busy, setBusy] = useState(false);
   const [pickBusiness, setPickBusiness] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
+  // Opened from a link or a code before the list was fetched: fetch it now.
+  useEffect(() => {
+    if (group) return;
+    const postalCode = state.location.postalCode ?? DEFAULT_LOCATION.postalCode;
+    loadGroups(market.country, postalCode, localDay(new Date()))
+      .catch(() => undefined)
+      .finally(() => setLoaded(true));
+  }, [group, market.country, state.location.postalCode]);
+
+  if (!group && !loaded) return null;
   if (!group) {
     return (
       <EmptyState
