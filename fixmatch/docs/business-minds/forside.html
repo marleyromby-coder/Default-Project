@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<title>FixMatch – forside</title>
+<link rel="stylesheet" href="assets/report.css">
+<style>
+@page { margin: 0; }
+html, body { background: #F4F1EA; }
+body { height: 297mm; overflow: hidden; }
+.cover { height: 297mm; padding: 30mm 25mm 25mm; display: flex; flex-direction: column; }
+.mark { display: flex; align-items: center; gap: 12pt; }
+.mark img { width: 22mm; height: 22mm; border-radius: 5mm; }
+.mark span { font-family: Fraunces, serif; font-weight: 700; font-size: 30pt; color: var(--text); }
+.mark .dot { color: var(--accent); }
+.kicker { margin-top: 30mm; font-size: 12pt; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand); }
+h1 { font-size: 40pt; line-height: 1.05; margin: 6pt 0 10pt; }
+h1 em { font-style: normal; color: var(--brand); }
+.sub { font-size: 14pt; color: var(--muted); max-width: 140mm; }
+.facts { margin-top: auto; border-top: 1pt solid var(--ink); padding-top: 10pt; display: grid; grid-template-columns: 42mm 1fr; row-gap: 5pt; font-size: 12pt; }
+.facts dt { font-weight: 600; color: var(--ink); }
+.facts dd { margin: 0; }
+</style>
+</head>
+<body>
+<div class="cover">
+  <div class="mark"><img src="assets/icon.png" alt=""><span>fixmatch<span class="dot">.</span></span></div>
+  <p class="kicker">Rapport · Company Programme · Business Minds</p>
+  <h1>Den rette håndværker.<br><em>Til den rette pris.</em></h1>
+  <p class="sub">En app, der hjælper danske boligejere og bilister med at finde, sammenligne og ringe direkte til lokale håndværkere og værksteder – uden mellemled og uden betalte placeringer.</p>
+  <dl class="facts">
+    <dt>Teamnavn</dt><dd>FixMatch</dd>
+    <dt>Deltagere</dt><dd>{{deltagere}}</dd>
+    <dt>Underviser</dt><dd>{{underviser}}</dd>
+    <dt>Partnere</dt><dd>{{partnere}}</dd>
+    <dt>Skole</dt><dd>{{skole}}</dd>
+    <dt>Årstal</dt><dd>{{aarstal}}</dd>
+  </dl>
+</div>
+</body>
+</html>

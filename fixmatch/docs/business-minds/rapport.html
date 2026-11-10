@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<title>FixMatch – rapport til Business Minds</title>
+<link rel="stylesheet" href="assets/report.css">
+</head>
+<body>
+
+<!-- Side 1: indholdsfortegnelse og resumé. Sidetallene udfyldes af build-pdf.js. -->
+<div class="toc-page">
+<h2>Indhold</h2>
+<ol class="toc">
+<li data-find="Kort fortalt"><span>Kort fortalt</span><span>{{p}}</span></li>
+<li data-find="1Ideen og værdiskabelse"><span>1. Ideen og værdiskabelse</span><span>{{p}}</span></li>
+<li data-find="2Bæredygtighed"><span>2. Bæredygtighed</span><span>{{p}}</span></li>
+<li data-find="3Målgruppen og markedet"><span>3. Målgruppen og markedet</span><span>{{p}}</span></li>
+<li data-find="4Markedsføring og salg"><span>4. Markedsføring og salg</span><span>{{p}}</span></li>
+<li data-find="5Økonomi"><span>5. Økonomi</span><span>{{p}}</span></li>
+<li data-find="6Teamet"><span>6. Teamet</span><span>{{p}}</span></li>
+<li data-find="7Eksternt netværk og partnere"><span>7. Eksternt netværk og partnere</span><span>{{p}}</span></li>
+<li data-find="8Fremtidigt potentiale og opsamling"><span>8. Fremtidigt potentiale og opsamling</span><span>{{p}}</span></li>
+<li data-find="Bilag: Business Model Canvas"><span>Bilag: Business Model Canvas og kilder</span><span>{{p}}</span></li>
+</ol>
+<h3>Kort fortalt</h3>
+<p>Når vandhanen drypper, eller bilen larmer, ved de fleste ikke, hvem de skal ringe til, hvad det bør koste, eller om firmaet er til at stole på. 12 % af boligejerne har dårlige erfaringer med håndværkere, og ankenævnene fik 1.156 klager over håndværkere i 2022 [1].</p>
+<p><strong>FixMatch</strong> er en iPhone-app, hvor man ser prisen, før man ringer. Den sammenligner lokale håndværkere og værksteder på pris, afstand og anmeldelser fra rigtige kunder. Man ringer direkte til firmaet. Der er ingen mellemled, ingen gebyr pr. kunde og ingen betalte placeringer. Vores niche er <strong>Tilbudstjek</strong>: Man tager et billede af et tilbud og får at vide, om prisen er lav, normal eller høj. Det gør ingen danske konkurrenter.</p>
+<p>Appen er bygget og testes i TestFlight. Den har 8 fag, over 20 funktioner, en hjemmeside og en server i EU. Brugerne betaler aldrig. Indtægterne kommer fra et frivilligt Pro-abonnement for virksomheder. Vi starter i København og går derefter videre til resten af Danmark og Norden.</p>
+</div>
+
+<!-- 1 -->
+<section>
+<h2><span class="no">1</span>Ideen og værdiskabelse</h2>
+<p><strong>Problemet.</strong> At finde en håndværker tager tid og er usikkert. På tilbudsportaler som 3byggetilbud.dk kender man først prisen, når tilbuddene kommer, og håndværkerne betaler for hver kunde [2]. CVR, autorisation og garantiordning skal tjekkes på hver sin hjemmeside. Samtidig steg håndværkerpriserne 4,3 % i 2025 [3], så mange ved ikke, hvad en fair pris er.</p>
+<p><strong>Ideen.</strong> FixMatch samler det hele i én app. Man vælger et fag eller beskriver problemet og sit budget med egne ord. Appen viser de lokale firmaer, der passer, med timepris, typiske priser, afstand og anmeldelser. Med ét tryk ringer man direkte til dem.</p>
+<figure>
+<div class="phones">
+<img src="assets/app-home-da.webp" alt="">
+<img src="assets/app-kategori-da.webp" alt="">
+<img src="assets/app-akut-da.webp" alt="">
+</div>
+<figcaption>Figur 1. Vores app: forsiden, sammenligning af VVS'ere og Akut hjælp. Virksomhederne på billederne er fiktive eksempler.</figcaption>
+</figure>
+<p><strong>Værdien.</strong> Med <em>Value Proposition Canvas</em> har vi koblet kundens problemer (pains) til appens funktioner:</p>
+<table>
+<tr><th style="width:33%">Kundens problem</th><th>Sådan løser FixMatch det</th></tr>
+<tr><td>Ved ikke, om prisen er fair</td><td><strong>Tilbudstjek</strong> med foto, <strong>Del, hvad du betalte</strong> og priser før kontakt</td></tr>
+<tr><td>Usikker på, om firmaet er seriøst</td><td><strong>Verificeret</strong>-mærke (CVR, ejer, autorisation), <strong>Tryghedsside</strong> og anmeldelser kun fra rigtige opkald</td></tr>
+<tr><td>Det haster</td><td><strong>Akut hjælp</strong> og <strong>Hvem har tid i dag?</strong></td></tr>
+<tr><td>Dyrt at få småting lavet</td><td><strong>Naborabat</strong>: naboer går sammen og får typisk 10–20 % rabat</td></tr>
+</table>
+<p>Virksomhederne bliver fundet gratis af kunder, der allerede kender prisen, og de betaler aldrig pr. kunde. Det er vigtigt nu, hvor Håndværkerindekset viser 12 % færre opgaver [2]. FixMatch er et <em>tosidet marked</em>: jo flere firmaer, desto mere værdi for brugerne, og omvendt.</p>
+</section>
+
+<!-- 2 -->
+<section>
+<h2><span class="no">2</span>Bæredygtighed</h2>
+<p>Vi vurderer FixMatch ud fra <em>Triple Bottom Line</em> og FN's verdensmål. Bæredygtigheden er bygget ind i funktionerne.</p>
+<ul>
+<li><strong>Miljø (mål 12 og 13).</strong> Appen viser afstanden, så man vælger lokalt. <strong>Naborabat</strong> samler flere husstandes opgaver til én tur: tre familier, der får renset tagrender samme dag, sparer håndværkeren to ture. <strong>Videotjek</strong> over FaceTime undgår spildte besøg. <strong>Min bolig</strong> minder om eftersyn, så udstyr holder længere, og <strong>Grøn guide</strong> viser, hvad varmepumpe og isolering koster, og hvad det grønne fradrag giver (op til 9.000 kr. pr. person i 2026 [4]).</li>
+<li><strong>Mennesker (mål 8 og 16).</strong> Håndværkerfradraget kræver faktura og digital betaling. Når Tilbudstjek viser fradraget i kroner, får kunden en grund til at vælge hvidt arbejde frem for sort. Ingen betalte placeringer og anmeldelser kun fra rigtige kunder beskytter forbrugerne og belønner ærlige firmaer.</li>
+<li><strong>Økonomi (mål 8 og 11).</strong> Små lokale firmaer får kunder uden at betale pr. lead, og pengene bliver i lokalområdet. Ledig tid bliver fyldt ud via "Hvem har tid i dag?".</li>
+</ul>
+<div class="box"><p><strong>Kritisk vurdering.</strong> Vi kan endnu ikke dokumentere effekten. Efter lanceringen vil vi måle andelen af opgaver i Naborabat-grupper og den gennemsnitlige afstand til det valgte firma. Hvis appen får folk til at bestille flere småopgaver, kan kørslen også stige. Derfor skal Naborabat og afstand fylde meget i appen.</p></div>
+</section>
+
+<!-- 3 -->
+<section>
+<h2><span class="no">3</span>Målgruppen og markedet</h2>
+<p><strong>Segmentering.</strong> FixMatch har to kundegrupper. <em>Brugerne (B2C)</em> er boligejere, lejere og bilister i Danmark, også engelsktalende tilflyttere. De betaler aldrig. <em>Virksomhederne (B2B)</em> er små håndværksfirmaer og værksteder med 1–20 ansatte i 8 fag. De kan købe et frivilligt Pro-abonnement. Vores primære brugergruppe er <strong>unge boligejere i storbyen (25–40 år)</strong>, fordi de går mere op i anmeldelser og er mindre loyale over for "deres" håndværker [5].</p>
+<div class="box"><p><strong>Persona: Sofie, 32, har lige købt rækkehus i Valby.</strong> Afløbet er stoppet, og hun kender ingen håndværkere i området. Hun har fået et tilbud på 3.200 kr. og er i tvivl om prisen. Hun vil kunne stole på firmaet og få det lavet hurtigt. Hun læser altid anmeldelser. <em>(Opdigtet ud fra tallene i afsnittet.)</em></p></div>
+<p><strong>Behov.</strong> En undersøgelse fra TEKNIQ og YouGov blandt over 1.600 boligejere viser, at 67 % vægter kvaliteten højest og 18 % prisen. De fleste vælger efter anbefalinger [5]. Kunden har altså mest brug for <strong>tryghed</strong>. Derfor skal Verificeret og anmeldelser fra rigtige kunder være lige så synlige som prisen. Og man skal kunne dele en sammenligning med andre, så anbefalinger bliver digitale. Virksomhederne vil have kunder uden at dele hver opgave med to konkurrenter, og de vil vise, at de er seriøse.</p>
+<p><strong>Markedet.</strong> Danmark har ca. 2,8 mio. husstande [6], og bygge og anlæg beskæftiger ca. 197.000 personer [7]. Markedslederen 3byggetilbud.dk formidler over 70.000 opgaver om året til ca. 2.100 betalende firmaer [2]. Firmaerne er altså villige til at betale for kunder. Porteføljen bag 3byggetilbud blev i 2025 solgt for 550 mio. norske kroner [8].</p>
+<h3>Konkurrentanalyse</h3>
+<table>
+<tr><th style="width:22%">Konkurrent</th><th>Model</th><th style="width:34%">Svaghed for kunden</th></tr>
+<tr><td>3byggetilbud.dk</td><td>Op til 3 tilbud. Firmaet betaler pr. lead</td><td>Ingen pris før tilbud. Ventetid</td></tr>
+<tr><td>Handyhand.dk</td><td>Bud på opgaver, gebyr pr. opgave</td><td>Mest småopgaver og private uden autorisation</td></tr>
+<tr><td>Autobutler.dk</td><td>3 tilbud fra værksteder. Værkstedet betaler</td><td>Kun bil. Ingen åbne priser</td></tr>
+<tr><td>Anmeld Håndværker</td><td>Anmeldelser, annoncer</td><td>Ingen priser og ingen sammenligning</td></tr>
+<tr><td>Fikset (ny, 2026)</td><td>AI-prisestimat ud fra billeder</td><td>Estimater i stedet for rigtige fakturaer</td></tr>
+</table>
+<div class="cols">
+<div>
+<p>Ingen af konkurrenterne viser prisen før kontakt, og ingen vurderer et tilbud, man allerede har fået [9]. Det hul har vi placeret FixMatch i (figur 2).</p>
+<p>Ifølge <em>Porters fem kræfter</em> er den største trussel nye konkurrenter, fx Fikset og AI-assistenter som ChatGPT, der kan give prisestimater. Vores forsvar er data, andre ikke har: priser fra rigtige fakturaer, verificerede firmaer og anmeldelser fra rigtige opkald.</p>
+</div>
+<figure style="margin:0">
+<svg viewBox="0 0 300 200" width="100%" role="img" aria-label="Positioneringskort">
+<rect x="0" y="0" width="300" height="200" fill="#FAF7F1" rx="8"/>
+<line x1="24" y1="176" x2="290" y2="176" stroke="#5E574C" stroke-width="1.2"/>
+<line x1="24" y1="176" x2="24" y2="10" stroke="#5E574C" stroke-width="1.2"/>
+<text x="290" y="192" font-size="10" text-anchor="end" fill="#5E574C" font-family="Inter">Pris før kontakt →</text>
+<text x="30" y="18" font-size="10" fill="#5E574C" font-family="Inter">↑ Tryghed</text>
+<g font-family="Inter" font-size="10">
+<circle cx="70" cy="100" r="6" fill="#9AA39A"/><text x="80" y="104">3byggetilbud</text>
+<circle cx="150" cy="150" r="6" fill="#9AA39A"/><text x="160" y="154">Handyhand</text>
+<circle cx="52" cy="58" r="6" fill="#9AA39A"/><text x="62" y="62">Anmeld Håndværker</text>
+<circle cx="88" cy="132" r="6" fill="#9AA39A"/><text x="98" y="136">Autobutler</text>
+<circle cx="196" cy="112" r="6" fill="#9AA39A"/><text x="206" y="116">Fikset</text>
+<circle cx="262" cy="36" r="9" fill="#1F5A46"/><text x="252" y="62" text-anchor="end" font-weight="700" fill="#1F5A46">FixMatch</text>
+</g>
+</svg>
+<figcaption>Figur 2. Positioneringskort (vores vurdering).</figcaption>
+</figure>
+</div>
+<p><strong>Modtagelse og muligheder.</strong> <span class="ph">[Skriv 2–3 konkrete reaktioner fra jeres opkald til virksomheder og fra testbrugerne, fx hvor mange der har sagt ja.]</span> Markedet er presset, og det er en mulighed for os: Firmaerne mangler opgaver, og kunderne mangler overblik over stigende priser.</p>
+</section>
+
+<!-- 4 -->
+<section>
+<h2><span class="no">4</span>Markedsføring og salg</h2>
+<p><strong>Positionering.</strong> Vores løfte er <em>"Se prisen, før du ringer."</em> Vi vil være det ærlige alternativ til tilbudsportalerne.</p>
+<p><strong>Salgsstrategi.</strong> Et tosidet marked har et "høne og æg"-problem: Brugerne kommer ikke uden firmaer, og firmaerne er ligeglade uden brugere. Derfor starter vi med firmaerne i én by, København, og markedsfører først derefter til brugerne. Vi finder firmaerne i CVR-registret, Sikkerhedsstyrelsens autorisationsregister og på Google Maps. Vi ringer eller kommer forbi, fordi e-mails sjældent bliver læst. Pitchen tager 30 sekunder: <em>"Kunder i København ser jeres priser og ringer direkte til jer. I betaler aldrig pr. kunde."</em> Målet for de første 90 dage [9]:</p>
+<table>
+<tr><th>Firmaer på listen</th><th>Talt med</th><th>Tilmeldt</th><th>Live i appen</th></tr>
+<tr><td>300</td><td>150</td><td>60</td><td>40 (mindst 3 pr. fag)</td></tr>
+</table>
+<h3>Marketingmix (4P) og distribution</h3>
+<table>
+<tr><th style="width:16%">P</th><th>Brugere</th><th>Virksomheder</th></tr>
+<tr><td>Product</td><td>Sammenligning, Tilbudstjek, Akut, Naborabat</td><td>Profil, Verificeret, "Ledig i dag", Min virksomhed</td></tr>
+<tr><td>Price</td><td>Gratis</td><td>Gratis basis. Pro 299–499 kr./md.</td></tr>
+<tr><td>Place</td><td>App Store (iPhone) og hjemmeside</td><td>Opkald, besøg, tilmelding på nettet</td></tr>
+<tr><td>Promotion</td><td>TikTok og Instagram ("Hvad koster det?"), App Store-søgeord, mæglere</td><td>Direkte salg, brancheforeninger, månedlig mail med visninger og opkald</td></tr>
+</table>
+<p>Over for brugerne bruger vi <strong>AIDA</strong>. <em>Attention:</em> korte videoer, der afslører, hvad en opgave koster. <em>Interest:</em> "tjek dit tilbud gratis". <em>Desire:</em> spar penge og få tryghed. <em>Action:</em> hent appen. Delte sammenligninger og Naborabat-links spreder appen fra mund til mund. Det passer med, at de fleste vælger efter anbefaling [5].</p>
+<p><strong>Forretningsmodel og salg.</strong> Brugerne er gratis og skaber værdien. Virksomhederne betaler for ekstra synlighed via Pro, aldrig for placeringen (se Business Model Canvas i bilaget). Vi har endnu ikke salg, fordi appen er i test. Tilmeldingen for virksomheder er åben på fixmatchh.netlify.app. <span class="ph">[Antal tilmeldte: __]</span> Modellen bygger på teamets styrker: Vi kan selv bygge og ændre appen hurtigt, og vi tør ringe til firmaerne.</p>
+</section>
+
+<!-- 5 -->
+<section>
+<h2><span class="no">5</span>Økonomi</h2>
+<p><strong>Prissætning.</strong> Vi bruger en <em>penetrationsstrategi</em>. Appen er gratis for brugerne, og de første 100 virksomheder får Pro gratis. Sådan får vi hurtigt mange på begge sider af markedet. Pro-prisen på 299–499 kr./md. er et forslag, som vi sætter ud fra konkurrenterne: På 3byggetilbud betaler firmaerne pr. kunde, og i Storbritannien koster et lead 5–40 £, som deles med 3–4 firmaer [9]. Hos os er prisen fast. Ét ekstra job om måneden betaler abonnementet.</p>
+<div class="cols">
+<div>
+<table>
+<tr><th>Omkostninger år 1 (estimat)</th><th class="num">Kr.</th></tr>
+<tr><td>Apple Developer Program</td><td class="num">700</td></tr>
+<tr><td>Database, Supabase Pro</td><td class="num">2.100</td></tr>
+<tr><td>Domæne (hjemmeside gratis)</td><td class="num">100</td></tr>
+<tr><td>Varemærkeansøgning</td><td class="num">2.000</td></tr>
+<tr><td>Annoncer og visitkort</td><td class="num">4.000</td></tr>
+<tr><td>Transport til salgsbesøg</td><td class="num">1.000</td></tr>
+<tr class="total"><td>I alt</td><td class="num">9.900</td></tr>
+</table>
+</div>
+<div>
+<p>Omkostningerne er lave, fordi vi selv udvikler appen, og den kører i skyen. Der er ingen løn, intet lager og ingen husleje. Flere brugere koster næsten ingenting, så modellen kan vokse, uden at omkostningerne vokser med.</p>
+<p><strong>Break-even</strong> er 3 betalende Pro-kunder à 299 kr./md. (3 × 299 × 12 = 10.764 kr.).</p>
+</div>
+</div>
+<table>
+<tr><th>Regneeksempel, ikke prognose</th><th class="num">Betalende</th><th class="num">Pris/md.</th><th class="num">Indtægt/år</th></tr>
+<tr><td>År 1: test og lancering i København</td><td class="num">0</td><td class="num">–</td><td class="num">0 kr.</td></tr>
+<tr><td>År 2: hele Danmark</td><td class="num">50</td><td class="num">299 kr.</td><td class="num">179.400 kr.</td></tr>
+<tr><td>År 3: Danmark og Norden</td><td class="num">200</td><td class="num">399 kr.</td><td class="num">957.600 kr.</td></tr>
+</table>
+<p>Når vi vokser, kommer der nye omkostninger: løn til salg og support, juridisk hjælp og moms. Derfor skal vi stifte et ApS med CVR-nummer, før vi tager penge.</p>
+<p><strong>Konkurrencefordele.</strong> Firmaerne betaler en fast pris i stedet for pr. kunde, så vi bliver billigere for dem, jo flere kunder de får. Vores lave omkostninger gør det muligt at holde appen gratis for brugerne. Og prisdata fra rigtige fakturaer bliver mere værd for hver ny bruger. Det er svært at kopiere.</p>
+</section>
+
+<!-- 6 -->
+<section>
+<h2><span class="no">6</span>Teamet</h2>
+<table>
+<tr><th style="width:30%">Navn</th><th style="width:27%">Rolle</th><th>Kompetencer</th></tr>
+<tr><td>Marley Romby Sangill</td><td>Idé og produkt</td><td>Idéudvikling, app, design og test</td></tr>
+<tr><td><span class="ph">[Navn]</span></td><td>Salg og partnere</td><td><span class="ph">[kompetencer]</span></td></tr>
+<tr><td><span class="ph">[Navn]</span></td><td>Økonomi og jura</td><td><span class="ph">[kompetencer]</span></td></tr>
+<tr><td><span class="ph">[Navn]</span></td><td>Marketing</td><td><span class="ph">[kompetencer]</span></td></tr>
+</table>
+<p><strong>Styrker og svagheder.</strong> Vi har bygget et rigtigt produkt: en app med over 20 funktioner, en hjemmeside, en database i EU og automatiske tests. Vi har brugt AI-værktøjer til kode og analyse, men beslutningerne om produkt, design og marked har vi truffet selv. Vores svaghed er, at vi er unge uden erfaring fra branchen og endnu uden CVR-nummer. Det gør det sværere at blive taget seriøst af firmaerne.</p>
+<p><strong>Kriser og udfordringer.</strong> Bygget i Xcode fejlede flere gange og viste på et tidspunkt over 800 fejl. Vi rettede dem, til appen kom på TestFlight. Vi ville lancere globalt, men en konsulent rådede os til at starte i Danmark. Det var svært at opgive, men rigtigt, for vi kan ikke skaffe samtykke fra firmaer i mange lande på én gang. Vi måtte ikke vise Trustpilot-vurderinger uden en aftale, så vi byggede vores egne anmeldelser fra rigtige opkald. Den løsning blev bedre.</p>
+</section>
+
+<!-- 7 -->
+<section>
+<h2><span class="no">7</span>Eksternt netværk og partnere</h2>
+<table>
+<tr><th style="width:28%">Partner</th><th>Hvad de har givet os</th></tr>
+<tr><td>Konsulent</td><td>Rådet om at starte i Danmark. Det ændrede hele vores lanceringsplan</td></tr>
+<tr><td>Advokat</td><td>Gennemgang af GDPR, samtykke fra firmaerne og dataansvar</td></tr>
+<tr><td>Lokale håndværkere</td><td>Samtykke, rigtige priser og feedback <span class="ph">[antal]</span></td></tr>
+<tr><td>Testbrugere</td><td>Fejl og ønsker, fx en Profil-fane og login før kontakt</td></tr>
+<tr><td>Apple, Supabase, Netlify</td><td>App Store, Apple Kort og login, database i EU og hjemmeside</td></tr>
+<tr><td>CVR og Sikkerhedsstyrelsen</td><td>Offentlige data, som Verificeret-mærket bygger på</td></tr>
+<tr><td><span class="ph">[Underviser]</span></td><td><span class="ph">[Hvad underviseren har hjulpet med]</span></td></tr>
+</table>
+<p><strong>Næste partnere.</strong> Brancheforeningerne TEKNIQ og DI Byggeri kan anbefale os til deres medlemmer. Grundejer- og boligforeninger passer til Naborabat, og ejendomsmæglere kan anbefale os til nye boligejere. Et forsikringsselskab er en mulig partner til Akut hjælp.</p>
+</section>
+
+<!-- 8 -->
+<section>
+<h2><span class="no">8</span>Fremtidigt potentiale og opsamling</h2>
+<p><strong>Potentiale.</strong> Konkurrenterne bygger på en model, som både firmaer og kunder er trætte af: betaling pr. lead og priser, der først kommer bagefter. Appen er allerede på dansk og engelsk, og Sverige, Norge, Tyskland og Storbritannien er klar i koden. Det gør det billigt at vokse, når Danmark virker. Vores plan har porte, så vi først går videre, når målet er nået: (1) <strong>Beta</strong> i København med 40 verificerede firmaer. (2) <strong>App Store i Danmark</strong>, Tilbudstjek til boligejere og Aarhus. (3) <strong>Pro-abonnement</strong>, når brugerne kommer igen og firmaerne får opkald. (4) <strong>Sverige og Norge</strong>, derefter Tyskland og Storbritannien.</p>
+<p>Hvis FixMatch skal blive en levedygtig forretning, skal vi stifte et ApS, underskrive databehandleraftaler og have juridisk rådgivning. Et årligt "FixMatch-prisindeks" baseret på delte fakturaer kan give PR og gøre os til den kilde, medierne spørger om håndværkerpriser.</p>
+<table class="swot">
+<tr><th>Styrker</th><th>Svagheder</th></tr>
+<tr><td>Appen er bygget og testet. Pris før kontakt og Tilbudstjek har ingen konkurrenter. Lave omkostninger. Ingen gebyr pr. kunde</td><td>Ingen rigtige firmaer i appen endnu. Intet CVR-nummer. Kun iPhone. Ung og uerfaren i branchen</td></tr>
+<tr><th>Muligheder</th><th>Trusler</th></tr>
+<tr><td>Firmaerne mangler opgaver, og priserne stiger. Grønt fradrag til 2027. Norden og Europa er klar i koden</td><td>Store portaler kan kopiere idéen. AI-prisestimater. Firmaer, der ikke vil vise priser</td></tr>
+</table>
+<p class="small">Tabel: SWOT-analyse af FixMatch.</p>
+<p><strong>Næste skridt.</strong> (1) Få samtykke fra de første 40 firmaer i København og læg deres rigtige priser ind. (2) Få appen godkendt i App Store, og få et CVR-nummer. (3) Lancere Tilbudstjek på TikTok og Instagram, og måle hvor mange der kommer igen.</p>
+<p><strong>Læringsudbytte.</strong> Company Programme har lært os, at en god idé ikke er nok. Den skal overleve mødet med kunder, jura og teknik. Vi har lært at lytte til feedback, også når det betød, at vi skulle droppe vores globale plan. Vi har lært, at to kundegrupper kræver to strategier, og at GDPR og markedsføringsloven skal tænkes ind fra start. Og vi har lært at sige vores idé kort: <em>Se prisen, før du ringer.</em></p>
+<div class="box"><p><strong>Opsamling.</strong> FixMatch løser et reelt problem for boligejere og små håndværksfirmaer. Appen er bygget, og nichen Tilbudstjek er ikke dækket af konkurrenterne. Omkostningerne er så lave, at 3 betalende kunder dækker et år. Næste skridt er de første 40 firmaer.</p></div>
+</section>
+
+<!-- Bilag -->
+<section class="new-page">
+<h2>Bilag: Business Model Canvas og kilder</h2>
+<table class="bmc">
+<tr>
+<td rowspan="2"><strong>Partnere</strong><br>Apple, Supabase, TEKNIQ, DI Byggeri, CVR, Sikkerheds&shy;styrelsen, bolig&shy;foreninger, mæglere</td>
+<td><strong>Aktiviteter</strong><br>Hverve og verificere firmaer, samle priser, udvikle appen</td>
+<td rowspan="2"><strong>Værditilbud</strong><br><em>Brugere:</em> Se prisen, før du ringer. Tilbudstjek, tryghed, akut hjælp.<br><em>Firmaer:</em> Gratis synlighed, aldrig betaling pr. kunde</td>
+<td><strong>Relationer</strong><br>Selvbetjening, åben rangering, personlig opstart</td>
+<td rowspan="2"><strong>Kunde&shy;segmenter</strong><br>Boligejere, lejere og bilister i Danmark. Små firmaer (1–20 ansatte)</td>
+</tr>
+<tr>
+<td><strong>Ressourcer</strong><br>Appen, verificerede firmaer, prisdata, brandet</td>
+<td><strong>Kanaler</strong><br>App Store, TikTok, Instagram, hjemmeside, opkald</td>
+</tr>
+<tr>
+<td colspan="2"><strong>Omkostninger</strong><br>Apple, server, markedsføring, salgsbesøg, varemærke. Senere jura og løn</td>
+<td colspan="3"><strong>Indtægter</strong><br>Pro-abonnement 299–499 kr./md. (frivilligt, påvirker ikke rækkefølgen). Brugerne betaler aldrig</td>
+</tr>
+</table>
+<h3>Kilder</h3>
+<ol class="sources">
+<li>FixMatch (2026): <em>Marked, navn og jura</em>. Egen analyse.</li>
+<li>3byggetilbud.dk: Håndværkerindekset Q1 2026 og pressemeddelelse via Ritzau (via.ritzau.dk/nyhedsrum/90350).</li>
+<li>Danmarks Statistik: Håndværkerpriser 2025. dst.dk/nyt/53090.</li>
+<li>Skattestyrelsen: Håndværkerfradrag. skat.dk.</li>
+<li>TEKNIQ (2021): "Vi bruger mund-til-mund-metoden, når der skal vælges håndværker" (YouGov) og "De digitalt indfødte er mindre loyale" (Bolius). tekniq.dk.</li>
+<li>Danmarks Statistik: Husstande 1. januar 2022. dst.dk/nyt/38261.</li>
+<li>Danmarks Statistik: Beskæftigede i bygge og anlæg, 3. kvt. 2024. dst.dk/nytpdf/50009.</li>
+<li>Filingreader.com: Salg af Mittanbud/3byggetilbud til Verdane (dec. 2025).</li>
+<li>FixMatch (2026): <em>Konkurrentanalyse og niche</em> og <em>Bedre end konkurrenterne</em>. Egne analyser.</li>
+</ol>
+</section>
+
+</body>
+</html>

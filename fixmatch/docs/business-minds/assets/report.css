@@ -1,0 +1,51 @@
+@font-face { font-family: Inter; font-weight: 400; src: url("Inter-Regular.otf"); }
+@font-face { font-family: Inter; font-weight: 400; font-style: italic; src: url("Inter-Italic.otf"); }
+@font-face { font-family: Inter; font-weight: 600; src: url("Inter-SemiBold.otf"); }
+@font-face { font-family: Inter; font-weight: 700; src: url("Inter-Bold.otf"); }
+@font-face { font-family: Fraunces; font-weight: 600; src: url("../../../node_modules/@expo-google-fonts/fraunces/600SemiBold/Fraunces_600SemiBold.ttf"); }
+@font-face { font-family: Fraunces; font-weight: 700; src: url("../../../node_modules/@expo-google-fonts/fraunces/700Bold/Fraunces_700Bold.ttf"); }
+/* A4 med normal margen (2,5 cm), plads til sidetal forneden. */
+@page { size: A4; margin: 2.5cm 2.5cm 2.5cm 2.5cm; }
+:root { --text: #1C1A17; --muted: #5E574C; --brand: #1F5A46; --ink: #183A2E; --accent: #D09A2E; --soft: #E2EBE4; --line: #E6E0D4; --paper: #FAF7F1; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; font-family: Inter, sans-serif; font-size: 12pt; line-height: 1.3; color: var(--text); hyphens: auto; }
+h1, h2, h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; color: var(--ink); letter-spacing: -0.005em; break-after: avoid; }
+h2 { font-size: 18pt; margin: 0 0 4pt; }
+h2 .no { color: var(--accent); margin-right: 6pt; }
+h3 { font-size: 13pt; margin: 7pt 0 2pt; }
+p { margin: 0 0 5pt; text-align: left; }
+ul, ol { margin: 0 0 6pt; padding-left: 16pt; }
+li { margin: 0 0 2pt; }
+strong { font-weight: 600; }
+section { margin-top: 16pt; }
+section.new-page { break-before: page; margin-top: 0; }
+.toc-page + section { break-before: page; margin-top: 0; }
+.lead { font-size: 12pt; color: var(--muted); }
+table { width: 100%; border-collapse: collapse; margin: 4pt 0 8pt; font-size: 12pt; line-height: 1.25; break-inside: avoid; }
+th, td { text-align: left; vertical-align: top; padding: 3pt 5pt; border-bottom: 0.75pt solid var(--line); }
+th { font-weight: 600; background: var(--soft); color: var(--ink); }
+td.num, th.num { text-align: right; white-space: nowrap; }
+tr.total td { font-weight: 600; border-top: 1pt solid var(--ink); }
+figure { margin: 6pt 0 8pt; break-inside: avoid; }
+figcaption { font-size: 10pt; color: var(--muted); margin-top: 3pt; }
+.phones { display: flex; gap: 10pt; justify-content: space-between; }
+.phones { justify-content: center; gap: 14pt; }
+.phones img { width: 24%; border-radius: 12pt; border: 3pt solid #1C1A17; }
+.box { background: var(--paper); border: 0.75pt solid var(--line); border-radius: 6pt; padding: 7pt 10pt; margin: 6pt 0 8pt; break-inside: avoid; }
+.box p:last-child, .box ul:last-child { margin-bottom: 0; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; }
+.small { font-size: 10pt; color: var(--muted); }
+.ph { background: #FBF0DC; color: #8F5405; padding: 0 2pt; border-radius: 2pt; }
+.toc { list-style: none; padding: 0; margin: 10pt 0 14pt; }
+.toc li { display: flex; gap: 6pt; padding: 4pt 0; border-bottom: 0.75pt dotted var(--line); }
+.toc li span:first-child { flex: 1; }
+table.bmc { table-layout: fixed; font-size: 11pt; line-height: 1.25; }
+table.bmc td { border: 0.75pt solid var(--line); padding: 5pt 6pt; background: var(--paper); overflow-wrap: break-word; hyphens: manual; }
+table.bmc strong { color: var(--brand); }
+ol.sources { padding-left: 18pt; }
+ol.sources li { margin-bottom: 3pt; word-break: break-word; }
+.toc-page h3 { margin-top: 4pt; }
+table.swot { table-layout: fixed; }
+table.swot td { background: var(--paper); border: 0.75pt solid var(--line); }
+table.swot th { border: 0.75pt solid var(--line); }
