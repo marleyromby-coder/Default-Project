@@ -1564,6 +1564,8 @@ const en: Record<string, string> = {
   'Hvornår passer det jer? Jeg kan ringe op på FaceTime.': 'When suits you? I can call on FaceTime.',
   'Log ind med Apple på en iPhone. Login med e-mail kommer snart.':
     'Log in with Apple on an iPhone. E-mail login is coming soon.',
+  anmeldelse: 'review',
+  anmeldelser: 'reviews',
 };
 
 export default en;

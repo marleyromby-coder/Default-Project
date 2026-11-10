@@ -29,7 +29,7 @@ export function TrustpilotRating({ trustpilot, size = 'small' }: Props) {
 
   const label = t('TrustScore {rating} ud af 5 på Trustpilot, baseret på {countText}', {
     rating: formatRating(trustpilot.score),
-    countText: pluralize(trustpilot.reviews, 'anmeldelse', 'anmeldelser'),
+    countText: pluralize(trustpilot.reviews, t('anmeldelse'), t('anmeldelser')),
   });
 
   if (size === 'large') {
@@ -42,7 +42,7 @@ export function TrustpilotRating({ trustpilot, size = 'small' }: Props) {
           <Stars value={trustpilot.score} size={20} />
           <AppText variant="subhead" tone="textSecondary">
             {t('TrustScore på Trustpilot · {countText}', {
-              countText: pluralize(trustpilot.reviews, 'anmeldelse', 'anmeldelser'),
+              countText: pluralize(trustpilot.reviews, t('anmeldelse'), t('anmeldelser')),
             })}
           </AppText>
         </View>
