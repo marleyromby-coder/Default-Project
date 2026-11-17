@@ -25,6 +25,7 @@ import { groupLink } from '@/lib/group-link';
 import { scoreBusinesses } from '@/lib/ranking';
 import type { Business } from '@/lib/types';
 import { openSignIn, useAccount } from '@/state/account';
+import { confirmReport, useHiddenIds } from '@/state/reports';
 import { useApp, useMarket } from '@/state/app-state';
 import {
   GROUP_DISCOUNT,
@@ -82,6 +83,7 @@ export default function GroupScreen() {
   const { country, market } = useMarket();
   const account = useAccount();
   const group = useGroup(id);
+  const hiddenGroups = useHiddenIds('group');
   const [busy, setBusy] = useState(false);
   const [pickBusiness, setPickBusiness] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -96,6 +98,16 @@ export default function GroupScreen() {
   }, [group, market.country, state.location.postalCode]);
 
   if (!group && !loaded) return null;
+  if (group && !group.mine && hiddenGroups.has(group.id)) {
+    return (
+      <EmptyState
+        icon="people"
+        title={t('Du har rapporteret gruppen')}
+        message={t('Den er skjult på din telefon. Vi ser på den inden for 24 timer på hverdage.')}
+        action={<Button title={t('Tilbage')} onPress={() => router.back()} />}
+      />
+    );
+  }
   if (!group) {
     return (
       <EmptyState
@@ -169,6 +181,21 @@ export default function GroupScreen() {
         state.priorities,
       ).slice(0, 3)
     : [];
+
+  const report = () =>
+    confirmReport(
+      {
+        kind: 'group',
+        id: group.id,
+        subject: t('Rapportér gruppe {code}', { code: group.code }),
+        body: t('Gruppen {code} ({id}) i {area} bryder reglerne, fordi:', {
+          code: group.code,
+          id: group.id,
+          area: group.area,
+        }),
+      },
+      () => router.back(),
+    );
 
   const send = async (business: Business) => {
     await sendProblem(business, { text: requestText(group, jobName, business), photos: [] }, { plain: true });
@@ -301,7 +328,9 @@ export default function GroupScreen() {
           size="small"
           onPress={leave}
         />
-      ) : null}
+      ) : (
+        <Button title={t('Rapportér gruppen')} icon="flag" variant="plain" size="small" onPress={report} />
+      )}
     </ScrollView>
   );
 }

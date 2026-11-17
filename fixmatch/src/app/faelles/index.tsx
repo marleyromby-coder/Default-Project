@@ -16,6 +16,7 @@ import { localDay } from '@/lib/availability';
 import { codeFromLink } from '@/lib/group-link';
 import { showDialog } from '@/lib/dialog';
 import { openSignIn, useAccount } from '@/state/account';
+import { useHiddenIds } from '@/state/reports';
 import { useApp, useMarket } from '@/state/app-state';
 import {
   GROUP_DISCOUNT,
@@ -41,7 +42,9 @@ export default function GroupsScreen() {
   const { market } = useMarket();
   const account = useAccount();
   const mine = useMyGroups();
-  const nearby = useNearbyGroups();
+  const hiddenGroups = useHiddenIds('group');
+  // Groups the user reported are hidden on this phone.
+  const nearby = useNearbyGroups().filter((group) => !hiddenGroups.has(group.id));
   const params = useLocalSearchParams<{ kode?: string; code?: string }>();
   const [code, setCode] = useState(() => codeFromLink(params.kode ?? params.code));
   const [busy, setBusy] = useState(false);

@@ -15,6 +15,7 @@ import { getCategory } from '@/data/categories';
 import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { showDialog } from '@/lib/dialog';
+import { findTextProblem, TEXT_PROBLEM_MESSAGES } from '@/lib/text-filter';
 import { msg, t } from '@/i18n';
 import { useAccount } from '@/state/account';
 import { useBusiness } from '@/state/app-state';
@@ -41,6 +42,9 @@ export default function ReviewScreen() {
   const [text, setText] = useState(mine?.text ?? '');
   const [jobId, setJobId] = useState<string | undefined>(mine?.job);
   const [busy, setBusy] = useState(false);
+  const [checked, setChecked] = useState(false);
+  // Others read the text, so slurs, phone numbers and links are stopped before it is sent.
+  const problem = findTextProblem(text);
 
   if (!business) {
     return (
@@ -67,6 +71,10 @@ export default function ReviewScreen() {
 
   const send = async () => {
     if (!rating) return;
+    if (problem) {
+      setChecked(true);
+      return;
+    }
     setBusy(true);
     try {
       await submitReview(
@@ -160,6 +168,7 @@ export default function ReviewScreen() {
             count: text.length,
             max: MAX_REVIEW_LENGTH,
           })}
+          error={checked && problem ? t(TEXT_PROBLEM_MESSAGES[problem]) : undefined}
         />
 
         <Button

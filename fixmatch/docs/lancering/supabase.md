@@ -20,7 +20,7 @@ FixMatch gemmer brugere (navn, telefon, e-mail), hvem der har ringet til hvilken
 ## 2. Lav tabellerne
 
 1. Åbn **SQL Editor** → **New query**.
-2. Kopiér hele indholdet af `fixmatch/supabase/migrations/20261030120000_accounts_and_signups.sql`, sæt det ind, og tryk **Run**. Gør det samme med `20261106120000_verification.sql` (Verificeret-mærket) `20261107120000_prices_and_reviews.sql` (anmeldelser og "Del, hvad du betalte") `20261108120000_availability.sql` ("Hvem har tid i dag?") `20261109120000_business_accounts.sql` ("Min virksomhed"), `20261110120000_call_answers.sql` ("Fik du fat i dem?") `20261111120000_work_photos.sql` (billeder af udført arbejde) og `20261112120000_group_jobs.sql` (Naborabat) bagefter, i den rækkefølge.
+2. Kopiér hele indholdet af `fixmatch/supabase/migrations/20261030120000_accounts_and_signups.sql`, sæt det ind, og tryk **Run**. Gør det samme med `20261106120000_verification.sql` (Verificeret-mærket) `20261107120000_prices_and_reviews.sql` (anmeldelser og "Del, hvad du betalte") `20261108120000_availability.sql` ("Hvem har tid i dag?") `20261109120000_business_accounts.sql` ("Min virksomhed"), `20261110120000_call_answers.sql` ("Fik du fat i dem?") `20261111120000_work_photos.sql` (billeder af udført arbejde), `20261112120000_group_jobs.sql` (Naborabat), `20261113120000_lock_admin_views.sql`, `20261117120000_review_links.sql` (links til anmeldelsessider) og `20261117130000_content_reports.sql` (rapporter fra brugere) bagefter, i den rækkefølge.
 3. Der skal stå "Success. No rows returned".
 
 Det laver tabellerne `profiles` (navn og telefon), `contacts` (hvem ringede til hvem), `business_signups` (tilmeldinger med samtykke), funktionen `delete_account` (sletning af bruger) og to visninger til jer: `contacts_with_profile` og `business_signups_export`. Den sidste fil laver `price_reports` og `reviews` og visningerne `shared_prices`, `public_reviews` og `review_summary`, som appen læser. Databasen tjekker selv, at brugeren har ringet til virksomheden, før en anmeldelse eller pris kan gemmes. Alle tabeller er låst med "row level security", så appen kun kan det, den skal.
@@ -106,11 +106,20 @@ Efter et opkald spørger appen kunden, om nogen tog telefonen. Svarene ligger i 
 
 ### Naborabat
 
-Naboer går sammen om en opgave i **group_jobs** med en kode på 6 tegn, og **group_members** viser, hvem der er med (kun antallet er offentligt gennem visningen `open_group_jobs`). Grupper lukker af sig selv efter 90 dage. Ser I en gruppe med upassende tekst i `area` eller `note`, så sæt `status` til `closed`.
+Naboer går sammen om en opgave i **group_jobs** med en kode på 6 tegn, og **group_members** viser, hvem der er med (kun antallet er offentligt gennem visningen `open_group_jobs`). Grupper lukker af sig selv efter 90 dage. Ser I en gruppe med upassende tekst i `area` eller `note`, så sæt `hidden` til `true`. Så forsvinder den fra appen og hjemmesiden, og ingen kan melde sig til med koden.
 
-### Anmeldelser, der bliver rapporteret
+### Rapporter fra brugere (inden for 24 timer på hverdage)
 
-Rapporter kommer som e-mail med anmeldelsens id. Find den under **Table Editor → reviews** (filtrér på `id`). Bryder den reglerne (personoplysninger, krænkende, ikke om virksomheden, skrevet af virksomheden selv eller en konkurrent), så sæt `hidden` til `true`. Ret aldrig i teksten. Svar den, der rapporterede, og skriv kort til anmelderen, hvorfor den er skjult (DSA art. 16 og 17). Reglerne står på siden "Om anmeldelser" i appen.
+Når en bruger trykker **Rapportér** ved en anmeldelse eller en Naborabat-gruppe, kommer der en række i **Table Editor → content_reports**: `kind` (`review`, `group` eller `photo`), `target_id` (anmeldelsens eller gruppens id), `reason` og `created_at`. Uden server eller internet kommer rapporten som e-mail med samme id. Det rapporterede er skjult på brugerens egen telefon med det samme.
+
+Vilkårene lover, at I ser på rapporter **inden for 24 timer på hverdage** (App Store-retningslinje 1.2). Kig i tabellen hver hverdag, sorteret efter `created_at`, og slet ikke rækkerne; de er jeres dokumentation.
+
+- **Anmeldelse:** find den under **Table Editor → reviews** (filtrér på `id`). Bryder den reglerne (personoplysninger, krænkende, ikke om virksomheden, skrevet af virksomheden selv eller en konkurrent), så sæt `hidden` til `true`. Ret aldrig i teksten.
+- **Gruppe:** find den under **group_jobs** (filtrér på `id`), og sæt `hidden` til `true`.
+- **Billede af udført arbejde:** slet rækken i **business_photos** og filen i **Storage → work-photos**.
+- **Nultolerance:** Skriver en bruger krænkende eller truende indhold igen og igen, så slet brugeren under **Authentication → Users**. Så forsvinder alt, brugeren har skrevet.
+
+Har den, der rapporterede, skrevet en e-mail, så svar dem, og skriv kort til den, hvis indhold I skjuler, hvorfor (DSA art. 16 og 17). Reglerne står på siderne "Om anmeldelser" og "Vilkår for brug" i appen.
 
 ### Priser, kunder har delt
 

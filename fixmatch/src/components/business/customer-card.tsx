@@ -1,13 +1,12 @@
 import { router } from 'expo-router';
 import { useEffect } from 'react';
-import { Linking, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardTitle, Divider } from '@/components/ui/card';
 import { Stars } from '@/components/ui/stars';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
-import { APP_INFO } from '@/constants/app-info';
 import { MinTouchSize, Spacing } from '@/constants/theme';
 import { getCategory } from '@/data/categories';
 import { useTheme } from '@/hooks/use-theme';
@@ -27,14 +26,19 @@ import {
   useReviewSummary,
   useSharedPrices,
 } from '@/state/community';
+import { confirmReport, useHiddenIds } from '@/state/reports';
 
-/** Reports a review that breaks the rules (DSA art. 16): an e-mail with the review's id. */
+/**
+ * Reports a review that breaks the rules (DSA art. 16, App Store guideline 1.2). It is hidden
+ * on this phone at once; without a server the report goes by e-mail with the review's id.
+ */
 function reportReview(business: Business, reviewId: string) {
-  const subject = encodeURIComponent(t('Rapportér anmeldelse af {name}', { name: business.name }));
-  const body = encodeURIComponent(
-    t('Anmeldelse {id} hos {name} bryder reglerne, fordi:', { id: reviewId, name: business.name }) + '\n\n',
-  );
-  Linking.openURL(`mailto:${APP_INFO.email}?subject=${subject}&body=${body}`).catch(() => undefined);
+  confirmReport({
+    kind: 'review',
+    id: reviewId,
+    subject: t('Rapportér anmeldelse af {name}', { name: business.name }),
+    body: t('Anmeldelse {id} hos {name} bryder reglerne, fordi:', { id: reviewId, name: business.name }),
+  });
 }
 
 /** Reviews shown on the page; the rest are a tap away later. */
@@ -56,7 +60,9 @@ function percentile(sorted: number[], p: number): number {
  */
 export function CustomerCard({ business }: { business: Business }) {
   const colors = useTheme();
-  const reviews = useReviews(business.id);
+  const hiddenReviews = useHiddenIds('review');
+  // Reviews the user reported are hidden on this phone; their own is always shown.
+  const reviews = useReviews(business.id).filter((review) => review.mine || !hiddenReviews.has(review.id));
   const summary = useReviewSummary(business);
   const canReview = useCanReview(business.id);
   const mine = useMyReview(business.id);
@@ -132,7 +138,7 @@ export function CustomerCard({ business }: { business: Business }) {
           {!review.mine ? (
             <Tappable
               onPress={() => reportReview(business, review.id)}
-              accessibilityRole="link"
+              accessibilityRole="button"
               accessibilityLabel={t('Rapportér anmeldelsen')}
               hitSlop={8}
               style={styles.report}>

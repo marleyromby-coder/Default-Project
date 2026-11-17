@@ -88,6 +88,8 @@ Vi viser oplysninger om virksomheder (fx navn, CVR, telefonnummer og priser), so
 
 Skriver du til os, bruger vi din e-mail og det, du skriver, til at svare dig. Vi sletter henvendelsen senest 12 måneder efter, sagen er afsluttet.
 
+**Rapporter.** Trykker du "Rapportér" ved en anmeldelse eller en gruppe, gemmer vi, hvad du rapporterede, hvorfor, og hvornår, hos Supabase i EU. Er du logget ind, gemmer vi også din bruger, så vi kan se, om nogen misbruger knappen. Vi bruger det kun til at behandle rapporten (GDPR art. 6, stk. 1, litra c og f: Digital Services Act og en tryg app). Andre kan ikke se, hvem der rapporterede. Sletter du din bruger, fjernes koblingen til dig, og rapporten slettes senest 12 måneder efter, sagen er afsluttet.
+
 ## 14. Dine rettigheder
 
 Du har ret til indsigt, berigtigelse, sletning, begrænsning og indsigelse samt dataportabilitet. Skriv til {{email}}. Du kan klage til Datatilsynet, Carl Jacobsens Vej 35, 2500 Valby, www.datatilsynet.dk. Bor du i et andet land, kan du også klage til tilsynsmyndigheden dér, fx Integritetsskyddsmyndigheten i Sverige, Datatilsynet i Norge eller ICO i Storbritannien.

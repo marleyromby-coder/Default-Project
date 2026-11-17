@@ -104,7 +104,7 @@ export function infoPagesDa() {
             'Den er skrevet af virksomheden selv, dens ansatte eller en konkurrent.',
           ],
           paragraphs: [
-            `Mener du, at en anmeldelse bryder reglerne, så tryk "Rapportér" ved anmeldelsen eller skriv til ${APP_INFO.email}. Virksomheden kan ikke selv fjerne anmeldelser.`,
+            `Mener du, at en anmeldelse bryder reglerne, så tryk "Rapportér" ved anmeldelsen eller skriv til ${APP_INFO.email}. Den bliver skjult på din telefon med det samme, og vi ser på den inden for 24 timer på hverdage. Virksomheden kan ikke selv fjerne anmeldelser.`,
           ],
         },
         {
@@ -292,6 +292,12 @@ export function infoPagesDa() {
           ],
         },
         {
+          heading: 'Når du rapporterer',
+          paragraphs: [
+            'Rapporterer du en anmeldelse eller en gruppe, gemmer vi, hvad du rapporterede og hvorfor, og din bruger, hvis du er logget ind, hos Supabase i EU. Vi bruger det kun til at behandle rapporten. Andre kan ikke se, hvem der rapporterede.',
+          ],
+        },
+        {
           heading: 'Når du kontakter en virksomhed',
           paragraphs: [
             'Selve opkaldet og hjemmesider foregår uden om FixMatch, og virksomhedens egen privatlivspolitik gælder. Har en virksomhed sit eget billede på FixMatch, hentes det fra internettet, og serveren kan se din IP-adresse.',
@@ -323,7 +329,8 @@ export function infoPagesDa() {
             'Appen er gratis og kræver ikke login.',
             'Priser, åbningstider og andre oplysninger er oplyst af virksomhederne. Vi gør os umage for, at de er korrekte, men kan ikke garantere det.',
             'Anmeldelser kommer kun fra brugere, der har kontaktet virksomheden gennem FixMatch.',
-            'Rapportér fejl eller ulovligt indhold nederst på virksomhedens side, så ser vi på det hurtigst muligt.',
+            'Anmeldelser, grupper og billeder må ikke være krænkende, truende eller uanstændige. Vi har nultolerance: indholdet skjules, og brugeren kan blive slettet.',
+            'Tryk "Rapportér" ved en anmeldelse eller gruppe, eller "Rapportér fejl eller ulovligt indhold" nederst på virksomhedens side. Vi ser på det inden for 24 timer på hverdage.',
             'Dansk ret gælder.',
           ],
         },

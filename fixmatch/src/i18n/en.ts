@@ -1555,6 +1555,27 @@ const en: Record<string, string> = {
   'Ikke nu': 'Not now',
   'Du kan se og sammenligne uden. Vi spørger igen, når du vil ringe eller skrive til en virksomhed.':
     'You can browse and compare without them. We ask again when you want to call or message a business.',
+  // Reporting content and the text filter
+  'Teksten har grove eller krænkende ord. Ret den, og prøv igen.':
+    'The text has crude or offensive words. Change it and try again.',
+  'Skriv ikke telefonnumre i teksten. Andre kan se den.': 'Do not write phone numbers in the text. Others can see it.',
+  'Skriv ikke links eller e-mailadresser i teksten. Andre kan se den.':
+    'Do not write links or e-mail addresses in the text. Others can see it.',
+  'Krænkende eller grov': 'Offensive or crude',
+  Personoplysninger: 'Personal information',
+  'Falsk, spam eller reklame': 'Fake, spam or advertising',
+  'Rapportér gruppen': 'Report the group',
+  'Hvad er galt? Vi ser på det inden for 24 timer på hverdage, og du ser det ikke mere på din telefon.':
+    'What is wrong? We look at it within 24 hours on weekdays, and you will not see it on your phone again.',
+  'Tak for din rapport': 'Thank you for your report',
+  'Vi ser på det inden for 24 timer på hverdage. Det er skjult på din telefon.':
+    'We look at it within 24 hours on weekdays. It is hidden on your phone.',
+  'Du har rapporteret gruppen': 'You have reported the group',
+  'Den er skjult på din telefon. Vi ser på den inden for 24 timer på hverdage.':
+    'It is hidden on your phone. We look at it within 24 hours on weekdays.',
+  'Rapportér gruppe {code}': 'Report group {code}',
+  'Gruppen {code} ({id}) i {area} bryder reglerne, fordi:':
+    'The group {code} ({id}) in {area} breaks the rules because:',
 };
 
 export default en;

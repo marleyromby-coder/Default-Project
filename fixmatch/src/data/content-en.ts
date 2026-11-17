@@ -84,7 +84,7 @@ export function infoPagesEn(): Record<
             'It was written by the business itself, its staff or a competitor.',
           ],
           paragraphs: [
-            `If you think a review breaks the rules, tap "Report" next to it or write to ${APP_INFO.email}. The business cannot remove reviews itself.`,
+            `If you think a review breaks the rules, tap "Report" next to it or write to ${APP_INFO.email}. It is hidden on your phone at once, and we look at it within 24 hours on weekdays. The business cannot remove reviews itself.`,
           ],
         },
         {
@@ -269,6 +269,12 @@ export function infoPagesEn(): Record<
           ],
         },
         {
+          heading: 'When you report something',
+          paragraphs: [
+            'If you report a review or a group, we store what you reported and why, and your account if you are signed in, with Supabase in the EU. We only use it to handle the report. Others cannot see who reported it.',
+          ],
+        },
+        {
           heading: 'When you contact a business',
           paragraphs: [
             'The call itself and websites happen outside FixMatch, and the business’s own privacy policy applies. If a business has its own picture on FixMatch, it is loaded from the internet, and that server can see your IP address.',
@@ -300,7 +306,8 @@ export function infoPagesEn(): Record<
             'The app is free and needs no login.',
             'Prices, opening hours and other details come from the businesses. We work to keep them correct but cannot guarantee it.',
             'Reviews only come from users who contacted the business through FixMatch.',
-            'Report errors or unlawful content at the bottom of the business page, and we will look at it as soon as possible.',
+            'Reviews, groups and photos must not be offensive, threatening or obscene. We have zero tolerance: the content is hidden, and the user may be deleted.',
+            'Tap "Report" on a review or group, or "Report an error or unlawful content" at the bottom of the business page. We look at it within 24 hours on weekdays.',
             'Danish law applies, without limiting the consumer rights you have where you live.',
           ],
         },

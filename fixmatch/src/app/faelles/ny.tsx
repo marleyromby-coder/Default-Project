@@ -14,6 +14,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { localDay } from '@/lib/availability';
 import { showDialog } from '@/lib/dialog';
+import { findTextProblem, TEXT_PROBLEM_MESSAGES } from '@/lib/text-filter';
 import type { CategoryId } from '@/lib/types';
 import { msg, t } from '@/i18n';
 import { openSignIn, useAccount } from '@/state/account';
@@ -47,11 +48,19 @@ export default function NewGroupScreen() {
   const [when, setWhen] = useState<(typeof WHEN)[number]['id']>('month');
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState(false);
+  const [checked, setChecked] = useState(false);
+  // The street and the note are public, so slurs, phone numbers and links are stopped here.
+  const areaProblem = findTextProblem(area);
+  const noteProblem = findTextProblem(note);
   const cat = category ? getCategory(category) : undefined;
   const valid = !!category && !!jobId && area.trim().length >= 2 && /^\d{3,5}$/.test(postalCode.trim());
 
   const start = async () => {
     if (!category || !jobId || !valid) return;
+    if (areaProblem || noteProblem) {
+      setChecked(true);
+      return;
+    }
     const period = WHEN.find((w) => w.id === when) ?? WHEN[1];
     const today = localDay(new Date());
     setBusy(true);
@@ -156,6 +165,7 @@ export default function NewGroupScreen() {
           placeholder={t('Fx Stefansgade')}
           maxLength={60}
           hint={t('Naboerne skal kunne kende det. Skriv ikke husnumre.')}
+          error={checked && areaProblem ? t(TEXT_PROBLEM_MESSAGES[areaProblem]) : undefined}
         />
         <TextField
           label={t('Postnummer')}
@@ -188,6 +198,7 @@ export default function NewGroupScreen() {
           value={note}
           onChangeText={setNote}
           placeholder={t('Fx: Vi er to huse, der gerne vil have det ordnet inden vinter.')}
+          error={checked && noteProblem ? t(TEXT_PROBLEM_MESSAGES[noteProblem]) : undefined}
         />
 
         <Button title={t('Opret gruppen')} size="large" disabled={!valid} loading={busy} onPress={start} block />
