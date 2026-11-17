@@ -87,9 +87,23 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
     .filter(Boolean)
     .join(', ');
 
+  // At most two badges, so the footer stays one row; the rest is in the summary and on the page.
+  const badges = [
+    highlight ? <Badge key="highlight" label={highlight.label} tone={highlight.tone} icon={highlight.icon} /> : null,
+    free ? <AvailabilityBadge key="free" business={business} /> : null,
+    business.emergency ? <Badge key="emergency" label={t('Døgnvagt')} tone="warning" icon="bolt" /> : null,
+    authorized ? <Badge key="authorized" label={t('Autoriseret')} tone="brand" icon="shield" /> : null,
+  ]
+    .filter(Boolean)
+    .slice(0, 2);
+
   return (
     <View
-      style={[styles.card, { backgroundColor: colors.surface, borderColor: comparing ? colors.brand : colors.border }]}>
+      style={[
+        styles.card,
+        // The selected outline is always there, so choosing a card never moves the layout.
+        { backgroundColor: colors.surface, borderColor: comparing ? colors.brand : 'transparent' },
+      ]}>
       <Tappable
         onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
         accessibilityLabel={summary}
@@ -112,7 +126,11 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
                 <AppText variant="headline" numberOfLines={2} style={styles.flexShrink}>
                   {business.name}
                 </AppText>
-                <VerifiedMark business={business} />
+                {verified ? (
+                  <View style={styles.seal}>
+                    <VerifiedMark business={business} />
+                  </View>
+                ) : null}
               </View>
               <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
                 {businessText(business).tagline}
@@ -121,14 +139,10 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
             <MatchBadge score={score} />
           </View>
           <ReviewRating summary={business.reviewSummary} />
+          <AppText variant="subhead" weight="600" tabular numberOfLines={1}>
+            {priceText}
+          </AppText>
           <View style={styles.metaRow}>
-            <Icon name="tag" size={13} color={colors.textSecondary} />
-            <AppText variant="footnote" weight="600" numberOfLines={1} style={styles.flexShrink}>
-              {priceText}
-            </AppText>
-          </View>
-          <View style={styles.metaRow}>
-            <Icon name="pin" size={13} color={colors.textSecondary} />
             <AppText variant="footnote" tone="textSecondary" numberOfLines={1} style={styles.noShrink}>
               {formatDistance(distanceKm)}
             </AppText>
@@ -140,21 +154,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
         </View>
       </Tappable>
       <View style={[styles.footer, { borderTopColor: colors.border }]}>
-        <View style={styles.badges}>
-          {highlight ? <Badge label={highlight.label} tone={highlight.tone} icon={highlight.icon} /> : null}
-          <AvailabilityBadge business={business} />
-          {topRated ? <Badge label={t('Topbedømt')} tone="brand" icon="star" /> : null}
-          {authorized ? <Badge label={t('Autoriseret')} tone="success" icon="shield" /> : null}
-          {business.emergency ? <Badge label={t('Døgnvagt')} tone="warning" icon="bolt" /> : null}
-          {business.videoCheck ? <Badge label={t('Videotjek')} tone="info" icon="video" /> : null}
-          {answers ? (
-            <Badge
-              label={t('Svarer {answered}/{outOf}', { answered: answers.answered, outOf: answers.outOf })}
-              tone="neutral"
-              icon="phone"
-            />
-          ) : null}
-        </View>
+        <View style={styles.badges}>{badges}</View>
         <Tappable
           onPress={() => toggleFavorite(business.id)}
           accessibilityLabel={
@@ -177,23 +177,9 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
               : t('Sammenlign {name}', { name: business.name })
           }
           accessibilityState={{ selected: comparing }}
-          style={[
-            styles.compareButton,
-            comparing
-              ? { backgroundColor: colors.brandSoft, borderColor: colors.brandSoft }
-              : { backgroundColor: colors.surface, borderColor: colors.border },
-          ]}>
-          <Icon
-            name={comparing ? 'check' : 'plus'}
-            size={13}
-            color={comparing ? colors.brandText : colors.textSecondary}
-            weight="bold"
-          />
-          <AppText
-            variant="footnote"
-            weight="600"
-            style={{ color: comparing ? colors.brandText : colors.text }}
-            maxFontSizeMultiplier={1.3}>
+          style={styles.compareButton}>
+          <Icon name={comparing ? 'check' : 'plus'} size={13} color={colors.brandText} weight="bold" />
+          <AppText variant="footnote" weight="600" tone="brandText" maxFontSizeMultiplier={1.3}>
             {comparing ? t('Valgt') : t('Sammenlign')}
           </AppText>
         </Tappable>
@@ -203,13 +189,15 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
 }
 
 const styles = StyleSheet.create({
-  card: { borderRadius: Radius.lg, borderWidth: 1, overflow: 'hidden' },
+  card: { borderRadius: Radius.lg, borderCurve: 'continuous', borderWidth: 2, overflow: 'hidden' },
   top: { flexDirection: 'row', gap: Spacing.md, padding: Spacing.md },
-  body: { flex: 1, gap: 5 },
+  body: { flex: 1, gap: Spacing.xs },
   titleRow: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.sm },
-  titleText: { flex: 1, gap: 1 },
-  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  metaRow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
+  titleText: { flex: 1, gap: Spacing.xxs },
+  nameRow: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.xs },
+  // Puts the seal beside the first line of a two-line name.
+  seal: { paddingTop: 3 },
+  metaRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs },
   flexShrink: { flexShrink: 1 },
   noShrink: { flexShrink: 0 },
   footer: {
@@ -221,15 +209,13 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
     minHeight: MinTouchSize + 4,
   },
-  badges: { flex: 1, flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs },
+  badges: { flex: 1, flexDirection: 'row', flexWrap: 'nowrap', overflow: 'hidden', gap: Spacing.xs },
   footerButton: { width: MinTouchSize, height: MinTouchSize, alignItems: 'center', justifyContent: 'center' },
   compareButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: Spacing.md,
-    minHeight: 34,
-    borderRadius: Radius.pill,
-    borderWidth: StyleSheet.hairlineWidth,
+    gap: Spacing.xs,
+    paddingHorizontal: Spacing.sm,
+    minHeight: MinTouchSize,
   },
 });

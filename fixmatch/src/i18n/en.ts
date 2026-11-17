@@ -1053,7 +1053,6 @@ const en: Record<string, string> = {
   '{answered} ud af {outOf} gange, ifølge kunder via FixMatch':
     '{answered} out of {outOf} times, according to customers via FixMatch',
   'tager telefonen {answered} ud af {outOf} gange': 'answers the phone {answered} out of {outOf} times',
-  'Svarer {answered}/{outOf}': 'Answers {answered}/{outOf}',
   'Fjern billedet?': 'Remove the picture?',
   'Billedet forsvinder fra jeres side.': 'The picture disappears from your page.',
   Fjern: 'Remove',
