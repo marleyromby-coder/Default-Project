@@ -364,8 +364,8 @@ export default function QuoteCheckScreen() {
         </View>
         <Button
           title={t('Om priserne og fradraget')}
-          variant="plain"
-          size="small"
+          variant="link"
+          chevron
           onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'priser' } })}
         />
       </ScrollView>

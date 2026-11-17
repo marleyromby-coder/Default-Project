@@ -6,9 +6,8 @@ import { ReviewItem } from '@/components/business/review-item';
 import { Button } from '@/components/ui/button';
 import { Card, CardTitle, Divider } from '@/components/ui/card';
 import { Stars } from '@/components/ui/stars';
-import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
-import { MinTouchSize, Spacing } from '@/constants/theme';
+import { Spacing } from '@/constants/theme';
 import { getCategory } from '@/data/categories';
 import { currencyOf } from '@/lib/business-text';
 import { openReviewLink } from '@/lib/contact';
@@ -128,17 +127,14 @@ export function CustomerCard({ business }: { business: Business }) {
             {links.map((link) => {
               const site = reviewSiteName(link.site);
               return (
-                <Tappable
+                <Button
                   key={link.url}
+                  title={site}
+                  variant="link"
+                  chevron
                   onPress={() => openReviewLink(business, link)}
-                  accessibilityRole="link"
                   accessibilityLabel={t('Anmeldelser på {site}, åbner en anden side', { site })}
-                  hitSlop={4}
-                  style={styles.link}>
-                  <AppText variant="subhead" tone="brandText" weight="600">
-                    {site} ›
-                  </AppText>
-                </Tappable>
+                />
               );
             })}
           </View>
@@ -216,9 +212,8 @@ const styles = StyleSheet.create({
   review: { gap: Spacing.xs, marginTop: Spacing.sm },
   reviewBody: { marginTop: Spacing.sm },
   paid: { gap: Spacing.xs, marginTop: Spacing.sm },
-  elsewhere: { gap: Spacing.xs, marginTop: Spacing.sm },
-  links: { flexDirection: 'row', flexWrap: 'wrap', columnGap: Spacing.lg },
-  link: { minHeight: MinTouchSize, justifyContent: 'center' },
+  elsewhere: { gap: Spacing.sm, marginTop: Spacing.md },
+  links: { flexDirection: 'row', flexWrap: 'wrap', columnGap: Spacing.xl },
   paidRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   actions: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginTop: Spacing.md },
 });

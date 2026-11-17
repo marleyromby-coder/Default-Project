@@ -160,14 +160,14 @@ export default function GreenGuideScreen() {
         <View style={styles.actions}>
           <Button
             title={t('Fradraget på skat.dk')}
-            variant="plain"
-            size="small"
+            variant="link"
+            chevron
             onPress={() => openLink('https://skat.dk')}
           />
           <Button
             title={t('Tilskud på sparenergi.dk')}
-            variant="plain"
-            size="small"
+            variant="link"
+            chevron
             onPress={() => openLink('https://sparenergi.dk')}
           />
         </View>
@@ -196,6 +196,6 @@ const styles = StyleSheet.create({
   headText: { flex: 1, gap: Spacing.xxs },
   body: { gap: Spacing.sm, marginTop: Spacing.md },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  actions: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginTop: Spacing.xs },
+  actions: { marginTop: Spacing.xs },
   note: { borderRadius: Radius.lg, borderCurve: 'continuous', padding: Spacing.md, gap: Spacing.sm },
 });

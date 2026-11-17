@@ -249,13 +249,13 @@ function Safety({ business }: { business: Business }) {
         />
       </Card>
 
-      <AppText variant="caption" tone="textSecondary" align="center">
+      <AppText variant="caption" tone="textSecondary">
         {t('FixMatch er ikke part i aftalen mellem dig og virksomheden.')}
       </AppText>
       <Button
         title={t('Sådan verificerer vi')}
-        variant="plain"
-        size="small"
+        variant="link"
+        chevron
         onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'verificering' } })}
       />
     </ScrollView>
