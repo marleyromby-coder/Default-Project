@@ -2,7 +2,7 @@
 
 Den anden vej til TestFlight (den første er EAS i skyen, se `testflight.md`). Du bygger selv på din Mac og uploader fra Xcode. Det tager ca. 15 minutter første gang.
 
-Buildet er demoversionen med fiktive virksomheder. Det er standard, så du skal ikke sætte noget op.
+Buildet er demoversionen med fiktive virksomheder. Det er standard, så du skal ikke sætte noget op. Det får version **0.9.0** (`app.config.js`), så det kan bruges i TestFlight, men aldrig vælges til App Store-versionen 1.0.0. App Store-buildet laves kun med `eas build --profile production` (se `testflight.md`), der kører udgivelsestjekket først.
 
 ## Det skal du have
 
@@ -78,7 +78,7 @@ Første gang Xcode møder en ny iPhone, henter den telefonens systemfiler ("Prep
 1. Vælg **Any iOS Device (arm64)** øverst i Xcode.
 2. **Product → Archive**. Det tager 5–15 minutter.
 3. Organizer-vinduet åbner. Vælg arkivet → **Distribute App** → **App Store Connect** → **Upload**. Klik dig igennem med standardvalgene.
-4. Efter 5–30 minutter ligger buildet under **TestFlight** i App Store Connect. Spørgsmålet om kryptering er allerede besvaret i appen.
+4. Efter 5–30 minutter ligger buildet under **TestFlight** i App Store Connect, under version 0.9.0. Spørgsmålet om kryptering er allerede besvaret i appen.
 
 Inviter testere og juryen som beskrevet i `testflight.md`, afsnit 4.
 

@@ -49,6 +49,19 @@ EAS sætter selv App Group (`group.dk.fixmatch.app`) op, som widgets bruger til 
 
 **Hvis navnet er optaget:** Gå til [App Store Connect](https://appstoreconnect.apple.com) → Apps → **+** → Ny app. Platform iOS, navn fx "FixMatch: Find håndværker", primært sprog English (U.K.) eller Dansk, bundle id `dk.fixmatch.app`, SKU `fixmatch-ios-1`. Kør så kommandoen fra trin 3 igen.
 
+## Demo-builds hedder 0.9.0
+
+Builds med demodata får version **0.9.0** i stedet for 1.0.0 fra `app.json`. Det gælder profilerne `testflight`, `demo` og `simulator` og alt, der bygges i Xcode (`xcode.md`). Det styrer `app.config.js`. I App Store Connect ligger demo-builds derfor under 0.9.0, så de aldrig kan vælges til App Store-versionen 1.0.0.
+
+Kun `npx eas-cli@latest build --platform ios --profile production` bygger 1.0.0 med live-data, og EAS kører udgivelsestjekket (`npm run check:release`) først. Vil du se, hvilken version et build får, så kør:
+
+```bash
+npx expo config --type public                                  # demo: version 0.9.0
+EXPO_PUBLIC_FIXMATCH_DATA=live npx expo config --type public   # live: version 1.0.0
+```
+
+> Når 1.0.0 er godkendt i App Store, afviser Apple uploads med en lavere version. Brug så TestFlight med live-data (profilen `production`) i stedet for demo-builds.
+
 ## 4. Inviter testere
 
 I App Store Connect → appen → **TestFlight**:
@@ -69,7 +82,7 @@ FixMatch helps people find and compare local tradespeople (plumbers, electrician
 **Hvad skal testes**
 
 ```
-Tap a trade on the home screen, open a business, compare up to three businesses, and try "Describe your problem" with one of the examples. Add the "FixMatch" widgets to the home screen and lock screen. You can skip sign-up on the first screen. Calling a business asks for an account (Sign in with Apple, or e-mail and a code). Businesses can sign up under More → Sign up your business. Location is optional (Profile → Location lets you pick a city).
+Tap a trade on the home screen, open a business, compare up to three businesses, and try "Describe your problem" with one of the examples. Add the "FixMatch" widgets to the home screen and lock screen. You can skip sign-up on the first screen, or tap "Not now" after Sign in with Apple. Calling a business asks you to sign in with Apple and give a name and phone number, so the business knows who is calling. Businesses can sign up under More → Sign up your business. Location is optional (Profile → Location lets you pick a city).
 ```
 
 Feedback-e-mail: jeres egen. Login: ikke nødvendigt – testere kan springe det over eller bruge Log ind med Apple.
