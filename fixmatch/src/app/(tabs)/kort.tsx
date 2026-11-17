@@ -159,9 +159,9 @@ export default function MapScreen() {
         styles.floating,
         { backgroundColor: colors.surface, borderColor: colors.border, shadowColor: colors.shadow },
       ]}>
-      <Icon name="wand" size={17} color={colors.brand} weight="semibold" />
+      <Icon name="chat" size={17} color={colors.brand} weight="semibold" />
       <AppText variant="subhead" tone="textSecondary" numberOfLines={1} style={styles.flexShrink}>
-        {t('Beskriv dit problem …')}
+        {t('Beskriv problemet')}
       </AppText>
     </Tappable>
   );

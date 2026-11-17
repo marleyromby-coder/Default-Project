@@ -57,7 +57,7 @@ const en: Record<string, string> = {
   'Beskriv dit problem og dit budget': 'Describe your problem and your budget',
   'Beskriv dit problem og dit budget, så matcher vi dig med virksomheder':
     'Describe your problem and your budget, and we will match you with businesses',
-  'Beskriv dit problem …': 'Describe your problem …',
+  'Beskriv problemet': 'Describe the problem',
   'Betalt annonce – påvirker ikke rækkefølgen i søgeresultater':
     'Paid ad – does not affect the order of search results',
   'Bil på lift i et autoværksted': 'Car on a lift in a garage',

@@ -153,7 +153,7 @@ export default function HomeScreen() {
         accessibilityLabel={t('Beskriv dit problem og dit budget, så matcher vi dig med virksomheder')}
         style={[styles.describe, { backgroundColor: colors.ink }]}>
         <View style={[styles.describeIcon, { backgroundColor: colors.accent }]}>
-          <Icon name="wand" size={20} color={colors.ink} weight="semibold" />
+          <Icon name="chat" size={20} color={colors.ink} weight="semibold" />
         </View>
         <View style={styles.flex}>
           <AppText variant="headline" style={{ color: colors.onInk }}>

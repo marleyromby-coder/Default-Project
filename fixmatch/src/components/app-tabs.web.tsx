@@ -36,7 +36,7 @@ export default function AppTabs() {
           <TabButton icon="person" label={t('Profil')} />
         </TabTrigger>
         <TabTrigger name="mere" href="/mere" asChild>
-          <TabButton icon="list" label={t('Mere')} />
+          <TabButton icon="more" label={t('Mere')} />
         </TabTrigger>
       </TabList>
     </Tabs>

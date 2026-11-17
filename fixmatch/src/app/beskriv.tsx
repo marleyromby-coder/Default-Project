@@ -378,7 +378,7 @@ export default function DescribeProblemScreen() {
                 })}
           </AppText>
         ) : null}
-        <Button title={t('Find match')} icon="wand" size="large" disabled={!category} onPress={submit} />
+        <Button title={t('Find match')} size="large" disabled={!category} onPress={submit} />
         {category ? null : (
           <AppText variant="footnote" tone="textSecondary" style={styles.center}>
             {t('Skriv, hvad der er galt, eller vælg et fag.')}

@@ -25,7 +25,7 @@ export const EMERGENCIES: Emergency[] = [
   {
     id: 'vandskade',
     title: msg('Vand løber ud'),
-    icon: 'vvs',
+    icon: 'drop',
     category: 'vvs',
     job: 'vandskade',
     steps: [
@@ -81,7 +81,7 @@ export const EMERGENCIES: Emergency[] = [
   {
     id: 'rude',
     title: msg('Knust rude eller indbrud'),
-    icon: 'toemrer',
+    icon: 'window',
     category: 'toemrer',
     job: 'vindue',
     steps: [
@@ -111,7 +111,7 @@ export const EMERGENCIES: Emergency[] = [
   {
     id: 'gas',
     title: msg('Det lugter af gas'),
-    icon: 'vvs',
+    icon: 'gas',
     category: 'vvs',
     job: 'service-fyr',
     danger: msg(
