@@ -8,7 +8,7 @@ import { type PropsWithChildren, useEffect } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 
 import { Button } from '@/components/ui/button';
-import { MaxContentWidth, SerifFonts } from '@/constants/theme';
+import { Fonts, MaxContentWidth, SerifFonts } from '@/constants/theme';
 import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { canContact, useAccount, useAccountSkipped } from '@/state/account';
 import { CallFollowUp } from '@/components/call-follow-up';
@@ -79,8 +79,13 @@ function RootNavigator() {
       screenOptions={{
         headerBackButtonDisplayMode: 'minimal',
         headerTintColor: colors.brandText,
-        // Inline titles are SF Pro, like the back chevron beside them; large titles are Fraunces.
-        headerTitleStyle: { color: colors.text },
+        // Inline titles are SF Pro semibold, like the back chevron beside them; large titles are Fraunces.
+        // iOS does this itself. The web header falls back to medium and its own font stack unless told.
+        headerTitleStyle: {
+          color: colors.text,
+          fontWeight: '600',
+          fontFamily: Platform.OS === 'web' ? Fonts.sans : undefined,
+        },
         headerLargeTitleStyle: { fontFamily: SerifFonts.bold, color: colors.text },
         headerLargeTitleShadowVisible: false,
         headerLargeStyle: { backgroundColor: colors.background },
