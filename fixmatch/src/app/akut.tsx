@@ -194,7 +194,9 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
     borderRadius: Radius.lg,
     borderCurve: 'continuous',
-    minHeight: 104,
+    // Icon at the top, label at the bottom, like the trade tiles on Find.
+    justifyContent: 'space-between',
+    minHeight: 96,
   },
   head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   dangerBox: { flexDirection: 'row', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md, borderWidth: 1.5 },
