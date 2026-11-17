@@ -133,7 +133,7 @@ App Store Connect → appen → versionen → **App Review Information**. Sæt f
 Kopiér noterne nedenfor ind i feltet **Notes**. De passer til et `production`-build: kun Log ind med Apple, rigtige virksomheder i København.
 
 ```
-FixMatch helps people in Denmark find and compare local tradespeople and mechanics (plumbers, electricians, carpenters, bricklayers, mechanics, painters, roofers, locksmiths) on price, distance and FixMatch's own reviews, and contact them directly. The app follows the device language (English or Danish); Danish labels are in brackets.
+FixMatch helps people in Denmark find and compare local tradespeople and mechanics (plumbers, electricians, carpenters, bricklayers, mechanics, painters, roofers, locksmiths) on price, distance and FixMatch's own reviews, and contact them directly. The app follows the device language (English or Danish); Danish labels are in parentheses.
 
 SIGN-IN
 - Sign in with Apple is the only way to log in. There is no password and no e-mail login.
