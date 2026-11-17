@@ -123,7 +123,7 @@ export function WorkPhotosCard({ business }: { business: Business }) {
   if (photos.length === 0) return null;
   return (
     <Card>
-      <CardTitle title={t('Udført arbejde')} icon="photo" />
+      <CardTitle title={t('Udført arbejde')} />
       <View style={styles.spaced}>
         <WorkPhotoStrip business={business} />
       </View>
@@ -164,7 +164,7 @@ export function ManageWorkPhotos({ managed, business }: { managed: ManagedBusine
 
   return (
     <Card>
-      <CardTitle title={t('Billeder af jeres arbejde')} icon="photo" />
+      <CardTitle title={t('Billeder af jeres arbejde')} />
       <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
         {t(
           'Vis kunderne, hvad I kan: op til {max} billeder af færdige opgaver. Ingen personer eller adresser på billederne.',

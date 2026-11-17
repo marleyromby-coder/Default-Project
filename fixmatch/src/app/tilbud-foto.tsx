@@ -108,7 +108,7 @@ export default function QuotePhotoScreen() {
         </AppText>
 
         <Card>
-          <CardTitle title={t('1. Billede af tilbuddet')} icon="camera" />
+          <CardTitle title={t('1. Billede af tilbuddet')} />
           {photo ? (
             <Image
               source={{ uri: photo }}
@@ -140,7 +140,7 @@ export default function QuotePhotoScreen() {
         </Card>
 
         <Card>
-          <CardTitle title={t('2. Teksten fra tilbuddet')} icon="receipt" />
+          <CardTitle title={t('2. Teksten fra tilbuddet')} />
           <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
             {Platform.OS === 'ios'
               ? t(
@@ -168,7 +168,7 @@ export default function QuotePhotoScreen() {
 
         {summary && lines.length > 0 ? (
           <Card>
-            <CardTitle title={t('3. Vores vurdering')} icon="check" />
+            <CardTitle title={t('3. Vores vurdering')} />
             <View
               style={[
                 styles.verdict,

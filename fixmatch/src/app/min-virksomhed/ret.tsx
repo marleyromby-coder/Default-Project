@@ -141,7 +141,7 @@ function EditForm({ business }: { business: Business }) {
         </AppText>
 
         <Card>
-          <CardTitle title={t('Timepris')} icon="tag" />
+          <CardTitle title={t('Timepris')} />
           <View style={[styles.pair, styles.spaced]}>
             <View style={styles.flex}>
               <TextField
@@ -170,7 +170,7 @@ function EditForm({ business }: { business: Business }) {
         </Card>
 
         <Card>
-          <CardTitle title={t('Priser på opgaver')} icon="receipt" />
+          <CardTitle title={t('Priser på opgaver')} />
           <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
             {t('Typisk pris fra–til. Lad felterne stå tomme, hvis I ikke laver opgaven.')}
           </AppText>
@@ -206,7 +206,7 @@ function EditForm({ business }: { business: Business }) {
         </Card>
 
         <Card>
-          <CardTitle title={t('Åbningstider')} icon="clock" />
+          <CardTitle title={t('Åbningstider')} />
           <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
             {t('Skriv fx 7-16 eller 07.30-15.30. Tomt betyder lukket.')}
           </AppText>
@@ -258,7 +258,7 @@ function EditForm({ business }: { business: Business }) {
         </Card>
 
         <Card>
-          <CardTitle title={t('Om virksomheden')} icon="store" />
+          <CardTitle title={t('Om virksomheden')} />
           <View style={styles.spaced}>
             <TextField
               label={t('Beskrivelse')}

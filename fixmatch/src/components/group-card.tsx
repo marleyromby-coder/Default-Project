@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Icon } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
-import { Radius, Spacing } from '@/constants/theme';
+import { IconWell, Radius, Spacing } from '@/constants/theme';
 import { getCategory } from '@/data/categories';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDate } from '@/lib/format';
@@ -31,7 +31,7 @@ export function GroupCard({ group }: { group: GroupJob }) {
       })}
       style={[styles.card, { backgroundColor: colors.surface }]}>
       <View style={[styles.icon, { backgroundColor: colors.brandSoft }]}>
-        <Icon name={group.category} size={18} color={colors.brand} weight="semibold" />
+        <Icon name={group.category} size={16} color={colors.brand} weight="semibold" />
       </View>
       <View style={styles.flex}>
         <AppText variant="headline" numberOfLines={1}>
@@ -66,6 +66,13 @@ const styles = StyleSheet.create({
     borderRadius: Radius.lg,
     borderCurve: 'continuous',
   },
-  icon: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center' },
+  icon: {
+    width: IconWell.row.size,
+    height: IconWell.row.size,
+    borderRadius: IconWell.row.radius,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   badges: { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 4 },
 });

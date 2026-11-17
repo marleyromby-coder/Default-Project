@@ -87,7 +87,7 @@ export function CustomerCard({ business }: { business: Business }) {
 
   return (
     <Card>
-      <CardTitle title={t('Kundernes erfaringer')} icon="people" />
+      <CardTitle title={t('Kundernes erfaringer')} />
       {summary ? (
         <View
           style={styles.summary}

@@ -209,7 +209,7 @@ function Dashboard({ managed, business }: { managed: ManagedBusiness; business: 
       </Card>
 
       <Card>
-        <CardTitle title={t('Har I tid?')} icon="calendar" />
+        <CardTitle title={t('Har I tid?')} />
         <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
           {t('Kunder, hvor det haster, ser jer først. Det forsvinder af sig selv ved midnat.')}
         </AppText>
@@ -226,7 +226,7 @@ function Dashboard({ managed, business }: { managed: ManagedBusiness; business: 
       </Card>
 
       <Card>
-        <CardTitle title={t('Opgørelse')} icon="list" />
+        <CardTitle title={t('Opgørelse')} />
         {failed ? (
           <View style={styles.spaced}>
             <AppText variant="footnote" tone="textSecondary">
@@ -275,7 +275,7 @@ function Dashboard({ managed, business }: { managed: ManagedBusiness; business: 
       </Card>
 
       <Card>
-        <CardTitle title={t('Hvem har kontaktet jer')} icon="phone" />
+        <CardTitle title={t('Hvem har kontaktet jer')} />
         {!contacts && !failed ? (
           <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
             {t('Henter…')}

@@ -16,7 +16,7 @@ import { Icon, type IconName } from '@/components/ui/icon';
 import { Notice } from '@/components/ui/notice';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
-import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
+import { IconWell, Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { CATEGORIES, getCategory } from '@/data/categories';
 import { DEFAULT_LOCATION } from '@/data/places';
 import { useGps, GPS_MESSAGES } from '@/hooks/use-gps';
@@ -639,7 +639,15 @@ const styles = StyleSheet.create({
     padding: Spacing.md,
     gap: Spacing.xs,
   },
-  jobIcon: { width: 30, height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center', marginBottom: 2 },
+  jobIcon: {
+    width: IconWell.row.size,
+    height: IconWell.row.size,
+    borderRadius: IconWell.row.radius,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 2,
+  },
   featured: { width: 290, borderRadius: Radius.lg, borderCurve: 'continuous', overflow: 'hidden' },
   featuredBody: { padding: Spacing.md, gap: Spacing.xs },
   rowBetween: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },

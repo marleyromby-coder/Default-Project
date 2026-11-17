@@ -184,7 +184,7 @@ function Safety({ business }: { business: Business }) {
       </Card>
 
       <Card>
-        <CardTitle title={t('Før du siger ja')} icon="check" />
+        <CardTitle title={t('Før du siger ja')} />
         {BEFORE_YES.map((line) => (
           <View key={line} style={styles.bullet}>
             <Icon name="check" size={13} color={colors.brand} weight="bold" />
@@ -196,7 +196,7 @@ function Safety({ business }: { business: Business }) {
       </Card>
 
       <Card>
-        <CardTitle title={t('Hvis noget går galt')} icon="scale" />
+        <CardTitle title={t('Hvis noget går galt')} />
         <Step number={1} text={t('Klag skriftligt til virksomheden, og giv den mulighed for at rette fejlen.')} />
         {boards.length > 0 ? (
           <>

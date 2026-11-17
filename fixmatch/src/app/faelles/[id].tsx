@@ -241,7 +241,7 @@ export default function GroupScreen() {
       {group.note ? <AppText variant="body">{group.note}</AppText> : null}
 
       <Card>
-        <CardTitle title={t('Koden til naboerne')} icon="share" />
+        <CardTitle title={t('Koden til naboerne')} />
         <View style={[styles.code, styles.spaced, { backgroundColor: colors.surfaceAlt }]}>
           <AppText
             variant="title1"
@@ -271,7 +271,7 @@ export default function GroupScreen() {
 
       {group.mine ? (
         <Card>
-          <CardTitle title={t('Send forespørgslen til en virksomhed')} icon="message" />
+          <CardTitle title={t('Send forespørgslen til en virksomhed')} />
           <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
             {enough
               ? t(

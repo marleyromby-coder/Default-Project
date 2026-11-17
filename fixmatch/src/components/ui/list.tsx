@@ -2,7 +2,7 @@ import type { PropsWithChildren, ReactNode } from 'react';
 import { Children, Fragment } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { MinTouchSize, Radius, Spacing } from '@/constants/theme';
+import { IconWell, MinTouchSize, Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 import { Divider } from './card';
@@ -134,9 +134,9 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.sm + 2,
   },
   iconTile: {
-    width: 28,
-    height: 28,
-    borderRadius: 7,
+    width: IconWell.row.size,
+    height: IconWell.row.size,
+    borderRadius: IconWell.row.radius,
     borderCurve: 'continuous',
     alignItems: 'center',
     justifyContent: 'center',

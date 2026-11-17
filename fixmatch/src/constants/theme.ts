@@ -114,6 +114,15 @@ export const Radius = {
   pill: 999,
 } as const;
 
+/**
+ * The two sizes of a tinted square behind an icon: `row` in list rows and small cards,
+ * `card` where an icon leads a larger block. Use `borderCurve: 'continuous'` with them.
+ */
+export const IconWell = {
+  row: { size: 28, radius: 7 },
+  card: { size: 40, radius: 10 },
+} as const;
+
 /** Standard horizontal margin for screens (iOS uses 16–20 pt). */
 export const ScreenPadding = 16;
 

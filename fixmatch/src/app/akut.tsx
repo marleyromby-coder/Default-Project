@@ -115,7 +115,7 @@ export default function EmergencyScreen() {
           ) : null}
 
           <Card>
-            <CardTitle title={t('Gør det her først')} icon="check" />
+            <CardTitle title={t('Gør det her først')} />
             {emergency.steps.map((step, index) => (
               <View key={step} style={styles.step}>
                 <View style={[styles.number, { backgroundColor: colors.brandSoft }]}>
@@ -131,7 +131,7 @@ export default function EmergencyScreen() {
           </Card>
 
           <Card>
-            <CardTitle title={t('Ring til nærmeste døgnvagt')} icon="phone" />
+            <CardTitle title={t('Ring til nærmeste døgnvagt')} />
             {helpers(emergency).length === 0 ? (
               <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
                 {t('Ingen i nærheden har døgnvagt eller åbent lige nu. Se alle {plural} i stedet.', {

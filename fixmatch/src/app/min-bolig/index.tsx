@@ -71,7 +71,7 @@ export default function MyHomeScreen() {
       <Stack.Screen options={{ title: t('Min bolig') }} />
 
       <Card>
-        <CardTitle title={t('Fradrag {year}', { year: thisYear })} icon="receipt" />
+        <CardTitle title={t('Fradrag {year}', { year: thisYear })} />
         <View style={[styles.deduction, styles.spaced]}>
           <View style={styles.flex}>
             <AppText variant="title1" rounded>
@@ -125,7 +125,7 @@ export default function MyHomeScreen() {
 
       {upcoming.length > 0 ? (
         <Card>
-          <CardTitle title={t('Husk')} icon="calendar" />
+          <CardTitle title={t('Husk')} />
           {upcoming.map((reminder, index) => (
             <View key={`${reminder.job.id}-${reminder.kind}`}>
               {index > 0 ? <Divider /> : null}

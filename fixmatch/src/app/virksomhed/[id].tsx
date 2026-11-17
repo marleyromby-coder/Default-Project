@@ -200,7 +200,7 @@ export default function BusinessScreen() {
 
           {business.videoCheck ? (
             <Card>
-              <CardTitle title={t('Videotjek før besøg')} icon="video" />
+              <CardTitle title={t('Videotjek før besøg')} />
               <AppText variant="subhead" tone="textSecondary" style={styles.spaced}>
                 {t(
                   '{name} ser gerne problemet over FaceTime først. Det tager 5 minutter, er gratis, og du får et overslag uden at betale for en forgæves tur.',
@@ -232,7 +232,7 @@ export default function BusinessScreen() {
 
           {hasProblem(problem) ? (
             <Card>
-              <CardTitle title={t('Dit problem')} icon="camera" />
+              <CardTitle title={t('Dit problem')} />
               {problem.text.trim() ? (
                 <AppText variant="subhead" tone="textSecondary" numberOfLines={3} style={styles.spaced}>
                   “{problem.text.trim()}”
@@ -259,7 +259,7 @@ export default function BusinessScreen() {
           ) : null}
 
           <Card>
-            <CardTitle title={t('Kontakt')} icon="phone" />
+            <CardTitle title={t('Kontakt')} />
             <InfoRow
               icon="phone"
               label={t('Telefon')}
@@ -317,7 +317,7 @@ export default function BusinessScreen() {
           <CustomerCard business={business} />
 
           <Card>
-            <CardTitle title={t('Priser')} icon="tag" />
+            <CardTitle title={t('Priser')} />
             <View style={styles.priceHeader}>
               <AppText variant="title2" rounded>
                 {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currency)}
@@ -374,7 +374,6 @@ export default function BusinessScreen() {
                 score: scored.score,
                 matchLabel: matchLabel(scored.score),
               })}
-              icon="sparkles"
             />
             <ScoreBars parts={scored.parts} weights={weights} />
             <View style={styles.buttonRow}>
@@ -390,7 +389,7 @@ export default function BusinessScreen() {
           </Card>
 
           <Card>
-            <CardTitle title={t('Åbningstider')} icon="clock" trailing={<OpenStatus business={business} />} />
+            <CardTitle title={t('Åbningstider')} trailing={<OpenStatus business={business} />} />
             {business.hours.map((slot, index) => (
               <View key={WEEKDAYS[index]} style={styles.hoursRow} accessible>
                 <AppText variant="subhead" weight={index === today ? '700' : '400'} style={styles.flex}>
@@ -431,7 +430,7 @@ export default function BusinessScreen() {
           <WorkPhotosCard business={business} />
 
           <Card>
-            <CardTitle title={t('Om virksomheden')} icon="store" />
+            <CardTitle title={t('Om virksomheden')} />
             <AppText variant="body">{text.description}</AppText>
             <View style={styles.tags}>
               {text.services.map((service) => (
@@ -447,7 +446,7 @@ export default function BusinessScreen() {
           </Card>
 
           <Card>
-            <CardTitle title={t('Tryghed')} icon="verified" />
+            <CardTitle title={t('Tryghed')} />
             {verified && business.verified ? (
               <>
                 <InfoRow

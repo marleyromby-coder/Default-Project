@@ -8,7 +8,7 @@ import { Chip } from '@/components/ui/chip';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
-import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
+import { IconWell, Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { PRIORITY_PRESETS, weightsFromPriorities } from '@/lib/ranking';
 import type { Priorities } from '@/lib/types';
@@ -134,7 +134,14 @@ const styles = StyleSheet.create({
   presets: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   factor: { borderRadius: Radius.lg, borderCurve: 'continuous', padding: Spacing.lg, gap: Spacing.md },
   factorHeader: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  factorIcon: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
+  factorIcon: {
+    width: IconWell.row.size,
+    height: IconWell.row.size,
+    borderRadius: IconWell.row.radius,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   levels: { flexDirection: 'row', gap: 6 },
   level: {
     flex: 1,
