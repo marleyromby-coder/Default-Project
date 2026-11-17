@@ -81,6 +81,7 @@ const ICONS = {
   smoke: { ios: 'smoke.fill', web: 'cloud' },
   steering: { ios: 'steeringwheel', web: 'directions_car' },
   drop: { ios: 'drop.fill', web: 'water_drop' },
+  sewer: { ios: 'water.waves.and.arrow.up', web: 'flood' },
   fuel: { ios: 'fuelpump.fill', web: 'local_gas_station' },
   leaf: { ios: 'leaf.fill', web: 'eco' },
   warning: { ios: 'exclamationmark.triangle.fill', web: 'warning' },

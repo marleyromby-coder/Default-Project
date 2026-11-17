@@ -39,7 +39,7 @@ export const EMERGENCIES: Emergency[] = [
   {
     id: 'kloak',
     title: msg('Kloakken stiger op'),
-    icon: 'vvs',
+    icon: 'sewer',
     category: 'vvs',
     job: 'stoppet-afloeb',
     steps: [
