@@ -150,6 +150,14 @@ Slet også e-mails med rapporter og svar 12 måneder efter, sagen er afsluttet.
 - **Gratis-planen sætter projektet på pause efter en uge uden aktivitet.** Det kan genstartes med ét klik i dashboardet. Før lanceringen bør I skifte til **Pro** (ca. 25 USD/md.), som aldrig går i pause og har daglig backup.
 - Mister telefonen forbindelsen, viser appen en fejl og prøver igen næste gang. Intet går tabt.
 - Skemaet ligger i `supabase/migrations/`. Ændrer I det, så lav en ny fil med en senere dato, og kør den i SQL Editor.
+- **Nye visninger er åbne for alle.** Supabase giver `anon` og `authenticated` alle rettigheder til nye tabeller og visninger. En ny visning skal derfor altid have `revoke all on public.<visning> from anon, authenticated;` og, hvis appen skal læse den, `grant select on public.<visning> to anon, authenticated;`. Tjek med denne forespørgsel, at ingen visning giver mere end læseadgang (den skal give 0 rækker):
+
+  ```sql
+  select table_name, grantee, privilege_type
+  from information_schema.role_table_grants
+  where table_schema = 'public' and grantee in ('anon', 'authenticated') and privilege_type <> 'SELECT'
+    and table_name in (select table_name from information_schema.views where table_schema = 'public');
+  ```
 - **Verificeret-mærket:** Tilmeldinger, der beder om mærket, har teksten "Ønsker Verificeret" i kolonnen `verificering_oensket` i eksporten, med autorisationsnummer, forsikring og garantiordning. Tjek CVR på datacvr.virk.dk, ring til ejeren (senere MitID Erhverv), slå autorisationen op hos Sikkerhedsstyrelsen og se forsikringen. Skriv så datoen i `verificeret` og tjekkene i `verificeret_tjek` (fx `cvr|ejer|autorisation|forsikring|garanti`) før `npm run import:businesses`. Mærket gælder et år.
 
 ## Hvis noget går galt
