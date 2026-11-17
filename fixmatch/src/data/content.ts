@@ -289,6 +289,7 @@ export function infoPagesDa() {
           heading: 'Anmeldelser og priser, du deler',
           paragraphs: [
             'Anmelder du en virksomhed, deler, hvad du betalte, eller svarer på, om de tog telefonen, gemmer vi det sammen med din bruger hos Supabase i EU, så vi kan tjekke, at du har kontaktet virksomheden. Andre ser kun dit forbogstav ved anmeldelser, og priser vises kun samlet, når mindst 3 har delt. Det slettes, når du sletter din bruger.',
+            'Starter du en Naborabat-gruppe, gemmer vi opgaven, gaden eller området, postnummeret, perioden og din besked. Alle kan se gruppen, men ikke hvem der er med.',
           ],
         },
         {
@@ -308,6 +309,7 @@ export function infoPagesDa() {
           paragraphs: [
             'Oplysninger om virksomheder og deres kontaktpersoner viser vi på grundlag af virksomhedens samtykke. Samtykket kan til enhver tid trækkes tilbage, og så fjerner vi oplysningerne.',
             'Beder en virksomhed om Verificeret-mærket, gemmer vi også autorisationsnummer, forsikring og garantiordning, og hvad vi har tjekket og hvornår, så længe mærket gælder.',
+            'Billeder af udført arbejde, som en virksomhed selv lægger op under Min virksomhed, gemmer vi hos Supabase i EU og viser for alle på virksomhedens side.',
           ],
         },
         {

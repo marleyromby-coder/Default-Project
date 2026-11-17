@@ -266,6 +266,7 @@ export function infoPagesEn(): Record<
           heading: 'Reviews and prices you share',
           paragraphs: [
             'If you review a business, share what you paid or say whether they answered the phone, we store it with your account at Supabase in the EU, so we can check that you contacted the business. Others only see your initial on reviews, and prices are only shown together once at least 3 people have shared. It is deleted when you delete your account.',
+            'If you start a Neighbour discount group, we store the job, the street or area, the postal code, the period and your note. Everyone can see the group, but not who is in it.',
           ],
         },
         {
@@ -285,6 +286,7 @@ export function infoPagesEn(): Record<
           paragraphs: [
             'We show details about businesses and their contacts on the basis of the business’s consent. The consent can be withdrawn at any time, and then we remove the details.',
             'If a business asks for the Verified badge, we also keep its licence number, insurance and guarantee scheme, and what we checked and when, for as long as the badge lasts.',
+            'Photos of finished work that a business adds under My business are stored with Supabase in the EU and shown to everyone on the business’s page.',
           ],
         },
         {

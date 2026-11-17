@@ -80,6 +80,8 @@ Vi viser oplysninger om virksomheder (fx navn, CVR, telefonnummer og priser), so
 
 **Ledig i dag.** Melder en virksomhed ledig tid på sit personlige link, gemmer vi de dage, den er ledig, og hvornår den sidst meldte det. Det vises for alle i appen og slettes ikke, men gamle dage vises aldrig. Koden i linket gemmer vi kun som en krypteret værdi (hash).
 
+**Billeder af udført arbejde.** Lægger en virksomhed billeder af sit arbejde op under "Min virksomhed", gemmer vi dem hos Supabase i EU og viser dem for alle på virksomhedens side, højst 6. Billederne må ikke vise personer eller adresser. Virksomheden kan selv slette dem, og vi sletter billeder, der bryder reglerne.
+
 **Verificeret-mærket.** Beder en virksomhed om mærket, gemmer vi også autorisationsnummer, forsikringsselskab og garantiordning, og hvad vi har tjekket og hvornår (CVR, ejer, autorisation, forsikring og garantiordning). Vi bruger det kun til at give og forny mærket. Retsgrundlaget er aftalen med virksomheden om mærket (GDPR art. 6, stk. 1, litra b). Oplysningerne slettes, når mærket ikke længere fornyes, eller når virksomheden trækker sig fra FixMatch.
 
 > Tjek retsgrundlag og opbevaringstid for verificeringen med jeres advokat (se GDPR-forberedelsen).

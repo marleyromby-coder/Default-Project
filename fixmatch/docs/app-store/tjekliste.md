@@ -48,7 +48,7 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 
 - [ ] Tekster, søgeord og noter fra `app-store-tekster.md` (dansk) og `app-store-texts-en.md` (engelsk, til alle andre lande).
 - [ ] App Review Information: flueben ved **Sign-in required**, og virksomhedens id og kode til "Min virksomhed" i *User name* og *Password* (se `app-store-tekster.md` → Noter til Apples review-team). Prøv selv koden i appen først.
-- [ ] App Privacy: datatyperne fra `app-store-tekster.md` → App Privacy (navn, e-mail, telefon, bruger-id, produktinteraktion, købshistorik, andet brugerindhold).
+- [ ] App Privacy: datatyperne fra `app-store-tekster.md` → App Privacy (navn, e-mail, telefon, fysisk adresse, bruger-id, produktinteraktion, købshistorik, billeder eller videoer, andet brugerindhold).
 - [ ] Supabase er sat op (`docs/lancering/supabase.md`), og `fixmatch/.env` har URL og publishable key i den build, der indsendes.
 - [ ] Aldersgrænse 4+.
 - [ ] Skærmbilleder (6,9").

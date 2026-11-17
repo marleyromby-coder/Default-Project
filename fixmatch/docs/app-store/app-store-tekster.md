@@ -111,9 +111,11 @@ Vælg disse datatyper. For hver: **Knyttet til brugeren: Ja**, **Bruges til spor
 | Id'er | Bruger-id | Brugerkontoen hos Supabase |
 | Brugsdata | Produktinteraktion | Hvilke virksomheder brugeren har ringet til, så virksomheden kan se det |
 | Køb | Købshistorik | Hvad brugeren betalte for en opgave ("Del, hvad du betalte"). Vises kun samlet og uden navn |
-| Brugerindhold | Andet brugerindhold | Anmeldelser (stjerner og tekst). Vises med forbogstav |
+| Kontaktoplysninger | Fysisk adresse | Naborabat: postnummer og gade eller område, som brugeren selv skriver. Virksomhedstilmeldinger: virksomhedens adresse |
+| Brugerindhold | Billeder eller videoer | Virksomheders billeder af udført arbejde (Min virksomhed). Vises for alle på virksomhedens side |
+| Brugerindhold | Andet brugerindhold | Anmeldelser (stjerner og tekst, vises med forbogstav), Naborabat-grupper (besked) og rapporter ("Rapportér") |
 
-Ikke indsamlet: placering (bruges kun på telefonen), søgninger, teksten og billederne i "Beskriv dit problem" (bliver på telefonen og sendes kun af brugeren selv som en besked), gemte virksomheder, analyse, reklamer og crash-rapporter.
+Ikke indsamlet: placering (bruges kun på telefonen), søgninger, teksten og billederne i "Beskriv dit problem" (bliver på telefonen og sendes kun af brugeren selv som en besked), billeder af tilbud og i Min bolig (bliver på telefonen), gemte virksomheder, analyse, reklamer og crash-rapporter.
 
 Virksomhedernes egne tilmeldinger (Mere → Tilmeld din virksomhed) er oplysninger om virksomheden og dens kontaktperson. Kontaktpersonens navn og e-mail er også "Kontaktoplysninger → Navn / E-mailadresse" og er allerede med i tabellen.
 

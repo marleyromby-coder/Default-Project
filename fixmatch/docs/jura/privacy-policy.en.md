@@ -76,6 +76,8 @@ We show information about businesses (such as name, company number, phone number
 
 **Free today.** If a business marks free time on its personal link, we store the days it is free and when it last marked them. They are shown to everyone in the app, and old days are never shown. We only store the code in the link as a hash.
 
+**Photos of finished work.** If a business adds photos of its work under "My business", we store them with Supabase in the EU and show them to everyone on the business's page, at most 6. The photos must not show people or addresses. The business can delete them itself, and we delete photos that break the rules.
+
 **The Verified badge.** If a business asks for the badge, we also keep its licence number, insurance company and guarantee scheme, and what we checked and when (company number, owner, licence, insurance and guarantee scheme). We only use this to give and renew the badge. The legal basis is the agreement with the business about the badge (GDPR Article 6(1)(b)). We delete the information when the badge is no longer renewed or the business leaves FixMatch.
 
 > Check the legal basis and retention period for verification with your lawyer (see the GDPR preparation).
