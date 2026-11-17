@@ -1,6 +1,6 @@
 import { getLocales } from 'expo-localization';
 
-import { distanceKm } from '@/lib/geo';
+import { distanceKm, isInsideDanishBorders } from '@/lib/geo';
 import { countryName, getMarket, isLaunched, LAUNCHED_COUNTRIES } from '@/lib/markets';
 import { loose } from '@/lib/text';
 import type { Coords, UserLocation } from '@/lib/types';
@@ -116,11 +116,15 @@ export function searchPlaces(query: string, limit = 30): Place[] {
   return [...starts, ...contains].slice(0, limit);
 }
 
-/** Nearest town or city; used to name a GPS position. */
+/**
+ * Nearest town or city; used to name a GPS position. Inside Denmark's borders it is a Danish
+ * town, outside them a city abroad. Many Danish towns only have their municipality's coordinates
+ * (approx), so Flensburg is nearer to Padborg and Kruså than any Danish town with its own.
+ */
 export function nearestPlace(coords: Coords): Place {
   let best = DEFAULT_PLACE;
   let bestKm = Infinity;
-  for (const place of PLACES) {
+  for (const place of isInsideDanishBorders(coords) ? DANISH_PLACES : WORLD_PLACES) {
     if (place.approx) continue;
     const km = distanceKm(coords, place);
     if (km < bestKm) {

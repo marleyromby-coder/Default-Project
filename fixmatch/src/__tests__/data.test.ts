@@ -5,6 +5,7 @@ import {
   DEFAULT_LOCATION,
   INTERNATIONAL_PLACES,
   PLACES,
+  WORLD_PLACES,
   findPlaceByPostalCode,
   locationFromGps,
   nearestPlace,
@@ -13,7 +14,7 @@ import {
 import { isPhotoKey } from '@/data/photos';
 import { openCountries } from '@/lib/business-text';
 import { isValidBusiness, parseBusinesses } from '@/lib/data-source';
-import { isInDenmark } from '@/lib/geo';
+import { isInDenmark, isInsideDanishBorders } from '@/lib/geo';
 import { getMarket, LAUNCHED_COUNTRIES, MARKETS } from '@/lib/markets';
 import { reviewSiteOf } from '@/lib/review-links';
 import type { Business } from '@/lib/types';
@@ -178,6 +179,28 @@ describe('places', () => {
     expect(nearestPlace({ lat: 55.405, lon: 10.39 }).name).toBe('Odense C');
     expect(locationFromGps({ lat: 55.405, lon: 10.39 })).toMatchObject({ source: 'gps', label: 'Odense C' });
     expect(locationFromGps({ lat: 55.405, lon: 10.39 }).abroad).toBeUndefined();
+  });
+
+  it('keeps Danish towns by the German border in Denmark', () => {
+    for (const p of DANISH_PLACES)
+      expect({ place: p.name, inside: isInsideDanishBorders(p) }).toMatchObject({ inside: true });
+    expect(WORLD_PLACES.filter((p) => isInsideDanishBorders(p)).map((p) => p.name)).toEqual([]);
+    // Padborg and Kruså only have Aabenraa's coordinates in places.json, Flensburg is 7 km away.
+    for (const coords of [
+      { lat: 54.8264, lon: 9.3631 }, // Padborg
+      { lat: 54.85, lon: 9.4 }, // Kruså
+      { lat: 54.9367, lon: 9.25 }, // Tinglev
+      { lat: 54.8358, lon: 9.4667 }, // Kollund, on Flensborg Fjord
+    ]) {
+      const location = locationFromGps(coords);
+      expect(location).toMatchObject({ source: 'gps', coords, country: 'DK' });
+      expect(location.abroad).toBeUndefined();
+    }
+    // Really abroad: still København, with the country the user is in.
+    expect(locationFromGps({ lat: 54.7819, lon: 9.4367 })).toMatchObject({ ...DEFAULT_LOCATION, abroad: 'DE' }); // Flensburg
+    expect(locationFromGps({ lat: 53.5511, lon: 9.9937 })).toMatchObject({ ...DEFAULT_LOCATION, abroad: 'DE' }); // Hamburg
+    expect(locationFromGps({ lat: 55.605, lon: 13.0038 })).toMatchObject({ ...DEFAULT_LOCATION, abroad: 'SE' }); // Malmö
+    expect(nearestPlace({ lat: 54.9, lon: 8.32 }).country).toBe('DE'); // Sylt, nearer to Tønder than to a German city
   });
 
   it('shows København, not an empty app, when the GPS is outside the launched countries', () => {
