@@ -185,6 +185,19 @@ function readReviewSites(root) {
   return JSON.parse(fs.readFileSync(path.join(root, 'src/data/review-sites.json'), 'utf8'));
 }
 
+/**
+ * The review-link field, split and cleaned as splitReviewLinks() in src/lib/review-links.ts does:
+ * a comma inside a link stays (Google Maps links have them), and the scheme and host are made
+ * lower case for the database's "https://" check. The browser runs this same function (CLIENT).
+ */
+function splitReviewLinks(text) {
+  return text
+    .split(/(?:[\s|]|,(?=[\s|]|$|https?:\/\/|www\.))+/i)
+    .filter(Boolean)
+    .map((link) => (/^[a-z]+:\/\//i.test(link) ? link : 'https://' + link))
+    .map((link) => link.replace(/^[a-z]+:\/\/[^/?#]*/i, (start) => start.toLowerCase()));
+}
+
 /** EXPO_PUBLIC_SUPABASE_URL and _KEY from the environment or fixmatch/.env. */
 function readSupabase(root) {
   const env = { ...process.env };
@@ -270,7 +283,7 @@ ${field(text.street, '<input name="street" required maxlength="120" autocomplete
 ${field(text.phone, '<input name="phone" type="tel" required pattern="\\+?[0-9 ()\\-]{6,20}" autocomplete="tel">')}
 ${field(text.email, '<input name="email" type="email" required autocomplete="email">', text.emailHint)}
 ${field(text.website, '<input name="website" type="url" inputmode="url" maxlength="200" placeholder="https://">')}
-${field(text.reviewLinks, '<input name="review_links" inputmode="url" maxlength="700" autocapitalize="off" spellcheck="false" placeholder="https://">', text.reviewLinksHint(siteNames, MAX_REVIEW_LINKS))}
+${field(text.reviewLinks, '<input name="review_links" inputmode="url" maxlength="1000" autocapitalize="off" spellcheck="false" placeholder="https://">', text.reviewLinksHint(siteNames, MAX_REVIEW_LINKS))}
 </fieldset>
 <fieldset><legend>${escape(text.prices)}</legend>
 <div class="row">${field(text.hourlyMin, '<input name="hourly_min" type="number" min="1" step="1" required inputmode="numeric">')}${field(text.hourlyMax, '<input name="hourly_max" type="number" min="1" step="1" inputmode="numeric">')}</div>
@@ -306,6 +319,7 @@ ${consentBoxes}
 /** Runs in the browser. Builds the same row as signupRow() in src/lib/business-signup.ts. */
 const CLIENT = `(() => {
   const config = window.FIXMATCH_SIGNUP;
+  const splitReviewLinks = ${splitReviewLinks};
   const form = document.getElementById('signup');
   const error = form.querySelector('.error');
   const button = form.querySelector('button');
@@ -330,10 +344,7 @@ const CLIENT = `(() => {
       show(config.text.authorizationMissing);
       return;
     }
-    const reviewLinks = value('review_links')
-      .split(/[\\s,|]+/)
-      .filter(Boolean)
-      .map((link) => (/^[a-z]+:\\/\\//i.test(link) ? link : 'https://' + link));
+    const reviewLinks = splitReviewLinks(value('review_links'));
     const allowed = (link) =>
       link.length <= 300 && !/[\\s<>"'\\\\\`]/.test(link) &&
       config.reviewPrefixes.some((prefix) => link.toLowerCase().startsWith(prefix) && link.length > prefix.length);
@@ -424,4 +435,12 @@ const FORM_STYLE = `
 @media (max-width: 520px) { .signup .row { grid-template-columns: 1fr; } }
 `;
 
-module.exports = { signupForm, readConsent, readTrades, readAuthorizationTrades, readSupabase, FORM_STYLE };
+module.exports = {
+  signupForm,
+  splitReviewLinks,
+  readConsent,
+  readTrades,
+  readAuthorizationTrades,
+  readSupabase,
+  FORM_STYLE,
+};

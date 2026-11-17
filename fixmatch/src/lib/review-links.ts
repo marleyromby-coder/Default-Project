@@ -48,11 +48,16 @@ export function parseReviewLinks(value: unknown): ReviewLink[] {
   return links.slice(0, MAX_REVIEW_LINKS);
 }
 
-/** Links typed or pasted into a form: split on spaces, commas or new lines, with https:// added. */
+/**
+ * Links typed or pasted into a form: split on spaces, new lines, '|' or a comma between two links,
+ * with https:// added. A comma inside a link stays, as Google Maps links have them
+ * (/@55.73,12.36,17z/). The scheme and host are made lower case, as the database only takes
+ * links that start with "https://". The website form (scripts/lib/signup-form.js) does the same.
+ */
 export function splitReviewLinks(text: string): string[] {
   return text
-    .split(/[\s,|]+/)
-    .map((part) => part.trim())
+    .split(/(?:[\s|]|,(?=[\s|]|$|https?:\/\/|www\.))+/i)
     .filter(Boolean)
-    .map((part) => (/^[a-z]+:\/\//i.test(part) ? part : `https://${part}`));
+    .map((part) => (/^[a-z]+:\/\//i.test(part) ? part : `https://${part}`))
+    .map((link) => link.replace(/^[a-z]+:\/\/[^/?#]*/i, (start) => start.toLowerCase()));
 }
