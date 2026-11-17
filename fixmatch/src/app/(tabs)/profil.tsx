@@ -147,22 +147,39 @@ export default function ProfileScreen() {
               )}
             </View>
             <View style={styles.flex}>
-              <AppText variant="title3" numberOfLines={1}>
-                {signedIn ? (name ?? t('Tilføj navn og telefonnummer')) : t('Du er ikke logget ind')}
+              <AppText variant="headline" numberOfLines={1}>
+                {signedIn ? (name ?? t('Tilføj navn og telefonnummer')) : t('Opret bruger eller log ind')}
               </AppText>
               <AppText variant="footnote" tone="textSecondary" numberOfLines={2}>
                 {signedIn
                   ? [account.profile?.phone, account.email].filter(Boolean).join(' · ') ||
                     t('Virksomhederne skal kunne se, hvem der ringer.')
-                  : t('Opret en bruger, så virksomhederne kan se dit navn og nummer, når du ringer.')}
+                  : t('Så kan virksomhederne se, hvem der ringer.')}
               </AppText>
             </View>
             <Icon name="chevronRight" size={14} color={colors.textTertiary} weight="semibold" />
           </Tappable>
 
-          {!signedIn ? (
-            <Button title={t('Opret bruger eller log ind')} icon="person" onPress={openAccount('settings')} block />
-          ) : null}
+          <ListSection>
+            <ListRow
+              icon="heartFill"
+              title={t('Gemte håndværkere')}
+              value={String(state.favorites.length)}
+              onPress={() => router.navigate('/gemte')}
+            />
+            <ListRow
+              icon="home"
+              title={t('Min bolig')}
+              value={homeJobs.length > 0 ? String(homeJobs.length) : undefined}
+              onPress={() => router.push('/min-bolig')}
+            />
+            <ListRow
+              icon="people"
+              title={t('Mine grupper')}
+              value={groups.length > 0 ? String(groups.length) : undefined}
+              onPress={() => router.push('/faelles')}
+            />
+          </ListSection>
 
           <ListSection
             title={t('Dine opkald')}
@@ -225,35 +242,6 @@ export default function ProfileScreen() {
               title={managedName ? t('Min virksomhed') : t('Log ind som virksomhed')}
               value={managedName}
               onPress={() => router.push(managedName ? '/min-virksomhed' : '/virksomhed-login')}
-            />
-          </ListSection>
-
-          <ListSection
-            title={t('Min bolig')}
-            footer={t('Faktura, billeder, garanti og fradrag for alt, du får lavet. Bliver på telefonen.')}>
-            <ListRow
-              icon="home"
-              title={t('Min bolig')}
-              value={homeJobs.length > 0 ? String(homeJobs.length) : undefined}
-              onPress={() => router.push('/min-bolig')}
-            />
-          </ListSection>
-
-          <ListSection title={t('Naborabat')} footer={t('Gå sammen med naboerne om en opgave, og få rabat.')}>
-            <ListRow
-              icon="people"
-              title={t('Mine grupper')}
-              value={groups.length > 0 ? String(groups.length) : undefined}
-              onPress={() => router.push('/faelles')}
-            />
-          </ListSection>
-
-          <ListSection title={t('Gemte')}>
-            <ListRow
-              icon="heartFill"
-              title={t('Gemte håndværkere')}
-              value={String(state.favorites.length)}
-              onPress={() => router.navigate('/gemte')}
             />
           </ListSection>
 

@@ -76,21 +76,25 @@ export default function MoreScreen() {
         contentInsetAdjustmentBehavior="never">
         <ScreenHeader title={t('Mere')} />
         <View style={styles.sections}>
-          <ListSection
-            title={t('Gennemsigtighed')}
-            footer={t('Ingen kan betale sig til en bedre placering i søgeresultaterne.')}>
-            <ListRow icon="list" title={t('Sådan rangerer vi')} onPress={info('rangering')} />
-            <ListRow icon="verified" title={t('Sådan verificerer vi')} onPress={info('verificering')} />
-            <ListRow icon="star" title={t('Om anmeldelser')} onPress={info('anmeldelser')} />
-            <ListRow icon="tag" title={t('Om priserne')} onPress={info('priser')} />
-            <ListRow icon="leaf" title={t('Grøn guide')} onPress={() => router.push('/groen-guide')} />
-            <ListRow icon="people" title={t('Naborabat')} onPress={() => router.push('/faelles')} />
+          <ListSection title={t('Værktøjer')}>
+            <ListRow icon="receipt" title={t('Tilbudstjek')} onPress={() => router.push('/tilbudstjek')} />
             <ListRow icon="siren" title={t('Akut hjælp')} onPress={() => router.push('/akut')} />
             <ListRow
               icon="warning"
               title={t('Advarselslampe i bilen')}
               onPress={() => router.push('/advarselslamper')}
             />
+            <ListRow icon="leaf" title={t('Grøn guide')} onPress={() => router.push('/groen-guide')} />
+            <ListRow icon="people" title={t('Naborabat')} onPress={() => router.push('/faelles')} />
+          </ListSection>
+
+          <ListSection
+            title={t('Sådan virker FixMatch')}
+            footer={t('Ingen kan betale sig til en bedre placering i søgeresultaterne.')}>
+            <ListRow icon="list" title={t('Sådan rangerer vi')} onPress={info('rangering')} />
+            <ListRow icon="verified" title={t('Sådan verificerer vi')} onPress={info('verificering')} />
+            <ListRow icon="star" title={t('Om anmeldelser')} onPress={info('anmeldelser')} />
+            <ListRow icon="tag" title={t('Om priserne')} onPress={info('priser')} />
             <ListRow icon="scale" title={t('Hvis noget går galt')} onPress={info('hjaelp')} />
           </ListSection>
 

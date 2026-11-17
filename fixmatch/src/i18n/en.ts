@@ -157,7 +157,6 @@ const en: Record<string, string> = {
   'Gem prioriteter': 'Save priorities',
   'Gem {name}': 'Save {name}',
   Gemte: 'Saved',
-  Gennemsigtighed: 'Transparency',
   'Gode anmeldelser': 'Good reviews',
   'Godkendt af virksomheden {date}': 'Approved by the business {date}',
   'Godkendt gasinstallatør': 'Registered gas engineer',
@@ -731,10 +730,7 @@ const en: Record<string, string> = {
     'The list of businesses you have contacted is deleted from your phone.',
   Profil: 'Profile',
   '{name}. Ret navn og telefonnummer': '{name}. Edit name and phone number',
-  'Du er ikke logget ind': 'You are not signed in',
   'Virksomhederne skal kunne se, hvem der ringer.': 'Businesses need to see who is calling.',
-  'Opret en bruger, så virksomhederne kan se dit navn og nummer, når du ringer.':
-    'Create an account so businesses can see your name and number when you call.',
   'Dine opkald': 'Your calls',
   'Listen ligger kun på din telefon. Virksomheden ser dit navn og nummer, når du ringer.':
     'The list stays on your phone. The business sees your name and number when you call.',
@@ -1080,8 +1076,6 @@ const en: Record<string, string> = {
     'Saved businesses, chosen town, your priorities and My home are deleted from the phone.',
   'Advarselslampe i bilen': 'Warning lamp in the car',
   'Min bolig': 'My home',
-  'Faktura, billeder, garanti og fradrag for alt, du får lavet. Bliver på telefonen.':
-    'Invoice, pictures, guarantee and deduction for everything you have done. Stays on the phone.',
   'Tjek hele tilbuddet': 'Check the whole quote',
   'Ny opgave': 'New job',
   'Lyser der en lampe? Find den her, og se, om du kan køre videre, og hvad det typisk koster at få ordnet.':
@@ -1314,7 +1308,6 @@ const en: Record<string, string> = {
   'Garantien udløber': 'The guarantee ends',
   Naborabat: 'Neighbour discount',
   'Akut hjælp': 'Emergency help',
-  'Gå sammen med naboerne om en opgave, og få rabat.': 'Team up with the neighbours on a job and get a discount.',
   'Mine grupper': 'My groups',
   'Start en gruppe': 'Start a group',
   'Ring {number} ved fare for liv eller brand': 'Call {number} in danger to life or fire',
@@ -1556,6 +1549,7 @@ const en: Record<string, string> = {
   Værktøjer: 'Tools',
   'Tager telefonen {answered} ud af {outOf} gange': 'Answers the phone {answered} out of {outOf} times',
   Vægtning: 'Weighting',
+  'Så kan virksomhederne se, hvem der ringer.': 'Then businesses can see who is calling.',
 };
 
 export default en;
