@@ -76,7 +76,7 @@ Testerne installerer den gratis app **TestFlight** fra App Store og åbner invit
 **Beskrivelse af beta**
 
 ```
-FixMatch helps people find and compare local tradespeople (plumbers, electricians, carpenters, mechanics and more) by price and distance, and call them directly. This beta is a demo for an innovation competition: all businesses are fictional examples, clearly marked in the app, and calling them is turned off.
+FixMatch helps people find and compare local tradespeople (plumbers, electricians, carpenters, mechanics and more) by price, distance and reviews from FixMatch users, and call them directly. This beta is a demo for an innovation competition: all businesses are fictional examples, clearly marked in the app, and calling them is turned off.
 ```
 
 **Hvad skal testes**

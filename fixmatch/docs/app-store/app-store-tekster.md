@@ -172,7 +172,7 @@ Krav: mindst ét sæt til **6,9" iPhone** (1320 × 2868 eller 1290 × 2796 px). 
 Tag billederne på en rigtig iPhone (TestFlight-build med **live**-data, ikke demo). Forslag til rækkefølge og overskrifter:
 
 1. Forside – *"Find den rette håndværker"*
-2. Liste over VVS'ere – *"Sammenlign pris og afstand"*
+2. Liste over VVS'ere – *"Sammenlign pris, afstand og anmeldelser"*
 3. Virksomhedsside – *"Pris inkl. moms – før du ringer"*
 4. Sammenlign side om side – *"Vælg den bedste på 10 sekunder"*
 5. Dine prioriteter – *"Du bestemmer, hvad der tæller"*

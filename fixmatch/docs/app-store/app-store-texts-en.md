@@ -123,7 +123,7 @@ App Review Information is the same for every language, so there is one set of no
 Take a second set with the phone set to English and the location set to a city with businesses. Suggested captions:
 
 1. Home – *"Find the right tradesperson"*
-2. List of plumbers – *"Compare price and distance"*
+2. List of plumbers – *"Compare price, distance and reviews"*
 3. Business page – *"See the price before you call"*
 4. Compare side by side – *"Pick the best in 10 seconds"*
 5. Describe your problem – *"Your problem, your budget"*
