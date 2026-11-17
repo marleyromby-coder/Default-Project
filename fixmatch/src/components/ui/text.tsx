@@ -16,10 +16,14 @@ interface Props extends TextProps {
   tone?: Tone;
   weight?: TextStyle['fontWeight'];
   align?: TextStyle['textAlign'];
-  /** Use the rounded system font (numbers in scores, prices). */
+  /** Deprecated: numbers. Same as tabular, set in SF Pro. */
   rounded?: boolean;
   /** Set in Fraunces, the serif of the logo. On by default for the title variants. */
   serif?: boolean;
+  /**
+   * Numbers: SF Pro with tabular figures, so digits line up and do not jump. Every number
+   * is set this way, also in a title variant, which otherwise would be Fraunces.
+   */
   tabular?: boolean;
 }
 
@@ -37,11 +41,12 @@ export function AppText({
 }: Props) {
   const colors = useTheme();
   const isHeading = TITLES.includes(variant);
-  const isSerif = !rounded && (serif ?? isHeading);
+  const numeric = tabular || rounded;
+  const isSerif = !numeric && (serif ?? isHeading);
   // Fraunces ships one family per weight, so the weight picks the family and the text
   // itself stays at a normal weight (otherwise iOS and browsers fake a bold).
   const serifFamily = BOLD.includes(weight) ? SerifFonts.bold : SerifFonts.regular;
-  const fontFamily = isSerif ? serifFamily : rounded ? Fonts?.rounded : Fonts?.sans;
+  const fontFamily = isSerif ? serifFamily : Fonts?.sans;
   return (
     <Text
       accessibilityRole={isHeading ? 'header' : undefined}
@@ -51,7 +56,7 @@ export function AppText({
         { color: colors[tone], fontFamily },
         isSerif ? { fontWeight: 'normal' } : weight ? { fontWeight: weight } : null,
         align ? { textAlign: align } : null,
-        tabular ? { fontVariant: ['tabular-nums'] } : null,
+        numeric ? { fontVariant: ['tabular-nums'] } : null,
         style,
       ]}
       {...rest}
