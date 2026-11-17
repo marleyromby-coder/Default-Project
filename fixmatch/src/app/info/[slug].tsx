@@ -47,17 +47,18 @@ export default function InfoScreen() {
       <AppText variant="body">{page.intro}</AppText>
 
       {slug === 'rangering' ? (
-        <View style={[styles.callout, { backgroundColor: colors.brandSoft }]}>
-          <AppText variant="subhead" weight="600">
+        <View style={styles.section}>
+          <AppText variant="headline" accessibilityRole="header">
             {t('Din vægtning lige nu')}
           </AppText>
-          <AppText variant="subhead">{weightsText(weights)}</AppText>
+          <AppText variant="subhead" tone="textSecondary">
+            {weightsText(weights)}
+          </AppText>
           <Button
             title={t('Juster dine prioriteter')}
-            variant="plain"
-            size="small"
+            variant="link"
+            chevron
             onPress={() => router.push('/prioriteter')}
-            style={styles.alignStart}
           />
         </View>
       ) : null}
@@ -107,8 +108,6 @@ export default function InfoScreen() {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   content: { padding: ScreenPadding, gap: Spacing.lg },
-  callout: { borderRadius: 12, padding: Spacing.lg, gap: Spacing.xs },
-  alignStart: { alignSelf: 'flex-start', paddingHorizontal: 0 },
   section: { gap: Spacing.sm },
   bullet: { flexDirection: 'row', gap: Spacing.sm },
 });

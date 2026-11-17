@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BusinessMark } from '@/components/business/business-mark';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
+import { Notice } from '@/components/ui/notice';
 import { Tappable } from '@/components/ui/tappable';
 import { TextField } from '@/components/ui/text-field';
 import { AppText } from '@/components/ui/text';
@@ -95,20 +96,15 @@ export default function BusinessLoginScreen() {
         </View>
 
         {!signedIn ? (
-          <View style={[styles.notice, { backgroundColor: colors.infoSoft }]}>
-            <Icon name="person" size={16} color={colors.info} weight="semibold" />
-            <View style={styles.flex}>
-              <AppText variant="footnote">
-                {t('Log ind med din egen bruger først. Så kobler vi den til virksomheden.')}
-              </AppText>
-              <Button
-                title={t('Log ind eller opret bruger')}
-                variant="plain"
-                size="small"
-                onPress={() => router.push({ pathname: '/konto', params: { reason: 'settings' } })}
-              />
-            </View>
-          </View>
+          <Notice
+            icon="person"
+            text={t('Log ind med din egen bruger først. Så kobler vi den til virksomheden.')}
+            action={{
+              label: t('Log ind'),
+              accessibilityLabel: t('Log ind eller opret bruger'),
+              onPress: () => router.push({ pathname: '/konto', params: { reason: 'settings' } }),
+            }}
+          />
         ) : null}
 
         {picked ? (
@@ -215,7 +211,6 @@ const styles = StyleSheet.create({
   block: { gap: Spacing.sm },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   card: { borderRadius: Radius.lg, borderWidth: 1.5, padding: Spacing.md, gap: Spacing.md },
-  notice: { flexDirection: 'row', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md },
   result: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardTitle } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Icon } from '@/components/ui/icon';
+import { Notice } from '@/components/ui/notice';
 import { AppText } from '@/components/ui/text';
 import { IconWell, Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { getCategory } from '@/data/categories';
@@ -210,12 +211,10 @@ export default function GroupScreen() {
       <Stack.Screen options={{ title: jobName }} />
 
       {ny === '1' ? (
-        <View style={[styles.notice, { backgroundColor: colors.successSoft }]}>
-          <Icon name="check" size={16} color={colors.success} weight="semibold" />
-          <AppText variant="footnote" style={styles.flex}>
-            {t('Gruppen er oprettet. Send koden til naboerne, så I bliver mindst {min}.', { min: MIN_GROUP })}
-          </AppText>
-        </View>
+        <Notice
+          icon="check"
+          text={t('Gruppen er oprettet. Send koden til naboerne, så I bliver mindst {min}.', { min: MIN_GROUP })}
+        />
       ) : null}
 
       <View style={styles.head}>
@@ -338,7 +337,6 @@ export default function GroupScreen() {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   content: { padding: ScreenPadding, gap: Spacing.md },
-  notice: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md },
   head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   icon: {
     width: IconWell.card.size,

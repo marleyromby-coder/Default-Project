@@ -9,7 +9,7 @@ import { Chip } from '@/components/ui/chip';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Segmented } from '@/components/ui/segmented';
 import { AppText } from '@/components/ui/text';
-import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
+import { ScreenPadding, Spacing } from '@/constants/theme';
 import { AUTHORIZATION_LABELS, getCategory } from '@/data/categories';
 import { useResults } from '@/hooks/use-results';
 import { useTheme } from '@/hooks/use-theme';
@@ -109,7 +109,7 @@ export default function CategoryScreen() {
       </AppText>
 
       {job && jobPrice ? (
-        <View style={[styles.jobBanner, { backgroundColor: colors.brandSoft }]}>
+        <View style={styles.job}>
           <AppText variant="subhead" weight="600">
             {job.name}
           </AppText>
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
   list: { paddingHorizontal: ScreenPadding, paddingBottom: 120 },
   header: { gap: Spacing.md, paddingTop: Spacing.sm, paddingBottom: Spacing.md },
   headerButtons: { flexDirection: 'row' },
-  jobBanner: { borderRadius: Radius.md, padding: Spacing.md, gap: 2 },
+  job: { gap: 2 },
   // The chips scroll out to the screen edge, and start in line with the text above.
   chipScroll: { marginHorizontal: -ScreenPadding },
   chips: { gap: Spacing.sm, paddingHorizontal: ScreenPadding },
