@@ -729,7 +729,14 @@ function Stat({ label, value, detail, first }: { label: string; value: string; d
       <AppText variant="caption" tone="textSecondary" numberOfLines={1} maxFontSizeMultiplier={1.3}>
         {label}
       </AppText>
-      <AppText variant="title3" weight="600" tabular numberOfLines={1} adjustsFontSizeToFit maxFontSizeMultiplier={1.3}>
+      {/* iOS shrinks a long value, like a price range, to fit; the web cannot, so it starts smaller. */}
+      <AppText
+        variant={Platform.OS === 'web' ? 'headline' : 'title3'}
+        weight="600"
+        tabular
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        maxFontSizeMultiplier={1.3}>
         {value}
       </AppText>
       <AppText variant="caption" tone="textSecondary" numberOfLines={1} maxFontSizeMultiplier={1.3}>
