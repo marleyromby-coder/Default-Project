@@ -1379,8 +1379,8 @@ const en: Record<string, string> = {
   'Åbne grupper nær {place}': 'Open groups near {place}',
   'Ingen åbne grupper i dit område endnu. Start den første, og del koden med naboerne.':
     'No open groups in your area yet. Start the first one and share the code with the neighbours.',
-  'Andre ser kun opgaven, gaden og hvor mange I er. Aldrig navne eller adresser. Prisen aftaler I selv med virksomheden.':
-    'Others only see the job, the street and how many you are. Never names or addresses. You agree the price with the business yourselves.',
+  'Alle kan se opgaven, gaden, postnummeret, perioden og beskeden, og hvor mange I er – aldrig hvem. Prisen aftaler I selv med virksomheden.':
+    'Everyone can see the job, the street, the postcode, the period and the message, and how many you are – never who. You agree the price with the business yourselves.',
   'Inden for 2 uger': 'Within 2 weeks',
   'Inden for en måned': 'Within a month',
   'De næste 3 måneder': 'The next 3 months',
@@ -1398,6 +1398,8 @@ const en: Record<string, string> = {
     'The neighbours must recognise it. Do not write house numbers.',
   'Hvornår passer det?': 'When does it suit?',
   'Besked til naboerne (valgfrit)': 'Message to the neighbours (optional)',
+  'Alle kan se beskeden. Skriv ikke navne eller husnumre.':
+    'Everyone can see the message. Do not write names or house numbers.',
   'Fx: Vi er to huse, der gerne vil have det ordnet inden vinter.':
     'E.g.: We are two houses that would like it done before winter.',
   'Opret gruppen': 'Create the group',

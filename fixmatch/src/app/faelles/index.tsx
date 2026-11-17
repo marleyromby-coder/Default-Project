@@ -141,7 +141,7 @@ export default function GroupsScreen() {
 
       <AppText variant="caption" tone="textSecondary">
         {t(
-          'Andre ser kun opgaven, gaden og hvor mange I er. Aldrig navne eller adresser. Prisen aftaler I selv med virksomheden.',
+          'Alle kan se opgaven, gaden, postnummeret, perioden og beskeden, og hvor mange I er – aldrig hvem. Prisen aftaler I selv med virksomheden.',
         )}
       </AppText>
     </ScrollView>

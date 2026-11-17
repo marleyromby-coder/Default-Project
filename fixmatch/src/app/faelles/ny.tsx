@@ -200,6 +200,7 @@ export default function NewGroupScreen() {
           value={note}
           onChangeText={setNote}
           placeholder={t('Fx: Vi er to huse, der gerne vil have det ordnet inden vinter.')}
+          hint={t('Alle kan se beskeden. Skriv ikke navne eller husnumre.')}
           error={checked && noteProblem ? t(TEXT_PROBLEM_MESSAGES[noteProblem]) : undefined}
         />
 
