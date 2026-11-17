@@ -190,8 +190,8 @@ export function SignUpFlow({ reason, onDone, onSkip }: Props) {
             </AppText>
           ) : null}
           {!EMAIL_LOGIN_ENABLED && !apple ? (
-            <AppText variant="callout" tone="textSecondary">
-              {t('Log ind med Apple på en iPhone. Login med e-mail kommer snart.')}
+            <AppText variant="footnote" tone="textTertiary">
+              {t('Opret en bruger i iPhone-appen.')}
             </AppText>
           ) : null}
           {EMAIL_LOGIN_ENABLED ? (

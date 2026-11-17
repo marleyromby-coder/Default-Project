@@ -1497,8 +1497,6 @@ const en: Record<string, string> = {
   'Hej {name}. Jeg har fundet jer på FixMatch og vil gerne have et videotjek på 5 minutter, så I kan se problemet og give et overslag.':
     'Hi {name}. I found you on FixMatch and would like a 5-minute video check, so you can see the problem and give an estimate.',
   'Hvornår passer det jer? Jeg kan ringe op på FaceTime.': 'When suits you? I can call on FaceTime.',
-  'Log ind med Apple på en iPhone. Login med e-mail kommer snart.':
-    'Log in with Apple on an iPhone. E-mail login is coming soon.',
   // FixMatch's own reviews, and plain links to reviews on other sites
   'Stjerner fra brugere via FixMatch. Kun virksomheder med mindst {count} anmeldelser.':
     'Stars from users via FixMatch. Only businesses with at least {count} reviews.',
@@ -1550,6 +1548,10 @@ const en: Record<string, string> = {
   'Tager telefonen {answered} ud af {outOf} gange': 'Answers the phone {answered} out of {outOf} times',
   Vægtning: 'Weighting',
   'Så kan virksomhederne se, hvem der ringer.': 'Then businesses can see who is calling.',
+  'Se prisen, før du ringer': 'See the price before you call',
+  'Ring direkte – ingen mellemled, intet gebyr': 'Call directly – no middleman, no fee',
+  'Verificeret: CVR og autorisation tjekket af FixMatch': 'Verified: company number and licence checked by FixMatch',
+  'Opret en bruger i iPhone-appen.': 'Create an account in the iPhone app.',
 };
 
 export default en;
