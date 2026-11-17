@@ -31,8 +31,6 @@ const en: Record<string, string> = {
   'Afmonterede kontakter i en lys lejlighed': 'Removed switches in a bright flat',
   Afstand: 'Distance',
   'Afstand fra din placering': 'Distance from your location',
-  'Afstande regnes fra {label}. Brug din placering for at se de nærmeste.':
-    'Distances are measured from {label}. Use your location to see the nearest ones.',
   'Akut hjælp – døgnvagt': 'Urgent help – 24/7',
   Alle: 'All',
   'Alle fag': 'All trades',
@@ -65,8 +63,6 @@ const en: Record<string, string> = {
   'Brolægning med røde sten': 'Paving with red bricks',
   'Brug eksempel: {example}': 'Use example: {example}',
   'Brug min nuværende placering': 'Use my current location',
-  'Brug min placering': 'Use my location',
-  'Brug placering': 'Use location',
   'Budget i {currency} {tax}': 'Budget in {currency} {tax}',
   'Budget {price}': 'Budget {price}',
   'Budget: {price} {tax}': 'Budget: {price} {tax}',
@@ -140,7 +136,6 @@ const en: Record<string, string> = {
   'Skriv, hvad der er galt, eller vælg et fag.': 'Describe what is wrong, or choose a trade.',
   'Find virksomheder': 'Find businesses',
   'Finder din placering…': 'Finding your location…',
-  'Finder…': 'Finding…',
   'FixMatch er endnu ikke i {country}. Vi er i {countries}.':
     'FixMatch is not in {country} yet. We are in {countries}.',
   'FixMatch følger telefonens sprog. Vælg sprog under Indstillinger → FixMatch → Sprog.':
@@ -343,8 +338,6 @@ const en: Record<string, string> = {
   Ryd: 'Clear',
   'Ryd sammenligning': 'Clear comparison',
   Sammenlign: 'Compare',
-  'Sammenlign pris, afstand og anmeldelser hos lokale virksomheder – og ring direkte.':
-    'Compare price, distance and reviews of local businesses – and call them directly.',
   'Sammenlign på det, der betyder noget': 'Compare on what matters',
   'Sammenlign {count} virksomheder': 'Compare {count} businesses',
   'Sammenlign {name}': 'Compare {name}',
@@ -378,7 +371,6 @@ const en: Record<string, string> = {
   'Spring over': 'Skip',
   Sprog: 'Language',
   Storbritannien: 'United Kingdom',
-  Strømsvigt: 'Power cut',
   'Stærkt match': 'Strong match',
   'Svarer typisk ': 'Usually replies ',
   Svartid: 'Response time',
@@ -432,8 +424,6 @@ const en: Record<string, string> = {
   'VVS’er, elektriker, tømrer, murer, mekaniker og flere. Lokale virksomheder samlet ét sted.':
     'Plumbers, electricians, carpenters, bricklayers, mechanics and more. Local businesses in one place.',
   Valgt: 'Selected',
-  Vandskade: 'Water leak',
-  'Ved fare for liv eller brand: ring {number}.': "If life is at risk or there's a fire: call {number}.",
   'Ved ikke': "Don't know",
   'Vejledende priser oplyst af virksomheden {date}. Materialer kan komme oveni. Bed altid om et skriftligt tilbud.':
     'Guide prices given by the business {date}. Materials may come on top. Always ask for a written quote.',
@@ -658,11 +648,7 @@ const en: Record<string, string> = {
   'Skriv kørselsgebyret som et helt tal.': 'Enter the call-out fee as a whole number.',
   'Sæt flueben ved alle tre for at blive vist.': 'Tick all three to be listed.',
   'Tilmelding: {name}': 'Sign-up: {name}',
-  'Tilbudstjek: se om et tilbud, du har fået, er lavt, normalt eller højt':
-    'Quote check: see whether a quote you got is low, normal or high',
   Tilbudstjek: 'Quote check',
-  'Har du fået et tilbud? Se om prisen er fair – og hvad fradraget giver.':
-    'Got a quote? See if the price is fair – and what the tax deduction gives.',
   'Sådan verificerer vi': 'How we verify',
   'Kun verificerede': 'Verified only',
   'FixMatch har tjekket CVR, ejer og autorisation': 'FixMatch has checked the company number, owner and licence',
@@ -1097,14 +1083,7 @@ const en: Record<string, string> = {
   'Dit svar viser andre, om de tager telefonen. Ingen ser, hvem der svarede.':
     'Your answer shows others whether they answer the phone. Nobody sees who answered.',
   'Nej, ingen svarede': 'No, nobody answered',
-  'Grøn guide: fradrag, tilskud og besparelser på grønne forbedringer':
-    'Green guide: deductions, subsidies and savings on green improvements',
   'Grøn guide': 'Green guide',
-  'Fradrag og tilskud i kroner': 'Deductions and subsidies in kroner',
-  'Advarselslampe i bilen: hvad betyder den, og kan du køre videre':
-    'Warning lamp in the car: what it means and whether you can drive on',
-  'Lampe i bilen?': 'Lamp in the car?',
-  'Kan du køre videre?': 'Can you drive on?',
   'Gemte virksomheder, valgt by, dine prioriteter og Min bolig slettes fra telefonen.':
     'Saved businesses, chosen town, your priorities and My home are deleted from the phone.',
   'Advarselslampe i bilen': 'Warning lamp in the car',
@@ -1341,13 +1320,7 @@ const en: Record<string, string> = {
   '1-års gennemgang': '1-year inspection',
   '5-års gennemgang': '5-year inspection',
   'Garantien udløber': 'The guarantee ends',
-  '{label}: første skridt og nærmeste døgnvagt': '{label}: first steps and the nearest 24-hour service',
-  'Alle akutte situationer': 'All emergencies',
-  'Naborabat: gå sammen med naboerne om en opgave, og få rabat':
-    'Neighbour discount: team up with the neighbours on a job and get a discount',
   Naborabat: 'Neighbour discount',
-  'Gå sammen med naboerne om tagrender eller service, og få {min}–{max} % rabat.':
-    'Team up with the neighbours on gutters or a service, and get {min}–{max} % off.',
   'Akut hjælp': 'Emergency help',
   'Gå sammen med naboerne om en opgave, og få rabat.': 'Team up with the neighbours on a job and get a discount.',
   'Mine grupper': 'My groups',
@@ -1587,6 +1560,8 @@ const en: Record<string, string> = {
   'Du er i {country}. FixMatch er kun i {countries} endnu, så vi viser virksomheder i {label}.':
     'You are in {country}. FixMatch is only in {countries} so far, so we show businesses in {label}.',
   'Vis {label}': 'Show {label}',
+  'Se prisen, før du ringer.': 'See the price before you call.',
+  Værktøjer: 'Tools',
 };
 
 export default en;

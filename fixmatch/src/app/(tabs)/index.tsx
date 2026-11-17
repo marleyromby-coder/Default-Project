@@ -3,7 +3,6 @@ import { useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { AvailabilityBadge } from '@/components/business/availability-badge';
 import { BusinessMark } from '@/components/business/business-mark';
 import { MatchBadge } from '@/components/business/match-badge';
 import { ReviewRating } from '@/components/business/review-rating';
@@ -11,20 +10,18 @@ import { CategoryTile } from '@/components/category-tile';
 import { LocationPill } from '@/components/location-pill';
 import { Logo } from '@/components/logo';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Icon, type IconName } from '@/components/ui/icon';
+import { Icon } from '@/components/ui/icon';
+import { ListRow, ListSection } from '@/components/ui/list';
 import { Notice } from '@/components/ui/notice';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { IconWell, Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { CATEGORIES, getCategory } from '@/data/categories';
 import { DEFAULT_LOCATION } from '@/data/places';
-import { useGps, GPS_MESSAGES } from '@/hooks/use-gps';
 import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { availableWhen } from '@/lib/availability';
 import { DATA_MODE } from '@/lib/data-source';
-import { showDialog } from '@/lib/dialog';
 import { formatDistance, formatHourly, formatPriceRange } from '@/lib/format';
 import { distanceKm } from '@/lib/geo';
 import { summarizeJobPrice } from '@/lib/prices';
@@ -35,7 +32,6 @@ import { t } from '@/i18n';
 import { countryOf, currencyOf } from '@/lib/business-text';
 import { countryName, taxNote } from '@/lib/markets';
 import { useApp, useMarket } from '@/state/app-state';
-import { GROUP_DISCOUNT } from '@/state/groups';
 
 const POPULAR_JOBS: [CategoryId, string][] = [
   ['vvs', 'stoppet-afloeb'],
@@ -48,13 +44,6 @@ const POPULAR_JOBS: [CategoryId, string][] = [
   ['maler', 'vaerelse'],
 ];
 
-/** The three most common emergencies; the rest are on the Akut hjælp screen. */
-const URGENT: { label: string; type: string; icon: IconName }[] = [
-  { label: t('Vandskade'), type: 'vandskade', icon: 'vvs' },
-  { label: t('Låst ude'), type: 'laast-ude', icon: 'laasesmed' },
-  { label: t('Strømsvigt'), type: 'stroem', icon: 'elektriker' },
-];
-
 const NEARBY_KM = 25;
 
 export default function HomeScreen() {
@@ -63,7 +52,6 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { state, setLocation } = useApp();
   const { country, market, supported, open } = useMarket();
-  const { locate, busy } = useGps();
   const origin = state.location.coords;
   // Only this country's businesses: prices are never compared across currencies.
   const local = useMemo(() => state.businesses.filter((b) => countryOf(b) === country), [state.businesses, country]);
@@ -107,11 +95,6 @@ export default function HomeScreen() {
     });
   }, [local, origin, state.priorities]);
 
-  async function useMyLocation() {
-    const result = await locate();
-    if (result !== 'ok') showDialog(GPS_MESSAGES[result].title, GPS_MESSAGES[result].message);
-  }
-
   return (
     <ScrollView
       style={{ backgroundColor: colors.background }}
@@ -121,32 +104,90 @@ export default function HomeScreen() {
         { paddingTop: insets.top + Spacing.sm, paddingBottom: insets.bottom + 96 },
       ]}
       contentInsetAdjustmentBehavior="never">
-      <View style={styles.topBar}>
-        <Logo />
-        <LocationPill />
+      <View style={styles.top}>
+        <View style={styles.topBar}>
+          <Logo />
+          <LocationPill />
+        </View>
+
+        <View style={styles.hero}>
+          <AppText variant="title1">
+            {t('Den rette håndværker.')}
+            {'\n'}
+            <Text style={{ color: colors.brandText }}>{t('Til den rette pris.')}</Text>
+          </AppText>
+          <AppText variant="callout" tone="textSecondary">
+            {t('Se prisen, før du ringer.')}
+          </AppText>
+        </View>
+
+        <Tappable
+          onPress={() => router.push('/soeg')}
+          accessibilityRole="search"
+          accessibilityLabel={t('Søg efter opgave, fag eller virksomhed')}
+          style={[styles.search, { backgroundColor: colors.surface }]}>
+          <Icon name="search" size={18} color={colors.textSecondary} weight="semibold" />
+          <AppText variant="body" tone="textTertiary" numberOfLines={1}>
+            {t('Hvad skal laves? Fx “stoppet afløb”')}
+          </AppText>
+        </Tappable>
+
+        {state.location.abroad ? (
+          // The GPS put the user outside FixMatch's countries (e.g. an App Store reviewer in the
+          // US): the app shows the default city instead of an empty list, and says so.
+          <Notice
+            icon="world"
+            text={t('Du er i {country}. FixMatch er kun i {countries} endnu, så vi viser virksomheder i {label}.', {
+              country: countryName(state.location.abroad),
+              countries: open.map(countryName).join(', ') || countryName(state.location.country ?? 'DK'),
+              label: state.location.label,
+            })}
+            action={{
+              label: t('Vælg by'),
+              accessibilityLabel: t('Vælg en by'),
+              onPress: () => router.push('/placering'),
+            }}
+            style={styles.notice}
+          />
+        ) : null}
+
+        {!supported ? (
+          <Notice
+            icon="world"
+            text={t('FixMatch er endnu ikke i {country}. Vi er i {countries}.', {
+              country: countryName(state.location.country ?? ''),
+              countries: open.map(countryName).join(', '),
+            })}
+            // One tap back to København, unless that is where the app already is.
+            action={
+              state.location.label !== DEFAULT_LOCATION.label
+                ? {
+                    label: t('Vis {label}', { label: DEFAULT_LOCATION.label }),
+                    onPress: () => setLocation(DEFAULT_LOCATION),
+                  }
+                : { label: t('Vælg by'), accessibilityLabel: t('Vælg en by'), onPress: () => router.push('/placering') }
+            }
+            style={styles.notice}
+          />
+        ) : DATA_MODE === 'demo' ? (
+          <Notice
+            text={t('Demoversion: virksomhederne er fiktive eksempler, indtil de rigtige har givet samtykke.')}
+            style={styles.notice}
+          />
+        ) : null}
       </View>
 
-      <View style={styles.hero}>
-        <AppText variant="title1">
-          {t('Den rette håndværker.')}
-          {'\n'}
-          <Text style={{ color: colors.brandText }}>{t('Til den rette pris.')}</Text>
-        </AppText>
-        <AppText variant="callout" tone="textSecondary">
-          {t('Sammenlign pris, afstand og anmeldelser hos lokale virksomheder – og ring direkte.')}
-        </AppText>
-      </View>
-
-      <Tappable
-        onPress={() => router.push('/soeg')}
-        accessibilityRole="search"
-        accessibilityLabel={t('Søg efter opgave, fag eller virksomhed')}
-        style={[styles.search, { backgroundColor: colors.surface }]}>
-        <Icon name="search" size={18} color={colors.textSecondary} weight="semibold" />
-        <AppText variant="body" tone="textTertiary" numberOfLines={1}>
-          {t('Hvad skal laves? Fx “stoppet afløb”')}
-        </AppText>
-      </Tappable>
+      <Section title={t('Vælg fag')}>
+        <View style={styles.grid}>
+          {chunk(CATEGORIES, 4).map((row) => (
+            <View key={row[0].id} style={styles.gridRow}>
+              {row.map((category) => (
+                <CategoryTile key={category.id} category={category} nearby={nearbyCount.get(category.id) ?? 0} />
+              ))}
+            </View>
+          ))}
+        </View>
+      </Section>
 
       <Tappable
         onPress={() => router.push('/beskriv')}
@@ -165,156 +206,6 @@ export default function HomeScreen() {
         </View>
         <Icon name="chevronRight" size={16} color={colors.onInkSoft} weight="semibold" />
       </Tappable>
-
-      <Tappable
-        onPress={() => router.push('/tilbudstjek')}
-        accessibilityLabel={t('Tilbudstjek: se om et tilbud, du har fået, er lavt, normalt eller højt')}
-        style={[styles.quoteCheck, { backgroundColor: colors.surface }]}>
-        <View style={[styles.describeIcon, { backgroundColor: colors.accentSoft }]}>
-          <Icon name="receipt" size={19} color={colors.brandText} weight="semibold" />
-        </View>
-        <View style={styles.flex}>
-          <AppText variant="headline">{t('Tilbudstjek')}</AppText>
-          <AppText variant="footnote" tone="textSecondary">
-            {t('Har du fået et tilbud? Se om prisen er fair – og hvad fradraget giver.')}
-          </AppText>
-        </View>
-        <Icon name="chevronRight" size={16} color={colors.textTertiary} weight="semibold" />
-      </Tappable>
-
-      <View style={styles.smallTiles}>
-        <Tappable
-          onPress={() => router.push('/groen-guide')}
-          accessibilityLabel={t('Grøn guide: fradrag, tilskud og besparelser på grønne forbedringer')}
-          style={[styles.smallTile, { backgroundColor: colors.surface }]}>
-          <View style={[styles.smallIcon, { backgroundColor: colors.successSoft }]}>
-            <Icon name="leaf" size={17} color={colors.success} weight="semibold" />
-          </View>
-          <View style={styles.flex}>
-            <AppText variant="subhead" weight="600" numberOfLines={1}>
-              {t('Grøn guide')}
-            </AppText>
-            <AppText variant="caption" tone="textSecondary" numberOfLines={2}>
-              {t('Fradrag og tilskud i kroner')}
-            </AppText>
-          </View>
-        </Tappable>
-        <Tappable
-          onPress={() => router.push('/advarselslamper')}
-          accessibilityLabel={t('Advarselslampe i bilen: hvad betyder den, og kan du køre videre')}
-          style={[styles.smallTile, { backgroundColor: colors.surface }]}>
-          <View style={[styles.smallIcon, { backgroundColor: colors.warningSoft }]}>
-            <Icon name="warning" size={17} color={colors.warning} weight="semibold" />
-          </View>
-          <View style={styles.flex}>
-            <AppText variant="subhead" weight="600" numberOfLines={1}>
-              {t('Lampe i bilen?')}
-            </AppText>
-            <AppText variant="caption" tone="textSecondary" numberOfLines={2}>
-              {t('Kan du køre videre?')}
-            </AppText>
-          </View>
-        </Tappable>
-      </View>
-
-      {state.location.abroad ? (
-        // The GPS put the user outside FixMatch's countries (e.g. an App Store reviewer in the
-        // US): the app shows the default city instead of an empty list, and says so.
-        <Notice
-          icon="world"
-          text={t('Du er i {country}. FixMatch er kun i {countries} endnu, så vi viser virksomheder i {label}.', {
-            country: countryName(state.location.abroad),
-            countries: open.map(countryName).join(', ') || countryName(state.location.country ?? 'DK'),
-            label: state.location.label,
-          })}
-          action={{
-            label: t('Vælg by'),
-            accessibilityLabel: t('Vælg en by'),
-            onPress: () => router.push('/placering'),
-          }}
-          style={styles.notice}
-        />
-      ) : state.location.source === 'default' ? (
-        <Notice
-          text={t('Afstande regnes fra {label}. Brug din placering for at se de nærmeste.', {
-            label: state.location.label,
-          })}
-          action={{
-            label: busy ? t('Finder…') : t('Brug placering'),
-            accessibilityLabel: t('Brug min placering'),
-            onPress: useMyLocation,
-            disabled: busy,
-          }}
-          style={styles.notice}
-        />
-      ) : null}
-
-      {!supported ? (
-        <Notice
-          icon="world"
-          text={t('FixMatch er endnu ikke i {country}. Vi er i {countries}.', {
-            country: countryName(state.location.country ?? ''),
-            countries: open.map(countryName).join(', '),
-          })}
-          // One tap back to København, unless that is where the app already is.
-          action={
-            state.location.label !== DEFAULT_LOCATION.label
-              ? {
-                  label: t('Vis {label}', { label: DEFAULT_LOCATION.label }),
-                  onPress: () => setLocation(DEFAULT_LOCATION),
-                }
-              : { label: t('Vælg by'), accessibilityLabel: t('Vælg en by'), onPress: () => router.push('/placering') }
-          }
-          style={styles.notice}
-        />
-      ) : null}
-
-      {DATA_MODE === 'demo' ? (
-        <Notice
-          text={t('Demoversion: virksomhederne er fiktive eksempler, indtil de rigtige har givet samtykke.')}
-          style={styles.notice}
-        />
-      ) : null}
-
-      <Section title={t('Vælg fag')}>
-        <View style={styles.grid}>
-          {chunk(CATEGORIES, 4).map((row) => (
-            <View key={row[0].id} style={styles.gridRow}>
-              {row.map((category) => (
-                <CategoryTile key={category.id} category={category} nearby={nearbyCount.get(category.id) ?? 0} />
-              ))}
-            </View>
-          ))}
-        </View>
-      </Section>
-
-      <Section
-        title={t('Akut hjælp – døgnvagt')}
-        subtitle={t('Ved fare for liv eller brand: ring {number}.', { number: market.emergencyNumber })}>
-        <View style={styles.urgentRow}>
-          {URGENT.map((item) => (
-            <Tappable
-              key={item.label}
-              onPress={() => router.push({ pathname: '/akut', params: { type: item.type } })}
-              accessibilityLabel={t('{label}: første skridt og nærmeste døgnvagt', { label: item.label })}
-              style={[styles.urgent, { backgroundColor: colors.surface }]}>
-              <View style={[styles.urgentIcon, { backgroundColor: colors.warningSoft }]}>
-                <Icon name={item.icon} size={18} color={colors.warning} weight="semibold" />
-              </View>
-              <AppText variant="subhead" weight="600" numberOfLines={1} maxFontSizeMultiplier={1.3}>
-                {item.label}
-              </AppText>
-            </Tappable>
-          ))}
-        </View>
-        <Button
-          title={t('Alle akutte situationer')}
-          icon="siren"
-          variant="plain"
-          size="small"
-          onPress={() => router.push('/akut')}
-        />
-      </Section>
 
       {freeSoon.length > 0 ? (
         <Section title={t('Hvem har tid i dag?')} subtitle={t('Virksomheder nær dig, der selv har meldt ledig tid')}>
@@ -338,7 +229,9 @@ export default function HomeScreen() {
                   <AppText variant="subhead" weight="600" numberOfLines={1}>
                     {business.name}
                   </AppText>
-                  <AvailabilityBadge business={business} />
+                  <AppText variant="caption" weight="600" tone={when === 'today' ? 'success' : 'textSecondary'}>
+                    {when === 'today' ? t('Ledig i dag') : t('Ledig i morgen')}
+                  </AppText>
                   <AppText variant="caption" tone="textSecondary">
                     {formatDistance(km)}
                   </AppText>
@@ -348,25 +241,6 @@ export default function HomeScreen() {
           </ScrollView>
         </Section>
       ) : null}
-
-      <Tappable
-        onPress={() => router.push('/faelles')}
-        accessibilityLabel={t('Naborabat: gå sammen med naboerne om en opgave, og få rabat')}
-        style={[styles.quoteCheck, styles.groupTile, { backgroundColor: colors.surface }]}>
-        <View style={[styles.describeIcon, { backgroundColor: colors.brandSoft }]}>
-          <Icon name="people" size={19} color={colors.brand} weight="semibold" />
-        </View>
-        <View style={styles.flex}>
-          <AppText variant="headline">{t('Naborabat')}</AppText>
-          <AppText variant="footnote" tone="textSecondary">
-            {t('Gå sammen med naboerne om tagrender eller service, og få {min}–{max} % rabat.', {
-              min: GROUP_DISCOUNT.min,
-              max: GROUP_DISCOUNT.max,
-            })}
-          </AppText>
-        </View>
-        <Icon name="chevronRight" size={16} color={colors.textTertiary} weight="semibold" />
-      </Tappable>
 
       <Section
         title={t('Hvad koster det typisk?')}
@@ -390,10 +264,10 @@ export default function HomeScreen() {
                 <View style={[styles.jobIcon, { backgroundColor: colors.brandSoft }]}>
                   <Icon name={categoryId} size={16} color={colors.brand} weight="semibold" />
                 </View>
-                <AppText variant="subhead" weight="600" numberOfLines={2}>
+                <AppText variant="subhead" weight="600" numberOfLines={2} style={styles.jobName}>
                   {job.name}
                 </AppText>
-                <AppText variant="footnote" weight="700" tabular numberOfLines={1}>
+                <AppText variant="subhead" weight="600" tabular numberOfLines={1}>
                   {formatPriceRange(price.min, price.max, price.unit, price.currency)}
                 </AppText>
                 <AppText variant="caption" tone="textSecondary" numberOfLines={1}>
@@ -403,6 +277,22 @@ export default function HomeScreen() {
             );
           })}
         </ScrollView>
+      </Section>
+
+      <Section title={t('Værktøjer')}>
+        <View style={styles.tools}>
+          <ListSection>
+            <ListRow icon="siren" title={t('Akut hjælp – døgnvagt')} onPress={() => router.push('/akut')} />
+            <ListRow icon="receipt" title={t('Tilbudstjek')} onPress={() => router.push('/tilbudstjek')} />
+            <ListRow icon="leaf" title={t('Grøn guide')} onPress={() => router.push('/groen-guide')} />
+            <ListRow
+              icon="warning"
+              title={t('Advarselslampe i bilen')}
+              onPress={() => router.push('/advarselslamper')}
+            />
+            <ListRow icon="people" title={t('Naborabat')} onPress={() => router.push('/faelles')} />
+          </ListSection>
+        </View>
       </Section>
 
       {promoted.length > 0 ? (
@@ -491,12 +381,6 @@ export default function HomeScreen() {
           />
         </View>
       </Section>
-
-      <View style={styles.footerLinks}>
-        <FooterLink label={t('Sådan rangerer vi')} slug="rangering" />
-        <FooterLink label={t('Om priserne')} slug="priser" />
-        <FooterLink label={t('Om anmeldelser')} slug="anmeldelser" />
-      </View>
     </ScrollView>
   );
 }
@@ -536,19 +420,6 @@ function Step({ number, title, text }: { number: number; title: string; text: st
   );
 }
 
-function FooterLink({ label, slug }: { label: string; slug: string }) {
-  return (
-    <Tappable
-      onPress={() => router.push({ pathname: '/info/[slug]', params: { slug } })}
-      accessibilityRole="link"
-      style={styles.footerLink}>
-      <AppText variant="footnote" tone="brandText" weight="600">
-        {label}
-      </AppText>
-    </Tappable>
-  );
-}
-
 function chunk<T>(list: T[], size: number): T[][] {
   const rows: T[][] = [];
   for (let i = 0; i < list.length; i += size) rows.push(list.slice(i, i + size));
@@ -556,7 +427,8 @@ function chunk<T>(list: T[], size: number): T[][] {
 }
 
 const styles = StyleSheet.create({
-  content: { gap: Spacing.xl },
+  content: { gap: Spacing.xxl },
+  top: { gap: Spacing.md },
   topBar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -567,8 +439,7 @@ const styles = StyleSheet.create({
   hero: { paddingHorizontal: ScreenPadding, gap: Spacing.xs },
   search: {
     marginHorizontal: ScreenPadding,
-    marginTop: -Spacing.sm,
-    minHeight: 50,
+    minHeight: 48,
     borderRadius: Radius.md,
     borderCurve: 'continuous',
     flexDirection: 'row',
@@ -578,36 +449,13 @@ const styles = StyleSheet.create({
   },
   describe: {
     marginHorizontal: ScreenPadding,
-    marginTop: -Spacing.sm,
     borderRadius: Radius.lg,
     borderCurve: 'continuous',
-    padding: Spacing.md,
+    padding: Spacing.lg,
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.md,
   },
-  quoteCheck: {
-    marginHorizontal: ScreenPadding,
-    marginTop: -Spacing.sm,
-    borderRadius: Radius.lg,
-    borderCurve: 'continuous',
-    padding: Spacing.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.md,
-  },
-  groupTile: { marginTop: 0, marginBottom: Spacing.sm },
-  smallTiles: { flexDirection: 'row', gap: Spacing.sm, marginHorizontal: ScreenPadding, marginTop: -Spacing.sm },
-  smallTile: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.sm,
-    padding: Spacing.sm,
-    borderRadius: Radius.lg,
-    borderCurve: 'continuous',
-  },
-  smallIcon: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center' },
   describeIcon: {
     width: 40,
     height: 40,
@@ -615,22 +463,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  notice: { marginHorizontal: ScreenPadding, marginTop: -Spacing.sm },
+  notice: { marginHorizontal: ScreenPadding },
   flex: { flex: 1 },
   section: { gap: Spacing.md },
   sectionHeader: { paddingHorizontal: ScreenPadding, gap: 2 },
   grid: { paddingHorizontal: ScreenPadding, gap: Spacing.sm },
   gridRow: { flexDirection: 'row', gap: Spacing.sm },
-  urgentRow: { flexDirection: 'row', gap: Spacing.sm, paddingHorizontal: ScreenPadding },
-  urgent: {
-    flex: 1,
-    borderRadius: Radius.lg,
-    borderCurve: 'continuous',
-    padding: Spacing.md,
-    gap: Spacing.sm,
-    alignItems: 'flex-start',
-  },
-  urgentIcon: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
   carousel: { paddingHorizontal: ScreenPadding, gap: Spacing.md },
   jobCard: {
     width: 156,
@@ -648,11 +486,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 2,
   },
+  // Room for two lines, so the prices line up across the cards.
+  jobName: { minHeight: 40 },
+  tools: { paddingHorizontal: ScreenPadding },
   featured: { width: 290, borderRadius: Radius.lg, borderCurve: 'continuous', overflow: 'hidden' },
   featuredBody: { padding: Spacing.md, gap: Spacing.xs },
   rowBetween: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   topCard: { width: 210, borderRadius: Radius.lg, borderCurve: 'continuous', overflow: 'hidden' },
-  topBody: { padding: Spacing.md, gap: 3 },
+  topBody: { padding: Spacing.md, gap: Spacing.xs },
   steps: {
     marginHorizontal: ScreenPadding,
     borderRadius: Radius.lg,
@@ -662,12 +503,4 @@ const styles = StyleSheet.create({
   },
   step: { flexDirection: 'row', gap: Spacing.md, alignItems: 'flex-start' },
   stepNumber: { width: 22, textAlign: 'center' },
-  footerLinks: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    gap: Spacing.sm,
-    paddingHorizontal: ScreenPadding,
-  },
-  footerLink: { minHeight: 44, justifyContent: 'center', paddingHorizontal: Spacing.sm },
 });
