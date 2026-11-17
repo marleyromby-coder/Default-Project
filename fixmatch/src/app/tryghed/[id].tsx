@@ -101,8 +101,9 @@ function Safety({ business }: { business: Business }) {
   const items = safetyItems(business);
   const { checked, total } = safetySummary(items);
   const boards = complaintBoards(business);
+  // A checked point is a trust fact, so it is brand, not success green (that is for live status).
   const tone: Record<SafetyStatus, string> = {
-    checked: colors.success,
+    checked: colors.brandText,
     stated: colors.info,
     missing: colors.warning,
   };

@@ -440,7 +440,7 @@ export default function BusinessScreen() {
                 <View style={styles.checks}>
                   {passedChecks(business).map((check) => (
                     <View key={check} style={styles.checkRow}>
-                      <Icon name="check" size={13} color={colors.success} weight="bold" />
+                      <Icon name="check" size={13} color={colors.brand} weight="bold" />
                       <AppText variant="footnote" style={styles.flex}>
                         {t(CHECK_TEXT[check])}
                       </AppText>
