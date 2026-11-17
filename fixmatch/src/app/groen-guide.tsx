@@ -16,7 +16,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { openLink } from '@/lib/contact';
 import { formatPrice, formatPriceRange } from '@/lib/format';
-import { GREEN_MEASURES, greenBenefit } from '@/lib/green';
+import { GREEN_MEASURES, greenBenefit, greenTaxBackCap } from '@/lib/green';
 import { GREEN_DEDUCTION_MAX } from '@/lib/quote-check';
 import { useMarket } from '@/state/app-state';
 import { t } from '@/i18n';
@@ -41,8 +41,9 @@ export default function GreenGuideScreen() {
       contentInsetAdjustmentBehavior="automatic">
       <Stack.Screen options={{ title: t('Grøn guide') }} />
       <AppText variant="callout" tone="textSecondary">
-        {t('Staten betaler cirka 26 % af arbejdslønnen tilbage – op til {max} pr. voksen om året.', {
+        {t('Du kan trække op til {max} i arbejdsløn fra pr. voksen om året. Det giver cirka {back} tilbage i skat.', {
           max: formatPrice(GREEN_DEDUCTION_MAX, currency),
+          back: formatPrice(greenTaxBackCap(), currency),
         })}
       </AppText>
       <Segmented
@@ -60,13 +61,15 @@ export default function GreenGuideScreen() {
         const category = getCategory(measure.category);
         const expanded = open === measure.id;
         // One quiet line instead of three badges: the saving, the tax back, and whether there is a subsidy.
+        // The tax back is left out when it is just the yearly cap (the intro says it), so the line
+        // only names it when it tells this measure apart. It stays in the expanded row.
         const facts = [
           measure.savingMax > 0
             ? t('Sparer {range} om året', {
                 range: formatPriceRange(measure.savingMin, measure.savingMax, 'opgave', currency),
               })
             : undefined,
-          benefit.taxBack > 0
+          benefit.taxBack > 0 && benefit.taxBack < greenTaxBackCap(Number(adults))
             ? t('{amount} tilbage i skat', { amount: formatPrice(benefit.taxBack, currency) })
             : undefined,
           measure.subsidy ? t('Tilskud') : undefined,

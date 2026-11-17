@@ -1,5 +1,5 @@
 import { WARNING_LAMPS } from '@/data/warning-lamps';
-import { GREEN_MEASURES, greenBenefit } from '@/lib/green';
+import { GREEN_MEASURES, greenBenefit, greenTaxBackCap } from '@/lib/green';
 import { defaultDeduction, type HomeJob, reminders, yearDeduction } from '@/lib/home-log';
 import { amountIn, parseQuoteLines, summarizeQuote } from '@/lib/quote-lines';
 
@@ -86,6 +86,17 @@ describe('Grøn guide and warning lamps', () => {
     expect(benefit.paybackYears).toBeGreaterThan(5);
     expect(benefit.paybackYears).toBeLessThan(12);
     expect(greenBenefit(GREEN_MEASURES.find((m) => m.id === 'energimaerke')!).paybackYears).toBeUndefined();
+  });
+
+  it('gives about 2.300 kr. back per adult at most, not the 9.000 kr. deductible cap', () => {
+    expect(greenTaxBackCap()).toBe(2300);
+    expect(greenTaxBackCap(2)).toBe(4700);
+    const pump = GREEN_MEASURES.find((m) => m.id === 'varmepumpe')!;
+    expect(greenBenefit(pump, 1).taxBack).toBe(greenTaxBackCap(1));
+    for (const measure of GREEN_MEASURES) {
+      expect(greenBenefit(measure, 1).taxBack).toBeLessThanOrEqual(greenTaxBackCap(1));
+      expect(greenBenefit(measure, 2).taxBack).toBeLessThanOrEqual(greenTaxBackCap(2));
+    }
   });
 
   it('has a known mechanic job behind every lamp that needs a workshop', () => {

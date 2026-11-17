@@ -149,6 +149,19 @@ export const GREEN_MEASURES: GreenMeasure[] = [
   },
 ];
 
+/** Tax back on a deduction, to the nearest 100 kr. like the rest of the guide. */
+function taxBackOn(deduction: number): number {
+  return Math.round((deduction * DEDUCTION_VALUE) / 100) * 100;
+}
+
+/**
+ * The most the håndværkerfradrag gives back in a year: the deductible labour cap (9.000 kr.
+ * per adult in 2026) times what the deduction is worth (about 26 %), so about 2.300 kr. per adult.
+ */
+export function greenTaxBackCap(adults = 1): number {
+  return taxBackOn(GREEN_DEDUCTION_MAX * adults);
+}
+
 export interface GreenBenefit {
   /** Typical labour part of the price. */
   labour: number;
@@ -163,7 +176,7 @@ export function greenBenefit(measure: GreenMeasure, adults = 1): GreenBenefit {
   const price = (measure.priceMin + measure.priceMax) / 2;
   const labour = Math.round(price * measure.labourShare);
   const deduction = measure.deductible ? Math.min(labour, GREEN_DEDUCTION_MAX * adults) : 0;
-  const taxBack = Math.round((deduction * DEDUCTION_VALUE) / 100) * 100;
+  const taxBack = taxBackOn(deduction);
   const saving = (measure.savingMin + measure.savingMax) / 2;
   return {
     labour,

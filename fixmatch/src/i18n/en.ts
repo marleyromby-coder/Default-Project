@@ -1553,8 +1553,8 @@ const en: Record<string, string> = {
   'Ring direkte – ingen mellemled, intet gebyr': 'Call directly – no middleman, no fee',
   'Verificeret: CVR og autorisation tjekket af FixMatch': 'Verified: company number and licence checked by FixMatch',
   'Opret en bruger i iPhone-appen.': 'Create an account in the iPhone app.',
-  'Staten betaler cirka 26 % af arbejdslønnen tilbage – op til {max} pr. voksen om året.':
-    'The state pays back about 26% of the labour cost – up to {max} per adult a year.',
+  'Du kan trække op til {max} i arbejdsløn fra pr. voksen om året. Det giver cirka {back} tilbage i skat.':
+    'You can deduct up to {max} of labour per adult a year. That gives about {back} back in tax.',
   'Hvad er der sket?': 'What happened?',
 };
 
