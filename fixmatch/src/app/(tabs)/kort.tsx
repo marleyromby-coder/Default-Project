@@ -25,6 +25,7 @@ import { DEFAULT_FILTERS } from '@/lib/filters';
 import { formatDistance, formatHourly, speakablePrice } from '@/lib/format';
 import { LAUNCHED_COUNTRIES, MARKETS_REGION } from '@/lib/markets';
 import type { ScoredBusiness } from '@/lib/ranking';
+import { reviewRatingLabel } from '@/lib/review-label';
 import type { CategoryId, Filters } from '@/lib/types';
 import { t } from '@/i18n';
 import { useApp, useMarket } from '@/state/app-state';
@@ -353,13 +354,18 @@ function openPage(id: string) {
   router.push({ pathname: '/virksomhed/[id]', params: { id } });
 }
 
+/** What VoiceOver reads for a card or row: who, how far, the price and, when there are any, the reviews. */
 function cardLabel({ business, distanceKm }: ScoredBusiness) {
-  return t('{name}, {name2}, {distance} væk, {hourly}. Åbn', {
+  const params = {
     name: business.name,
     name2: getCategory(business.categories[0])?.name,
     distance: formatDistance(distanceKm),
     hourly: speakablePrice(formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business))),
-  });
+  };
+  const rating = reviewRatingLabel(business.reviewSummary);
+  return rating
+    ? t('{name}, {name2}, {distance} væk, {hourly}, {rating}. Åbn', { ...params, rating })
+    : t('{name}, {name2}, {distance} væk, {hourly}. Åbn', params);
 }
 
 /** A business under the map: who, how far, open now, and the price – with Ring one tap away. */

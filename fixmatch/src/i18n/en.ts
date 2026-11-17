@@ -507,6 +507,8 @@ const en: Record<string, string> = {
   '{name}, {name2}, {distance} væk': '{name}, {name2}, {distance} away',
   '{name}, {name2}, {distance} væk, {hourly}': '{name}, {name2}, {distance} away, {hourly}',
   '{name}, {name2}, {distance} væk, {hourly}. Åbn': '{name}, {name2}, {distance} away, {hourly}. Open',
+  '{name}, {name2}, {distance} væk, {hourly}, {rating}. Åbn':
+    '{name}, {name2}, {distance} away, {hourly}, {rating}. Open',
   '{name}: pris på forespørgsel': '{name}: price on request',
   '{nearby} i nærheden': '{nearby} nearby',
   '{number} anm.': '{number} reviews',

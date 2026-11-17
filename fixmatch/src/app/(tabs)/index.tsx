@@ -27,6 +27,7 @@ import { formatDistance, formatHourly, formatPriceRange } from '@/lib/format';
 import { distanceKm } from '@/lib/geo';
 import { summarizeJobPrice } from '@/lib/prices';
 import { reviewCount, reviewValue, scoreBusinesses } from '@/lib/ranking';
+import { reviewRatingLabel } from '@/lib/review-label';
 import { MIN_REVIEWS_FOR_FILTER } from '@/lib/filters';
 import type { CategoryId } from '@/lib/types';
 import { t } from '@/i18n';
@@ -308,10 +309,12 @@ export default function HomeScreen() {
                 <Tappable
                   key={business.id}
                   onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
-                  accessibilityLabel={t('Annonce: {name}, {distance} væk', {
-                    name: business.name,
-                    distance: formatDistance(km),
-                  })}
+                  accessibilityLabel={[
+                    t('Annonce: {name}, {distance} væk', { name: business.name, distance: formatDistance(km) }),
+                    reviewRatingLabel(business.reviewSummary),
+                  ]
+                    .filter(Boolean)
+                    .join(', ')}
                   style={[styles.featured, { backgroundColor: colors.surface }]}>
                   <View style={styles.featuredBody}>
                     <View style={styles.rowBetween}>
@@ -347,11 +350,16 @@ export default function HomeScreen() {
                 <Tappable
                   key={business.id}
                   onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
-                  accessibilityLabel={t('{name}, {name2}, {distance} væk', {
-                    name: business.name,
-                    name2: getCategory(business.categories[0])?.name,
-                    distance: formatDistance(km),
-                  })}
+                  accessibilityLabel={[
+                    t('{name}, {name2}, {distance} væk', {
+                      name: business.name,
+                      name2: getCategory(business.categories[0])?.name,
+                      distance: formatDistance(km),
+                    }),
+                    reviewRatingLabel(business.reviewSummary),
+                  ]
+                    .filter(Boolean)
+                    .join(', ')}
                   style={[styles.topCard, { backgroundColor: colors.surface }]}>
                   <View style={styles.topBody}>
                     <BusinessMark business={business} size={40} />

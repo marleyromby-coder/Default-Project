@@ -3,7 +3,7 @@ import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import { Stars } from '@/components/ui/stars';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
-import { Spacing } from '@/constants/theme';
+import { MinTouchSize, Spacing } from '@/constants/theme';
 import { getCategory } from '@/data/categories';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDate } from '@/lib/format';
@@ -64,7 +64,7 @@ export function ReviewItem({
           onPress={() => reportReview(business, review.id)}
           accessibilityRole="button"
           accessibilityLabel={t('Rapportér anmeldelsen')}
-          hitSlop={8}
+          hitSlop={{ left: 8, right: 8 }}
           style={styles.report}>
           <AppText variant="caption" tone="textSecondary">
             {t('Rapportér')}
@@ -80,5 +80,6 @@ const styles = StyleSheet.create({
   review: { gap: Spacing.xs },
   head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   initial: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
-  report: { alignSelf: 'flex-start' },
+  // A small caption, but a full 44 pt tap target.
+  report: { alignSelf: 'flex-start', minHeight: MinTouchSize, justifyContent: 'center' },
 });
