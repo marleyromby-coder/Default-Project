@@ -18,7 +18,7 @@ const ICONS = {
   coins: '<circle cx="9" cy="9" r="6"/><path d="M15.5 9.5A6 6 0 1 1 9.5 15.5"/>',
   home: '<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
   car: '<path d="M5 17h14v-5l-2-5H7l-2 5z"/><circle cx="8" cy="17" r="2"/><circle cx="16" cy="17" r="2"/>',
-  wand: '<path d="m4 20 12-12"/><path d="m14 6 4 4"/><path d="M19 3v4M17 5h4M7 3v2M6 4h2"/>',
+  chat: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7M17 12H7"/>',
   map: '<path d="m9 4-6 2v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/>',
   widget:
     '<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="18" height="8" rx="2"/>',
@@ -37,18 +37,18 @@ function text(lang, { minGroup, discount }) {
   const da = {
     title: 'Find den rette håndværker',
     description:
-      'Sammenlign lokale håndværkere og værksteder på pris, afstand og anmeldelser fra rigtige kunder, og ring direkte. Gratis app til iPhone, først i Danmark.',
+      'Sammenlign lokale håndværkere og værksteder på pris, afstand og anmeldelser fra brugere via FixMatch, og ring direkte. Gratis iPhone-app, først i Danmark.',
     eyebrow: 'Til iPhone · Først i Danmark',
     h1: ['Den rette håndværker.', 'Til den rette pris.'],
-    lead: 'Sammenlign lokale håndværkere og værksteder på pris, afstand og anmeldelser fra rigtige kunder. Ring direkte til dem, du vælger. Ingen mellemled, og ingen kan betale sig til en bedre plads.',
+    lead: 'Sammenlign lokale håndværkere og værksteder på pris, afstand og anmeldelser fra brugere via FixMatch – du vælger selv, hvad der vejer mest. Ring direkte til virksomheden. Ingen mellemled, og rækkefølgen kan ikke købes.',
     soon: ['Kommer snart', 'til iPhone'],
     business: 'Har du en virksomhed?',
     liveTitle: 'Lige nu på FixMatch',
     live: {
       free: ['virksomhed har tid i dag', 'virksomheder har tid i dag'],
       groups: ['åben naborabat-gruppe', 'åbne naborabat-grupper'],
-      prices: ['delt pris fra kunder', 'delte priser fra kunder'],
-      reviews: ['anmeldelse fra rigtige opkald', 'anmeldelser fra rigtige opkald'],
+      prices: ['pris, som en bruger selv har delt', 'priser, som brugere selv har delt'],
+      reviews: ['anmeldelse fra en bruger via FixMatch', 'anmeldelser fra brugere via FixMatch'],
     },
     featuresKicker: 'Det kan appen',
     featuresTitle: 'Alt, du skal bruge, før du ringer',
@@ -59,7 +59,7 @@ function text(lang, { minGroup, discount }) {
         alt: "Listen over VVS'ere i appen med timepris, afstand, match og verificeret-flueben",
         icon: 'search',
         title: 'Find og sammenlign',
-        lead: 'Se timepris, typiske priser og afstand, før du ringer. Du bestemmer selv, om pris eller afstand vægter mest.',
+        lead: 'Se timepris, typiske priser, afstand og anmeldelser, før du ringer. Du vælger selv, hvad der vejer mest.',
         points: [
           [
             'Beskriv dit problem',
@@ -96,8 +96,8 @@ function text(lang, { minGroup, discount }) {
         points: [
           ['Verificeret', 'Fluebenet betyder, at FixMatch selv har tjekket CVR, ejer og autorisation.'],
           [
-            'Anmeldelser fra rigtige opkald',
-            'Kun kunder, der har kontaktet virksomheden gennem FixMatch, kan anmelde den.',
+            'Anmeldelser fra brugere via FixMatch',
+            'Kun brugere, der har kontaktet virksomheden gennem FixMatch, kan anmelde den – én gang hver.',
           ],
           ['Tryghedsside', 'Forsikring, garantiordning, svarprocent og hvor du kan klage, samlet ét sted.'],
         ],
@@ -111,7 +111,7 @@ function text(lang, { minGroup, discount }) {
         points: [
           [
             'Tilbudstjek',
-            'Tag et billede af tilbuddet. Appen læser linjerne og siger, om prisen er lav, normal eller høj.',
+            'Tag et billede af tilbuddet, kopiér teksten med iPhones tekstgenkendelse, og sæt den ind. Appen siger, om prisen er lav, normal eller høj.',
           ],
           [
             'Naborabat',
@@ -119,7 +119,7 @@ function text(lang, { minGroup, discount }) {
           ],
           [
             'Del, hvad du betalte',
-            'Se, hvad andre i nærheden har betalt for samme opgave, og hvad håndværkerfradraget giver.',
+            'Se priser, som brugere i nærheden selv har delt for samme opgave, og hvad håndværkerfradraget giver.',
           ],
         ],
       },
@@ -141,20 +141,20 @@ function text(lang, { minGroup, discount }) {
     promises: [
       [
         'star',
-        'Ingen betalte placeringer',
-        'Rækkefølgen bestemmes af pris, afstand og det, du vægter. Ingen kan købe sig foran.',
+        'Rækkefølgen kan ikke købes',
+        'Den bygger på pris, afstand og anmeldelser fra brugere via FixMatch, og du vælger selv, hvad der vejer mest. Betalte annoncer er altid markeret "Annonce" og ændrer ikke rækkefølgen.',
       ],
       ['phone', 'Gratis for dig', 'Du betaler kun virksomheden for arbejdet. Prisen aftaler du direkte med dem.'],
       [
         'shield',
         'Dine data i EU',
-        'Alt ligger på servere i EU. Virksomheden ser kun dit navn og nummer, når du kontakter den.',
+        'Ingen reklamenetværk og ingen sporing. Alt ligger på servere i EU, og virksomheden ser kun dit navn og nummer, når du kontakter den.',
       ],
     ],
     businessKicker: 'For håndværkere og værksteder',
     businessTitle: 'Gratis at være med. Ingen gebyr pr. kunde.',
     businessPoints: [
-      'Kunder i nærheden finder jer på pris og afstand og ringer direkte.',
+      'Kunder i nærheden finder jer på pris, afstand og anmeldelser fra brugere via FixMatch og ringer direkte.',
       'Meld "Ledig i dag" med ét tryk, og stå først, når det haster.',
       'Bliv verificeret gratis, og få fluebenet ved navnet.',
       'Se jeres kontakter og ret jeres oplysninger under Min virksomhed i appen.',
@@ -170,11 +170,11 @@ function text(lang, { minGroup, discount }) {
       ['Hvornår kan jeg hente appen?', 'FixMatch er i test nu og kommer snart til iPhone, først i Danmark.'],
       [
         'Hvordan bliver rækkefølgen bestemt?',
-        'Efter pris og afstand, og hvor meget du selv vægter hver af dem. Når det haster, står dem med døgnvagt og ledig tid først. Ingen kan betale sig foran.',
+        'Efter pris, afstand og anmeldelser fra brugere via FixMatch – du vælger selv, hvad der vejer mest. En virksomhed uden anmeldelser tæller som 5 neutrale anmeldelser på 4,0. Når det haster, står dem med døgnvagt og ledig tid først. Rækkefølgen kan ikke købes.',
       ],
       [
         'Hvem kan skrive anmeldelser?',
-        'Kun brugere, der har kontaktet virksomheden gennem FixMatch, og kun én gang hver. Så ved du, at anmeldelsen kommer fra en rigtig kunde.',
+        'Brugere, der har kontaktet virksomheden gennem FixMatch – én gang hver. Vi tjekker, at du har trykket Ring eller Skriv til virksomheden i FixMatch. Vi kan ikke se, om opkaldet blev besvaret, eller om opgaven blev udført.',
       ],
       [
         'Hvad sker der med mine oplysninger?',
@@ -185,18 +185,18 @@ function text(lang, { minGroup, discount }) {
   const en = {
     title: 'Find the right tradesperson',
     description:
-      'Compare local tradespeople and garages on price, distance and reviews from real customers, and call them directly. A free iPhone app, launching in Denmark.',
+      'Compare local tradespeople and garages on price, distance and reviews from FixMatch users, and call them directly. A free iPhone app, launching in Denmark.',
     eyebrow: 'For iPhone · Launching in Denmark',
     h1: ['The right tradesperson.', 'At the right price.'],
-    lead: 'Compare local tradespeople and garages on price, distance and reviews from real customers. Call the one you choose directly. No middleman, and nobody can pay for a better spot.',
+    lead: 'Compare local tradespeople and garages on price, distance and reviews from FixMatch users – you choose what matters most. Call the business directly. No middleman, and the order cannot be bought.',
     soon: ['Coming soon', 'to iPhone'],
     business: 'Do you run a business?',
     liveTitle: 'On FixMatch right now',
     live: {
       free: ['business has time today', 'businesses have time today'],
       groups: ['open neighbour group', 'open neighbour groups'],
-      prices: ['price shared by customers', 'prices shared by customers'],
-      reviews: ['review from a real call', 'reviews from real calls'],
+      prices: ['price that a user shared', 'prices that users shared themselves'],
+      reviews: ['review from a FixMatch user', 'reviews from FixMatch users'],
     },
     featuresKicker: 'What the app does',
     featuresTitle: 'Everything you need before you call',
@@ -207,7 +207,7 @@ function text(lang, { minGroup, discount }) {
         alt: 'The list of plumbers in the app with hourly rate, distance, match and the verified badge',
         icon: 'search',
         title: 'Find and compare',
-        lead: 'See the hourly rate, typical prices and distance before you call. You decide whether price or distance matters most.',
+        lead: 'See the hourly rate, typical prices, distance and reviews before you call. You choose what matters most.',
         points: [
           [
             'Describe your problem',
@@ -246,7 +246,10 @@ function text(lang, { minGroup, discount }) {
         lead: 'You need to trust the people you let into your home. So the app shows what matters.',
         points: [
           ['Verified', 'The badge means FixMatch has checked the company number, the owner and the authorisation.'],
-          ['Reviews from real calls', 'Only customers who contacted the business through FixMatch can review it.'],
+          [
+            'Reviews from FixMatch users',
+            'Only users who contacted the business through FixMatch can review it – once each.',
+          ],
           ['Safety page', 'Insurance, guarantee scheme, answer rate and where to complain, all in one place.'],
         ],
       },
@@ -259,13 +262,16 @@ function text(lang, { minGroup, discount }) {
         points: [
           [
             'Quote check',
-            'Take a picture of the quote. The app reads the lines and tells you whether the price is low, normal or high.',
+            "Take a picture of the quote, copy the text with the iPhone's Live Text, and paste it in. The app tells you whether the price is low, normal or high.",
           ],
           [
             'Neighbour discount',
             `Team up with the neighbours on gutters, boiler service or tyre changes. With at least ${minGroup} of you, businesses typically give ${discount.min}–${discount.max} % off.`,
           ],
-          ['Share what you paid', 'See what others nearby paid for the same job, and what the tax deduction gives.'],
+          [
+            'Share what you paid',
+            'See prices that users nearby shared themselves for the same job, and what the tax deduction gives.',
+          ],
         ],
       },
     ],
@@ -286,20 +292,20 @@ function text(lang, { minGroup, discount }) {
     promises: [
       [
         'star',
-        'No paid placements',
-        'The order is set by price, distance and what you value. Nobody can buy their way to the top.',
+        'The order cannot be bought',
+        'It is based on price, distance and reviews from FixMatch users, and you choose what matters most. Paid ads are always labelled "Ad" and never change the order.',
       ],
       ['phone', 'Free for you', 'You only pay the business for the work, and you agree the price with them directly.'],
       [
         'shield',
         'Your data in the EU',
-        'Everything is stored on servers in the EU. A business only sees your name and number when you contact it.',
+        'No ad networks and no tracking. Everything is stored on servers in the EU, and a business only sees your name and number when you contact it.',
       ],
     ],
     businessKicker: 'For tradespeople and garages',
     businessTitle: 'Free to join. No fee per customer.',
     businessPoints: [
-      'Customers nearby find you on price and distance, and call you directly.',
+      'Customers nearby find you on price, distance and reviews from FixMatch users, and call you directly.',
       'Mark "Free today" with one tap, and come first when it is urgent.',
       'Get verified for free, and get the badge next to your name.',
       'See your contacts and correct your details under My business in the app.',
@@ -315,11 +321,11 @@ function text(lang, { minGroup, discount }) {
       ['When can I get the app?', 'FixMatch is being tested now and is coming soon to iPhone, in Denmark first.'],
       [
         'How is the order decided?',
-        'By price and distance, and how much you value each. When it is urgent, businesses with a 24/7 service and free time come first. Nobody can pay to come first.',
+        'By price, distance and reviews from FixMatch users – you choose what matters most. A business with no reviews counts as 5 neutral reviews of 4.0. When it is urgent, businesses with a 24/7 service and free time come first. The order cannot be bought.',
       ],
       [
         'Who can write reviews?',
-        'Only users who contacted the business through FixMatch, and only once each. So you know the review comes from a real customer.',
+        'Users who contacted the business through FixMatch – once each. We check that you tapped Call or Message for the business in FixMatch. We cannot see whether the call was answered or whether the job was done.',
       ],
       [
         'What happens to my details?',

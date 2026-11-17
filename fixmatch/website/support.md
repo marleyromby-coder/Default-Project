@@ -22,7 +22,11 @@ Du vælger opgaven og skriver prisen fra dit tilbud. FixMatch sammenligner med d
 
 ### Hvordan bestemmer I rækkefølgen?
 
-Efter FixMatch-scoren, som du selv kan justere under *Profil → Dine prioriteter*. Ingen virksomhed kan betale sig til en bedre placering. Den præcise beskrivelse står under *Mere → Sådan rangerer vi* i appen.
+Efter pris, afstand og anmeldelser fra brugere via FixMatch – du vælger selv, hvad der vejer mest, under *Profil → Dine prioriteter*. En virksomhed uden anmeldelser tæller som 5 neutrale anmeldelser på 4,0. Rækkefølgen kan ikke købes. Betalte annoncer er altid markeret "Annonce" og ændrer ikke rækkefølgen. Den præcise beskrivelse står under *Mere → Sådan rangerer vi* i appen.
+
+### Hvem kan skrive anmeldelser?
+
+Brugere, der har kontaktet virksomheden gennem FixMatch – én gang hver. Vi tjekker, at du har trykket Ring eller Skriv til virksomheden i FixMatch. Vi kan ikke se, om opkaldet blev besvaret, eller om opgaven blev udført.
 
 ### Hvorfor er der ingen virksomheder, hvor jeg bor?
 

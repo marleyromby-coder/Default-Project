@@ -22,7 +22,11 @@ You choose the job and type in the price from your quote. FixMatch compares it w
 
 ### How do you decide the order?
 
-By the FixMatch score, which you can adjust under *Profile → Your priorities*. No business can pay for a better position. The exact description is under *More → How we rank* in the app.
+By price, distance and reviews from FixMatch users – you choose what matters most under *Profile → Your priorities*. A business with no reviews counts as 5 neutral reviews of 4.0. The order cannot be bought. Paid ads are always labelled "Ad" and never change the order. The exact description is under *More → How we rank* in the app.
+
+### Who can write reviews?
+
+Users who contacted the business through FixMatch – once each. We check that you tapped Call or Message for the business in FixMatch. We cannot see whether the call was answered or whether the job was done.
 
 ### Why are there no businesses where I live?
 
