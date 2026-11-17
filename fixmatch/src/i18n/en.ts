@@ -1551,7 +1551,7 @@ const en: Record<string, string> = {
   'Så kan virksomhederne se, hvem der ringer.': 'Then businesses can see who is calling.',
   'Se prisen, før du ringer': 'See the price before you call',
   'Ring direkte – ingen mellemled, intet gebyr': 'Call directly – no middleman, no fee',
-  'Verificeret: CVR og autorisation tjekket af FixMatch': 'Verified: company number and licence checked by FixMatch',
+  'Verificeret-mærket viser, hvem FixMatch selv har tjekket': 'The Verified badge shows who FixMatch has checked',
   'Opret en bruger i iPhone-appen.': 'Create an account in the iPhone app.',
   'Du kan trække op til {max} i arbejdsløn fra pr. voksen om året. Det giver cirka {back} tilbage i skat.':
     'You can deduct up to {max} of labour per adult a year. That gives about {back} back in tax.',

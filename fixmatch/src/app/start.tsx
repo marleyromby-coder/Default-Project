@@ -15,7 +15,8 @@ import { t } from '@/i18n';
 const VALUES: { icon: IconName; text: string }[] = [
   { icon: 'tag', text: t('Se prisen, før du ringer') },
   { icon: 'phone', text: t('Ring direkte – ingen mellemled, intet gebyr') },
-  { icon: 'verified', text: t('Verificeret: CVR og autorisation tjekket af FixMatch') },
+  // About the badge, not about every business: only the ones FixMatch has checked carry it.
+  { icon: 'verified', text: t('Verificeret-mærket viser, hvem FixMatch selv har tjekket') },
 ];
 
 /**
