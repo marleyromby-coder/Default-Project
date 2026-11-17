@@ -71,11 +71,7 @@ export default function EmergencyScreen() {
 
       {!emergency ? (
         <>
-          <AppText variant="callout" tone="textSecondary">
-            {t(
-              'Hvad er der sket? Så får du de første skridt, den nærmeste døgnvagt og plads til billeder til forsikringen.',
-            )}
-          </AppText>
+          <AppText variant="title3">{t('Hvad er der sket?')}</AppText>
           <View style={styles.grid}>
             {EMERGENCIES.map((item) => (
               <Tappable
@@ -83,9 +79,7 @@ export default function EmergencyScreen() {
                 onPress={() => setPicked(item.id)}
                 accessibilityLabel={t(item.title)}
                 style={[styles.tile, { backgroundColor: colors.surface }]}>
-                <View style={[styles.tileIcon, { backgroundColor: colors.warningSoft }]}>
-                  <Icon name={item.icon} size={20} color={colors.warning} weight="semibold" />
-                </View>
+                <Icon name={item.icon} size={24} color={colors.warning} weight="semibold" />
                 <AppText variant="subhead" weight="600" numberOfLines={2}>
                   {t(item.title)}
                 </AppText>
@@ -96,9 +90,7 @@ export default function EmergencyScreen() {
       ) : (
         <>
           <View style={styles.head}>
-            <View style={[styles.tileIcon, { backgroundColor: colors.warningSoft }]}>
-              <Icon name={emergency.icon} size={20} color={colors.warning} weight="semibold" />
-            </View>
+            <Icon name={emergency.icon} size={24} color={colors.warning} weight="semibold" />
             <AppText variant="title2" style={styles.flex}>
               {t(emergency.title)}
             </AppText>
@@ -204,7 +196,6 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     minHeight: 104,
   },
-  tileIcon: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center' },
   head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   dangerBox: { flexDirection: 'row', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md, borderWidth: 1.5 },
   step: { flexDirection: 'row', gap: Spacing.md, marginTop: Spacing.md, alignItems: 'flex-start' },

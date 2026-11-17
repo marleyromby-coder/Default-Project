@@ -1094,8 +1094,6 @@ const en: Record<string, string> = {
   'Din pris hjælper andre med at se, hvad opgaven koster. Vil du også gemme opgaven i Min bolig med faktura og garanti?':
     'Your price helps others see what the job costs. Do you also want to save the job in My home with invoice and guarantee?',
   'Gem i Min bolig': 'Save in My home',
-  'Det kan betale sig at gøre boligen grønnere. Staten betaler cirka 26 % af arbejdslønnen tilbage, op til {max} pr. voksen om året, og regningen falder hvert år bagefter. Her er det, der giver mest.':
-    'Making your home greener pays. The state pays back about 26 % of the labour, up to {max} per adult a year, and the bills fall every year after. Here is what gives the most.',
   '1 voksen i husstanden': '1 adult in the household',
   '2 voksne': '2 adults',
   'Voksne i husstanden': 'Adults in the household',
@@ -1312,8 +1310,6 @@ const en: Record<string, string> = {
   'Start en gruppe': 'Start a group',
   'Ring {number} ved fare for liv eller brand': 'Call {number} in danger to life or fire',
   'Fare for liv eller brand? Ring {number}.': 'Danger to life or fire? Call {number}.',
-  'Hvad er der sket? Så får du de første skridt, den nærmeste døgnvagt og plads til billeder til forsikringen.':
-    'What happened? You get the first steps, the nearest 24-hour service and room for pictures for the insurance.',
   'Gør det her først': 'Do this first',
   'Ring til nærmeste døgnvagt': 'Call the nearest 24-hour service',
   'Ingen i nærheden har døgnvagt eller åbent lige nu. Se alle {plural} i stedet.':
@@ -1552,6 +1548,9 @@ const en: Record<string, string> = {
   'Ring direkte – ingen mellemled, intet gebyr': 'Call directly – no middleman, no fee',
   'Verificeret: CVR og autorisation tjekket af FixMatch': 'Verified: company number and licence checked by FixMatch',
   'Opret en bruger i iPhone-appen.': 'Create an account in the iPhone app.',
+  'Staten betaler cirka 26 % af arbejdslønnen tilbage – op til {max} pr. voksen om året.':
+    'The state pays back about 26% of the labour cost – up to {max} per adult a year.',
+  'Hvad er der sket?': 'What happened?',
 };
 
 export default en;

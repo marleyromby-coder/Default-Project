@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Icon } from '@/components/ui/icon';
@@ -42,10 +41,9 @@ export default function GreenGuideScreen() {
       contentInsetAdjustmentBehavior="automatic">
       <Stack.Screen options={{ title: t('Grøn guide') }} />
       <AppText variant="callout" tone="textSecondary">
-        {t(
-          'Det kan betale sig at gøre boligen grønnere. Staten betaler cirka 26 % af arbejdslønnen tilbage, op til {max} pr. voksen om året, og regningen falder hvert år bagefter. Her er det, der giver mest.',
-          { max: formatPrice(GREEN_DEDUCTION_MAX, currency) },
-        )}
+        {t('Staten betaler cirka 26 % af arbejdslønnen tilbage – op til {max} pr. voksen om året.', {
+          max: formatPrice(GREEN_DEDUCTION_MAX, currency),
+        })}
       </AppText>
       <Segmented
         options={[
@@ -61,37 +59,36 @@ export default function GreenGuideScreen() {
         const benefit = greenBenefit(measure, Number(adults));
         const category = getCategory(measure.category);
         const expanded = open === measure.id;
+        // One quiet line instead of three badges: the saving, the tax back, and whether there is a subsidy.
+        const facts = [
+          measure.savingMax > 0
+            ? t('Sparer {range} om året', {
+                range: formatPriceRange(measure.savingMin, measure.savingMax, 'opgave', currency),
+              })
+            : undefined,
+          benefit.taxBack > 0
+            ? t('{amount} tilbage i skat', { amount: formatPrice(benefit.taxBack, currency) })
+            : undefined,
+          measure.subsidy ? t('Tilskud') : undefined,
+        ]
+          .filter(Boolean)
+          .join(' · ');
         return (
           <Card key={measure.id}>
             <Tappable
               onPress={() => setOpen(expanded ? undefined : measure.id)}
               accessibilityRole="button"
               accessibilityState={{ expanded }}
-              accessibilityLabel={t(measure.title)}
+              accessibilityLabel={[t(measure.title), facts].filter(Boolean).join(', ')}
               pressedOpacity={0.7}
               style={styles.head}>
-              <View style={[styles.icon, { backgroundColor: colors.successSoft }]}>
-                <Icon name="leaf" size={18} color={colors.success} weight="semibold" />
-              </View>
-              <View style={styles.flex}>
+              <View style={styles.headText}>
                 <AppText variant="headline">{t(measure.title)}</AppText>
-                <View style={styles.badges}>
-                  {benefit.taxBack > 0 ? (
-                    <Badge
-                      label={t('{amount} tilbage i skat', { amount: formatPrice(benefit.taxBack, currency) })}
-                      tone="success"
-                    />
-                  ) : null}
-                  {measure.savingMax > 0 ? (
-                    <Badge
-                      label={t('Sparer {range} om året', {
-                        range: formatPriceRange(measure.savingMin, measure.savingMax, 'opgave', currency),
-                      })}
-                      tone="brand"
-                    />
-                  ) : null}
-                  {measure.subsidy ? <Badge label={t('Tilskud')} tone="neutral" /> : null}
-                </View>
+                {facts ? (
+                  <AppText variant="footnote" tone="textSecondary" tabular>
+                    {facts}
+                  </AppText>
+                ) : null}
               </View>
               <Icon
                 name={expanded ? 'chevronUp' : 'chevronDown'}
@@ -193,8 +190,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   content: { padding: ScreenPadding, gap: Spacing.md },
   head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  icon: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center' },
-  badges: { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 4 },
+  headText: { flex: 1, gap: Spacing.xxs },
   body: { gap: Spacing.sm, marginTop: Spacing.md },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   actions: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginTop: Spacing.xs },
