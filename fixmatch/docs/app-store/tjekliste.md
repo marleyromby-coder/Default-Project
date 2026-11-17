@@ -50,7 +50,7 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 - [ ] App Review Information: flueben ved **Sign-in required**, og virksomhedens id og kode til "Min virksomhed" i *User name* og *Password* (se `app-store-tekster.md` → Noter til Apples review-team). Prøv selv koden i appen først.
 - [ ] App Privacy: datatyperne fra `app-store-tekster.md` → App Privacy (navn, e-mail, telefon, fysisk adresse, bruger-id, produktinteraktion, købshistorik, billeder eller videoer, andet brugerindhold).
 - [ ] Supabase er sat op (`docs/lancering/supabase.md`), og `fixmatch/.env` har URL og publishable key i den build, der indsendes.
-- [ ] Aldersgrænse 4+.
+- [ ] Aldersgrænse: svar **ja** til brugergenereret indhold (og til reklame, hvis en betalt annonce kan vises), nej til resten (se `app-store-tekster.md`).
 - [ ] Skærmbilleder (6,9").
 - [ ] Support- og privatlivs-URL virker uden login.
 - [ ] Indsend til review. Typisk svartid er 1–3 dage.

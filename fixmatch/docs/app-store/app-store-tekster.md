@@ -10,7 +10,7 @@ Kopiér felterne direkte ind i App Store Connect → appen → Distribution → 
 | Undertitel | `Sammenlign pris & anmeldelser` | 29 / 30 |
 | Primær kategori | Livsstil (Lifestyle) | |
 | Sekundær kategori | Hjælpeværktøjer (Utilities) | |
-| Aldersgrænse | 4+ (ingen af spørgsmålene besvares med ja) | |
+| Aldersgrænse | Spørgeskemaet: **Brugergenereret indhold (User-Generated Content): Ja** – anmeldelser, Naborabat-grupper og billeder af udført arbejde, som alle kan rapporteres. **Reklame (Advertising): Ja**, så snart en betalt annonce kan vises (kolonnen `annonce` i regnearket), ellers nej. Alle andre spørgsmål: nej. Brug den aldersgrænse, App Store Connect regner ud | |
 | Pris | Gratis | |
 | Bundle ID | `dk.fixmatch.app` | |
 | SKU | `fixmatch-ios-1` | |

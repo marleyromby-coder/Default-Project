@@ -14,7 +14,7 @@ For every storefront outside Denmark. Paste into App Store Connect â†’ the app â
 | Subtitle | `Compare prices & reviews` (24 / 30) | `Compare prices & reviews` (24 / 30) |
 | Primary category | Lifestyle | Lifestyle |
 | Secondary category | Utilities | Utilities |
-| Age rating | 4+ | 4+ |
+| Age rating | User-Generated Content: **Yes** (reviews, neighbour groups and photos of finished work, which can all be reported). Advertising: **Yes** once a paid ad can be shown (the `annonce` column), otherwise no. Everything else: no. Use the rating App Store Connect works out | Same |
 | Price | Free | Free |
 
 The reviews in the app are FixMatch's own: only users who contacted the business through FixMatch can review it. The app shows no stars or scores from Trustpilot, Google or other sites, so the texts must not promise them either (guidelines 2.3.1 and 5.2.2). See `docs/jura/anmeldelser.md`.

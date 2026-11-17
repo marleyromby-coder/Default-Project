@@ -1,6 +1,15 @@
 # Supabase: brugere og virksomhedstilmeldinger
 
-> **Status 9. november 2026:** Projektet `khhizugetbekalfjmyhr` i Frankfurt er oprettet, alle filer i `supabase/migrations/` er kørt, Log ind med Apple er slået til, og `.env` peger på projektet. Tilbage: databehandleraftalen (DPA), egen e-mailafsender (SMTP) og opgradering til Pro før lancering.
+> **Status 9. november 2026:** Projektet `khhizugetbekalfjmyhr` i Frankfurt er oprettet, filerne i `supabase/migrations/` til og med `20261113120000_lock_admin_views.sql` er kørt, Log ind med Apple er slået til, og `.env` peger på projektet. Tilbage: databehandleraftalen (DPA), egen e-mailafsender (SMTP) og opgradering til Pro før lancering.
+
+> **Skal køres i hånden (17. november 2026).** Kør de fire nye filer i SQL Editor (trin 2), i denne rækkefølge, før næste build eller hjemmesiden går ud. Ellers fejler tilmeldingerne (kolonnen `review_links` mangler), og "Rapportér" falder tilbage til e-mail.
+>
+> 1. `20261117120000_review_links.sql` – kolonnen `review_links` til links til virksomhedens egne profiler på andre anmeldelsessider, og eksporten med kolonnen `anmeldelseslinks`. Kør den kun én gang.
+> 2. `20261117130000_content_reports.sql` – tabellen `content_reports` til "Rapportér", og `hidden` på Naborabat-grupper.
+> 3. `20261117140000_report_retention.sql` – kolonnen `handled_at`, så I kan slette rapporter 12 måneder efter, I har afsluttet dem. Appen kan kun tilføje rapporter, ikke sætte `handled_at`.
+> 4. `20261117150000_lock_public_views.sql` – appen og hjemmesiden kan kun læse de offentlige visninger. Indtil den er kørt, kan alle med den offentlige nøgle rette og slette delte priser gennem `shared_prices`, så kør den hurtigst muligt.
+>
+> Fil 3 og 4 kan køres flere gange. Tjek bagefter med forespørgslen under "Godt at vide", at ingen visning giver mere end læseadgang.
 
 FixMatch gemmer brugere (navn, telefon, e-mail), hvem der har ringet til hvilken virksomhed, og virksomhedernes egne tilmeldinger i **Supabase**. Serveren står i EU (Frankfurt). Det tager ca. 20 minutter at sætte op, og det er gratis at starte.
 
@@ -20,7 +29,7 @@ FixMatch gemmer brugere (navn, telefon, e-mail), hvem der har ringet til hvilken
 ## 2. Lav tabellerne
 
 1. Åbn **SQL Editor** → **New query**.
-2. Kopiér hele indholdet af `fixmatch/supabase/migrations/20261030120000_accounts_and_signups.sql`, sæt det ind, og tryk **Run**. Gør det samme med `20261106120000_verification.sql` (Verificeret-mærket) `20261107120000_prices_and_reviews.sql` (anmeldelser og "Del, hvad du betalte") `20261108120000_availability.sql` ("Hvem har tid i dag?") `20261109120000_business_accounts.sql` ("Min virksomhed"), `20261110120000_call_answers.sql` ("Fik du fat i dem?") `20261111120000_work_photos.sql` (billeder af udført arbejde), `20261112120000_group_jobs.sql` (Naborabat), `20261113120000_lock_admin_views.sql`, `20261117120000_review_links.sql` (links til anmeldelsessider) og `20261117130000_content_reports.sql` (rapporter fra brugere) bagefter, i den rækkefølge.
+2. Kopiér hele indholdet af `fixmatch/supabase/migrations/20261030120000_accounts_and_signups.sql`, sæt det ind, og tryk **Run**. Gør det samme med `20261106120000_verification.sql` (Verificeret-mærket) `20261107120000_prices_and_reviews.sql` (anmeldelser og "Del, hvad du betalte") `20261108120000_availability.sql` ("Hvem har tid i dag?") `20261109120000_business_accounts.sql` ("Min virksomhed"), `20261110120000_call_answers.sql` ("Fik du fat i dem?") `20261111120000_work_photos.sql` (billeder af udført arbejde), `20261112120000_group_jobs.sql` (Naborabat), `20261113120000_lock_admin_views.sql`, `20261117120000_review_links.sql` (links til anmeldelsessider), `20261117130000_content_reports.sql` (rapporter fra brugere), `20261117140000_report_retention.sql` (hvornår en rapport er afsluttet) og `20261117150000_lock_public_views.sql` (kun læseadgang til de offentlige visninger) bagefter, i den rækkefølge.
 3. Der skal stå "Success. No rows returned".
 
 Det laver tabellerne `profiles` (navn og telefon), `contacts` (hvem ringede til hvem), `business_signups` (tilmeldinger med samtykke), funktionen `delete_account` (sletning af bruger) og to visninger til jer: `contacts_with_profile` og `business_signups_export`. Den sidste fil laver `price_reports` og `reviews` og visningerne `shared_prices`, `public_reviews` og `review_summary`, som appen læser. Databasen tjekker selv, at brugeren har ringet til virksomheden, før en anmeldelse eller pris kan gemmes. Alle tabeller er låst med "row level security", så appen kun kan det, den skal.
