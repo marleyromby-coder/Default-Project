@@ -11,9 +11,10 @@ import { skipAccount } from '@/state/account';
 import { t } from '@/i18n';
 
 /**
- * The first screen: create an account, or skip it. Without one, the app asks again the first
- * time you contact a business. The root layout moves on once the account has a name and
- * phone number or the step is skipped.
+ * The first screen: create an account, or skip it ("Spring over", or "Ikke nu" after Sign in
+ * with Apple). Everything can be browsed without one; the app asks again the first time you
+ * contact a business. The root layout moves on once the account has a name and phone number
+ * or the step is skipped.
  */
 export default function StartScreen() {
   const colors = useTheme();

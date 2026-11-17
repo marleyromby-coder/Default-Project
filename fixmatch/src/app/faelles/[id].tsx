@@ -24,7 +24,7 @@ import { formatDate } from '@/lib/format';
 import { groupLink } from '@/lib/group-link';
 import { scoreBusinesses } from '@/lib/ranking';
 import type { Business } from '@/lib/types';
-import { useAccount } from '@/state/account';
+import { openSignIn, useAccount } from '@/state/account';
 import { useApp, useMarket } from '@/state/app-state';
 import {
   GROUP_DISCOUNT,
@@ -130,12 +130,14 @@ export default function GroupScreen() {
       await joinGroup(group, userId);
     } catch (error) {
       const reason = error instanceof GroupError ? error.reason : 'network';
-      showDialog(
-        reason === 'signed-out' ? t('Log ind først') : t('Det lykkedes ikke'),
-        reason === 'signed-out'
-          ? t('Opret en bruger eller log ind, så vi ved, at I er rigtige naboer.')
-          : t('Tjek internettet, og prøv igen.'),
-      );
+      if (reason === 'signed-out') {
+        showDialog(t('Log ind først'), t('Opret en bruger eller log ind, så vi ved, at I er rigtige naboer.'), [
+          { text: t('Annuller'), style: 'cancel' },
+          { text: t('Log ind'), onPress: openSignIn },
+        ]);
+      } else {
+        showDialog(t('Det lykkedes ikke'), t('Tjek internettet, og prøv igen.'));
+      }
     } finally {
       setBusy(false);
     }

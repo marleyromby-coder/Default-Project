@@ -64,7 +64,7 @@ function RootNavigator() {
   // If the fonts cannot load, the titles fall back to the system font instead of hanging.
   const ready = state.ready && appearanceLoaded && account.status !== 'loading' && (fontsLoaded || !!fontError);
   // The app opens on "Opret en bruger" until there is an account with a name and phone
-  // number, or the user chose "Spring over".
+  // number, or the user chose "Spring over" (or "Ikke nu" after Sign in with Apple).
   const accountStepDone = skipped || canContact(account);
 
   useEffect(() => {

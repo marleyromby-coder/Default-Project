@@ -16,7 +16,7 @@ import { localDay } from '@/lib/availability';
 import { showDialog } from '@/lib/dialog';
 import type { CategoryId } from '@/lib/types';
 import { msg, t } from '@/i18n';
-import { useAccount } from '@/state/account';
+import { openSignIn, useAccount } from '@/state/account';
 import { useApp, useMarket } from '@/state/app-state';
 import { createGroup, GROUP_JOB_IDEAS, GroupError } from '@/state/groups';
 
@@ -72,12 +72,14 @@ export default function NewGroupScreen() {
       router.replace({ pathname: '/faelles/[id]', params: { id: group.id, ny: '1' } });
     } catch (error) {
       const reason = error instanceof GroupError ? error.reason : 'network';
-      showDialog(
-        reason === 'signed-out' ? t('Log ind først') : t('Det lykkedes ikke'),
-        reason === 'signed-out'
-          ? t('Opret en bruger eller log ind, så naboerne ved, at gruppen er ægte.')
-          : t('Gruppen blev ikke oprettet. Tjek internettet, og prøv igen.'),
-      );
+      if (reason === 'signed-out') {
+        showDialog(t('Log ind først'), t('Opret en bruger eller log ind, så naboerne ved, at gruppen er ægte.'), [
+          { text: t('Annuller'), style: 'cancel' },
+          { text: t('Log ind'), onPress: openSignIn },
+        ]);
+      } else {
+        showDialog(t('Det lykkedes ikke'), t('Gruppen blev ikke oprettet. Tjek internettet, og prøv igen.'));
+      }
     } finally {
       setBusy(false);
     }

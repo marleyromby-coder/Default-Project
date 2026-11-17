@@ -1551,6 +1551,10 @@ const en: Record<string, string> = {
   'Anmeldelser på {site}, åbner en anden side': 'Reviews on {site}, opens another page',
   'Åbner en anden side. FixMatch tjekker ikke anmeldelserne dér, og de tæller ikke med i scoren.':
     'Opens another page. FixMatch does not check the reviews there, and they do not count in the score.',
+  // Skip the name and number at launch
+  'Ikke nu': 'Not now',
+  'Du kan se og sammenligne uden. Vi spørger igen, når du vil ringe eller skrive til en virksomhed.':
+    'You can browse and compare without them. We ask again when you want to call or message a business.',
 };
 
 export default en;

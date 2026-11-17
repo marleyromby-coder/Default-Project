@@ -253,6 +253,11 @@ export function clearContacts() {
   AsyncStorage.removeItem(CONTACTS_KEY).catch(() => undefined);
 }
 
+/** Opens the sign-in sheet, e.g. from a "Log ind først" dialog. */
+export function openSignIn() {
+  router.push({ pathname: '/konto', params: { reason: 'settings' } });
+}
+
 let pending: ((ok: boolean) => void) | null = null;
 
 /**

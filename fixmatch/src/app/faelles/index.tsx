@@ -15,7 +15,7 @@ import { useLayout } from '@/hooks/use-layout';
 import { localDay } from '@/lib/availability';
 import { codeFromLink } from '@/lib/group-link';
 import { showDialog } from '@/lib/dialog';
-import { useAccount } from '@/state/account';
+import { openSignIn, useAccount } from '@/state/account';
 import { useApp, useMarket } from '@/state/app-state';
 import {
   GROUP_DISCOUNT,
@@ -59,17 +59,18 @@ export default function GroupsScreen() {
       router.push({ pathname: '/faelles/[id]', params: { id: group.id } });
     } catch (error) {
       const reason = error instanceof GroupError ? error.reason : 'network';
+      if (reason === 'signed-out') {
+        showDialog(t('Log ind først'), t('Opret en bruger eller log ind, så vi ved, at I er rigtige naboer.'), [
+          { text: t('Annuller'), style: 'cancel' },
+          { text: t('Log ind'), onPress: openSignIn },
+        ]);
+        return;
+      }
       showDialog(
-        reason === 'not-found'
-          ? t('Ingen gruppe med den kode')
-          : reason === 'signed-out'
-            ? t('Log ind først')
-            : t('Det lykkedes ikke'),
+        reason === 'not-found' ? t('Ingen gruppe med den kode') : t('Det lykkedes ikke'),
         reason === 'not-found'
           ? t('Tjek koden hos den nabo, der startede gruppen. Den er på 6 tegn.')
-          : reason === 'signed-out'
-            ? t('Opret en bruger eller log ind, så vi ved, at I er rigtige naboer.')
-            : t('Tjek internettet, og prøv igen.'),
+          : t('Tjek internettet, og prøv igen.'),
       );
     } finally {
       setBusy(false);

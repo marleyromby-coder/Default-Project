@@ -47,7 +47,7 @@ interface Props {
   reason: SignUpReason;
   /** Called once the account has a name and phone number. */
   onDone: () => void;
-  /** Shown as "Spring over" when given (only at launch). */
+  /** Shown as "Spring over", and as "Ikke nu" on the name and phone step, when given (only at launch). */
   onSkip?: () => void;
 }
 
@@ -312,6 +312,15 @@ export function SignUpFlow({ reason, onDone, onSkip }: Props) {
       ) : null}
 
       {onSkip && step === 'choose' ? <Button title={t('Spring over')} variant="plain" onPress={onSkip} block /> : null}
+      {/* At launch, signed in with Apple but no name and number yet: the app opens anyway. */}
+      {onSkip && step === 'profile' ? (
+        <View style={styles.later}>
+          <Button title={t('Ikke nu')} variant="plain" onPress={onSkip} block />
+          <AppText variant="footnote" tone="textTertiary" align="center">
+            {t('Du kan se og sammenligne uden. Vi spørger igen, når du vil ringe eller skrive til en virksomhed.')}
+          </AppText>
+        </View>
+      ) : null}
 
       <View style={styles.legal}>
         <AppText variant="footnote" tone="textTertiary">
@@ -350,5 +359,6 @@ const styles = StyleSheet.create({
   heading: { gap: Spacing.sm },
   apple: { height: 50, width: '100%' },
   links: { flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' },
+  later: { gap: Spacing.xs },
   legal: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center' },
 });
