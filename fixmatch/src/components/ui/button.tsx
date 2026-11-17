@@ -7,7 +7,11 @@ import { Icon, type IconName } from './icon';
 import { Tappable } from './tappable';
 import { AppText } from './text';
 
-type Variant = 'primary' | 'secondary' | 'tinted' | 'plain' | 'destructive';
+/**
+ * `link` is a left-aligned text button in the brand colour, for "read more" links and quiet
+ * actions inside a card. `plain` is the same, centred, for EmptyState and "Spring over".
+ */
+type Variant = 'primary' | 'secondary' | 'tinted' | 'plain' | 'link' | 'destructive';
 
 interface ButtonProps {
   title: string;
@@ -22,6 +26,8 @@ interface ButtonProps {
   style?: StyleProp<ViewStyle>;
   /** Stretch to the full width of the parent. */
   block?: boolean;
+  /** A small chevron after the title, for links that open another page. */
+  chevron?: boolean;
 }
 
 export function Button({
@@ -36,16 +42,27 @@ export function Button({
   accessibilityHint,
   style,
   block,
+  chevron,
 }: ButtonProps) {
   const colors = useTheme();
-  const palette = {
-    primary: { bg: colors.brandStrong, fg: colors.onBrand, border: 'transparent' },
-    secondary: { bg: colors.surface, fg: colors.text, border: colors.border },
-    tinted: { bg: colors.brandSoft, fg: colors.brandText, border: 'transparent' },
-    plain: { bg: 'transparent', fg: colors.brandText, border: 'transparent' },
-    destructive: { bg: colors.dangerSoft, fg: colors.danger, border: 'transparent' },
-  }[variant];
-  const height = size === 'large' ? 54 : size === 'small' ? 36 : MinTouchSize + 4;
+  const textOnly = variant === 'plain' || variant === 'link';
+  // Disabled buttons get a neutral look with readable text instead of a faded colour.
+  const palette =
+    disabled && !loading
+      ? textOnly
+        ? { bg: 'transparent', fg: colors.textTertiary, border: 'transparent' }
+        : { bg: colors.fill, fg: colors.textSecondary, border: 'transparent' }
+      : {
+          primary: { bg: colors.brandStrong, fg: colors.onBrand, border: 'transparent' },
+          secondary: { bg: colors.surface, fg: colors.text, border: colors.border },
+          tinted: { bg: colors.brandSoft, fg: colors.brandText, border: 'transparent' },
+          plain: { bg: 'transparent', fg: colors.brandText, border: 'transparent' },
+          link: { bg: 'transparent', fg: colors.brandText, border: 'transparent' },
+          destructive: { bg: colors.dangerSoft, fg: colors.danger, border: 'transparent' },
+        }[variant];
+  const link = variant === 'link';
+  const height = link ? MinTouchSize : size === 'large' ? 54 : size === 'small' ? 36 : MinTouchSize + 4;
+  const labelVariant = link ? (size === 'small' ? 'footnote' : 'subhead') : size === 'small' ? 'subhead' : 'headline';
 
   return (
     <Tappable
@@ -53,32 +70,38 @@ export function Button({
       disabled={disabled || loading}
       accessibilityLabel={accessibilityLabel ?? title}
       accessibilityHint={accessibilityHint}
+      accessibilityRole={link ? 'link' : 'button'}
       accessibilityState={{ disabled: !!(disabled || loading), busy: !!loading }}
-      hitSlop={size === 'small' ? 4 : 0}
+      hitSlop={size === 'small' && !link ? 4 : 0}
+      dimWhenDisabled={false}
       style={[
         styles.base,
         {
           minHeight: height,
           backgroundColor: palette.bg,
           borderColor: palette.border,
-          paddingHorizontal: size === 'small' ? Spacing.md : Spacing.lg,
+          paddingHorizontal: link ? 0 : size === 'small' ? Spacing.md : Spacing.lg,
         },
+        link ? styles.link : null,
         block ? styles.block : null,
         style,
       ]}>
       {loading ? (
         <ActivityIndicator color={palette.fg} />
       ) : (
-        <View style={styles.content}>
-          {icon ? <Icon name={icon} size={size === 'small' ? 15 : 18} color={palette.fg} weight="semibold" /> : null}
+        <View style={[styles.content, link ? styles.linkContent : null]}>
+          {icon ? (
+            <Icon name={icon} size={size === 'small' || link ? 15 : 18} color={palette.fg} weight="semibold" />
+          ) : null}
           <AppText
-            variant={size === 'small' ? 'subhead' : 'headline'}
+            variant={labelVariant}
             weight="600"
-            style={{ color: palette.fg }}
-            numberOfLines={1}
+            style={[{ color: palette.fg }, link ? styles.linkLabel : null]}
+            numberOfLines={link ? 2 : 1}
             maxFontSizeMultiplier={1.3}>
             {title}
           </AppText>
+          {chevron ? <Icon name="chevronRight" size={12} color={palette.fg} weight="semibold" /> : null}
         </View>
       )}
     </Tappable>
@@ -97,7 +120,16 @@ interface IconButtonProps {
 }
 
 /** Round icon button with a 44 pt touch target. */
-export function IconButton({ icon, onPress, accessibilityLabel, color, background, size = 20, selected, style }: IconButtonProps) {
+export function IconButton({
+  icon,
+  onPress,
+  accessibilityLabel,
+  color,
+  background,
+  size = 20,
+  selected,
+  style,
+}: IconButtonProps) {
   const colors = useTheme();
   return (
     <Tappable
@@ -119,7 +151,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   block: { alignSelf: 'stretch' },
+  link: { alignSelf: 'flex-start', justifyContent: 'flex-start' },
   content: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
+  linkContent: { gap: Spacing.xs + 2, flexShrink: 1 },
+  linkLabel: { flexShrink: 1 },
   iconButton: {
     width: MinTouchSize,
     height: MinTouchSize,

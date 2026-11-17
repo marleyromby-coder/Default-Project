@@ -233,8 +233,8 @@ export function CustomerCard({ business }: { business: Business }) {
       </View>
       <Button
         title={t('Sådan virker anmeldelserne')}
-        variant="plain"
-        size="small"
+        variant="link"
+        chevron
         onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'anmeldelser' } })}
       />
     </Card>

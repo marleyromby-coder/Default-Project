@@ -357,14 +357,12 @@ export default function BusinessScreen() {
                 { date: formatDate(business.pricing.updatedAt) },
               )}
             </AppText>
-            <LinkText label={t('Om priserne og håndværkerfradrag')} slug="priser" />
+            <InfoLink label={t('Om priserne og håndværkerfradrag')} slug="priser" />
             <Button
               title={t('Har du fået et tilbud? Tjek prisen')}
-              icon="receipt"
-              variant="plain"
-              size="small"
+              variant="link"
+              chevron
               onPress={() => router.push({ pathname: '/tilbudstjek', params: { kategori: business.categories[0] } })}
-              style={styles.alignStart}
             />
           </Card>
 
@@ -385,7 +383,7 @@ export default function BusinessScreen() {
                 onPress={() => router.push('/prioriteter')}
               />
             </View>
-            <LinkText label={t('Sådan rangerer vi')} slug="rangering" />
+            <InfoLink label={t('Sådan rangerer vi')} slug="rangering" />
           </Card>
 
           <Card>
@@ -686,16 +684,14 @@ function Fact({ icon, label, value }: { icon: IconName; label: string; value: st
   );
 }
 
-function LinkText({ label, slug }: { label: string; slug: string }) {
+function InfoLink({ label, slug }: { label: string; slug: string }) {
   return (
-    <Tappable
+    <Button
+      title={label}
+      variant="link"
+      chevron
       onPress={() => router.push({ pathname: '/info/[slug]', params: { slug } })}
-      accessibilityRole="link"
-      style={styles.linkText}>
-      <AppText variant="footnote" tone="brandText" weight="600">
-        {label} ›
-      </AppText>
-    </Tappable>
+    />
   );
 }
 
@@ -747,7 +743,6 @@ const styles = StyleSheet.create({
   heroBadges: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs },
   nameRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   shrink: { flexShrink: 1 },
-  alignStart: { alignSelf: 'flex-start' },
   checks: { gap: 6, paddingLeft: 30, paddingBottom: Spacing.sm },
   checkRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   stats: { flexDirection: 'row', borderTopWidth: StyleSheet.hairlineWidth, paddingTop: Spacing.md },
@@ -787,7 +782,6 @@ const styles = StyleSheet.create({
     padding: Spacing.md,
     borderRadius: Radius.md,
   },
-  linkText: { marginTop: Spacing.sm, minHeight: 36, justifyContent: 'center', alignSelf: 'flex-start' },
   footer: { gap: Spacing.sm, alignItems: 'center', paddingTop: Spacing.sm },
   topBar: {
     position: 'absolute',

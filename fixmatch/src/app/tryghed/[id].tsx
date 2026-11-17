@@ -172,8 +172,8 @@ function Safety({ business }: { business: Business }) {
                 <View style={styles.action}>
                   <Button
                     title={item.key === 'cvr' ? t('Slå op i CVR-registret') : t('Tjek hos Sikkerhedsstyrelsen')}
-                    variant="plain"
-                    size="small"
+                    variant="link"
+                    chevron
                     onPress={action}
                   />
                 </View>
@@ -212,8 +212,8 @@ function Safety({ business }: { business: Business }) {
                 {board.url ? (
                   <Button
                     title={t('Gå til {name}', { name: board.url.replace(/^https:\/\//, '') })}
-                    variant="plain"
-                    size="small"
+                    variant="link"
+                    chevron
                     onPress={() => openLink(board.url!)}
                   />
                 ) : null}
@@ -230,9 +230,10 @@ function Safety({ business }: { business: Business }) {
         />
         <Button
           title={t('Gå til forbrug.dk')}
-          variant="plain"
-          size="small"
+          variant="link"
+          chevron
           onPress={() => openLink('https://forbrug.dk')}
+          style={styles.stepLink}
         />
         <Step
           number={boards.length > 0 ? 4 : 3}
@@ -240,9 +241,10 @@ function Safety({ business }: { business: Business }) {
         />
         <Button
           title={t('Rapportér fejl eller ulovligt indhold')}
-          variant="plain"
-          size="small"
+          variant="link"
+          chevron
           onPress={() => reportProblem(business)}
+          style={styles.stepLink}
         />
       </Card>
 
@@ -285,5 +287,7 @@ const styles = StyleSheet.create({
   step: { flexDirection: 'row', gap: Spacing.md, marginTop: Spacing.md, alignItems: 'flex-start' },
   number: { width: 22, height: 22, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
   board: { marginLeft: 34, marginTop: Spacing.sm, gap: 2, alignItems: 'flex-start' },
+  // Links under a numbered step line up with the step's text (22 pt number + 12 pt gap).
+  stepLink: { marginLeft: 34 },
   spaced: { marginTop: Spacing.sm, marginLeft: 34 },
 });

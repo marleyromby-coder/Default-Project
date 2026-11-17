@@ -137,6 +137,7 @@ const en: Record<string, string> = {
   'Find håndværkere': 'Find tradespeople',
   'Find håndværkere nær dig': 'Find tradespeople near you',
   'Find match': 'Find a match',
+  'Skriv, hvad der er galt, eller vælg et fag.': 'Describe what is wrong, or choose a trade.',
   'Find virksomheder': 'Find businesses',
   'Finder din placering…': 'Finding your location…',
   'Finder…': 'Finding…',
