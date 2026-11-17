@@ -17,6 +17,7 @@ import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { CATEGORIES, getCategory } from '@/data/categories';
+import { DEFAULT_LOCATION } from '@/data/places';
 import { useGps, GPS_MESSAGES } from '@/hooks/use-gps';
 import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
@@ -59,7 +60,7 @@ export default function HomeScreen() {
   const { column } = useLayout();
   const colors = useTheme();
   const insets = useSafeAreaInsets();
-  const { state } = useApp();
+  const { state, setLocation } = useApp();
   const { country, market, supported, open } = useMarket();
   const { locate, busy } = useGps();
   const origin = state.location.coords;
@@ -215,7 +216,28 @@ export default function HomeScreen() {
         </Tappable>
       </View>
 
-      {state.location.source === 'default' ? (
+      {state.location.abroad ? (
+        // The GPS put the user outside FixMatch's countries (e.g. an App Store reviewer in the
+        // US): the app shows the default city instead of an empty list, and says so.
+        <View style={[styles.notice, { backgroundColor: colors.infoSoft }]}>
+          <Icon name="globe" size={16} color={colors.info} weight="semibold" />
+          <AppText variant="footnote" style={[styles.flex, { color: colors.text }]}>
+            {t('Du er i {country}. FixMatch er kun i {countries} endnu, så vi viser virksomheder i {label}.', {
+              country: countryName(state.location.abroad),
+              countries: open.map(countryName).join(', ') || countryName(state.location.country ?? 'DK'),
+              label: state.location.label,
+            })}
+          </AppText>
+          <Tappable
+            onPress={() => router.push('/placering')}
+            accessibilityLabel={t('Vælg en by')}
+            style={styles.noticeAction}>
+            <AppText variant="footnote" weight="700" style={{ color: colors.info }}>
+              {t('Vælg by')}
+            </AppText>
+          </Tappable>
+        </View>
+      ) : state.location.source === 'default' ? (
         <View style={[styles.notice, { backgroundColor: colors.infoSoft }]}>
           <Icon name="info" size={16} color={colors.info} weight="semibold" />
           <AppText variant="footnote" style={[styles.flex, { color: colors.text }]}>
@@ -244,14 +266,26 @@ export default function HomeScreen() {
               countries: open.map(countryName).join(', '),
             })}
           </AppText>
-          <Tappable
-            onPress={() => router.push('/placering')}
-            accessibilityLabel={t('Vælg en by')}
-            style={styles.noticeAction}>
-            <AppText variant="footnote" weight="700" tone="brandText">
-              {t('Vælg by')}
-            </AppText>
-          </Tappable>
+          {/* One tap back to København, unless that is where the app already is. */}
+          {state.location.label !== DEFAULT_LOCATION.label ? (
+            <Tappable
+              onPress={() => setLocation(DEFAULT_LOCATION)}
+              accessibilityLabel={t('Vis {label}', { label: DEFAULT_LOCATION.label })}
+              style={styles.noticeAction}>
+              <AppText variant="footnote" weight="700" tone="brandText">
+                {t('Vis {label}', { label: DEFAULT_LOCATION.label })}
+              </AppText>
+            </Tappable>
+          ) : (
+            <Tappable
+              onPress={() => router.push('/placering')}
+              accessibilityLabel={t('Vælg en by')}
+              style={styles.noticeAction}>
+              <AppText variant="footnote" weight="700" tone="brandText">
+                {t('Vælg by')}
+              </AppText>
+            </Tappable>
+          )}
         </View>
       ) : null}
 

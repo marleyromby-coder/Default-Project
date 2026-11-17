@@ -1582,6 +1582,10 @@ const en: Record<string, string> = {
     'If you used Sign in with Apple, you can also remove FixMatch from your Apple Account: Settings → your name → Sign in with Apple → FixMatch.',
   'Dit navn, dit telefonnummer og listen over virksomheder, du har kontaktet, er slettet.':
     'Your name, your phone number and the list of businesses you have contacted have been deleted.',
+  // GPS outside FixMatch's countries
+  'Du er i {country}. FixMatch er kun i {countries} endnu, så vi viser virksomheder i {label}.':
+    'You are in {country}. FixMatch is only in {countries} so far, so we show businesses in {label}.',
+  'Vis {label}': 'Show {label}',
 };
 
 export default en;

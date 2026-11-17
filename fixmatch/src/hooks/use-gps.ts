@@ -1,9 +1,8 @@
 import * as Location from 'expo-location';
 import { useState } from 'react';
 
-import { nearestPlace } from '@/data/places';
+import { locationFromGps } from '@/data/places';
 import { t } from '@/i18n';
-import type { UserLocation } from '@/lib/types';
 import { useApp } from '@/state/app-state';
 
 export type GpsResult = 'ok' | 'denied' | 'error';
@@ -24,17 +23,8 @@ export function useGps() {
       const position =
         (await Location.getLastKnownPositionAsync({ maxAge: 5 * 60 * 1000 })) ??
         (await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced }));
-      const coords = { lat: position.coords.latitude, lon: position.coords.longitude };
-      // Anywhere in the world; outside FixMatch's countries the app says so.
-      const place = nearestPlace(coords);
-      const location: UserLocation = {
-        source: 'gps',
-        coords,
-        label: place.name,
-        postalCode: place.code,
-        country: place.country,
-      };
-      setLocation(location);
+      // Outside FixMatch's countries the app shows the default city and says so.
+      setLocation(locationFromGps({ lat: position.coords.latitude, lon: position.coords.longitude }));
       return 'ok';
     } catch {
       return 'error';

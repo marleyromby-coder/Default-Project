@@ -144,7 +144,7 @@ SIGN-IN
 - The account can be deleted in the app: Profile > Delete account ("Profil > Slet bruger").
 
 LOCATION
-- The businesses are in Copenhagen, Denmark. If location is allowed and you are outside Denmark, the app shows Copenhagen and says so at the top of the home screen. Without location, it starts in Copenhagen.
+- The businesses are in Copenhagen, Denmark. If location is allowed and you are outside Denmark, the app shows the businesses in Copenhagen and says so in a note on the home screen. Without location, it starts in Copenhagen.
 - To choose a city: Profile > Location ("Profil > Placering"), search for "København" and tap it.
 - Location permission is optional and is only used on the device.
 

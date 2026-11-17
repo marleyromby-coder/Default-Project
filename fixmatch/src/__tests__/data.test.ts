@@ -2,9 +2,11 @@ import { CATEGORIES } from '@/data/categories';
 import demo from '@/data/demo-businesses.json';
 import {
   DANISH_PLACES,
+  DEFAULT_LOCATION,
   INTERNATIONAL_PLACES,
   PLACES,
   findPlaceByPostalCode,
+  locationFromGps,
   nearestPlace,
   searchPlaces,
 } from '@/data/places';
@@ -174,6 +176,18 @@ describe('places', () => {
 
   it('names a GPS position after the nearest town', () => {
     expect(nearestPlace({ lat: 55.405, lon: 10.39 }).name).toBe('Odense C');
+    expect(locationFromGps({ lat: 55.405, lon: 10.39 })).toMatchObject({ source: 'gps', label: 'Odense C' });
+    expect(locationFromGps({ lat: 55.405, lon: 10.39 }).abroad).toBeUndefined();
+  });
+
+  it('shows København, not an empty app, when the GPS is outside the launched countries', () => {
+    // Apple often reviews from Cupertino.
+    const cupertino = locationFromGps({ lat: 37.323, lon: -122.032 });
+    expect(cupertino).toMatchObject({ ...DEFAULT_LOCATION, abroad: 'US' });
+    expect(cupertino.label).toBe('København K');
+    expect(LAUNCHED_COUNTRIES).toContain(cupertino.country);
+    // A country that is built in but not launched yet.
+    expect(locationFromGps({ lat: 59.33, lon: 18.07 }).abroad).toBe('SE');
   });
 });
 

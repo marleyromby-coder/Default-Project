@@ -131,6 +131,16 @@ export function nearestPlace(coords: Coords): Place {
   return best;
 }
 
+/**
+ * The location for a GPS position. Outside FixMatch's countries the app falls back to the
+ * default city (København), so it never opens empty, and remembers where the user is.
+ */
+export function locationFromGps(coords: Coords): UserLocation {
+  const place = nearestPlace(coords);
+  if (!isLaunched(place.country)) return { ...DEFAULT_LOCATION, abroad: place.country };
+  return { source: 'gps', coords, label: place.name, postalCode: place.code, country: place.country };
+}
+
 /** Quick picks in Denmark, shown before the user types anything. */
 export const POPULAR_PLACES: Place[] = [
   'København K',

@@ -172,6 +172,12 @@ export interface UserLocation {
   postalCode?: string;
   /** ISO 3166-1 alpha-2, e.g. "DK" or "FR". Defaults to DK. Countries without a market show no results. */
   country?: string;
+  /**
+   * Set when the GPS found the user in a country FixMatch is not in yet (e.g. "US" for an App
+   * Store reviewer): that country. The location is then the default city, so the app still
+   * shows businesses, and the home screen says why.
+   */
+  abroad?: string;
 }
 
 /** How important each factor is to the user, from 1 (not important) to 5 (very important). */
