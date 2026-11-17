@@ -497,6 +497,8 @@ const en: Record<string, string> = {
   '{fitting} af {countText} passer eller ligger tæt på dit budget':
     '{fitting} of {countText} fit or are close to your budget',
   '{label}: {decimal} ud af 10, vægt {value} procent': '{label}: {decimal} out of 10, weight {value} percent',
+  '{label}: ingen endnu, så vi bruger en neutral værdi på {decimal} ud af 10. Vægt {value} procent':
+    '{label}: none yet, so we use a neutral value of {decimal} out of 10. Weight {value} percent',
   '{label}: {value}': '{label}: {value}',
   '{level} vigtigt': '{level}',
   '{name} er en fiktiv demo-virksomhed. I den færdige app {what}':

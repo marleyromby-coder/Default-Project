@@ -53,7 +53,7 @@ import {
   formatRegistryNumber,
 } from '@/lib/format';
 import { formatTime, mondayIndex, WEEKDAYS } from '@/lib/opening-hours';
-import { matchLabel, priceLevel, weightsFromPriorities } from '@/lib/ranking';
+import { matchLabel, priceLevel, reviewCount, weightsFromPriorities } from '@/lib/ranking';
 import { t } from '@/i18n';
 import { businessText, countryOf, currencyOf } from '@/lib/business-text';
 import { getMarket, taxNote } from '@/lib/markets';
@@ -354,7 +354,7 @@ export default function BusinessScreen() {
                 matchLabel: matchLabel(scored.score),
               })}
             />
-            <ScoreBars parts={scored.parts} weights={weights} />
+            <ScoreBars parts={scored.parts} weights={weights} noReviews={reviewCount(business) === 0} />
             <View style={styles.buttonRow}>
               <Button
                 title={t('Juster dine prioriteter')}

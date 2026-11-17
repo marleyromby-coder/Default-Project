@@ -13,31 +13,51 @@ const ROWS: { key: keyof ScoreParts; label: string }[] = [
   { key: 'reviews', label: t('Anmeldelser') },
 ];
 
-/** Shows each part score out of 10 and the user's weight for it. */
-export function ScoreBars({ parts, weights }: { parts: ScoreParts; weights: Weights }) {
+/**
+ * Shows each part score out of 10 and the user's weight for it. Without reviews, the reviews row
+ * shows "–" and an empty bar: the score uses a neutral value there, which is not a rating.
+ */
+export function ScoreBars({ parts, weights, noReviews }: { parts: ScoreParts; weights: Weights; noReviews?: boolean }) {
   const colors = useTheme();
   return (
     <View style={styles.list}>
       {ROWS.map(({ key, label }) => {
         const value = parts[key];
+        const neutral = key === 'reviews' && noReviews;
+        const values = { label, decimal: formatDecimal(value * 10), value: Math.round(weights[key] * 100) };
         return (
           <View
             key={key}
             style={styles.row}
             accessible
-            accessibilityLabel={t('{label}: {decimal} ud af 10, vægt {value} procent', {
-              label,
-              decimal: formatDecimal(value * 10),
-              value: Math.round(weights[key] * 100),
-            })}>
-            <AppText variant="subhead" style={styles.label}>
-              {label}
-            </AppText>
-            <View style={[styles.track, { backgroundColor: colors.surfaceAlt, borderColor: colors.border }]}>
-              <View style={[styles.fill, { width: `${Math.max(4, value * 100)}%`, backgroundColor: colors.brand }]} />
+            accessibilityLabel={
+              neutral
+                ? t(
+                    '{label}: ingen endnu, så vi bruger en neutral værdi på {decimal} ud af 10. Vægt {value} procent',
+                    values,
+                  )
+                : t('{label}: {decimal} ud af 10, vægt {value} procent', values)
+            }>
+            <View style={styles.label}>
+              <AppText variant="subhead">{label}</AppText>
+              {neutral ? (
+                <AppText variant="caption" tone="textSecondary">
+                  {t('Ingen endnu')}
+                </AppText>
+              ) : null}
             </View>
-            <AppText variant="subhead" weight="600" tabular style={styles.value}>
-              {formatDecimal(value * 10)}
+            <View style={[styles.track, { backgroundColor: colors.surfaceAlt, borderColor: colors.border }]}>
+              {neutral ? null : (
+                <View style={[styles.fill, { width: `${Math.max(4, value * 100)}%`, backgroundColor: colors.brand }]} />
+              )}
+            </View>
+            <AppText
+              variant="subhead"
+              weight="600"
+              tone={neutral ? 'textSecondary' : undefined}
+              tabular
+              style={styles.value}>
+              {neutral ? '–' : formatDecimal(value * 10)}
             </AppText>
             <AppText variant="caption" tone="textSecondary" tabular style={styles.weight}>
               {Math.round(weights[key] * 100)} %
