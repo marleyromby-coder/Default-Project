@@ -95,12 +95,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
     .slice(0, 2);
 
   return (
-    <View
-      style={[
-        styles.card,
-        // The selected outline is always there, so choosing a card never moves the layout.
-        { backgroundColor: colors.surface, borderColor: comparing ? colors.brand : 'transparent' },
-      ]}>
+    <View style={[styles.card, { backgroundColor: colors.surface }]}>
       <Tappable
         onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
         accessibilityLabel={summary}
@@ -181,6 +176,10 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
           </AppText>
         </Tappable>
       </View>
+      {/* The selected outline is drawn on top and takes no space, so choosing a card never moves the layout. */}
+      {comparing ? (
+        <View pointerEvents="none" style={[StyleSheet.absoluteFill, styles.outline, { borderColor: colors.brand }]} />
+      ) : null}
     </View>
   );
 }
@@ -221,7 +220,8 @@ function FittingBadges({ badges }: { badges: ReactElement[] }) {
 }
 
 const styles = StyleSheet.create({
-  card: { borderRadius: Radius.lg, borderCurve: 'continuous', borderWidth: 2, overflow: 'hidden' },
+  card: { borderRadius: Radius.lg, borderCurve: 'continuous', overflow: 'hidden' },
+  outline: { borderRadius: Radius.lg, borderCurve: 'continuous', borderWidth: 2 },
   top: { flexDirection: 'row', gap: Spacing.md, padding: Spacing.md },
   body: { flex: 1, gap: Spacing.xs },
   titleRow: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.sm },
