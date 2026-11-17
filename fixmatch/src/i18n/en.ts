@@ -1550,7 +1550,7 @@ const en: Record<string, string> = {
   Værktøjer: 'Tools',
   'Tager telefonen {answered} ud af {outOf} gange': 'Answers the phone {answered} out of {outOf} times',
   Vægtning: 'Weighting',
-  'Så kan virksomhederne se, hvem der ringer.': 'Then businesses can see who is calling.',
+  'Så ved virksomheden, hvem der ringer.': 'So businesses know who is calling.',
   'Se prisen, før du ringer': 'See the price before you call',
   'Ring direkte – ingen mellemled, intet gebyr': 'Call directly – no middleman, no fee',
   'Verificeret-mærket viser, hvem FixMatch selv har tjekket': 'The Verified badge shows who FixMatch has checked',

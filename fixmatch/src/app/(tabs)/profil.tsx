@@ -139,11 +139,11 @@ export default function ProfileScreen() {
             style={[styles.card, { backgroundColor: colors.surface }]}>
             <View style={[styles.avatar, { backgroundColor: signedIn ? colors.brandSoft : colors.surfaceAlt }]}>
               {name ? (
-                <AppText variant="title2" style={{ color: colors.brandText }}>
+                <AppText variant="title3" style={{ color: colors.brandText }}>
                   {initials(name)}
                 </AppText>
               ) : (
-                <Icon name="person" size={30} color={colors.textSecondary} />
+                <Icon name="person" size={26} color={colors.textSecondary} />
               )}
             </View>
             <View style={styles.flex}>
@@ -154,7 +154,7 @@ export default function ProfileScreen() {
                 {signedIn
                   ? [account.profile?.phone, account.email].filter(Boolean).join(' · ') ||
                     t('Virksomhederne skal kunne se, hvem der ringer.')
-                  : t('Så kan virksomhederne se, hvem der ringer.')}
+                  : t('Så ved virksomheden, hvem der ringer.')}
               </AppText>
             </View>
             <Icon name="chevronRight" size={14} color={colors.textTertiary} weight="semibold" />
@@ -164,7 +164,7 @@ export default function ProfileScreen() {
             <ListRow
               icon="heartFill"
               title={t('Gemte håndværkere')}
-              value={String(state.favorites.length)}
+              value={state.favorites.length > 0 ? String(state.favorites.length) : undefined}
               onPress={() => router.navigate('/gemte')}
             />
             <ListRow
@@ -312,7 +312,8 @@ const styles = StyleSheet.create({
     borderRadius: Radius.lg,
     borderCurve: 'continuous',
   },
-  avatar: { width: 60, height: 60, borderRadius: 30, alignItems: 'center', justifyContent: 'center' },
+  // 44 pt leaves room for the subtitle on one line beside it.
+  avatar: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
   empty: { alignItems: 'center', gap: Spacing.sm, padding: Spacing.lg },
   contactRow: {
     flexDirection: 'row',
