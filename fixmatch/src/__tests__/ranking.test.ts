@@ -1,5 +1,6 @@
 import { distanceKm, isInDenmark } from '@/lib/geo';
 import {
+  bestReviewed,
   DEFAULT_PRIORITIES,
   priceLevel,
   REVIEW_PRIOR_COUNT,
@@ -145,6 +146,22 @@ describe('scoreBusinesses', () => {
     expect(order.map((s) => s.business.id)).toEqual(['good', 'ten-at-4', 'two-at-4', 'none-near', 'none-far']);
   });
 
+  it('puts businesses without reviews after every reviewed one in the rating sort', () => {
+    const at = (id: string, lat: number, summary?: { average: number; reviews: number }) =>
+      makeBusiness({ id, coords: { lat, lon: 12.5486 }, reviewSummary: summary });
+    const list = [
+      at('none-near', 55.6941),
+      at('low', 55.9, { average: 3.9, reviews: 10 }),
+      at('one-bad', 56, { average: 2, reviews: 1 }),
+      at('good', 55.8, { average: 4.8, reviews: 12 }),
+      at('none-far', 55.95),
+    ];
+    // Without reviews a business has the prior (4.0) in the score, more than 'low' and 'one-bad'.
+    expect(reviewValue(list[0])).toBeGreaterThan(reviewValue(list[1]));
+    const order = sortScored(scoreBusinesses(list, ORIGIN, DEFAULT_PRIORITIES), 'rating');
+    expect(order.map((s) => s.business.id)).toEqual(['good', 'low', 'one-bad', 'none-near', 'none-far']);
+  });
+
   it('keeps the order of price and distance while nobody has reviews (as at launch)', () => {
     const list = [
       ['a', 450, 55.75],
@@ -178,5 +195,26 @@ describe('priceLevel', () => {
     expect(priceLevel(peers[0], peers)).toBe(1);
     expect(priceLevel(peers[2], peers)).toBe(2);
     expect(priceLevel(peers[4], peers)).toBe(3);
+  });
+});
+
+describe('bestReviewed (compare screen)', () => {
+  const scored = (...list: { id: string; summary?: { average: number; reviews: number } }[]) =>
+    scoreBusinesses(
+      list.map(({ id, summary }) => makeBusiness({ id, reviewSummary: summary })),
+      ORIGIN,
+      DEFAULT_PRIORITIES,
+    );
+
+  it('never gives "Bedst anmeldt" to a business without reviews', () => {
+    const none = { id: 'none' };
+    const low = { id: 'low', summary: { average: 3.9, reviews: 10 } };
+    const good = { id: 'good', summary: { average: 4.6, reviews: 8 } };
+    // Fewer than two reviewed businesses: nothing to compare, no badge.
+    expect(bestReviewed(scored(none, low))).toBeUndefined();
+    expect(bestReviewed(scored(none, { id: 'zero', summary: { average: 5, reviews: 0 } }))).toBeUndefined();
+    expect(bestReviewed(scored(none, low, good))).toBe('good');
+    expect(bestReviewed(scored(low, good))).toBe('good');
+    expect(bestReviewed(scored(good, { ...good, id: 'same' }))).toBeUndefined();
   });
 });

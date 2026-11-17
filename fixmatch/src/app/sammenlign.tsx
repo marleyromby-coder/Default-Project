@@ -17,7 +17,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { callBusiness } from '@/lib/contact';
 import { formatDistance, formatNumber, formatPrice, formatPriceRange, formatRating } from '@/lib/format';
 import { getOpenStatus } from '@/lib/opening-hours';
-import { priceIndex, reviewValue, type ScoredBusiness } from '@/lib/ranking';
+import { bestBy, bestReviewed, priceIndex, type ScoredBusiness } from '@/lib/ranking';
 import { t } from '@/i18n';
 import { businessText, currencyOf, timeZoneOf } from '@/lib/business-text';
 import { taxNote } from '@/lib/markets';
@@ -25,18 +25,9 @@ import { useApp, useMarket } from '@/state/app-state';
 
 type Best = (items: ScoredBusiness[]) => string | undefined;
 
-function bestBy(items: ScoredBusiness[], value: (s: ScoredBusiness) => number, lowest: boolean): string | undefined {
-  if (items.length < 2) return undefined;
-  const values = items.map(value);
-  const target = lowest ? Math.min(...values) : Math.max(...values);
-  const winners = items.filter((_, i) => values[i] === target);
-  return winners.length === 1 ? winners[0].business.id : undefined;
-}
-
 const bestMatch: Best = (items) => bestBy(items, (s) => s.score, false);
 const bestPrice: Best = (items) => bestBy(items, (s) => priceIndex(s.business), true);
 const bestDistance: Best = (items) => bestBy(items, (s) => Math.round(s.distanceKm * 10), true);
-const bestRating: Best = (items) => bestBy(items, (s) => reviewValue(s.business), false);
 
 export default function CompareScreen() {
   const colors = useTheme();
@@ -66,7 +57,7 @@ export default function CompareScreen() {
     match: bestMatch(items),
     price: bestPrice(items),
     distance: bestDistance(items),
-    rating: bestRating(items),
+    rating: bestReviewed(items),
   };
 
   return (

@@ -32,7 +32,7 @@ export function infoPagesEn(): Record<
         {
           heading: 'Your weighting',
           paragraphs: [
-            'Under "Your priorities" you choose how much each factor matters. The weights add up to 100 %, and the score is the weighted average times 100. You can also sort by price, distance or reviews alone.',
+            'Under "Your priorities" you choose how much each factor matters. The weights add up to 100 %, and the score is the weighted average times 100. You can also sort by price, distance or reviews alone. When you sort by reviews, businesses without reviews come last.',
             'Reviews on other sites do not count. Nor does the answer rate ("Answers the phone").',
           ],
         },

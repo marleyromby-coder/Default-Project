@@ -52,7 +52,7 @@ export function infoPagesDa() {
         {
           heading: 'Din vægtning',
           paragraphs: [
-            'Under "Dine prioriteter" vælger du, hvor vigtig hver parameter er. Vægtene lægges sammen til 100 %, og scoren er det vægtede gennemsnit gange 100. Du kan også sortere efter pris, afstand eller anmeldelser alene.',
+            'Under "Dine prioriteter" vælger du, hvor vigtig hver parameter er. Vægtene lægges sammen til 100 %, og scoren er det vægtede gennemsnit gange 100. Du kan også sortere efter pris, afstand eller anmeldelser alene. Sorterer du efter anmeldelser, kommer virksomheder uden anmeldelser sidst.',
             'Anmeldelser på andre sider tæller ikke med. Det gør svarprocenten ("Tager telefonen") heller ikke.',
           ],
         },

@@ -134,8 +134,10 @@ export function sortScored(list: ScoredBusiness[], mode: SortMode): ScoredBusine
       sorted.sort((a, b) => a.distanceKm - b.distanceKm || byName(a, b));
       break;
     case 'rating':
+      // Businesses without reviews come last: the prior they get in the score is not a rating.
       sorted.sort(
         (a, b) =>
+          Number(reviewCount(b.business) > 0) - Number(reviewCount(a.business) > 0) ||
           reviewValue(b.business) - reviewValue(a.business) ||
           reviewCount(b.business) - reviewCount(a.business) ||
           a.distanceKm - b.distanceKm,
@@ -145,6 +147,31 @@ export function sortScored(list: ScoredBusiness[], mode: SortMode): ScoredBusine
       sorted.sort((a, b) => b.score - a.score || a.distanceKm - b.distanceKm || byName(a, b));
   }
   return sorted;
+}
+
+/** The id of the one business with the best value, or undefined on a tie or with fewer than two. */
+export function bestBy(
+  items: ScoredBusiness[],
+  value: (s: ScoredBusiness) => number,
+  lowest: boolean,
+): string | undefined {
+  if (items.length < 2) return undefined;
+  const values = items.map(value);
+  const target = lowest ? Math.min(...values) : Math.max(...values);
+  const winners = items.filter((_, i) => values[i] === target);
+  return winners.length === 1 ? winners[0].business.id : undefined;
+}
+
+/**
+ * "Bedst anmeldt" on the compare screen. Only businesses with FixMatch reviews take part, so one
+ * without reviews (shown as "Ingen endnu") never wins on the prior alone.
+ */
+export function bestReviewed(items: ScoredBusiness[]): string | undefined {
+  return bestBy(
+    items.filter((s) => reviewCount(s.business) > 0),
+    (s) => reviewValue(s.business),
+    false,
+  );
 }
 
 export type PriceLevel = 1 | 2 | 3;
