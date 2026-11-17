@@ -1,12 +1,12 @@
 # FixMatch
 
-**Find den rette håndværker eller mekaniker – sammenlign pris, afstand og Trustpilot-anmeldelser, og ring direkte.**
+**Find den rette håndværker eller mekaniker – sammenlign pris, afstand og anmeldelser fra rigtige opkald, og ring direkte.**
 
-FixMatch er en iPhone-app (Expo / React Native) på dansk og engelsk, der lanceres i **Danmark først**. Sverige, Norge, Tyskland og Storbritannien (London) ligger klar i koden og slås til i `LAUNCHED_COUNTRIES` i `src/lib/markets.ts`, når Danmark virker. Brugeren vælger et fag eller en opgave og får lokale virksomheder rangeret efter en gennemsigtig FixMatch-score. Hver virksomhed har en side med telefonnummer, hjemmeside, prisinterval i landets valuta, TrustScore, registreringsnummer (fx CVR), autorisation og åbningstider.
+FixMatch er en iPhone-app (Expo / React Native) på dansk og engelsk, der lanceres i **Danmark først**. Sverige, Norge, Tyskland og Storbritannien (London) ligger klar i koden og slås til i `LAUNCHED_COUNTRIES` i `src/lib/markets.ts`, når Danmark virker. Brugeren vælger et fag eller en opgave og får lokale virksomheder rangeret efter en gennemsigtig FixMatch-score. Hver virksomhed har en side med telefonnummer, hjemmeside, prisinterval i landets valuta, anmeldelser fra brugere via FixMatch, registreringsnummer (fx CVR), autorisation og åbningstider.
 
 | Fag | VVS'er · Elektriker · Tømrer · Murer · Mekaniker · Maler · Tagdækker · Låsesmed |
 | --- | --- |
-| Sammenligning | Pris (timepris + eksempelpriser), afstand (luftlinje) og Trustpilot (TrustScore, antal anmeldelser) |
+| Sammenligning | Pris (timepris + eksempelpriser), afstand (luftlinje) og anmeldelser (kun fra brugere, der har kontaktet virksomheden gennem FixMatch). Ingen scorer fra andre sider – virksomheden kan give links til sine egne profiler (`docs/jura/anmeldelser.md`) |
 | Kontakt | Ring op, hjemmeside, rutevejledning, del. Første opkald kræver en bruger (Log ind med Apple eller e-mail-kode + navn og telefon), så virksomheden ved, hvem der ringer |
 | For virksomheder | Selvbetjent tilmelding med samtykke i appen og på hjemmesiden, gemt i Supabase (EU) og importeret med `npm run import:businesses` |
 | Tilbudstjek | Tast et tilbud ind (også fra en anden side), og se om prisen er lav, normal eller høj i forhold til virksomhederne i nærheden, hvad det grønne håndværkerfradrag giver, og hvem der tager mindre (`src/app/tilbudstjek.tsx`, `src/lib/quote-check.ts`) |
@@ -100,7 +100,7 @@ npm run website:build   # → dist-website/ med forside, privatliv, vilkår, sup
    npm run import:businesses -- ~/Downloads/virksomheder.csv
    ```
 
-   Scriptet tjekker CVR, telefonnummer, postnummer, priser, Trustpilot-link, åbningstider og autorisation og skriver fejl på dansk. Rækkerne gemmes i `src/data/live-businesses.json` – men kun hvis alle er gyldige, så et regneark med fejl aldrig sletter virksomheder, der allerede er importeret. Vil du gemme de gyldige rækker alligevel, så tilføj `--spring-fejl-over`.
+   Scriptet tjekker CVR, telefonnummer, postnummer, priser, links til anmeldelsesprofiler, åbningstider og autorisation og skriver fejl på dansk. Rækkerne gemmes i `src/data/live-businesses.json` – men kun hvis alle er gyldige, så et regneark med fejl aldrig sletter virksomheder, der allerede er importeret. Vil du gemme de gyldige rækker alligevel, så tilføj `--spring-fejl-over`.
 
 4. Byg appen med `EXPO_PUBLIC_FIXMATCH_DATA=live` (er sat i `eas.json` under `production`).
 
@@ -144,15 +144,15 @@ Til App Store, når de rigtige virksomheder er på plads:
 
 5. Følg `docs/app-store/tjekliste.md` og brug teksterne i `docs/app-store/app-store-tekster.md`.
 
-> **Trustpilot er slået fra i alle builds** – EAS, Xcode, Expo Go og webdemoen – indtil partneraftalen med Trustpilot er underskrevet. Så skjules TrustScores, anmeldelsesfiltre og anmeldelsesvægt. Byg med `EXPO_PUBLIC_FIXMATCH_TRUSTPILOT=on` (fx i `eas.json`), når aftalen er på plads.
+> **Kun egne anmeldelser.** Trustpilot blev fravalgt i november 2026, fordi API'en var for dyr. Appen viser og bruger aldrig scorer, stjerner eller antal fra andre anmeldelsessider – kun almindelige links, som virksomheden selv giver (`docs/jura/anmeldelser.md`).
 >
-> **Byg aldrig production med demodata.** Apple afviser apps med pladsholder-indhold (retningslinje 2.1), og Trustpilot-scorer må først vises, når der er en aftale med Trustpilot (se `docs/jura/`).
+> **Byg aldrig production med demodata.** Apple afviser apps med pladsholder-indhold (retningslinje 2.1).
 
 ## Projektstruktur
 
 ```
 src/app/            Skærme (Expo Router): faner, kategori, virksomhed, sammenlign, søg, filtre …
-src/components/     UI-komponenter (kort, knapper, Trustpilot-visning, Apple Kort og webkort)
+src/components/     UI-komponenter (kort, knapper, anmeldelser, Apple Kort og webkort)
 src/lib/            Logik: rangering, filtre, åbningstider, søgning, formatering, kontakt, lande
 src/i18n/           Sprog: dansk tekst er nøglen, `en.ts` er den engelske ordbog
 src/data/           Fag, fotos, postnumre, demodata, live-data og tekster
@@ -160,7 +160,7 @@ src/state/          App-tilstand (gemmes kun på telefonen)
 scripts/            Import af regneark, fotos, postnumre, verdensbyer, kortkonturer, demodata og ikoner
 templates/          Regnearksskabelon til virksomheder
 docs/app-store/     App Store-tekster, privatlivs-svar og tjekliste
-docs/jura/          Samtykke, privatlivspolitik, vilkår, Trustpilot, Apple Kort og kontakt-regler
+docs/jura/          Samtykke, privatlivspolitik, vilkår, anmeldelser, Apple Kort og kontakt-regler
 docs/lancering/     Global lancering, udgivelse uden CVR og fremvisning
 website/            Tekster og app-billeder til hjemmesiden (forsiden er scripts/lib/landing.js, jura fra docs/jura/)
 ```
@@ -171,7 +171,7 @@ website/            Tekster og app-billeder til hjemmesiden (forsiden er scripts
 
 - **Pris**: timeprisens midtpunkt sammenlignet med de andre i faget (billigst = 1, dyrest = 0).
 - **Afstand**: `e^(−km/15)` – 0 km = 1, 15 km ≈ 0,37.
-- **Anmeldelser**: Bayesiansk gennemsnit af TrustScore (20 "neutrale" anmeldelser på 3,9 lægges til) fra 2,5–5,0 → 0–1.
+- **Anmeldelser**: Bayesiansk gennemsnit af FixMatch-anmeldelser (5 "neutrale" anmeldelser på 4,0 lægges til, så en virksomhed uden anmeldelser tæller som 4,0) fra 2,5–5,0 → 0–1. Kun brugere, der har kontaktet virksomheden gennem FixMatch, kan anmelde – én gang hver.
 - **Score** = vægtet sum × 100. Brugeren vælger vægtene. Betaling (`promoted`) påvirker aldrig scoren.
 
-Ændrer I formlen, så opdatér teksten i `src/data/content.ts` – markedsføringsloven § 6 a kræver, at rangeringen er beskrevet korrekt.
+Ændrer I formlen, så opdatér teksten i `src/data/content.ts` og `src/data/content-en.ts` – markedsføringsloven § 6 a kræver, at rangeringen er beskrevet korrekt.

@@ -2,7 +2,7 @@
 
 Den anden vej til TestFlight (den første er EAS i skyen, se `testflight.md`). Du bygger selv på din Mac og uploader fra Xcode. Det tager ca. 15 minutter første gang.
 
-Buildet er demoversionen: fiktive virksomheder og ingen Trustpilot. Det er standard, så du skal ikke sætte noget op.
+Buildet er demoversionen med fiktive virksomheder. Det er standard, så du skal ikke sætte noget op.
 
 ## Det skal du have
 

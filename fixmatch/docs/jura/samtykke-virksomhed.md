@@ -25,16 +25,18 @@ Virksomheden giver FixMatch lov til gratis at vise følgende i FixMatch-appen og
 - [ ] Autorisationer (fx el, VVS, kloak, gas) og medlemskaber
 - [ ] Beskrivelse og ydelser
 - [ ] Logo og billeder, som Virksomheden leverer eller peger på. Virksomheden bekræfter at have ret til at give denne tilladelse
-- [ ] Link til Virksomhedens Trustpilot-profil. TrustScore og antal anmeldelser vises kun, hvis FixMatch har en aftale med Trustpilot
+- [ ] Links til Virksomhedens egne profiler på andre anmeldelsessider (fx Google, Trustpilot eller Anmeld Håndværker). FixMatch viser kun linket som tekst – aldrig stjerner, scorer, antal eller logoer
 
 ## 2. Virksomhedens ansvar
 
 - Oplysningerne er korrekte. Priser oplyses **inkl. moms** og er Virksomhedens egne (FixMatch fastsætter eller koordinerer aldrig priser).
 - Virksomheden giver besked, når noget ændrer sig – og mindst hver 6. måned bekræfter Virksomheden, at priserne er aktuelle.
 
-## 3. Rangering og annoncer
+## 3. Rangering, anmeldelser og annoncer
 
-- Rækkefølgen i søgeresultaterne bestemmes af FixMatch-scoren (pris, afstand og anmeldelser), som er beskrevet på siden "Sådan rangerer vi". Betaling påvirker ikke placeringen.
+- Rækkefølgen i søgeresultaterne bestemmes af FixMatch-scoren (pris, afstand og anmeldelser skrevet i FixMatch), som er beskrevet på siden "Sådan rangerer vi". Betaling påvirker ikke placeringen.
+- Brugere, der har kontaktet Virksomheden gennem FixMatch, kan anmelde den én gang. Anmeldelserne vises i appen og tæller med i FixMatch-scoren. Virksomheden kan ikke fjerne eller ændre anmeldelser, men kan rapportere en anmeldelse, der bryder reglerne, til FixMatch.
+- Anmeldelser på andre sider tæller ikke med i scoren.
 - Køber Virksomheden en annonce, vises den adskilt fra resultaterne og mærket "Annonce".
 
 ## 4. Pris

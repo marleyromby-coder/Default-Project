@@ -7,8 +7,7 @@ Kopiér felterne direkte ind i App Store Connect → appen → Distribution → 
 | Felt | Værdi | Tegn |
 | --- | --- | --- |
 | Navn | `FixMatch: Find håndværker` | 25 / 30 |
-| Undertitel (Trustpilot fra) | `Sammenlign pris og afstand` | 26 / 30 |
-| Undertitel (Trustpilot til) | `Sammenlign pris & anmeldelser` | 29 / 30 |
+| Undertitel | `Sammenlign pris & anmeldelser` | 29 / 30 |
 | Primær kategori | Livsstil (Lifestyle) | |
 | Sekundær kategori | Hjælpeværktøjer (Utilities) | |
 | Aldersgrænse | 4+ (ingen af spørgsmålene besvares med ja) | |
@@ -24,26 +23,18 @@ vvs,elektriker,tømrer,murer,mekaniker,værksted,maler,tagdækker,låsesmed,bilv
 
 Brug ikke "Trustpilot" eller konkurrenters navne som søgeord – Apple afviser brug af andres varemærker (retningslinje 2.3.7).
 
-Standard er **Trustpilot fra** (`production` i `eas.json`), indtil partneraftalen er underskrevet. Så viser appen ingen anmeldelser, og App Store-teksten må heller ikke love dem (retningslinje 2.3.1).
+Anmeldelserne i appen er FixMatch' egne: kun brugere, der har kontaktet virksomheden gennem FixMatch, kan anmelde den. Appen viser ingen stjerner eller scorer fra Trustpilot, Google eller andre sider, så teksterne må heller ikke love det (retningslinje 2.3.1 og 5.2.2). Se `docs/jura/anmeldelser.md`.
 
-**Reklametekst** – kan ændres uden ny version.
-
-Trustpilot fra (142 / 170):
+**Reklametekst** (142 / 170) – kan ændres uden ny version:
 
 ```
 Ny: Beskriv dit problem med dine egne ord, sæt et budget, og se hvilke lokale håndværkere der passer – med timepris inkl. moms, før du ringer.
 ```
 
-Trustpilot til (141 / 170):
-
-```
-Ny: Sammenlign op til tre håndværkere side om side – timepris inkl. moms, afstand og TrustScore. Og vælg selv, hvad der betyder mest for dig.
-```
-
 ## Beskrivelse
 
 ```
-Mangler du en VVS'er, elektriker, tømrer, murer eller mekaniker? FixMatch finder lokale danske virksomheder og sammenligner dem på det, der betyder noget: pris og afstand. Så sparer du både tid og penge.
+Mangler du en VVS'er, elektriker, tømrer, murer eller mekaniker? FixMatch finder lokale danske virksomheder og sammenligner dem på det, der betyder noget: pris, afstand og anmeldelser. Så sparer du både tid og penge.
 
 TILBUDSTJEK – ER PRISEN FAIR?
 • Tast et tilbud ind, også et du har fået et andet sted, og se om prisen er lav, normal eller høj
@@ -65,13 +56,14 @@ SE PRISEN FØR DU RINGER
 • Vejledende priser for fx stoppet afløb, ladestander, stort service og døroplukning
 
 SAMMENLIGN PÅ ÉT SKÆRMBILLEDE
-• Vælg op til tre virksomheder og se pris, afstand, døgnvagt og autorisation side om side
-• FixMatch-scoren samler pris og afstand – og du bestemmer selv vægtningen
-• Sortér efter pris eller afstand, og filtrér på åben nu, døgnvagt og autorisation
+• Vælg op til tre virksomheder og se pris, afstand, anmeldelser, døgnvagt og autorisation side om side
+• FixMatch-scoren samler pris, afstand og anmeldelser – og du bestemmer selv vægtningen
+• Sortér efter pris, afstand eller anmeldelser, og filtrér på åben nu, døgnvagt og autorisation
 
 TJEKKET OG GENNEMSIGTIGT
 • Verificeret-mærket: FixMatch har selv tjekket CVR, ejer og autorisation
 • CVR-nummer og autorisation fra Sikkerhedsstyrelsen for el og VVS
+• Anmeldelser kun fra brugere, der har kontaktet virksomheden gennem FixMatch
 • Ingen kan betale sig til en bedre placering. Annoncer er altid tydeligt markeret
 
 RING DIREKTE
@@ -132,7 +124,7 @@ Samme typer står i privacy manifestet (`ios.privacyManifests.NSPrivacyCollected
 Udfyld byen i firkantede parenteser med den by, hvor I har rigtige virksomheder.
 
 ```
-FixMatch helps people find and compare local tradespeople (plumbers, electricians, carpenters, bricklayers, mechanics, painters, roofers, locksmiths) by price range and distance, and contact them directly by phone or website.
+FixMatch helps people find and compare local tradespeople (plumbers, electricians, carpenters, bricklayers, mechanics, painters, roofers, locksmiths) by price range, distance and FixMatch's own reviews, and contact them directly by phone or website.
 
 • You can skip sign-up ("Spring over" / "Skip") and browse everything. An account is only required to call a business, so the business knows who is calling. To test it, use Sign in with Apple, or tap "Continue with e-mail" and enter the code from the e-mail.
 • The account can be deleted in the app: Profile → Delete account.
@@ -143,20 +135,9 @@ FixMatch helps people find and compare local tradespeople (plumbers, electrician
 • All listed businesses have given written consent to be listed. Prices are provided by the businesses.
 • The map uses Apple MapKit. The pins are the businesses' own addresses; the app does not store any map data.
 • "Describe your problem" matches the user's text and budget on the device; the text is not sent anywhere.
+• Reviews are FixMatch's own: only users who contacted a business through the app can review it, once each. The app shows no ratings, scores or logos from Trustpilot, Google or other review sites. A business may add plain text links to its own profiles there; the app does not fetch anything from those sites.
 • To test: tap "Plumber" → tap a business → "Call" opens the phone dialer. Or tap "Describe your problem" → tap an example → "Find a match".
 ```
-
-Kun hvis Trustpilot-aftalen er underskrevet og Trustpilot er slået til i buildet, tilføjes:
-
-```
-• Trustpilot content is displayed under our partner agreement with Trustpilot A/S (agreement available on request).
-```
-
-**Med Trustpilot-aftale** (og `EXPO_PUBLIC_FIXMATCH_TRUSTPILOT=on` i buildet): brug undertitlen og reklameteksten for "Trustpilot til", og ret beskrivelsen sådan:
-
-- Første afsnit: "pris og afstand" → "pris, afstand og kundeanmeldelser".
-- Under SAMMENLIGN: tilføj "TrustScore" i første punkt, skriv "pris, afstand og anmeldelser" i andet og "pris, afstand eller anmeldelser" i tredje.
-- Under TJEKKET OG GENNEMSIGTIGT: tilføj punktet "• TrustScore og antal anmeldelser fra Trustpilot ved hver virksomhed" øverst.
 
 ## Skærmbilleder
 

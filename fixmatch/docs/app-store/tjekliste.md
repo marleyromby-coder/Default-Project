@@ -16,7 +16,8 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 ## 2. Indhold og rettigheder
 
 - [ ] Skriftligt samtykke fra hver virksomhed (`docs/jura/samtykke-virksomhed.md`).
-- [ ] Skriftlig partneraftale med Trustpilot, før TrustScores vises (`docs/jura/trustpilot.md`). Indtil da: vis ikke Trustpilot-data i den offentlige version.
+- ✅ Ingen stjerner, scorer eller logoer fra Trustpilot, Google eller andre anmeldelsessider – kun FixMatch' egne anmeldelser og almindelige tekstlinks til virksomhedens egen profil (`docs/jura/anmeldelser.md`).
+- [ ] Tjek hvert anmeldelseslink, før det kommer med: det skal pege på samme virksomhed (navn og CVR).
 - [ ] Virksomhedernes egne billeder og logoer er med i samtykket.
 - [ ] `npm run import:businesses` kører uden fejl.
 - [ ] Udfyld `src/constants/app-info.ts` (navn som på Apple-kontoen, e-mail, URL'er). CVR kan stå tomt.
@@ -36,7 +37,7 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 - [ ] `EXPO_PUBLIC_FIXMATCH_DATA=live` i den build, der indsendes (profilen `production` i `eas.json`).
 - [ ] `npm run check` er grønt.
 - [ ] `EXPO_PUBLIC_FIXMATCH_DATA=live npm run check:release` siger "klar til App Store". EAS kører samme tjek og stopper buildet ellers.
-- ✅ Med Trustpilot slået fra nævner appen ingen anmeldelser – heller ikke i VoiceOver eller på "Sådan rangerer vi" (testet i `trustpilot-off.test.ts`).
+- ✅ "Sådan rangerer vi" og "Om anmeldelser" beskriver, hvordan FixMatch-anmeldelser tæller med i scoren, og hvordan de tjekkes (markedsføringsloven § 6 a og § 6 b).
 - [ ] Test på en rigtig iPhone via TestFlight: ring, hjemmeside, rute, del, placering til/fra, mørk tilstand, stor tekst.
 - [ ] Kortet: Apple-logo og "Legal" er synlige over kortene i bunden (lys/mørk, stor tekst). Klynger zoomer ind, "Hele DK" viser hele landet.
 - [ ] "Beskriv dit problem": prøv eksemplerne, og tjek at budgetgrupperne passer med virksomhedernes priser.
@@ -62,5 +63,5 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 | 2.1 Review fra USA | Apple tester ofte fra USA og ser en tom app | Skriv i review-noterne, hvilken by de skal vælge (Profil → Placering), og vælg kun lande med virksomheder |
 | 4.2 Minimum Functionality | "Bare en hjemmeside" | Appen har native kort, sammenligning, filtre, placering – fremhæv det i review-noterne |
 | 5.1.1 Privacy | Manglende privatlivspolitik | Link i appen ✅ og i App Store Connect |
-| 5.2.2 Tredjepartsindhold | Trustpilot-data uden tilladelse | Partneraftale med Trustpilot – Apple kan bede om dokumentation |
-| 5.2.1 Varemærker | Trustpilot-logo eller andres navne | Brug kun ordet "Trustpilot" som kilde, følg deres brand-regler |
+| 5.2.2 Tredjepartsindhold | Scorer eller anmeldelser fra andre sider uden tilladelse | Vis kun FixMatch' egne anmeldelser og almindelige tekstlinks til virksomhedens egen profil. Forklar det i review-noterne |
+| 5.2.1 / 2.3.7 Varemærker | Andres logoer eller navne i appen eller i søgeord | Ingen logoer, stjerner eller farver fra andre sider. Navnet står kun som tekst i linket og aldrig i søgeord |

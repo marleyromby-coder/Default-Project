@@ -50,7 +50,7 @@ Regler uden for Danmark (kort fortalt – få en lokal advokat til at se på det
 
 ## Hvad I ikke må
 
-- Kopiere oplysninger, anmeldelser eller billeder fra andre portaler (fx Trustpilot, Krak, 3byggetilbud) – det er ophavsretligt beskyttet og strider ofte mod deres vilkår.
+- Kopiere oplysninger, anmeldelser, scorer eller billeder fra andre portaler (fx Trustpilot, Google, Krak, 3byggetilbud) – heller ikke til regnearket eller rangeringen. Det er ophavsretligt beskyttet og strider ofte mod deres vilkår. Et link til virksomhedens egen profil er i orden, når virksomheden selv giver det (`docs/jura/anmeldelser.md`).
 - Love en bestemt placering i appen mod betaling.
 - Aftale fælles priser med eller mellem virksomhederne. Konkurrencerådet gav i 2023 Autobutler et påbud for faste priser på deres platform, og sagen endte med en bøde på 7 mio. kr.
 - Skrive anmeldelser selv eller bede venner om det.

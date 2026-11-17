@@ -11,14 +11,13 @@ For every storefront outside Denmark. Paste into App Store Connect → the app �
 | Field | English (U.K.) | English (U.S.) |
 | --- | --- | --- |
 | Name | `FixMatch: Find Tradespeople` (27 / 30) | `FixMatch: Find Local Pros` (25 / 30) |
-| Subtitle (Trustpilot on) | `Compare prices & reviews` (24 / 30) | `Compare prices & reviews` (24 / 30) |
-| Subtitle (Trustpilot off) | `Compare prices, call direct` (27 / 30) | `Compare prices, call direct` (27 / 30) |
+| Subtitle | `Compare prices & reviews` (24 / 30) | `Compare prices & reviews` (24 / 30) |
 | Primary category | Lifestyle | Lifestyle |
 | Secondary category | Utilities | Utilities |
 | Age rating | 4+ | 4+ |
 | Price | Free | Free |
 
-The *Trustpilot off* subtitle is for builds without a Trustpilot agreement (`EXPO_PUBLIC_FIXMATCH_TRUSTPILOT=off`, the default in `production`), since those builds show no reviews.
+The reviews in the app are FixMatch's own: only users who contacted the business through FixMatch can review it. The app shows no stars or scores from Trustpilot, Google or other sites, so the texts must not promise them either (guidelines 2.3.1 and 5.2.2). See `docs/jura/anmeldelser.md`.
 
 **Keywords** (no spaces after commas; words already in the name or subtitle are not repeated):
 
@@ -45,7 +44,7 @@ New: describe your problem in your own words, set a budget, and see which local 
 ## Description
 
 ```
-Need a plumber, electrician, carpenter, bricklayer or mechanic? FixMatch finds local businesses and compares them on what matters: price and distance. You save time and money, and you call them directly.
+Need a plumber, electrician, carpenter, bricklayer or mechanic? FixMatch finds local businesses and compares them on what matters: price, distance and reviews. You save time and money, and you call them directly.
 
 QUOTE CHECK – IS THE PRICE FAIR?
 • Type in a quote, even one you got somewhere else, and see whether the price is low, normal or high
@@ -67,15 +66,16 @@ SEE THE PRICE BEFORE YOU CALL
 • Guide prices for jobs such as a blocked drain, a car service or a lock-out
 
 COMPARE ON ONE SCREEN
-• Pick up to three businesses and see price, distance, 24/7 service and licences side by side
-• The FixMatch score combines price and distance – and you decide what counts most
-• Sort by price or distance, and filter by open now, 24/7 and licensed
+• Pick up to three businesses and see price, distance, reviews, 24/7 service and licences side by side
+• The FixMatch score combines price, distance and reviews – and you decide what counts most
+• Sort by price, distance or reviews, and filter by open now, 24/7 and licensed
 
 TRANSPARENT BY DESIGN
 • Nobody can pay for a better ranking. Ads are always clearly marked
 • We explain exactly how the ranking works, inside the app
 • The Verified badge: FixMatch has checked the company number, the owner and the licence
 • Registration numbers and licences on each business page, where they apply
+• Reviews only from people who contacted the business through FixMatch
 
 CALL DIRECTLY
 • Phone, website and directions in one tap
@@ -88,12 +88,6 @@ YOUR PRIVACY
 FixMatch has no ads and no tracking. Your location is only used on your phone to work out distances. Your account is stored on servers in the EU, and you can delete it in the app.
 
 Are you a tradesperson or a garage? Sign up for free under More → Sign up your business.
-```
-
-With the Trustpilot agreement in place (and `EXPO_PUBLIC_FIXMATCH_TRUSTPILOT=on` in the build), use the *Trustpilot on* subtitle, change "price and distance" to "price, distance and reviews" in the first paragraph and in the FixMatch score bullet, and add this bullet under *TRANSPARENT BY DESIGN*:
-
-```
-• TrustScore and number of reviews from Trustpilot for every business
 ```
 
 For the U.S. version, replace "coloured" with "colored" and "licences" with "licenses". Prices in the U.S. are shown before sales tax, so do not write "incl. VAT".
