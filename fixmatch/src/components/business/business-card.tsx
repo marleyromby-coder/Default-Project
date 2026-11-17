@@ -8,7 +8,6 @@ import { AppText } from '@/components/ui/text';
 import { MinTouchSize, Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { businessText, currencyOf, timeZoneOf } from '@/lib/business-text';
-import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { formatDistance, formatHourly, formatPriceRange, formatRating, speakablePrice } from '@/lib/format';
 import { availableWhen } from '@/lib/availability';
 import { getOpenStatus } from '@/lib/opening-hours';
@@ -22,7 +21,7 @@ import { AvailabilityBadge } from './availability-badge';
 import { BusinessMark } from './business-mark';
 import { MatchBadge } from './match-badge';
 import { OpenStatus } from './open-status';
-import { TrustpilotRating } from './trustpilot-rating';
+import { ReviewRating } from './review-rating';
 import { VerifiedMark } from './verified-mark';
 import { t } from '@/i18n';
 
@@ -68,11 +67,12 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
     topRated ? t('topbedømt') : undefined,
     highlight?.label,
     t('match {score} ud af 100', { score }),
-    !TRUSTPILOT_ENABLED
-      ? undefined
-      : business.trustpilot
-        ? t('TrustScore {rating} på Trustpilot', { rating: formatRating(business.trustpilot.score) })
-        : t('ingen Trustpilot-profil'),
+    business.reviewSummary
+      ? t('{rating} af 5 stjerner fra {count} brugere via FixMatch', {
+          rating: formatRating(business.reviewSummary.average),
+          count: business.reviewSummary.reviews,
+        })
+      : undefined,
     speakablePrice(priceText),
     t('{distance} væk', { distance: formatDistance(distanceKm) }),
     open.label,
@@ -120,7 +120,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
             </View>
             <MatchBadge score={score} />
           </View>
-          <TrustpilotRating trustpilot={business.trustpilot} />
+          <ReviewRating summary={business.reviewSummary} />
           <View style={styles.metaRow}>
             <Icon name="tag" size={13} color={colors.textSecondary} />
             <AppText variant="footnote" weight="600" numberOfLines={1} style={styles.flexShrink}>

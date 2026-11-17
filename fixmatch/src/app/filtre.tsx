@@ -11,8 +11,13 @@ import { MinTouchSize, Radius, ScreenPadding, Spacing } from '@/constants/theme'
 import { isCategoryId } from '@/data/categories';
 import { useResults } from '@/hooks/use-results';
 import { useTheme } from '@/hooks/use-theme';
-import { TRUSTPILOT_ENABLED } from '@/lib/features';
-import { DEFAULT_FILTERS, distanceOptions, isSameDistance, RATING_OPTIONS } from '@/lib/filters';
+import {
+  DEFAULT_FILTERS,
+  distanceOptions,
+  isSameDistance,
+  MIN_REVIEWS_FOR_FILTER,
+  RATING_OPTIONS,
+} from '@/lib/filters';
 import type { Filters } from '@/lib/types';
 import { useApp, useMarket } from '@/state/app-state';
 import { t } from '@/i18n';
@@ -55,20 +60,23 @@ export default function FiltersScreen() {
             ))}
           </View>
         </Group>
-        {TRUSTPILOT_ENABLED ? (
-          <Group title={t('Mindst TrustScore')}>
-            <View style={styles.options}>
-              {RATING_OPTIONS.map((o) => (
-                <Chip
-                  key={o.label}
-                  label={o.label}
-                  selected={draft.minRating === o.value}
-                  onPress={() => update({ minRating: o.value })}
-                />
-              ))}
-            </View>
-          </Group>
-        ) : null}
+        <Group title={t('Kundernes vurdering')}>
+          <View style={styles.options}>
+            {RATING_OPTIONS.map((o) => (
+              <Chip
+                key={o.label}
+                label={o.label}
+                selected={draft.minRating === o.value}
+                onPress={() => update({ minRating: o.value })}
+              />
+            ))}
+          </View>
+          <AppText variant="caption" tone="textSecondary">
+            {t('Stjerner fra brugere via FixMatch. Kun virksomheder med mindst {count} anmeldelser.', {
+              count: MIN_REVIEWS_FOR_FILTER,
+            })}
+          </AppText>
+        </Group>
         <Group title={t('Prisniveau')}>
           <View style={styles.options}>
             {PRICE_OPTIONS.map((o) => (
@@ -126,16 +134,6 @@ export default function FiltersScreen() {
             value={draft.verifiedOnly}
             onChange={(v) => update({ verifiedOnly: v })}
           />
-          {TRUSTPILOT_ENABLED ? (
-            <>
-              <Divider inset={Spacing.lg} />
-              <SwitchRow
-                label={t('Kun med Trustpilot-profil')}
-                value={draft.trustpilotOnly}
-                onChange={(v) => update({ trustpilotOnly: v })}
-              />
-            </>
-          ) : null}
         </View>
       </ScrollView>
       <View

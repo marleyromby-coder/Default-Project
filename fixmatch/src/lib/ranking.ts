@@ -1,4 +1,3 @@
-import { TRUSTPILOT_ENABLED } from './features';
 import { distanceKm } from './geo';
 import type { Business, CategoryId, Coords, Priorities, SortMode } from './types';
 import { t } from '@/i18n';
@@ -9,7 +8,8 @@ import { t } from '@/i18n';
  * Every listed business gets three part scores between 0 and 1:
  *   - price:    cheapest hourly rate among the results = 1, most expensive = 0
  *   - distance: exp(−km / DISTANCE_SCALE_KM), so 0 km = 1, 15 km ≈ 0.37
- *   - reviews:  Bayesian average of the Trustpilot score, mapped from 2.5–5.0 to 0–1
+ *   - reviews:  Bayesian average of FixMatch's own reviews (from users who contacted the business
+ *               through FixMatch), mapped from 2.5–5.0 to 0–1. No reviews counts as the prior.
  *
  * The total is the weighted sum × 100. The user sets the weights. Payment never
  * affects the score: promoted businesses only appear in the labelled "Annonce" slot.
@@ -20,36 +20,29 @@ export const DISTANCE_SCALE_KM = 15;
 /** Review scores at or below this count as 0 in the review part score. */
 export const REVIEW_FLOOR = 2.5;
 /** Number of "virtual" average reviews mixed into every score. */
-export const REVIEW_PRIOR_COUNT = 20;
-/** The score those virtual reviews have. */
-export const REVIEW_PRIOR_MEAN = 3.9;
-/** A business without a Trustpilot profile is ranked as if it had this score. */
-export const NO_REVIEWS_SCORE = 3.6;
+export const REVIEW_PRIOR_COUNT = 5;
+/** The stars those virtual reviews have. A business without reviews counts as exactly this. */
+export const REVIEW_PRIOR_MEAN = 4.0;
 
-export const DEFAULT_PRIORITIES: Priorities = { price: 4, distance: 3, reviews: 5 };
+export const DEFAULT_PRIORITIES: Priorities = { price: 4, distance: 3, reviews: 3 };
 
 export const PRIORITY_PRESETS: { id: string; label: string; priorities: Priorities }[] = [
   { id: 'balanced', label: t('Balanceret'), priorities: DEFAULT_PRIORITIES },
   { id: 'cheap', label: t('Lavest pris'), priorities: { price: 5, distance: 2, reviews: 2 } },
   { id: 'near', label: t('Tættest på'), priorities: { price: 2, distance: 5, reviews: 2 } },
   { id: 'quality', label: t('Bedst anmeldt'), priorities: { price: 2, distance: 2, reviews: 5 } },
-].filter((preset) => TRUSTPILOT_ENABLED || preset.id !== 'quality');
+];
 
-/** The weights as text, e.g. "Pris 40 % · Afstand 30 % · Anmeldelser 30 %". Reviews only when Trustpilot is on. */
+/** The weights as text, e.g. "Pris 40 % · Afstand 30 % · Anmeldelser 30 %". */
 export function weightsText(weights: Weights, spoken = false): string {
   const values = {
     price: Math.round(weights.price * 100),
     distance: Math.round(weights.distance * 100),
     reviews: Math.round(weights.reviews * 100),
   };
-  if (spoken) {
-    return TRUSTPILOT_ENABLED
-      ? t('pris {price} procent, afstand {distance} procent, anmeldelser {reviews} procent', values)
-      : t('pris {price} procent, afstand {distance} procent', values);
-  }
-  return TRUSTPILOT_ENABLED
-    ? t('Pris {price} % · Afstand {distance} % · Anmeldelser {reviews} %', values)
-    : t('Pris {price} % · Afstand {distance} %', values);
+  return spoken
+    ? t('pris {price} procent, afstand {distance} procent, anmeldelser {reviews} procent', values)
+    : t('Pris {price} % · Afstand {distance} % · Anmeldelser {reviews} %', values);
 }
 
 export interface Weights {
@@ -62,10 +55,10 @@ export function clampPriority(value: number): number {
   return Math.min(5, Math.max(1, Math.round(value)));
 }
 
-export function weightsFromPriorities(priorities: Priorities, reviewsEnabled = TRUSTPILOT_ENABLED): Weights {
+export function weightsFromPriorities(priorities: Priorities): Weights {
   const price = clampPriority(priorities.price);
   const distance = clampPriority(priorities.distance);
-  const reviews = reviewsEnabled ? clampPriority(priorities.reviews) : 0;
+  const reviews = clampPriority(priorities.reviews);
   const total = price + distance + reviews;
   return { price: price / total, distance: distance / total, reviews: reviews / total };
 }
@@ -75,11 +68,22 @@ export function priceIndex(business: Business): number {
   return (business.pricing.hourlyMin + business.pricing.hourlyMax) / 2;
 }
 
-/** Trustpilot score adjusted for how many reviews it is based on. */
+/** Number of FixMatch reviews behind the business's average. */
+export function reviewCount(business: Business): number {
+  const count = business.reviewSummary?.reviews ?? 0;
+  return Number.isFinite(count) && count > 0 ? count : 0;
+}
+
+/**
+ * The average stars from FixMatch's own reviews, pulled towards REVIEW_PRIOR_MEAN by
+ * REVIEW_PRIOR_COUNT virtual reviews, so a few reviews cannot give an extreme score.
+ * Without reviews this is exactly the prior: neither better nor worse than average.
+ */
 export function reviewValue(business: Business): number {
-  const tp = business.trustpilot;
-  if (!tp || tp.reviews <= 0) return NO_REVIEWS_SCORE;
-  return (tp.score * tp.reviews + REVIEW_PRIOR_MEAN * REVIEW_PRIOR_COUNT) / (tp.reviews + REVIEW_PRIOR_COUNT);
+  const count = reviewCount(business);
+  const average = business.reviewSummary?.average;
+  if (count === 0 || average === undefined || !Number.isFinite(average)) return REVIEW_PRIOR_MEAN;
+  return (average * count + REVIEW_PRIOR_MEAN * REVIEW_PRIOR_COUNT) / (count + REVIEW_PRIOR_COUNT);
 }
 
 export interface ScoreParts {
@@ -130,7 +134,12 @@ export function sortScored(list: ScoredBusiness[], mode: SortMode): ScoredBusine
       sorted.sort((a, b) => a.distanceKm - b.distanceKm || byName(a, b));
       break;
     case 'rating':
-      sorted.sort((a, b) => reviewValue(b.business) - reviewValue(a.business) || a.distanceKm - b.distanceKm);
+      sorted.sort(
+        (a, b) =>
+          reviewValue(b.business) - reviewValue(a.business) ||
+          reviewCount(b.business) - reviewCount(a.business) ||
+          a.distanceKm - b.distanceKm,
+      );
       break;
     default:
       sorted.sort((a, b) => b.score - a.score || a.distanceKm - b.distanceKm || byName(a, b));

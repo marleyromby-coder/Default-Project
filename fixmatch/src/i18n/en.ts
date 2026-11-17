@@ -26,7 +26,6 @@ const en: Record<string, string> = {
   'FixMatch i udlandet': 'FixMatch abroad',
   '(eksempelvirksomhed)': '(demo business)',
   '1 i nærheden': '1 nearby',
-  '4+ på Trustpilot': '4+ on Trustpilot',
   'ANDET FAG?': 'A DIFFERENT TRADE?',
   Adresse: 'Address',
   'Afmonterede kontakter i en lys lejlighed': 'Removed switches in a bright flat',
@@ -129,8 +128,6 @@ const en: Record<string, string> = {
   'Fiktiv (demo)': 'Fictional (demo)',
   'Fiktiv eksempelvirksomhed. Navn, telefonnummer, CVR og anmeldelser er opdigtede, og opkald er slået fra.':
     'Fictional demo business. The name, phone number, company number and reviews are made up, and calls are turned off.',
-  'Fiktiv eksempelvirksomhed. Navn, telefonnummer og CVR er opdigtede, og opkald er slået fra.':
-    'Fictional demo business. The name, phone number and company number are made up, and calls are turned off.',
   Filtre: 'Filters',
   'Filtre, {count} aktive': 'Filters, {count} active',
   Find: 'Find',
@@ -177,8 +174,6 @@ const en: Record<string, string> = {
   'Har ikke oplyst en pris for opgaven': 'Has not given a price for the job',
   Haster: 'Urgent',
   'Hele landet': 'Whole country',
-  'Hentet fra Trustpilot {date}. FixMatch ændrer eller udvælger ikke anmeldelser.':
-    'Fetched from Trustpilot {date}. FixMatch does not edit or select reviews.',
   'Henvendelse til FixMatch': 'Message to FixMatch',
   Hjemmeside: 'Website',
   'Hjemmeside: {website}': 'Website: {website}',
@@ -195,7 +190,8 @@ const en: Record<string, string> = {
   'Håndværker saver en planke': 'Tradesperson sawing a plank',
   'Håndværker ved bordsav i værksted': 'Tradesperson at a table saw in a workshop',
   'Håndværktøj lagt frem til en opgave': 'Hand tools laid out for a job',
-  'Højeste TrustScore inden for {distance}': 'Highest TrustScore within {distance}',
+  'Flest stjerner fra brugere via FixMatch inden for {distance}':
+    'Most stars from users via FixMatch within {distance}',
   'Højst 3 ad gangen': 'At most 3 at a time',
   'Højst {CLOSE_MARGIN} % over – spørg, om de kan komme ned':
     'At most {CLOSE_MARGIN} % over – ask if they can come down',
@@ -206,7 +202,6 @@ const en: Record<string, string> = {
   'Ikke fundet': 'Not found',
   'Inden for budget': 'Within budget',
   Ingen: 'None',
-  'Ingen Trustpilot-profil endnu': 'No Trustpilot profile yet',
   'Ingen byer eller postnumre matcher “{query}”. FixMatch er kun i Danmark indtil videre.':
     'No cities or postcodes match “{query}”. FixMatch is only in Denmark for now.',
   'Ingen gemte endnu': 'Nothing saved yet',
@@ -218,7 +213,7 @@ const en: Record<string, string> = {
     'Nothing matches your filters. The nearest {name} is {distance} away.',
   'Ingen mellemled og ingen gebyrer. Du aftaler prisen direkte.':
     'No middleman and no fees. You agree the price directly.',
-  'Ingen profil': 'No profile',
+  'Ingen endnu': 'None yet',
   'Ingen resultater': 'No results',
   'Ingen virksomheder i kortudsnittet': 'No businesses in this part of the map',
   'Intet at sammenligne endnu': 'Nothing to compare yet',
@@ -237,7 +232,6 @@ const en: Record<string, string> = {
   'Kort over virksomheder. Brug listen under kortet for at gennemgå dem':
     'Map of businesses. Use the list below the map to go through them',
   'Kun autoriserede': 'Licensed only',
-  'Kun med Trustpilot-profil': 'Only with a Trustpilot profile',
   'Kystlinje: Natural Earth': 'Coastline: Natural Earth',
   'Kørsel/opstart': 'Call-out fee',
   'Lav pris': 'Low price',
@@ -278,7 +272,7 @@ const en: Record<string, string> = {
   Mest: 'Most',
   Middel: 'Medium',
   'Middel prisniveau': 'Medium price level',
-  'Mindst TrustScore': 'Minimum TrustScore',
+  'Kundernes vurdering': 'Customer rating',
   'Muligt match': 'Possible match',
   'Murer lægger en mursten': 'Bricklayer laying a brick',
   'Murer læsser mursten i en trillebør': 'Bricklayer loading bricks into a wheelbarrow',
@@ -299,7 +293,6 @@ const en: Record<string, string> = {
   Om: 'About',
   'Om FixMatch': 'About FixMatch',
   'Om anmeldelser': 'About reviews',
-  'Om anmeldelser i FixMatch': 'About reviews in FixMatch',
   'Om priserne': 'About prices',
   'Om priserne og håndværkerfradrag': 'About prices and tax relief',
   'Om virksomheden': 'About the business',
@@ -323,13 +316,9 @@ const en: Record<string, string> = {
   'Placeringen kunne ikke findes': 'Your location could not be found',
   Pris: 'Price',
   'Pris på forespørgsel': 'Price on request',
-  'Pris {price} % · Afstand {distance} %': 'Price {price} % · Distance {distance} %',
   'Pris {price} % · Afstand {distance} % · Anmeldelser {reviews} %':
     'Price {price} % · Distance {distance} % · Reviews {reviews} %',
-  'Pris {tax} og afstand – side om side.': 'Price {tax} and distance – side by side.',
-  'Pris {tax}, afstand og TrustScore – side om side.': 'Price {tax}, distance and TrustScore – side by side.',
-  'Pris og afstand i procent': 'Price and distance in percent',
-  'Pris og afstand side om side': 'Price and distance side by side',
+  'Pris {tax}, afstand og anmeldelser – side om side.': 'Price {tax}, distance and reviews – side by side.',
   'Pris, afstand og anmeldelser i procent': 'Price, distance and reviews in percent',
   'Pris, afstand og anmeldelser side om side': 'Price, distance and reviews side by side',
   'Prisen ganges med antallet': 'The price is multiplied by the amount',
@@ -353,16 +342,14 @@ const en: Record<string, string> = {
   Ryd: 'Clear',
   'Ryd sammenligning': 'Clear comparison',
   Sammenlign: 'Compare',
-  'Sammenlign pris og afstand hos lokale virksomheder – og ring direkte.':
-    'Compare price and distance of local businesses – and call them directly.',
-  'Sammenlign pris, afstand og Trustpilot-anmeldelser hos lokale virksomheder – og ring direkte.':
-    'Compare price, distance and Trustpilot reviews of local businesses – and call them directly.',
+  'Sammenlign pris, afstand og anmeldelser hos lokale virksomheder – og ring direkte.':
+    'Compare price, distance and reviews of local businesses – and call them directly.',
   'Sammenlign på det, der betyder noget': 'Compare on what matters',
   'Sammenlign {count} virksomheder': 'Compare {count} businesses',
   'Sammenlign {name}': 'Compare {name}',
   'Sammenlignet med den typiske timepris i faget.': 'Compared with the typical hourly rate in the trade.',
   Samtykke: 'Consent',
-  'Se anmeldelser på Trustpilot': 'See reviews on Trustpilot',
+  'Se anmeldelser andre steder': 'See reviews elsewhere',
   'Se hvem der er tættest på, og hvor langt de kører.': 'See who is nearest and how far they travel.',
   'Se side': 'View',
   'Se {name}': 'View {name}',
@@ -416,14 +403,9 @@ const en: Record<string, string> = {
   'To malere maler en væg': 'Two painters painting a wall',
   Torsdag: 'Thursday',
   'Trin {step} af {STEPS}': 'Step {step} of {STEPS}',
-  'TrustScore fra Trustpilot ved hver virksomhed.': 'TrustScore from Trustpilot for every business.',
-  'TrustScore på Trustpilot': 'TrustScore on Trustpilot',
-  'TrustScore på Trustpilot · {countText}': 'TrustScore on Trustpilot · {countText}',
-  'TrustScore {rating} på Trustpilot': 'TrustScore {rating} on Trustpilot',
-  'TrustScore {rating} ud af 5 på Trustpilot, baseret på {countText}':
-    'TrustScore {rating} out of 5 on Trustpilot, based on {countText}',
-  Trustpilot: 'Trustpilot',
-  'Trustpilot ({number})': 'Trustpilot ({number})',
+  'Kun fra brugere, der har kontaktet virksomheden gennem FixMatch.':
+    'Only from users who contacted the business through FixMatch.',
+  'Stjerner fra brugere, der har ringet via FixMatch': 'Stars from users who called through FixMatch',
   'Tryk på hjertet ved en virksomhed, så finder du den hurtigt her næste gang.':
     "Tap the heart on a business and you'll find it here quickly next time.",
   'Tryk på “Sammenlign” ved op til tre virksomheder i et fag, så vises de her side om side.':
@@ -461,8 +443,6 @@ const en: Record<string, string> = {
   Virksomhed: 'Business',
   'Virksomhed: {name} (id: {id})': 'Business: {name} (id: {id})',
   'Virksomheden findes ikke længere': 'This business no longer exists',
-  'Virksomheden har endnu ingen anmeldelser på Trustpilot. Den rangeres derfor med en neutral score.':
-    'The business has no reviews on Trustpilot yet, so it is ranked with a neutral score.',
   Virksomheder: 'Businesses',
   'Virksomheder med døgnvagt tæller med': 'Businesses with a 24/7 service count too',
   'Vis alle lande': 'Show all countries',
@@ -498,7 +478,6 @@ const en: Record<string, string> = {
   'i dag': 'today',
   'i luftlinje': 'straight line',
   'i morgen': 'tomorrow',
-  'ingen Trustpilot-profil': 'no Trustpilot profile',
   'ingen kørselsgebyr': 'no call-out fee',
   'inkl. moms': 'incl. VAT',
   'kan du slå virksomheden op i det officielle virksomhedsregister.':
@@ -510,7 +489,6 @@ const en: Record<string, string> = {
   'match {score} ud af 100': 'match {score} out of 100',
   ons: 'Wed',
   'pr. time': 'per hour',
-  'pris {price} procent, afstand {distance} procent': 'price {price} percent, distance {distance} percent',
   'pris {price} procent, afstand {distance} procent, anmeldelser {reviews} procent':
     'price {price} percent, distance {distance} percent, reviews {reviews} percent',
   'ringer knappen direkte op til virksomheden. Nummeret {number} er fiktivt, så opkald er slået fra.':
@@ -564,8 +542,7 @@ const en: Record<string, string> = {
   'Åbner {when} kl. {time}': 'Opens {when} at {time}',
   Åbningstider: 'Opening hours',
   'åbner virksomhedens egen hjemmeside her.': "the business's own website opens here.",
-  'åbner virksomhedens profil på Trustpilot, hvor du kan læse alle anmeldelserne.':
-    "the business's Trustpilot profile opens here, where you can read all the reviews.",
+  'åbner linket virksomhedens profil på {site}.': "the link opens the business's profile on {site}.",
   // Accounts and business sign-up
   'Log ud?': 'Sign out?',
   'Du skal logge ind igen, før du kan kontakte en virksomhed.':
@@ -796,8 +773,8 @@ const en: Record<string, string> = {
   Godt: 'Good',
   'Rigtig godt': 'Excellent',
   'Ring til dem først': 'Contact them first',
-  'Kun kunder, der har kontaktet virksomheden gennem FixMatch, kan anmelde den. Så er alle anmeldelser ægte.':
-    'Only customers who contacted the business through FixMatch can review it. That way every review is real.',
+  'Kun brugere, der har kontaktet virksomheden gennem FixMatch, kan anmelde den.':
+    'Only users who contacted the business through FixMatch can review it.',
   'Tak for din anmeldelse': 'Thank you for your review',
   'Den hjælper andre med at vælge den rette.': 'It helps others choose the right one.',
   'Anmeldelsen blev ikke sendt. Tjek internettet, og prøv igen.':
@@ -841,12 +818,11 @@ const en: Record<string, string> = {
   'Del prisen': 'Share the price',
   'Bygger på {count} priser, som kunder har betalt.': 'Based on {count} prices customers have paid.',
   'Kundernes erfaringer': "Customers' experiences",
-  '{rating} af 5 stjerner fra {count} kunder via FixMatch':
-    '{rating} out of 5 stars from {count} customers via FixMatch',
-  '1 anmeldelse fra en kunde via FixMatch': '1 review from a customer via FixMatch',
-  '{count} anmeldelser fra kunder via FixMatch': '{count} reviews from customers via FixMatch',
-  'Ingen anmeldelser endnu. Kun kunder, der har kontaktet virksomheden gennem FixMatch, kan anmelde.':
-    'No reviews yet. Only customers who contacted the business through FixMatch can review it.',
+  '{rating} af 5 stjerner fra {count} brugere via FixMatch': '{rating} out of 5 stars from {count} users via FixMatch',
+  '1 anmeldelse fra en bruger via FixMatch': '1 review from a user via FixMatch',
+  '{count} anmeldelser fra brugere via FixMatch': '{count} reviews from users via FixMatch',
+  'Ingen anmeldelser endnu. Kun brugere, der har kontaktet virksomheden gennem FixMatch, kan anmelde.':
+    'No reviews yet. Only users who contacted the business through FixMatch can review it.',
   'Din anmeldelse': 'Your review',
   'Det har kunder betalt': 'What customers paid',
   'Fra fakturaer, kunder har delt. Vises fra {min} priser pr. opgave.':
@@ -1564,8 +1540,17 @@ const en: Record<string, string> = {
   'Hvornår passer det jer? Jeg kan ringe op på FaceTime.': 'When suits you? I can call on FaceTime.',
   'Log ind med Apple på en iPhone. Login med e-mail kommer snart.':
     'Log in with Apple on an iPhone. E-mail login is coming soon.',
-  anmeldelse: 'review',
-  anmeldelser: 'reviews',
+  // FixMatch's own reviews, and plain links to reviews on other sites
+  'Stjerner fra brugere via FixMatch. Kun virksomheder med mindst {count} anmeldelser.':
+    'Stars from users via FixMatch. Only businesses with at least {count} reviews.',
+  'Link til jeres anmeldelser andre steder (valgfrit)': 'Link to your reviews elsewhere (optional)',
+  'Jeres profil på {sites}. Højst {max} links. Vi viser kun linket, aldrig stjerner eller scorer.':
+    'Your profile on {sites}. At most {max} links. We only show the link, never stars or scores.',
+  'Linket skal gå til jeres profil på {sites}.': 'The link must go to your profile on {sites}.',
+  'Højst {max} links.': 'At most {max} links.',
+  'Anmeldelser på {site}, åbner en anden side': 'Reviews on {site}, opens another page',
+  'Åbner en anden side. FixMatch tjekker ikke anmeldelserne dér, og de tæller ikke med i scoren.':
+    'Opens another page. FixMatch does not check the reviews there, and they do not count in the score.',
 };
 
 export default en;

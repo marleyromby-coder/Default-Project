@@ -37,6 +37,15 @@ function releaseProblems(root = ROOT) {
       problems.push(
         `${noConsent.length} virksomheder mangler en samtykkedato: ${noConsent.map((b) => b.name).join(', ')}.`,
       );
+    // Review numbers only come from FixMatch's own reviews on the server, never from the data
+    // file: no made-up demo reviews and no scores copied from other review sites.
+    const scored = businesses.filter(
+      (b) => b.demoReviews || b.reviewSummary || /"(score|rating|stars)"\s*:/i.test(JSON.stringify(b)),
+    );
+    if (scored.length > 0)
+      problems.push(
+        `${scored.length} virksomheder har anmeldelsestal i datafilen: ${scored.map((b) => b.name).join(', ')}. Anmeldelser må kun komme fra brugere via FixMatch.`,
+      );
   }
 
   if (read('src/constants/app-info.ts').includes('TODO'))

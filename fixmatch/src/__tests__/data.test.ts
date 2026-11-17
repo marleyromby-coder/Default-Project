@@ -13,6 +13,7 @@ import { openCountries } from '@/lib/business-text';
 import { isValidBusiness, parseBusinesses } from '@/lib/data-source';
 import { isInDenmark } from '@/lib/geo';
 import { getMarket, LAUNCHED_COUNTRIES, MARKETS } from '@/lib/markets';
+import { reviewSiteOf } from '@/lib/review-links';
 import type { Business } from '@/lib/types';
 import { summarizeJobPrice } from '@/lib/prices';
 import { search } from '@/lib/search';
@@ -69,9 +70,13 @@ describe('demo data', () => {
       expect(b.pricing.hourlyMin).toBeGreaterThanOrEqual(300 * market.fromDkk);
       expect(b.pricing.hourlyMax).toBeGreaterThanOrEqual(b.pricing.hourlyMin);
       for (const e of b.pricing.examples) expect(e.max).toBeGreaterThan(e.min);
-      if (b.trustpilot) {
-        expect(b.trustpilot.score).toBeGreaterThanOrEqual(1);
-        expect(b.trustpilot.score).toBeLessThanOrEqual(5);
+      // Made-up FixMatch reviews, on demo businesses only.
+      if (b.demoReviews) {
+        expect(b.demo).toBe(true);
+        expect(b.demoReviews.average).toBeGreaterThanOrEqual(1);
+        expect(b.demoReviews.average).toBeLessThanOrEqual(5);
+        expect(Number.isInteger(b.demoReviews.reviews)).toBe(true);
+        expect(b.demoReviews.reviews).toBeGreaterThanOrEqual(1);
       }
       const other = b.country ? b.translations?.da : b.translations?.en;
       expect(other?.tagline).toBeTruthy();
@@ -79,6 +84,17 @@ describe('demo data', () => {
     }
     expect(new Set(everyMarket.map((b) => b.country ?? 'DK')).size).toBe(5);
     for (const b of everyMarket.filter((x) => !x.country)) expect(isInDenmark(b.coords)).toBe(true);
+  });
+
+  it('has demo reviews and plain review links that the app accepts', () => {
+    expect(businesses.filter((b) => b.demoReviews).length).toBeGreaterThan(businesses.length / 2);
+    expect(businesses.some((b) => b.reviewSummary)).toBe(false); // only set at runtime
+    for (const b of everyMarket) {
+      for (const link of b.reviewLinks ?? []) expect(reviewSiteOf(link.url)?.id).toBe(link.site);
+    }
+    const linked = everyMarket.filter((b) => !b.country && b.reviewLinks?.length);
+    expect(linked.length).toBeGreaterThan(0);
+    expect(businesses.filter((b) => b.reviewLinks).length).toBe(linked.length);
   });
 
   it('keeps demo records out of live data', () => {

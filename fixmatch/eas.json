@@ -26,16 +26,14 @@
       "distribution": "store",
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_FIXMATCH_DATA": "demo",
-        "EXPO_PUBLIC_FIXMATCH_TRUSTPILOT": "off"
+        "EXPO_PUBLIC_FIXMATCH_DATA": "demo"
       }
     },
     "production": {
       "distribution": "store",
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_FIXMATCH_DATA": "live",
-        "EXPO_PUBLIC_FIXMATCH_TRUSTPILOT": "off"
+        "EXPO_PUBLIC_FIXMATCH_DATA": "live"
       }
     }
   },

@@ -15,7 +15,6 @@ import { getCategory } from '@/data/categories';
 import { useScored } from '@/hooks/use-results';
 import { useTheme } from '@/hooks/use-theme';
 import { callBusiness } from '@/lib/contact';
-import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { formatDistance, formatNumber, formatPrice, formatPriceRange, formatRating } from '@/lib/format';
 import { getOpenStatus } from '@/lib/opening-hours';
 import { priceIndex, reviewValue, type ScoredBusiness } from '@/lib/ranking';
@@ -174,29 +173,30 @@ export default function CompareScreen() {
             </Value>
           ))}
         </Row>
-        {TRUSTPILOT_ENABLED ? (
-          <Row label={t('Trustpilot')}>
-            {items.map((s) => (
+        <Row label={t('Anmeldelser')}>
+          {items.map((s) => {
+            const summary = s.business.reviewSummary;
+            return (
               <Value key={s.business.id} best={winners.rating === s.business.id} bestLabel={t('Bedst anmeldt')}>
-                {s.business.trustpilot ? (
+                {summary ? (
                   <>
                     <AppText variant="subhead" weight="600">
-                      {formatRating(s.business.trustpilot.score)}
+                      {formatRating(summary.average)}
                     </AppText>
-                    <Stars value={s.business.trustpilot.score} size={11} />
+                    <Stars value={summary.average} size={11} />
                     <AppText variant="caption" tone="textSecondary">
-                      {t('{number} anm.', { number: formatNumber(s.business.trustpilot.reviews) })}
+                      {t('{number} anm.', { number: formatNumber(summary.reviews) })}
                     </AppText>
                   </>
                 ) : (
                   <AppText variant="footnote" tone="textSecondary">
-                    {t('Ingen profil')}
+                    {t('Ingen endnu')}
                   </AppText>
                 )}
               </Value>
-            ))}
-          </Row>
-        ) : null}
+            );
+          })}
+        </Row>
         <Row label={t('Åben nu')}>
           {items.map((s) => {
             const status = getOpenStatus(s.business.hours, undefined, timeZoneOf(s.business));

@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BusinessMark } from '@/components/business/business-mark';
 import { OpenStatus } from '@/components/business/open-status';
-import { TrustpilotRating } from '@/components/business/trustpilot-rating';
+import { ReviewRating } from '@/components/business/review-rating';
 import { LocationPill } from '@/components/location-pill';
 import { BusinessMap } from '@/components/map/business-map';
 import { Button } from '@/components/ui/button';
@@ -388,7 +388,7 @@ function MapCard({ item, width, selected }: { item: ScoredBusiness; width: numbe
               {trade?.name} · {formatDistance(distanceKm)}
             </AppText>
             <OpenStatus business={business} />
-            <TrustpilotRating trustpilot={business.trustpilot} />
+            <ReviewRating summary={business.reviewSummary} />
           </View>
           <Icon name="chevronRight" size={14} color={colors.textTertiary} weight="semibold" />
         </Tappable>

@@ -10,7 +10,6 @@ import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
-import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { PRIORITY_PRESETS, weightsFromPriorities } from '@/lib/ranking';
 import type { Priorities } from '@/lib/types';
 import { taxNote } from '@/lib/markets';
@@ -21,7 +20,12 @@ const FACTORS: { key: keyof Priorities; label: string; hint: string; icon: IconN
   // The price hint depends on the market (incl. VAT or before tax), see below.
   { key: 'price', label: t('Lav pris'), hint: '', icon: 'tag' },
   { key: 'distance', label: t('Kort afstand'), hint: t('Afstand fra din placering'), icon: 'pin' },
-  { key: 'reviews', label: t('Gode anmeldelser'), hint: t('TrustScore på Trustpilot'), icon: 'star' },
+  {
+    key: 'reviews',
+    label: t('Gode anmeldelser'),
+    hint: t('Stjerner fra brugere, der har ringet via FixMatch'),
+    icon: 'star',
+  },
 ];
 
 const LEVELS = [t('Lidt'), t('Noget'), t('Middel'), t('Meget'), t('Mest')];
@@ -54,7 +58,7 @@ export default function PrioritiesScreen() {
           })}
         </View>
 
-        {FACTORS.filter((f) => TRUSTPILOT_ENABLED || f.key !== 'reviews').map((factor) => (
+        {FACTORS.map((factor) => (
           <View
             key={factor.key}
             style={[styles.factor, { backgroundColor: colors.surface, borderColor: colors.border }]}>

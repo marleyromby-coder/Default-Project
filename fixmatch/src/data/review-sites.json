@@ -1,0 +1,28 @@
+[
+  {
+    "id": "google",
+    "name": "Google",
+    "prefixes": [
+      "https://www.google.com/maps/",
+      "https://google.com/maps/",
+      "https://www.google.dk/maps/",
+      "https://google.dk/maps/",
+      "https://maps.app.goo.gl/",
+      "https://g.page/"
+    ]
+  },
+  {
+    "id": "trustpilot",
+    "name": "Trustpilot",
+    "prefixes": [
+      "https://www.trustpilot.com/review/",
+      "https://trustpilot.com/review/",
+      "https://dk.trustpilot.com/review/"
+    ]
+  },
+  {
+    "id": "anmeldhaandvaerker",
+    "name": "Anmeld Håndværker",
+    "prefixes": ["https://www.anmeldhaandvaerker.dk/", "https://anmeldhaandvaerker.dk/"]
+  }
+]

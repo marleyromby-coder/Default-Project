@@ -28,6 +28,11 @@ const TEXT = {
     email: 'E-mail',
     emailHint: 'Vises ikke. Vi bruger den kun til at bekræfte tilmeldingen.',
     website: 'Hjemmeside (valgfri)',
+    reviewLinks: 'Link til jeres anmeldelser andre steder (valgfrit)',
+    reviewLinksHint: (sites, max) =>
+      `Jeres profil på ${sites}. Højst ${max} links. Vi viser kun linket, aldrig stjerner eller scorer.`,
+    reviewLinksInvalid: (sites) => `Linket skal gå til jeres profil på ${sites}.`,
+    reviewLinksTooMany: (max) => `Højst ${max} links.`,
     prices: 'Priser inkl. moms i landets valuta',
     hourlyMin: 'Timepris fra',
     hourlyMax: 'Timepris til',
@@ -74,6 +79,11 @@ const TEXT = {
     email: 'E-mail',
     emailHint: 'Not shown. We only use it to confirm the sign-up.',
     website: 'Website (optional)',
+    reviewLinks: 'Link to your reviews elsewhere (optional)',
+    reviewLinksHint: (sites, max) =>
+      `Your profile on ${sites}. At most ${max} links. We only show the link, never stars or scores.`,
+    reviewLinksInvalid: (sites) => `The link must go to your profile on ${sites}.`,
+    reviewLinksTooMany: (max) => `At most ${max} links.`,
     prices: 'Prices including VAT, in your local currency',
     hourlyMin: 'Hourly rate from',
     hourlyMax: 'Hourly rate to',
@@ -87,7 +97,8 @@ const TEXT = {
       'Verified businesses get a tick next to their name, so customers can see that FixMatch has checked them. We contact you to confirm that you are the owner and ask to see your insurance.',
     verifyYes: 'Yes, verify us',
     authorization: 'Licence number',
-    authorizationHint: 'From the Danish Safety Technology Authority. Required for electrical, plumbing and drainage work.',
+    authorizationHint:
+      'From the Danish Safety Technology Authority. Required for electrical, plumbing and drainage work.',
     insurer: 'Insurance company (optional)',
     guarantee: 'Guarantee scheme (optional)',
     guaranteePlaceholder: 'E.g. Byg Garanti or TEKNIQ',
@@ -165,6 +176,15 @@ function escapeRegExp(text) {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+/**
+ * The review sites a business may link to (src/data/review-sites.json, as in the app): plain
+ * links to its own profile, never scores. MAX_REVIEW_LINKS in src/lib/review-links.ts.
+ */
+const MAX_REVIEW_LINKS = 3;
+function readReviewSites(root) {
+  return JSON.parse(fs.readFileSync(path.join(root, 'src/data/review-sites.json'), 'utf8'));
+}
+
 /** EXPO_PUBLIC_SUPABASE_URL and _KEY from the environment or fixmatch/.env. */
 function readSupabase(root) {
   const env = { ...process.env };
@@ -191,6 +211,8 @@ function signupForm(lang, { root, email }) {
   const supabase = readSupabase(root);
   const launched = readLaunchedCountries(root);
   const authorizationTrades = readAuthorizationTrades(root);
+  const reviewSites = readReviewSites(root);
+  const siteNames = reviewSites.map((site) => site.name).join(', ');
   const countries = Object.entries(COUNTRIES[lang])
     .filter(([code]) => launched.includes(code))
     .map(
@@ -220,6 +242,8 @@ function signupForm(lang, { root, email }) {
     supabase,
     version: consent.version,
     authorizationTrades,
+    reviewPrefixes: reviewSites.flatMap((site) => site.prefixes),
+    maxReviewLinks: MAX_REVIEW_LINKS,
     statements: Object.fromEntries(consent.statements.map((s) => [s.key, s[lang]])),
     text: {
       sending: text.sending,
@@ -228,6 +252,8 @@ function signupForm(lang, { root, email }) {
       pricesInvalid: text.pricesInvalid,
       tradesMissing: text.tradesMissing,
       authorizationMissing: text.authorizationMissing,
+      reviewLinksInvalid: text.reviewLinksInvalid(siteNames),
+      reviewLinksTooMany: text.reviewLinksTooMany(MAX_REVIEW_LINKS),
     },
   };
 
@@ -244,6 +270,7 @@ ${field(text.street, '<input name="street" required maxlength="120" autocomplete
 ${field(text.phone, '<input name="phone" type="tel" required pattern="\\+?[0-9 ()\\-]{6,20}" autocomplete="tel">')}
 ${field(text.email, '<input name="email" type="email" required autocomplete="email">', text.emailHint)}
 ${field(text.website, '<input name="website" type="url" inputmode="url" maxlength="200" placeholder="https://">')}
+${field(text.reviewLinks, '<input name="review_links" inputmode="url" maxlength="700" autocapitalize="off" spellcheck="false" placeholder="https://">', text.reviewLinksHint(siteNames, MAX_REVIEW_LINKS))}
 </fieldset>
 <fieldset><legend>${escape(text.prices)}</legend>
 <div class="row">${field(text.hourlyMin, '<input name="hourly_min" type="number" min="1" step="1" required inputmode="numeric">')}${field(text.hourlyMax, '<input name="hourly_max" type="number" min="1" step="1" inputmode="numeric">')}</div>
@@ -303,6 +330,15 @@ const CLIENT = `(() => {
       show(config.text.authorizationMissing);
       return;
     }
+    const reviewLinks = value('review_links')
+      .split(/[\\s,|]+/)
+      .filter(Boolean)
+      .map((link) => (/^[a-z]+:\\/\\//i.test(link) ? link : 'https://' + link));
+    const allowed = (link) =>
+      link.length <= 300 && !/[\\s<>"'\\\\\`]/.test(link) &&
+      config.reviewPrefixes.some((prefix) => link.toLowerCase().startsWith(prefix) && link.length > prefix.length);
+    if (!reviewLinks.every(allowed)) { show(config.text.reviewLinksInvalid); return; }
+    if (reviewLinks.length > config.maxReviewLinks) { show(config.text.reviewLinksTooMany); return; }
     const website = value('website');
     const row = {
       source: 'web',
@@ -317,6 +353,7 @@ const CLIENT = `(() => {
       phone: value('phone'),
       email: value('email'),
       website: website ? (/^https?:\\/\\//.test(website) ? website : 'https://' + website) : null,
+      review_links: reviewLinks.length > 0 ? reviewLinks : null,
       hourly_min: min,
       hourly_max: max,
       callout_fee: number('callout_fee'),

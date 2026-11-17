@@ -7,7 +7,6 @@ import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { MinTouchSize, Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
-import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { MAX_COMPARE, useApp } from '@/state/app-state';
 import { t } from '@/i18n';
 
@@ -36,11 +35,7 @@ export function CompareTray({ bottomOffset = 0 }: { bottomOffset?: number }) {
             {t('{count} af {MAX_COMPARE} valgt', { count, MAX_COMPARE })}
           </AppText>
           <AppText variant="caption" style={{ color: colors.onInkSoft }}>
-            {count < 2
-              ? t('Vælg mindst én mere')
-              : TRUSTPILOT_ENABLED
-                ? t('Pris, afstand og anmeldelser side om side')
-                : t('Pris og afstand side om side')}
+            {count < 2 ? t('Vælg mindst én mere') : t('Pris, afstand og anmeldelser side om side')}
           </AppText>
         </View>
         <Tappable

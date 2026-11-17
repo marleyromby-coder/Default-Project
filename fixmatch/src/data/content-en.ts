@@ -1,16 +1,17 @@
 import { APP_INFO } from '@/constants/app-info';
-import { TRUSTPILOT_ENABLED } from '@/lib/features';
+import { MIN_REVIEWS_FOR_FILTER } from '@/lib/filters';
 import { CLOSE_MARGIN, WORKSHOP_RADIUS_KM } from '@/lib/matcher';
 import { MIN_PAID_PRICES } from '@/lib/prices';
-import { DISTANCE_SCALE_KM, NO_REVIEWS_SCORE, REVIEW_PRIOR_COUNT, REVIEW_PRIOR_MEAN } from '@/lib/ranking';
+import { DISTANCE_SCALE_KM, REVIEW_PRIOR_COUNT, REVIEW_PRIOR_MEAN } from '@/lib/ranking';
 import { TOP_RATED_MIN_REVIEWS, TOP_RATED_MIN_SCORE, VERIFICATION_VALID_DAYS } from '@/lib/verification';
 
 import type { InfoPage } from './content';
 
+/** 4 → "4.0", 4.5 → "4.5". */
+const n = (value: number) => value.toFixed(1);
+
 /** English info pages. Same slugs and structure as the Danish ones in content.ts. */
-export function infoPagesEn(
-  reviews = TRUSTPILOT_ENABLED,
-): Record<
+export function infoPagesEn(): Record<
   'rangering' | 'anmeldelser' | 'priser' | 'virksomheder' | 'verificering' | 'hjaelp' | 'privatliv' | 'vilkaar' | 'om',
   InfoPage
 > {
@@ -21,21 +22,18 @@ export function infoPagesEn(
         'The order is set by the FixMatch score, which you can adjust yourself. No business can pay for a better position.',
       sections: [
         {
-          heading: reviews ? 'The three factors' : 'The two factors',
+          heading: 'The three factors',
           bullets: [
             'Price: the business’s hourly rate compared with the other businesses in the same trade and the same country. The cheapest gets the full score, the most expensive none. Prices are never compared across countries or currencies.',
             `Distance: the straight-line distance from your location. The score falls steadily with distance – at ${DISTANCE_SCALE_KM} km it is about a third of the score at 0 km.`,
-            ...(reviews
-              ? [
-                  `Reviews: the TrustScore on Trustpilot, weighted by the number of reviews. We add ${REVIEW_PRIOR_COUNT} "neutral" reviews of ${REVIEW_PRIOR_MEAN}, so a handful of reviews cannot give an unfairly high or low score. Businesses without a Trustpilot profile count as ${NO_REVIEWS_SCORE}.`,
-                ]
-              : []),
+            `Reviews: the average stars from users who contacted the business through FixMatch. We add ${REVIEW_PRIOR_COUNT} neutral reviews of ${n(REVIEW_PRIOR_MEAN)}, so a handful of reviews cannot give an unfairly high or low score. A business without reviews counts as ${n(REVIEW_PRIOR_MEAN)} – neither better nor worse.`,
           ],
         },
         {
           heading: 'Your weighting',
           paragraphs: [
-            `Under "Your priorities" you choose how much each factor matters. The weights add up to 100 %, and the score is the weighted average times 100. You can also sort by ${reviews ? 'price, distance or reviews' : 'price or distance'} alone.`,
+            'Under "Your priorities" you choose how much each factor matters. The weights add up to 100 %, and the score is the weighted average times 100. You can also sort by price, distance or reviews alone.',
+            'Reviews on other sites do not count. Nor does the answer rate ("Answers the phone").',
           ],
         },
         {
@@ -54,7 +52,8 @@ export function infoPagesEn(
         {
           heading: 'Filters',
           paragraphs: [
-            'Filters such as distance, opening hours, 24-hour service, licences and Verified hide businesses but do not change their score. The Verified badge and reviews written in FixMatch do not give a better position either.',
+            'Filters such as distance, opening hours, 24-hour service, licences and Verified hide businesses but do not change their score. The Verified badge does not give a better position either.',
+            `The customer rating filter only shows businesses with at least ${MIN_REVIEWS_FOR_FILTER} reviews.`,
           ],
         },
       ],
@@ -62,7 +61,7 @@ export function infoPagesEn(
     anmeldelser: {
       title: 'About reviews',
       intro:
-        'The reviews under "Customer experiences" only come from customers who contacted the business through FixMatch. Nobody can buy, write or remove reviews for a business.',
+        'The reviews under "Customer experiences" only come from users who contacted the business through FixMatch. Nobody can buy, write or remove reviews for a business.',
       sections: [
         {
           heading: 'Who can write a review?',
@@ -74,6 +73,7 @@ export function infoPagesEn(
           heading: 'Does FixMatch check the reviews?',
           paragraphs: [
             'Yes, in part. We check that you contacted the business through FixMatch before you can review it. We cannot see whether the job was done or what you agreed. We show all reviews, the bad ones too, newest first, and we never change the text.',
+            'This is the information section 6 b of the Danish Marketing Practices Act asks us for.',
           ],
         },
         {
@@ -90,26 +90,16 @@ export function infoPagesEn(
         {
           heading: 'Do reviews affect the order?',
           paragraphs: [
-            reviews
-              ? 'No. Reviews written in FixMatch do not affect the FixMatch score or the order. The score only uses the TrustScore from Trustpilot (see "How we rank").'
-              : 'No. Reviews written in FixMatch do not affect the FixMatch score or the order. They are on the business’s page so you can read them yourself.',
+            `Yes. The average stars count in the FixMatch score with the weight you choose. A few reviews weigh less than many, and a business without reviews counts as ${n(REVIEW_PRIOR_MEAN)} (see "How we rank").`,
           ],
         },
-        ...(reviews
-          ? [
-              {
-                heading: 'Reviews from Trustpilot',
-                paragraphs: [
-                  'The TrustScore comes from Trustpilot. We show the overall TrustScore and the number of reviews, but we do not write, edit or filter them. FixMatch does not check whether Trustpilot reviews come from real customers; Trustpilot describes how it detects and removes fake reviews.',
-                  'Each business shows when its TrustScore was last updated. The TrustScore is Trustpilot’s overall rating from 1 to 5 and gives more weight to recent reviews, so it can differ from a simple average.',
-                ],
-              },
-            ]
-          : []),
+        {
+          heading: 'Reviews on other sites',
+          paragraphs: [
+            'Some businesses have given us links to their own profiles on other review sites. We only show a link with the site’s name. We do not fetch, show or check the reviews there, and they do not count in the FixMatch score.',
+          ],
+        },
       ],
-      links: reviews
-        ? [{ label: 'How Trustpilot handles reviews', url: 'https://corporate.trustpilot.com/trust' }]
-        : [],
     },
     priser: {
       title: 'About prices',
@@ -156,9 +146,7 @@ export function infoPagesEn(
           heading: 'How to join',
           bullets: [
             'Sign up under More → Sign up your business or on the website. It takes a few minutes.',
-            reviews
-              ? 'You approve your details: contact, prices, opening hours, photos and your Trustpilot profile.'
-              : 'You approve your details: contact, prices, opening hours and photos.',
+            'You approve your details: contact, prices, opening hours, photos and any links to your profiles on other review sites.',
             'You give your consent when you sign up and can withdraw it at any time.',
             'If you want the Verified badge, tick it when you sign up in the app or on the website. It is free.',
             'When a customer calls you through FixMatch, you can see the customer’s name and phone number under Profile → Log in as a business. There you can also mark free time, see the monthly summary and ask us to change your prices and opening hours. You log in with the code from us.',
@@ -169,6 +157,7 @@ export function infoPagesEn(
           heading: 'Our promise',
           bullets: [
             'Nobody can pay for a better position in the search results.',
+            'Only users who contacted you through FixMatch can review you. You cannot remove reviews, but you can report one that breaks the rules.',
             'No fees per customer or per call – customers call you directly.',
             'We correct or remove your details within 2 working days when you ask.',
           ],
@@ -199,16 +188,12 @@ export function infoPagesEn(
             `The badge lasts ${VERIFICATION_VALID_DAYS} days from the day we checked. Then we check again. The business’s page shows the date and everything we checked.`,
           ],
         },
-        ...(reviews
-          ? [
-              {
-                heading: 'Top rated',
-                paragraphs: [
-                  `Verified businesses with a TrustScore of at least ${TOP_RATED_MIN_SCORE} and at least ${TOP_RATED_MIN_REVIEWS} reviews on Trustpilot are Top rated.`,
-                ],
-              },
-            ]
-          : []),
+        {
+          heading: 'Top rated',
+          paragraphs: [
+            `Verified businesses with an average of at least ${n(TOP_RATED_MIN_SCORE)} stars from at least ${TOP_RATED_MIN_REVIEWS} reviews by users via FixMatch are Top rated. The badge itself does not give a better position.`,
+          ],
+        },
         {
           heading: 'What the badge does not mean',
           paragraphs: [
@@ -314,7 +299,7 @@ export function infoPagesEn(
           bullets: [
             'The app is free and needs no login.',
             'Prices, opening hours and other details come from the businesses. We work to keep them correct but cannot guarantee it.',
-            ...(reviews ? ['TrustScores come from Trustpilot and are updated regularly.'] : []),
+            'Reviews only come from users who contacted the business through FixMatch.',
             'Report errors or unlawful content at the bottom of the business page, and we will look at it as soon as possible.',
             'Danish law applies, without limiting the consumer rights you have where you live.',
           ],
@@ -324,7 +309,8 @@ export function infoPagesEn(
     },
     om: {
       title: 'About FixMatch',
-      intro: `FixMatch makes it easy to find the right tradesperson or mechanic. We put ${reviews ? 'price, distance and reviews' : 'price, distance and licences'} in one place, so you save both time and money.`,
+      intro:
+        'FixMatch makes it easy to find the right tradesperson or mechanic. We put price, distance and reviews in one place, so you save both time and money.',
       sections: [
         {
           heading: 'Why FixMatch?',
@@ -332,9 +318,7 @@ export function infoPagesEn(
             'Price ranges from the start – not after three quotes.',
             'Quote check tells you whether a quote you got is low, normal or high.',
             'The Verified badge shows which businesses FixMatch has checked itself.',
-            reviews
-              ? 'Trustpilot score, company number and licences on one page.'
-              : 'Company number and licences on one page.',
+            'Reviews from users via FixMatch, company number and licences on one page.',
             'Call directly. No middleman, no fees.',
             'You decide what matters most.',
           ],

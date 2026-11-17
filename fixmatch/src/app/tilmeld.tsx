@@ -19,12 +19,14 @@ import {
   CONSENT_STATEMENTS,
   emptySignup,
   needsAuthorization,
+  REVIEW_SITE_NAMES,
   type SignupField,
   signupErrors,
   submitSignup,
 } from '@/lib/business-signup';
 import { showDialog } from '@/lib/dialog';
 import { countryName, getMarket, LAUNCHED_COUNTRIES, taxNote } from '@/lib/markets';
+import { MAX_REVIEW_LINKS } from '@/lib/review-links';
 import { useMarket } from '@/state/app-state';
 import { t } from '@/i18n';
 
@@ -209,6 +211,18 @@ export default function BusinessSignupScreen() {
             autoCorrect={false}
             textContentType="URL"
             {...field('website')}
+          />
+          <TextField
+            label={t('Link til jeres anmeldelser andre steder (valgfrit)')}
+            keyboardType="url"
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="https://"
+            hint={t('Jeres profil på {sites}. Højst {max} links. Vi viser kun linket, aldrig stjerner eller scorer.', {
+              sites: REVIEW_SITE_NAMES,
+              max: MAX_REVIEW_LINKS,
+            })}
+            {...field('reviewLinks')}
           />
         </Section>
 

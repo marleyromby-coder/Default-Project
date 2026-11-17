@@ -12,7 +12,6 @@ import { PhotoStrip } from '@/components/problem-photos';
 import { OpenStatus } from '@/components/business/open-status';
 import { PriceLevel } from '@/components/business/price-level';
 import { ScoreBars } from '@/components/business/score-bars';
-import { TrustpilotRating } from '@/components/business/trustpilot-rating';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardTitle, Divider } from '@/components/ui/card';
@@ -35,14 +34,12 @@ import {
   openCvr,
   openDirections,
   openLink,
-  openTrustpilot,
   openWebsite,
   reportProblem,
   shareBusiness,
 } from '@/lib/contact';
 import { availableWhen } from '@/lib/availability';
 import { showDialog } from '@/lib/dialog';
-import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import {
   displayHost,
   formatDate,
@@ -161,11 +158,11 @@ export default function BusinessScreen() {
           </View>
           <View style={[styles.stats, { borderTopColor: colors.border }]}>
             <Stat label={t('Match')} value={String(scored.score)} detail={matchLabel(scored.score)} />
-            {TRUSTPILOT_ENABLED && business.trustpilot ? (
+            {business.reviewSummary ? (
               <Stat
-                label="Trustpilot"
-                value={formatRating(business.trustpilot.score)}
-                detail={t('{number} anm.', { number: formatNumber(business.trustpilot.reviews) })}
+                label={t('Anmeldelser')}
+                value={formatRating(business.reviewSummary.average)}
+                detail={t('{number} anm.', { number: formatNumber(business.reviewSummary.reviews) })}
               />
             ) : null}
             <Stat
@@ -182,11 +179,9 @@ export default function BusinessScreen() {
             <View style={[styles.notice, { backgroundColor: colors.warningSoft }]}>
               <Icon name="info" size={16} color={colors.warning} weight="semibold" />
               <AppText variant="footnote" style={styles.flex}>
-                {TRUSTPILOT_ENABLED
-                  ? t(
-                      'Fiktiv eksempelvirksomhed. Navn, telefonnummer, CVR og anmeldelser er opdigtede, og opkald er slået fra.',
-                    )
-                  : t('Fiktiv eksempelvirksomhed. Navn, telefonnummer og CVR er opdigtede, og opkald er slået fra.')}
+                {t(
+                  'Fiktiv eksempelvirksomhed. Navn, telefonnummer, CVR og anmeldelser er opdigtede, og opkald er slået fra.',
+                )}
               </AppText>
             </View>
           ) : null}
@@ -321,37 +316,7 @@ export default function BusinessScreen() {
             ) : null}
           </Card>
 
-          {TRUSTPILOT_ENABLED ? (
-            <Card>
-              <CardTitle title={t('Anmeldelser')} icon="star" />
-              <TrustpilotRating trustpilot={business.trustpilot} size="large" />
-              {business.trustpilot ? (
-                <>
-                  <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
-                    {t('Hentet fra Trustpilot {date}. FixMatch ændrer eller udvælger ikke anmeldelser.', {
-                      date: formatDate(business.trustpilot.updatedAt),
-                    })}
-                  </AppText>
-                  <View style={styles.buttonRow}>
-                    <Button
-                      title={t('Se anmeldelser på Trustpilot')}
-                      icon="external"
-                      variant="secondary"
-                      size="small"
-                      onPress={() => openTrustpilot(business)}
-                    />
-                  </View>
-                </>
-              ) : (
-                <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
-                  {t(
-                    'Virksomheden har endnu ingen anmeldelser på Trustpilot. Den rangeres derfor med en neutral score.',
-                  )}
-                </AppText>
-              )}
-              <LinkText label={t('Om anmeldelser i FixMatch')} slug="anmeldelser" />
-            </Card>
-          ) : null}
+          <CustomerCard business={business} />
 
           <Card>
             <CardTitle title={t('Priser')} icon="tag" />
@@ -404,8 +369,6 @@ export default function BusinessScreen() {
               style={styles.alignStart}
             />
           </Card>
-
-          <CustomerCard business={business} />
 
           <Card>
             <CardTitle

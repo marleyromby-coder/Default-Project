@@ -17,7 +17,6 @@ import { useResults } from '@/hooks/use-results';
 import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { showDialog } from '@/lib/dialog';
-import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { activeFilterCount, DEFAULT_FILTERS } from '@/lib/filters';
 import { formatDistance, formatPriceRange } from '@/lib/format';
 import { summarizeJobPrice } from '@/lib/prices';
@@ -28,7 +27,7 @@ import { countryOf } from '@/lib/business-text';
 import { taxNote } from '@/lib/markets';
 import { MAX_COMPARE, useApp, useMarket } from '@/state/app-state';
 
-const ALL_SORT_OPTIONS: { value: SortMode; label: string; accessibilityLabel: string }[] = [
+const SORT_OPTIONS: { value: SortMode; label: string; accessibilityLabel: string }[] = [
   { value: 'match', label: 'Match', accessibilityLabel: t('Sortér efter bedste match') },
   { value: 'price', label: t('Pris'), accessibilityLabel: t('Sortér efter laveste pris') },
   { value: 'distance', label: t('Afstand'), accessibilityLabel: t('Sortér efter korteste afstand') },
@@ -36,8 +35,6 @@ const ALL_SORT_OPTIONS: { value: SortMode; label: string; accessibilityLabel: st
 ];
 /** "Elektrikere" → "elektrikere", but "VVS'ere" keeps its capitals. */
 const lowerTrade = (word: string) => (word.startsWith('VVS') ? word : word.toLowerCase());
-
-const SORT_OPTIONS = ALL_SORT_OPTIONS.filter((o) => TRUSTPILOT_ENABLED || o.value !== 'rating');
 
 export default function CategoryScreen() {
   const { column } = useLayout();
@@ -163,13 +160,6 @@ export default function CategoryScreen() {
             icon="shield"
             selected={filters.authorizedOnly}
             onPress={() => toggle('authorizedOnly')}
-          />
-        ) : null}
-        {TRUSTPILOT_ENABLED ? (
-          <Chip
-            label={t('4+ på Trustpilot')}
-            selected={filters.minRating === 4}
-            onPress={() => setFilters({ ...filters, minRating: filters.minRating === 4 ? null : 4 })}
           />
         ) : null}
       </ScrollView>

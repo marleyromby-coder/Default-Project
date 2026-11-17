@@ -13,7 +13,8 @@ import type { Problem } from '@/state/problem';
 import { showDialog } from './dialog';
 import { formatPhone, phoneHref } from './format';
 import { getMarket } from './markets';
-import type { Business } from './types';
+import { reviewSiteOf } from './review-links';
+import type { Business, ReviewLink } from './types';
 import { countryOf } from './business-text';
 
 export const CVR_LOOKUP_URL = (cvr: string) => `https://datacvr.virk.dk/enhed/virksomhed/${cvr.replace(/\D/g, '')}`;
@@ -97,14 +98,16 @@ export async function openWebsite(business: Business): Promise<void> {
   await openLink(business.contact.website);
 }
 
-export async function openTrustpilot(business: Business): Promise<void> {
+/** Opens the business's own profile on another review site. Only allow-listed links are opened. */
+export async function openReviewLink(business: Business, link: ReviewLink): Promise<void> {
   tap();
-  if (!business.trustpilot) return;
+  const site = reviewSiteOf(link.url);
+  if (!site) return;
   if (business.demo) {
-    demoNotice(business, t('åbner virksomhedens profil på Trustpilot, hvor du kan læse alle anmeldelserne.'));
+    demoNotice(business, t('åbner linket virksomhedens profil på {site}.', { site: site.name }));
     return;
   }
-  await openLink(business.trustpilot.url);
+  await openLink(link.url);
 }
 
 export async function openDirections(business: Business): Promise<void> {

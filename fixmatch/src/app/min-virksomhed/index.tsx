@@ -101,7 +101,7 @@ function Dashboard({ managed, business }: { managed: ManagedBusiness; business: 
   const [failed, setFailed] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [saving, setSaving] = useState<FreeChoice>();
-  const reviews = useReviewSummary(business.id);
+  const reviews = useReviewSummary(business);
   const shared = useSharedPrices().filter((r) => r.businessId === business.id);
   const lastRequest = useLastChangeRequest(business.id);
   const answers = answerRateText(useAnswerRate(business));

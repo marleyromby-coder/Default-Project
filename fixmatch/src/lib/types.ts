@@ -61,11 +61,17 @@ export interface Pricing {
   updatedAt: string;
 }
 
-export interface TrustpilotInfo {
-  score: number;
+/** FixMatch's own reviews of a business: the average stars and how many reviews. */
+export interface ReviewSummary {
+  average: number;
   reviews: number;
+}
+
+/** A plain link to the business's own profile on another review site. Never a score. */
+export interface ReviewLink {
+  /** Id of a site in data/review-sites.json, e.g. "google". */
+  site: string;
   url: string;
-  updatedAt: string;
 }
 
 export interface Authorization {
@@ -107,7 +113,15 @@ export interface Business {
   serviceRadiusKm: number;
   contact: { phone: string; website?: string; email?: string };
   pricing: Pricing;
-  trustpilot?: TrustpilotInfo;
+  /**
+   * FixMatch's own reviews (the review_summary view: users who contacted the business through
+   * FixMatch). Set at runtime, never read from the data files.
+   */
+  reviewSummary?: ReviewSummary;
+  /** Made-up reviews for demo businesses only (scripts/generate-demo-data.js). */
+  demoReviews?: ReviewSummary;
+  /** Plain links to the business's profiles on other review sites. FixMatch never shows their scores. */
+  reviewLinks?: ReviewLink[];
   authorizations: Authorization[];
   memberships: string[];
   /** FixMatch's own check of the business: the Verificeret badge. */
@@ -177,7 +191,6 @@ export interface Filters {
   emergency: boolean;
   authorizedOnly: boolean;
   verifiedOnly: boolean;
-  trustpilotOnly: boolean;
   /** Only businesses that have marked free time today or tomorrow. */
   availableSoon: boolean;
   /** Only businesses that offer a video check before the visit. */

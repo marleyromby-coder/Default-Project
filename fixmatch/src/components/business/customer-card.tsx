@@ -8,12 +8,14 @@ import { Stars } from '@/components/ui/stars';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { APP_INFO } from '@/constants/app-info';
-import { Spacing } from '@/constants/theme';
+import { MinTouchSize, Spacing } from '@/constants/theme';
 import { getCategory } from '@/data/categories';
 import { useTheme } from '@/hooks/use-theme';
 import { currencyOf } from '@/lib/business-text';
+import { openReviewLink } from '@/lib/contact';
 import { formatDate, formatPriceRange, formatRating } from '@/lib/format';
 import { MIN_PAID_PRICES } from '@/lib/prices';
+import { reviewSiteName } from '@/lib/review-links';
 import type { Business, JobType } from '@/lib/types';
 import { t } from '@/i18n';
 import {
@@ -48,15 +50,18 @@ function percentile(sorted: number[], p: number): number {
 
 /**
  * "Kundernes erfaringer": reviews and prices from people who contacted the business through
- * FixMatch. Only they can add either, so both are real. Prices show from 3 reports per job.
+ * FixMatch. Only they can add either. Prices show from 3 reports per job. Below the reviews,
+ * plain links to the business's profiles on other review sites: the site's name only, never
+ * their scores, and they do not count in the FixMatch score.
  */
 export function CustomerCard({ business }: { business: Business }) {
   const colors = useTheme();
   const reviews = useReviews(business.id);
-  const summary = useReviewSummary(business.id);
+  const summary = useReviewSummary(business);
   const canReview = useCanReview(business.id);
   const mine = useMyReview(business.id);
   const shared = useSharedPrices();
+  const links = business.reviewLinks ?? [];
 
   useEffect(() => {
     loadReviews(business.id).catch(() => undefined);
@@ -81,7 +86,7 @@ export function CustomerCard({ business }: { business: Business }) {
         <View
           style={styles.summary}
           accessible
-          accessibilityLabel={t('{rating} af 5 stjerner fra {count} kunder via FixMatch', {
+          accessibilityLabel={t('{rating} af 5 stjerner fra {count} brugere via FixMatch', {
             rating: formatRating(summary.average),
             count: summary.reviews,
           })}>
@@ -92,14 +97,14 @@ export function CustomerCard({ business }: { business: Business }) {
             <Stars value={summary.average} size={16} />
             <AppText variant="footnote" tone="textSecondary">
               {summary.reviews === 1
-                ? t('1 anmeldelse fra en kunde via FixMatch')
-                : t('{count} anmeldelser fra kunder via FixMatch', { count: summary.reviews })}
+                ? t('1 anmeldelse fra en bruger via FixMatch')
+                : t('{count} anmeldelser fra brugere via FixMatch', { count: summary.reviews })}
             </AppText>
           </View>
         </View>
       ) : (
         <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
-          {t('Ingen anmeldelser endnu. Kun kunder, der har kontaktet virksomheden gennem FixMatch, kan anmelde.')}
+          {t('Ingen anmeldelser endnu. Kun brugere, der har kontaktet virksomheden gennem FixMatch, kan anmelde.')}
         </AppText>
       )}
 
@@ -138,6 +143,36 @@ export function CustomerCard({ business }: { business: Business }) {
           ) : null}
         </View>
       ))}
+
+      {links.length > 0 ? (
+        <View style={styles.elsewhere}>
+          <Divider />
+          <AppText variant="subhead" weight="600">
+            {t('Se anmeldelser andre steder')}
+          </AppText>
+          <View style={styles.links}>
+            {links.map((link) => {
+              const site = reviewSiteName(link.site);
+              return (
+                <Tappable
+                  key={link.url}
+                  onPress={() => openReviewLink(business, link)}
+                  accessibilityRole="link"
+                  accessibilityLabel={t('Anmeldelser på {site}, åbner en anden side', { site })}
+                  hitSlop={4}
+                  style={styles.link}>
+                  <AppText variant="subhead" tone="brandText" weight="600">
+                    {site} ›
+                  </AppText>
+                </Tappable>
+              );
+            })}
+          </View>
+          <AppText variant="caption" tone="textSecondary">
+            {t('Åbner en anden side. FixMatch tjekker ikke anmeldelserne dér, og de tæller ikke med i scoren.')}
+          </AppText>
+        </View>
+      ) : null}
 
       {paid.length > 0 ? (
         <View style={styles.paid}>
@@ -208,6 +243,9 @@ const styles = StyleSheet.create({
   reviewHead: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, marginTop: Spacing.sm },
   initial: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
   paid: { gap: Spacing.xs, marginTop: Spacing.sm },
+  elsewhere: { gap: Spacing.xs, marginTop: Spacing.sm },
+  links: { flexDirection: 'row', flexWrap: 'wrap', columnGap: Spacing.lg },
+  link: { minHeight: MinTouchSize, justifyContent: 'center' },
   report: { alignSelf: 'flex-start' },
   paidRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   actions: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginTop: Spacing.md },

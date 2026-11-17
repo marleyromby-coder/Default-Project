@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AvailabilityBadge } from '@/components/business/availability-badge';
 import { BusinessMark } from '@/components/business/business-mark';
 import { MatchBadge } from '@/components/business/match-badge';
-import { TrustpilotRating } from '@/components/business/trustpilot-rating';
+import { ReviewRating } from '@/components/business/review-rating';
 import { CategoryTile } from '@/components/category-tile';
 import { LocationPill } from '@/components/location-pill';
 import { Logo } from '@/components/logo';
@@ -22,12 +22,12 @@ import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { availableWhen } from '@/lib/availability';
 import { DATA_MODE } from '@/lib/data-source';
-import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { showDialog } from '@/lib/dialog';
 import { formatDistance, formatHourly, formatPriceRange } from '@/lib/format';
 import { distanceKm } from '@/lib/geo';
 import { summarizeJobPrice } from '@/lib/prices';
-import { reviewValue, scoreBusinesses } from '@/lib/ranking';
+import { reviewCount, reviewValue, scoreBusinesses } from '@/lib/ranking';
+import { MIN_REVIEWS_FOR_FILTER } from '@/lib/filters';
 import type { CategoryId } from '@/lib/types';
 import { t } from '@/i18n';
 import { countryOf, currencyOf } from '@/lib/business-text';
@@ -79,8 +79,8 @@ export default function HomeScreen() {
     () =>
       local
         .map((b) => ({ business: b, km: distanceKm(origin, b.coords) }))
-        .filter((x) => x.km <= 10 && x.business.trustpilot)
-        .sort((a, b) => reviewValue(b.business) - reviewValue(a.business))
+        .filter((x) => x.km <= 10 && reviewCount(x.business) >= MIN_REVIEWS_FOR_FILTER)
+        .sort((a, b) => reviewValue(b.business) - reviewValue(a.business) || a.km - b.km)
         .slice(0, 6),
     [local, origin],
   );
@@ -131,9 +131,7 @@ export default function HomeScreen() {
           <Text style={{ color: colors.brandText }}>{t('Til den rette pris.')}</Text>
         </AppText>
         <AppText variant="callout" tone="textSecondary">
-          {TRUSTPILOT_ENABLED
-            ? t('Sammenlign pris, afstand og Trustpilot-anmeldelser hos lokale virksomheder – og ring direkte.')
-            : t('Sammenlign pris og afstand hos lokale virksomheder – og ring direkte.')}
+          {t('Sammenlign pris, afstand og anmeldelser hos lokale virksomheder – og ring direkte.')}
         </AppText>
       </View>
 
@@ -418,7 +416,7 @@ export default function HomeScreen() {
                     </View>
                     <MatchBadge score={score} />
                   </View>
-                  <TrustpilotRating trustpilot={business.trustpilot} />
+                  <ReviewRating summary={business.reviewSummary} />
                   <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
                     {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business))} ·{' '}
                     {formatDistance(km)}
@@ -430,10 +428,12 @@ export default function HomeScreen() {
         </Section>
       ) : null}
 
-      {TRUSTPILOT_ENABLED && topRated.length > 0 ? (
+      {topRated.length > 0 ? (
         <Section
           title={t('Bedst anmeldt nær dig')}
-          subtitle={t('Højeste TrustScore inden for {distance}', { distance: formatDistance(10) })}>
+          subtitle={t('Flest stjerner fra brugere via FixMatch inden for {distance}', {
+            distance: formatDistance(10),
+          })}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
             {topRated.map(({ business, km }) => (
               <Tappable
@@ -453,7 +453,7 @@ export default function HomeScreen() {
                   <AppText variant="subhead" weight="600" numberOfLines={1}>
                     {business.name}
                   </AppText>
-                  <TrustpilotRating trustpilot={business.trustpilot} />
+                  <ReviewRating summary={business.reviewSummary} />
                   <AppText variant="caption" tone="textSecondary">
                     {formatDistance(km)}
                   </AppText>
@@ -470,11 +470,7 @@ export default function HomeScreen() {
           <Step
             number={2}
             title={t('Sammenlign')}
-            text={
-              TRUSTPILOT_ENABLED
-                ? t('Pris {tax}, afstand og TrustScore – side om side.', { tax: taxNote(market) })
-                : t('Pris {tax} og afstand – side om side.', { tax: taxNote(market) })
-            }
+            text={t('Pris {tax}, afstand og anmeldelser – side om side.', { tax: taxNote(market) })}
           />
           <Step
             number={3}

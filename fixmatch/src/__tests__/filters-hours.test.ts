@@ -1,4 +1,11 @@
-import { activeFilterCount, applyFilters, DEFAULT_FILTERS, distanceOptions, isSameDistance } from '@/lib/filters';
+import {
+  activeFilterCount,
+  applyFilters,
+  DEFAULT_FILTERS,
+  distanceOptions,
+  isSameDistance,
+  MIN_REVIEWS_FOR_FILTER,
+} from '@/lib/filters';
 import { clockAt, getOpenStatus, summarizeHours } from '@/lib/opening-hours';
 import { scoreBusinesses } from '@/lib/ranking';
 import type { WeekHours } from '@/lib/types';
@@ -56,7 +63,7 @@ describe('filters', () => {
   const near = makeBusiness({
     id: 'near',
     hours: HOURS,
-    trustpilot: { score: 4.6, reviews: 50, url: 'x', updatedAt: '2026-10-01' },
+    reviewSummary: { average: 4.6, reviews: 50 },
   });
   const far = makeBusiness({ id: 'far', coords: { lat: 56.1567, lon: 10.2108 }, emergency: true, hours: HOURS });
   const all = [near, far];
@@ -74,6 +81,25 @@ describe('filters', () => {
     expect(ids(applyFilters(scored, { ...everywhere, emergency: true }, { all }))).toEqual(['far']);
     // Døgnvagt counts as open at night.
     expect(ids(applyFilters(scored, { ...everywhere, openNow: true }, { all, now: at(22) }))).toEqual(['far']);
+  });
+
+  it('rates only businesses with at least 3 FixMatch reviews', () => {
+    const at = (id: string, average: number, reviews: number) =>
+      makeBusiness({ id, reviewSummary: { average, reviews } });
+    const list = [
+      at('one-perfect', 5, 1),
+      at('three-good', 4.7, 3),
+      at('many-ok', 4.2, 40),
+      makeBusiness({ id: 'none' }),
+    ];
+    const rated = scoreBusinesses(list, origin, { price: 3, distance: 3, reviews: 3 });
+    expect(MIN_REVIEWS_FOR_FILTER).toBe(3);
+    expect(ids(applyFilters(rated, { ...DEFAULT_FILTERS, minRating: 4.5 }, { all: list }))).toEqual(['three-good']);
+    expect(ids(applyFilters(rated, { ...DEFAULT_FILTERS, minRating: 4 }, { all: list }))).toEqual([
+      'three-good',
+      'many-ok',
+    ]);
+    expect(ids(applyFilters(rated, DEFAULT_FILTERS, { all: list }))).toHaveLength(4);
   });
 
   it('offers distances in the unit of the market', () => {

@@ -1,9 +1,9 @@
 import { APP_INFO } from '@/constants/app-info';
 import { getLanguage } from '@/i18n';
-import { TRUSTPILOT_ENABLED } from '@/lib/features';
+import { MIN_REVIEWS_FOR_FILTER } from '@/lib/filters';
 import { CLOSE_MARGIN, WORKSHOP_RADIUS_KM } from '@/lib/matcher';
 import { MIN_PAID_PRICES } from '@/lib/prices';
-import { DISTANCE_SCALE_KM, NO_REVIEWS_SCORE, REVIEW_PRIOR_COUNT, REVIEW_PRIOR_MEAN } from '@/lib/ranking';
+import { DISTANCE_SCALE_KM, REVIEW_PRIOR_COUNT, REVIEW_PRIOR_MEAN } from '@/lib/ranking';
 import { TOP_RATED_MIN_REVIEWS, TOP_RATED_MIN_SCORE, VERIFICATION_VALID_DAYS } from '@/lib/verification';
 
 import { infoPagesEn } from './content-en';
@@ -26,13 +26,15 @@ export interface InfoPage {
   links?: InfoLink[];
 }
 
-const n = (value: number) => String(value).replace('.', ',');
+/** 4 → "4,0", 4.5 → "4,5". */
+const n = (value: number) => value.toFixed(1).replace('.', ',');
 
 /**
  * Danish pages. The English ones in content-en.ts have the same slugs and structure.
- * Without Trustpilot (`reviews` false) the pages do not mention reviews.
+ * "Sådan rangerer vi" and "Om anmeldelser" are the information markedsføringsloven § 6 a and
+ * § 6 b ask for: keep them in step with lib/ranking.ts and state/community.ts.
  */
-export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
+export function infoPagesDa() {
   return {
     rangering: {
       title: 'Sådan rangerer vi',
@@ -40,21 +42,18 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
         'Rækkefølgen bestemmes af FixMatch-scoren, som du selv kan påvirke. Ingen virksomhed kan betale sig til en bedre placering.',
       sections: [
         {
-          heading: reviews ? 'De tre parametre' : 'De to parametre',
+          heading: 'De tre parametre',
           bullets: [
             'Pris: virksomhedens timepris sammenlignet med de andre virksomheder i samme fag og samme land. Den billigste får fuld score, den dyreste ingen. Priser sammenlignes aldrig på tværs af lande og valutaer.',
             `Afstand: afstanden i luftlinje fra din placering. Scoren falder jævnt med afstanden – ved ${DISTANCE_SCALE_KM} km er den ca. en tredjedel af scoren ved 0 km.`,
-            ...(reviews
-              ? [
-                  `Anmeldelser: TrustScore på Trustpilot, vægtet efter antallet af anmeldelser. Vi lægger ${REVIEW_PRIOR_COUNT} "neutrale" anmeldelser på ${n(REVIEW_PRIOR_MEAN)} til, så få anmeldelser ikke giver en urimelig høj eller lav score. Virksomheder uden Trustpilot-profil regnes som ${n(NO_REVIEWS_SCORE)}.`,
-                ]
-              : []),
+            `Anmeldelser: gennemsnittet af stjernerne fra brugere, der har kontaktet virksomheden gennem FixMatch. Vi lægger ${REVIEW_PRIOR_COUNT} neutrale anmeldelser på ${n(REVIEW_PRIOR_MEAN)} til, så få anmeldelser ikke giver en urimelig høj eller lav score. En virksomhed uden anmeldelser regnes som ${n(REVIEW_PRIOR_MEAN)} – hverken bedre eller dårligere.`,
           ],
         },
         {
           heading: 'Din vægtning',
           paragraphs: [
-            `Under "Dine prioriteter" vælger du, hvor vigtig hver parameter er. Vægtene lægges sammen til 100 %, og scoren er det vægtede gennemsnit gange 100. Du kan også sortere efter ${reviews ? 'pris, afstand eller anmeldelser' : 'pris eller afstand'} alene.`,
+            'Under "Dine prioriteter" vælger du, hvor vigtig hver parameter er. Vægtene lægges sammen til 100 %, og scoren er det vægtede gennemsnit gange 100. Du kan også sortere efter pris, afstand eller anmeldelser alene.',
+            'Anmeldelser på andre sider tæller ikke med. Det gør svarprocenten ("Tager telefonen") heller ikke.',
           ],
         },
         {
@@ -73,7 +72,8 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
         {
           heading: 'Filtre',
           paragraphs: [
-            'Filtre som afstand, åbningstid, døgnvagt, autorisation og Verificeret skjuler virksomheder, men ændrer ikke deres score. Verificeret-mærket og anmeldelser skrevet i FixMatch giver heller ikke en bedre placering.',
+            'Filtre som afstand, åbningstid, døgnvagt, autorisation og Verificeret skjuler virksomheder, men ændrer ikke deres score. Verificeret-mærket giver heller ikke en bedre placering.',
+            `Filteret for kundernes vurdering viser kun virksomheder med mindst ${MIN_REVIEWS_FOR_FILTER} anmeldelser.`,
           ],
         },
       ],
@@ -81,7 +81,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
     anmeldelser: {
       title: 'Om anmeldelser',
       intro:
-        'Anmeldelserne under "Kundernes erfaringer" kommer kun fra kunder, der har kontaktet virksomheden gennem FixMatch. Ingen kan købe, skrive eller fjerne anmeldelser for en virksomhed.',
+        'Anmeldelserne under "Kundernes erfaringer" kommer kun fra brugere, der har kontaktet virksomheden gennem FixMatch. Ingen kan købe, skrive eller fjerne anmeldelser for en virksomhed.',
       sections: [
         {
           heading: 'Hvem kan anmelde?',
@@ -93,6 +93,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
           heading: 'Kontrollerer FixMatch anmeldelserne?',
           paragraphs: [
             'Ja, delvist. Vi tjekker, at du har kontaktet virksomheden gennem FixMatch, før du kan anmelde den. Vi kan ikke se, om opgaven blev udført, eller hvad I aftalte. Vi viser alle anmeldelser, også de dårlige, med de nyeste først, og vi ændrer aldrig i teksten.',
+            'Det er de oplysninger, markedsføringslovens § 6 b kræver af os.',
           ],
         },
         {
@@ -109,26 +110,16 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
         {
           heading: 'Påvirker anmeldelserne rækkefølgen?',
           paragraphs: [
-            reviews
-              ? 'Nej. Anmeldelser skrevet i FixMatch påvirker ikke FixMatch-scoren eller rækkefølgen. Scoren bruger kun TrustScoren fra Trustpilot (se "Sådan rangerer vi").'
-              : 'Nej. Anmeldelser skrevet i FixMatch påvirker ikke FixMatch-scoren eller rækkefølgen. De står på virksomhedens side, så du selv kan læse dem.',
+            `Ja. Gennemsnittet af stjernerne indgår i FixMatch-scoren med den vægt, du selv vælger. Få anmeldelser vejer mindre end mange, og en virksomhed uden anmeldelser regnes som ${n(REVIEW_PRIOR_MEAN)} (se "Sådan rangerer vi").`,
           ],
         },
-        ...(reviews
-          ? [
-              {
-                heading: 'Anmeldelser fra Trustpilot',
-                paragraphs: [
-                  'TrustScoren kommer fra Trustpilot. Vi viser den samlede TrustScore og antallet af anmeldelser, men skriver, ændrer og sorterer ikke i dem. FixMatch kontrollerer ikke selv, om Trustpilot-anmeldelserne stammer fra rigtige kunder; Trustpilot beskriver selv, hvordan de opdager og fjerner falske anmeldelser.',
-                  'Ved hver virksomhed står det, hvornår TrustScoren sidst blev opdateret. TrustScoren er Trustpilots samlede vurdering fra 1 til 5 og vægter blandt andet nye anmeldelser højere, så den kan afvige fra et simpelt gennemsnit.',
-                ],
-              },
-            ]
-          : []),
+        {
+          heading: 'Anmeldelser på andre sider',
+          paragraphs: [
+            'Nogle virksomheder har givet os links til deres egne profiler på andre anmeldelsessider. Vi viser kun et link med sidens navn. Vi henter, viser og tjekker ikke anmeldelserne dér, og de tæller ikke med i FixMatch-scoren.',
+          ],
+        },
       ],
-      links: reviews
-        ? [{ label: 'Sådan arbejder Trustpilot med anmeldelser', url: 'https://corporate.trustpilot.com/trust' }]
-        : [],
     },
     priser: {
       title: 'Om priserne',
@@ -174,9 +165,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
           heading: 'Sådan kommer du med',
           bullets: [
             'Tilmeld din virksomhed under Mere → Tilmeld din virksomhed eller på hjemmesiden. Det tager et par minutter.',
-            reviews
-              ? 'Du godkender dine oplysninger: kontakt, priser, åbningstider, billeder og din Trustpilot-profil.'
-              : 'Du godkender dine oplysninger: kontakt, priser, åbningstider og billeder.',
+            'Du godkender dine oplysninger: kontakt, priser, åbningstider, billeder og eventuelle links til dine profiler på andre anmeldelsessider.',
             'Du giver samtykke, når du tilmelder dig, og kan til enhver tid trække det tilbage.',
             'Vil du have Verificeret-mærket, sætter du flueben ved det i tilmeldingen i appen eller på hjemmesiden. Det er gratis.',
             'Når en kunde ringer til dig gennem FixMatch, kan du se kundens navn og telefonnummer under Profil → Log ind som virksomhed. Der kan du også melde ledig tid, se den månedlige opgørelse og bede os rette dine priser og åbningstider. Du logger ind med koden fra os.',
@@ -187,6 +176,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
           heading: 'Det lover vi',
           bullets: [
             'Ingen betaler sig til en bedre placering i søgeresultaterne.',
+            'Kun brugere, der har kontaktet dig gennem FixMatch, kan anmelde dig. Du kan ikke fjerne anmeldelser, men du kan rapportere en, der bryder reglerne.',
             'Ingen gebyrer pr. kunde eller pr. opkald – kunderne ringer direkte til dig.',
             'Vi retter eller fjerner dine oplysninger inden for 2 hverdage, når du beder om det.',
           ],
@@ -217,16 +207,12 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
             `Mærket gælder ${VERIFICATION_VALID_DAYS} dage fra den dag, vi tjekkede. Så tjekker vi igen. På virksomhedens side står datoen og alt det, vi har tjekket.`,
           ],
         },
-        ...(reviews
-          ? [
-              {
-                heading: 'Topbedømt',
-                paragraphs: [
-                  `Topbedømt får verificerede virksomheder med en TrustScore på mindst ${n(TOP_RATED_MIN_SCORE)} og mindst ${TOP_RATED_MIN_REVIEWS} anmeldelser på Trustpilot.`,
-                ],
-              },
-            ]
-          : []),
+        {
+          heading: 'Topbedømt',
+          paragraphs: [
+            `Topbedømt får verificerede virksomheder med mindst ${n(TOP_RATED_MIN_SCORE)} stjerner i gennemsnit fra mindst ${TOP_RATED_MIN_REVIEWS} anmeldelser fra brugere via FixMatch. Mærket giver ikke i sig selv en bedre placering.`,
+          ],
+        },
         {
           heading: 'Det betyder mærket ikke',
           paragraphs: [
@@ -336,7 +322,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
           bullets: [
             'Appen er gratis og kræver ikke login.',
             'Priser, åbningstider og andre oplysninger er oplyst af virksomhederne. Vi gør os umage for, at de er korrekte, men kan ikke garantere det.',
-            ...(reviews ? ['TrustScores kommer fra Trustpilot og opdateres løbende.'] : []),
+            'Anmeldelser kommer kun fra brugere, der har kontaktet virksomheden gennem FixMatch.',
             'Rapportér fejl eller ulovligt indhold nederst på virksomhedens side, så ser vi på det hurtigst muligt.',
             'Dansk ret gælder.',
           ],
@@ -346,7 +332,8 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
     },
     om: {
       title: 'Om FixMatch',
-      intro: `FixMatch gør det nemt at finde den rette håndværker eller mekaniker. Vi samler ${reviews ? 'pris, afstand og anmeldelser' : 'pris, afstand og autorisation'} ét sted, så du sparer både tid og penge.`,
+      intro:
+        'FixMatch gør det nemt at finde den rette håndværker eller mekaniker. Vi samler pris, afstand og anmeldelser ét sted, så du sparer både tid og penge.',
       sections: [
         {
           heading: 'Hvorfor FixMatch?',
@@ -354,9 +341,7 @@ export function infoPagesDa(reviews = TRUSTPILOT_ENABLED) {
             'Prisintervaller inkl. moms fra start – ikke først efter tre tilbud.',
             'Tilbudstjek fortæller, om et tilbud, du har fået, er lavt, normalt eller højt.',
             'Verificeret-mærket viser, hvilke virksomheder FixMatch selv har tjekket.',
-            reviews
-              ? 'Trustpilot-score, CVR og autorisation samlet på én side.'
-              : 'CVR og autorisation samlet på én side.',
+            'Anmeldelser fra brugere via FixMatch, CVR og autorisation samlet på én side.',
             'Ring direkte. Ingen mellemled, ingen gebyrer.',
             'Du bestemmer selv, hvad der vægter mest.',
           ],

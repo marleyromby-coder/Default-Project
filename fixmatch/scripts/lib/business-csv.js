@@ -29,6 +29,41 @@ const CATEGORY_ALIASES = {
 
 const AUTHORIZATION_KINDS = ['el', 'vvs', 'kloak', 'gas'];
 
+/**
+ * The review sites a business may link to (src/data/review-sites.json, which the app reads too).
+ * Only a plain link to the business's own profile: FixMatch never shows or uses their scores.
+ */
+const REVIEW_SITES = require('../../src/data/review-sites.json');
+const MAX_REVIEW_LINKS = 3;
+
+/** The allowed site a link points to, as reviewSiteOf() in src/lib/review-links.ts. */
+function reviewSiteOf(url) {
+  if (typeof url !== 'string' || url.length > 300 || /[\s<>"'\\`]/.test(url)) return undefined;
+  const lower = url.toLowerCase();
+  return REVIEW_SITES.find((site) =>
+    site.prefixes.some((prefix) => lower.startsWith(prefix) && url.length > prefix.length),
+  );
+}
+
+/** "https://g.page/firma | https://www.google.com/maps/place/..." → [{ site, url }] */
+function parseReviewLinks(value, errors) {
+  const links = [];
+  for (const part of String(value ?? '').split(/[|\s]+/)) {
+    if (!part.trim()) continue;
+    const url = /^[a-z]+:\/\//i.test(part) ? part.trim() : `https://${part.trim()}`;
+    const site = reviewSiteOf(url);
+    if (!site) {
+      errors.push(
+        `Anmeldelseslink "${part.trim()}" skal være et link til virksomhedens egen profil på ${REVIEW_SITES.map((s) => s.name).join(', ')} (https://...)`,
+      );
+    } else if (!links.some((link) => link.url === url)) {
+      links.push({ site: site.id, url });
+    }
+  }
+  if (links.length > MAX_REVIEW_LINKS) errors.push(`Højst ${MAX_REVIEW_LINKS} anmeldelseslinks`);
+  return links;
+}
+
 // Danish and English day names, so businesses abroad can write "Mon-Fri 07-16".
 const DAY_NAMES = {
   man: 0,
@@ -336,18 +371,16 @@ function rowToBusiness(row, context) {
     );
   }
 
-  let trustpilot;
-  if (row.trustpilot_score || row.trustpilot_url) {
-    const score = toNumber(row.trustpilot_score, { decimal: true });
-    const reviews = toNumber(row.trustpilot_antal);
-    const url = row.trustpilot_url;
-    if (!(score >= 1 && score <= 5)) errors.push('Trustpilot-score skal være mellem 1 og 5');
-    if (!(reviews >= 0)) errors.push('Antal Trustpilot-anmeldelser skal være et tal');
-    if (!/^https:\/\/([a-z]+\.)?trustpilot\.com\//.test(url ?? ''))
-      errors.push('Trustpilot-link skal starte med https://dk.trustpilot.com/');
-    const updatedAt = row.trustpilot_opdateret || today;
-    if (!isIsoDate(updatedAt)) errors.push('Trustpilot opdateret skal være en dato (ÅÅÅÅ-MM-DD)');
-    trustpilot = { score, reviews, url, updatedAt };
+  // Only plain links to the business's own review profiles. Scores, stars and counts from other
+  // sites must never be copied into the sheet; old columns with them are ignored.
+  const reviewLinks = parseReviewLinks(row.anmeldelseslinks, errors);
+  const ignored = Object.keys(row).filter(
+    (key) => /score|antal|rating|stjerner/i.test(key) && String(row[key] ?? '').trim() !== '',
+  );
+  if (ignored.length > 0) {
+    warnings.push(
+      `Kolonnerne ${ignored.join(', ')} bruges ikke: FixMatch viser og bruger ikke scorer eller antal anmeldelser fra andre sider`,
+    );
   }
 
   const authorizations = [];
@@ -429,7 +462,7 @@ function rowToBusiness(row, context) {
       ...(abroad ? { currency: market.currency } : {}),
       updatedAt: row.priser_opdateret && isIsoDate(row.priser_opdateret) ? row.priser_opdateret : today,
     },
-    ...(trustpilot ? { trustpilot } : {}),
+    ...(reviewLinks.length > 0 ? { reviewLinks } : {}),
     authorizations,
     memberships: String(row.medlemskaber ?? '')
       .split('|')
@@ -477,5 +510,6 @@ module.exports = {
   slugify,
   fold,
   toNumber,
+  reviewSiteOf,
   CATEGORY_IDS,
 };

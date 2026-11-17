@@ -198,11 +198,9 @@
       ],
       "updatedAt": "2026-10-01"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 474,
-      "url": "https://dk.trustpilot.com/review/kobberkilden-vvs.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 19
     },
     "authorizations": [
       {
@@ -279,7 +277,13 @@
       "vvs-3",
       "vvs-2"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Kobberkilden%20VVS%20Herlev"
+      }
+    ]
   },
   {
     "id": "roerfalken",
@@ -340,11 +344,9 @@
       ],
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 4,
-      "reviews": 384,
-      "url": "https://dk.trustpilot.com/review/roerfalken.example",
-      "updatedAt": "2026-10-17"
+    "demoReviews": {
+      "average": 4,
+      "reviews": 15
     },
     "authorizations": [
       {
@@ -488,11 +490,9 @@
       ],
       "updatedAt": "2026-10-03"
     },
-    "trustpilot": {
-      "score": 3.6,
-      "reviews": 40,
-      "url": "https://dk.trustpilot.com/review/hjertevarme-vvs-og-blik.example",
-      "updatedAt": "2026-10-18"
+    "demoReviews": {
+      "average": 3.6,
+      "reviews": 2
     },
     "authorizations": [
       {
@@ -577,6 +577,12 @@
       "vvs-1",
       "vvs-3",
       "vvs-2"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Hjertevarme%20VVS%20%26%20Blik%20K%C3%B8benhavn%20%C3%98"
+      }
     ]
   },
   {
@@ -638,11 +644,9 @@
       ],
       "updatedAt": "2026-10-13"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 843,
-      "url": "https://dk.trustpilot.com/review/dryp-stop-doegnservice.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 34
     },
     "authorizations": [
       {
@@ -726,7 +730,13 @@
     },
     "insurer": "Kyst Forsikring",
     "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne",
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Dryp-Stop%20D%C3%B8gnservice%20Ballerup"
+      }
+    ]
   },
   {
     "id": "boelgevand-roerteknik",
@@ -787,11 +797,9 @@
       ],
       "updatedAt": "2026-10-03"
     },
-    "trustpilot": {
-      "score": 4,
-      "reviews": 8,
-      "url": "https://dk.trustpilot.com/review/boelgevand-roerteknik.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4,
+      "reviews": 1
     },
     "authorizations": [
       {
@@ -869,7 +877,13 @@
       "vvs-2",
       "vvs-3"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=B%C3%B8lgevand%20R%C3%B8rteknik%20Hellerup"
+      }
+    ]
   },
   {
     "id": "kildeklar-vvs",
@@ -930,11 +944,9 @@
       ],
       "updatedAt": "2026-10-11"
     },
-    "trustpilot": {
-      "score": 3.9,
-      "reviews": 298,
-      "url": "https://dk.trustpilot.com/review/kildeklar-vvs.example",
-      "updatedAt": "2026-10-17"
+    "demoReviews": {
+      "average": 3.9,
+      "reviews": 12
     },
     "authorizations": [
       {
@@ -1082,11 +1094,9 @@
       ],
       "updatedAt": "2026-10-06"
     },
-    "trustpilot": {
-      "score": 4.9,
-      "reviews": 83,
-      "url": "https://dk.trustpilot.com/review/radiatorlauget.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 4.9,
+      "reviews": 3
     },
     "authorizations": [
       {
@@ -1222,11 +1232,9 @@
       ],
       "updatedAt": "2026-10-02"
     },
-    "trustpilot": {
-      "score": 4.1,
-      "reviews": 161,
-      "url": "https://dk.trustpilot.com/review/klitvand-vvs.example",
-      "updatedAt": "2026-10-17"
+    "demoReviews": {
+      "average": 4.1,
+      "reviews": 6
     },
     "authorizations": [
       {
@@ -1309,6 +1317,12 @@
       "vvs-3",
       "vvs-2",
       "vvs-1"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Klitvand%20VVS%20Risskov"
+      }
     ]
   },
   {
@@ -1370,11 +1384,9 @@
       ],
       "updatedAt": "2026-10-15"
     },
-    "trustpilot": {
-      "score": 3.9,
-      "reviews": 44,
-      "url": "https://dk.trustpilot.com/review/stroemhvirvel-roer-og-varme.example",
-      "updatedAt": "2026-10-18"
+    "demoReviews": {
+      "average": 3.9,
+      "reviews": 2
     },
     "authorizations": [
       {
@@ -1515,11 +1527,9 @@
       ],
       "updatedAt": "2026-10-02"
     },
-    "trustpilot": {
-      "score": 4.2,
-      "reviews": 8,
-      "url": "https://dk.trustpilot.com/review/lyngkilde-vvs.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4.2,
+      "reviews": 1
     },
     "authorizations": [
       {
@@ -1597,6 +1607,12 @@
       "vvs-3",
       "vvs-2",
       "vvs-1"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Lyngkilde%20VVS%20Odense%20NV"
+      }
     ]
   },
   {
@@ -1658,11 +1674,9 @@
       ],
       "updatedAt": "2026-10-15"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 124,
-      "url": "https://dk.trustpilot.com/review/isbjerg-varme-og-sanitet.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 5
     },
     "authorizations": [
       {
@@ -1742,7 +1756,13 @@
         "insurance"
       ]
     },
-    "insurer": "Nordisk Erhvervsforsikring"
+    "insurer": "Nordisk Erhvervsforsikring",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Isbjerg%20Varme%20%26%20Sanitet%20Aalborg"
+      }
+    ]
   },
   {
     "id": "aadalens-roerservice",
@@ -1803,11 +1823,9 @@
       ],
       "updatedAt": "2026-10-06"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 29,
-      "url": "https://dk.trustpilot.com/review/aadalens-roerservice.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 1
     },
     "authorizations": [
       {
@@ -1892,6 +1910,12 @@
       "vvs-3",
       "vvs-1",
       "vvs-2"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=%C3%85dalens%20R%C3%B8rservice%20Aalborg%20SV"
+      }
     ]
   },
   {
@@ -1953,11 +1977,9 @@
       ],
       "updatedAt": "2026-10-11"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 11,
-      "url": "https://dk.trustpilot.com/review/lysfalken-el.example",
-      "updatedAt": "2026-10-18"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 1
     },
     "authorizations": [
       {
@@ -2032,6 +2054,12 @@
       "el-2",
       "el-3",
       "el-1"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Lysfalken%20El%20K%C3%B8benhavn%20V"
+      }
     ]
   },
   {
@@ -2092,11 +2120,9 @@
       ],
       "updatedAt": "2026-10-01"
     },
-    "trustpilot": {
-      "score": 3.8,
-      "reviews": 208,
-      "url": "https://dk.trustpilot.com/review/gnist-og-soen.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 3.8,
+      "reviews": 8
     },
     "authorizations": [
       {
@@ -2174,7 +2200,13 @@
       "el-4",
       "el-3"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Gnist%20%26%20S%C3%B8n%20R%C3%B8dovre"
+      }
+    ]
   },
   {
     "id": "nordlys-elteknik",
@@ -2235,11 +2267,9 @@
       ],
       "updatedAt": "2026-10-12"
     },
-    "trustpilot": {
-      "score": 3.7,
-      "reviews": 396,
-      "url": "https://dk.trustpilot.com/review/nordlys-elteknik.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 3.7,
+      "reviews": 16
     },
     "authorizations": [
       {
@@ -2366,11 +2396,9 @@
       ],
       "updatedAt": "2026-10-12"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 9,
-      "url": "https://dk.trustpilot.com/review/voltkompagniet.example",
-      "updatedAt": "2026-10-18"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 1
     },
     "authorizations": [
       {
@@ -2438,7 +2466,13 @@
     "demo": true,
     "updatedAt": "2026-10-15",
     "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne",
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Voltkompagniet%20Herlev"
+      }
+    ]
   },
   {
     "id": "spaendingsfeltet",
@@ -2499,11 +2533,9 @@
       ],
       "updatedAt": "2026-10-06"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 135,
-      "url": "https://dk.trustpilot.com/review/spaendingsfeltet.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 5
     },
     "authorizations": [
       {
@@ -2636,11 +2668,9 @@
       ],
       "updatedAt": "2026-10-02"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 884,
-      "url": "https://dk.trustpilot.com/review/kobbertraad-el.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 35
     },
     "authorizations": [
       {
@@ -2709,7 +2739,13 @@
       "el-6",
       "el-3"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Kobbertr%C3%A5d%20El%20Kongens%20Lyngby"
+      }
+    ]
   },
   {
     "id": "fasekraft-elservice",
@@ -2770,11 +2806,9 @@
       ],
       "updatedAt": "2026-10-02"
     },
-    "trustpilot": {
-      "score": 3.9,
-      "reviews": 18,
-      "url": "https://dk.trustpilot.com/review/fasekraft-elservice.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 3.9,
+      "reviews": 1
     },
     "authorizations": [
       {
@@ -2857,6 +2891,12 @@
       "el-5",
       "el-1",
       "el-6"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Fasekraft%20Elservice%20Aarhus%20N"
+      }
     ]
   },
   {
@@ -2918,11 +2958,9 @@
       ],
       "updatedAt": "2026-10-08"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 19,
-      "url": "https://dk.trustpilot.com/review/amperelauget.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 1
     },
     "authorizations": [
       {
@@ -3058,11 +3096,9 @@
       ],
       "updatedAt": "2026-10-15"
     },
-    "trustpilot": {
-      "score": 4.9,
-      "reviews": 239,
-      "url": "https://dk.trustpilot.com/review/lynvejen-el.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.9,
+      "reviews": 10
     },
     "authorizations": [
       {
@@ -3210,11 +3246,9 @@
       ],
       "updatedAt": "2026-10-15"
     },
-    "trustpilot": {
-      "score": 4.2,
-      "reviews": 587,
-      "url": "https://dk.trustpilot.com/review/stroemlinjen-el.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.2,
+      "reviews": 23
     },
     "authorizations": [
       {
@@ -3355,11 +3389,9 @@
       ],
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 3.7,
-      "reviews": 89,
-      "url": "https://dk.trustpilot.com/review/lysbuen-el.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 3.7,
+      "reviews": 4
     },
     "authorizations": [
       {
@@ -3429,6 +3461,12 @@
       "el-3",
       "el-6",
       "el-4"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Lysbuen%20El%20Odense%20M"
+      }
     ]
   },
   {
@@ -3552,7 +3590,13 @@
     },
     "demo": true,
     "updatedAt": "2026-10-12",
-    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne"
+    "guaranteeScheme": "garantiordningen hos TEKNIQ Arbejdsgiverne",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Watt%20%26%20Co.%20Elservice%20Aalborg"
+      }
+    ]
   },
   {
     "id": "elvaerkstedet-gloed",
@@ -3612,11 +3656,9 @@
       ],
       "updatedAt": "2026-10-10"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 196,
-      "url": "https://dk.trustpilot.com/review/elvaerkstedet-gloed.example",
-      "updatedAt": "2026-10-17"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 8
     },
     "authorizations": [
       {
@@ -3688,7 +3730,13 @@
       "el-6",
       "el-3"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Elv%C3%A6rkstedet%20Gl%C3%B8d%20N%C3%B8rresundby"
+      }
+    ]
   },
   {
     "id": "egeknasten-toemrer",
@@ -3749,11 +3797,9 @@
       ],
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 4.7,
-      "reviews": 599,
-      "url": "https://dk.trustpilot.com/review/egeknasten-toemrer.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4.7,
+      "reviews": 24
     },
     "authorizations": [],
     "memberships": [
@@ -3890,11 +3936,9 @@
       ],
       "updatedAt": "2026-10-09"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 214,
-      "url": "https://dk.trustpilot.com/review/hoevlspaanen-toemrer-og-snedker.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 9
     },
     "authorizations": [],
     "memberships": [],
@@ -3958,7 +4002,13 @@
       "toemrer-6",
       "toemrer-2"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=H%C3%B8vlsp%C3%A5nen%20T%C3%B8mrer%20%26%20Snedker%20K%C3%B8benhavn%20S"
+      }
+    ]
   },
   {
     "id": "spaer-og-soen",
@@ -4018,11 +4068,9 @@
       ],
       "updatedAt": "2026-10-02"
     },
-    "trustpilot": {
-      "score": 4.2,
-      "reviews": 226,
-      "url": "https://dk.trustpilot.com/review/spaer-og-soen.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4.2,
+      "reviews": 9
     },
     "authorizations": [],
     "memberships": [],
@@ -4157,11 +4205,9 @@
       ],
       "updatedAt": "2026-10-15"
     },
-    "trustpilot": {
-      "score": 3.9,
-      "reviews": 288,
-      "url": "https://dk.trustpilot.com/review/bjaelkelauget.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 3.9,
+      "reviews": 12
     },
     "authorizations": [],
     "memberships": [],
@@ -4285,11 +4331,9 @@
       ],
       "updatedAt": "2026-10-13"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 23,
-      "url": "https://dk.trustpilot.com/review/traevaerket-lund.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -4356,7 +4400,13 @@
       "toemrer-3",
       "toemrer-5"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Tr%C3%A6v%C3%A6rket%20Lund%20Kastrup"
+      }
+    ]
   },
   {
     "id": "fyrretrae-toemrerne",
@@ -4476,7 +4526,13 @@
     "demo": true,
     "updatedAt": "2026-10-17",
     "guaranteeScheme": "garantiordningen hos DI Byggeri",
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Fyrretr%C3%A6%20T%C3%B8mrerne%20K%C3%B8benhavn%20%C3%98"
+      }
+    ]
   },
   {
     "id": "laerkehoevl-byg",
@@ -4537,11 +4593,9 @@
       ],
       "updatedAt": "2026-10-01"
     },
-    "trustpilot": {
-      "score": 3.8,
-      "reviews": 427,
-      "url": "https://dk.trustpilot.com/review/laerkehoevl-byg.example",
-      "updatedAt": "2026-10-17"
+    "demoReviews": {
+      "average": 3.8,
+      "reviews": 17
     },
     "authorizations": [],
     "memberships": [
@@ -4621,7 +4675,13 @@
       "toemrer-2",
       "toemrer-4"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=L%C3%A6rkeh%C3%B8vl%20Byg%20H%C3%B8jbjerg"
+      }
+    ]
   },
   {
     "id": "boegebakken-toemrer",
@@ -4682,11 +4742,9 @@
       ],
       "updatedAt": "2026-10-06"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 12,
-      "url": "https://dk.trustpilot.com/review/boegebakken-toemrer.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -4826,11 +4884,9 @@
       ],
       "updatedAt": "2026-10-09"
     },
-    "trustpilot": {
-      "score": 4.2,
-      "reviews": 448,
-      "url": "https://dk.trustpilot.com/review/vinkeljernet.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.2,
+      "reviews": 18
     },
     "authorizations": [],
     "memberships": [],
@@ -4969,11 +5025,9 @@
       ],
       "updatedAt": "2026-10-13"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 647,
-      "url": "https://dk.trustpilot.com/review/tapsporet-toemrer.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 26
     },
     "authorizations": [],
     "memberships": [
@@ -5036,7 +5090,13 @@
     "demo": true,
     "updatedAt": "2026-10-10",
     "insurer": "Nordisk Erhvervsforsikring",
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Tapsporet%20T%C3%B8mrer%20Odense%20C"
+      }
+    ]
   },
   {
     "id": "stolpe-og-spaer",
@@ -5097,11 +5157,9 @@
       ],
       "updatedAt": "2026-10-10"
     },
-    "trustpilot": {
-      "score": 4.2,
-      "reviews": 38,
-      "url": "https://dk.trustpilot.com/review/stolpe-og-spaer.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4.2,
+      "reviews": 2
     },
     "authorizations": [],
     "memberships": [],
@@ -5307,6 +5365,12 @@
       "toemrer-2",
       "toemrer-1",
       "toemrer-7"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Kvistlauget%20Aalborg"
+      }
     ]
   },
   {
@@ -5368,11 +5432,9 @@
       ],
       "updatedAt": "2026-10-01"
     },
-    "trustpilot": {
-      "score": 3.9,
-      "reviews": 209,
-      "url": "https://dk.trustpilot.com/review/laftehuset-toemrer.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 3.9,
+      "reviews": 8
     },
     "authorizations": [],
     "memberships": [
@@ -5511,11 +5573,9 @@
       ],
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 153,
-      "url": "https://dk.trustpilot.com/review/teglvaerket-murerne.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 6
     },
     "authorizations": [],
     "memberships": [
@@ -5590,6 +5650,12 @@
       "murer-1",
       "murer-3",
       "murer-2"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Teglv%C3%A6rket%20Murerne%20R%C3%B8dovre"
+      }
     ]
   },
   {
@@ -5651,11 +5717,9 @@
       ],
       "updatedAt": "2026-10-08"
     },
-    "trustpilot": {
-      "score": 3.7,
-      "reviews": 56,
-      "url": "https://dk.trustpilot.com/review/murskeen-og-co.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 3.7,
+      "reviews": 2
     },
     "authorizations": [],
     "memberships": [
@@ -5727,7 +5791,13 @@
       ]
     },
     "insurer": "Håndværkernes Forsikring",
-    "guaranteeScheme": "garantiordningen hos DI Byggeri"
+    "guaranteeScheme": "garantiordningen hos DI Byggeri",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Murskeen%20%26%20Co.%20Hvidovre"
+      }
+    ]
   },
   {
     "id": "lodsnoren-murerfirma",
@@ -5787,11 +5857,9 @@
       ],
       "updatedAt": "2026-10-02"
     },
-    "trustpilot": {
-      "score": 4.2,
-      "reviews": 801,
-      "url": "https://dk.trustpilot.com/review/lodsnoren-murerfirma.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.2,
+      "reviews": 32
     },
     "authorizations": [],
     "memberships": [
@@ -5869,7 +5937,13 @@
       "murer-5",
       "murer-4"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Lodsnoren%20Murerfirma%20Frederiksberg"
+      }
+    ]
   },
   {
     "id": "kalk-og-kvarts-murer",
@@ -5930,11 +6004,9 @@
       ],
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 4.7,
-      "reviews": 22,
-      "url": "https://dk.trustpilot.com/review/kalk-og-kvarts-murer.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4.7,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -6070,11 +6142,9 @@
       ],
       "updatedAt": "2026-10-09"
     },
-    "trustpilot": {
-      "score": 4.4,
-      "reviews": 366,
-      "url": "https://dk.trustpilot.com/review/moertellauget.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4.4,
+      "reviews": 15
     },
     "authorizations": [],
     "memberships": [
@@ -6151,7 +6221,13 @@
       "murer-3",
       "murer-5"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=M%C3%B8rtellauget%20K%C3%B8benhavn%20N"
+      }
+    ]
   },
   {
     "id": "fugen-murerservice",
@@ -6212,11 +6288,9 @@
       ],
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 4.1,
-      "reviews": 20,
-      "url": "https://dk.trustpilot.com/review/fugen-murerservice.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4.1,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -6287,7 +6361,13 @@
       ]
     },
     "insurer": "Nordisk Erhvervsforsikring",
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Fugen%20Murerservice%20Br%C3%B8nsh%C3%B8j"
+      }
+    ]
   },
   {
     "id": "roedsten-murerne",
@@ -6348,11 +6428,9 @@
       ],
       "updatedAt": "2026-10-06"
     },
-    "trustpilot": {
-      "score": 4.7,
-      "reviews": 32,
-      "url": "https://dk.trustpilot.com/review/roedsten-murerne.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 4.7,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -6478,11 +6556,9 @@
       ],
       "updatedAt": "2026-10-13"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 593,
-      "url": "https://dk.trustpilot.com/review/klinkerkompagniet.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 24
     },
     "authorizations": [],
     "memberships": [
@@ -6559,6 +6635,12 @@
       "murer-1",
       "murer-2",
       "murer-4"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Klinkerkompagniet%20Brabrand"
+      }
     ]
   },
   {
@@ -6694,6 +6776,12 @@
       "murer-3",
       "murer-1",
       "murer-4"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Flisefalken%20Viby%20J"
+      }
     ]
   },
   {
@@ -6755,11 +6843,9 @@
       ],
       "updatedAt": "2026-10-12"
     },
-    "trustpilot": {
-      "score": 3.7,
-      "reviews": 399,
-      "url": "https://dk.trustpilot.com/review/facadelauget.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 3.7,
+      "reviews": 16
     },
     "authorizations": [],
     "memberships": [],
@@ -7075,7 +7161,13 @@
     },
     "insurer": "Håndværkernes Forsikring",
     "guaranteeScheme": "garantiordningen hos DI Byggeri",
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Gavlen%20Murerfirma%20Aalborg%20SV"
+      }
+    ]
   },
   {
     "id": "teglbakken-murer",
@@ -7135,11 +7227,9 @@
       ],
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 632,
-      "url": "https://dk.trustpilot.com/review/teglbakken-murer.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 25
     },
     "authorizations": [],
     "memberships": [],
@@ -7212,6 +7302,12 @@
       "murer-2",
       "murer-3",
       "murer-4"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Teglbakken%20Murer%20Aalborg"
+      }
     ]
   },
   {
@@ -7272,11 +7368,9 @@
       ],
       "updatedAt": "2026-10-05"
     },
-    "trustpilot": {
-      "score": 4.1,
-      "reviews": 68,
-      "url": "https://dk.trustpilot.com/review/stempel-og-soen-autoservice.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4.1,
+      "reviews": 3
     },
     "authorizations": [],
     "memberships": [
@@ -7347,6 +7441,12 @@
       "mekaniker-5",
       "mekaniker-2",
       "mekaniker-9"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Stempel%20%26%20S%C3%B8n%20Autoservice%20Valby"
+      }
     ]
   },
   {
@@ -7407,11 +7507,9 @@
       ],
       "updatedAt": "2026-10-05"
     },
-    "trustpilot": {
-      "score": 3.7,
-      "reviews": 139,
-      "url": "https://dk.trustpilot.com/review/krumtap-autovaerksted.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 3.7,
+      "reviews": 6
     },
     "authorizations": [],
     "memberships": [],
@@ -7613,7 +7711,13 @@
       "mekaniker-8",
       "mekaniker-9"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Gearkassen%20Auto%20Ballerup"
+      }
+    ]
   },
   {
     "id": "ventilen-bilservice",
@@ -7673,11 +7777,9 @@
       ],
       "updatedAt": "2026-10-13"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 100,
-      "url": "https://dk.trustpilot.com/review/ventilen-bilservice.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 4
     },
     "authorizations": [],
     "memberships": [
@@ -7815,11 +7917,9 @@
       ],
       "updatedAt": "2026-10-08"
     },
-    "trustpilot": {
-      "score": 4,
-      "reviews": 23,
-      "url": "https://dk.trustpilot.com/review/faelgen-autocenter.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -7886,7 +7986,13 @@
       "mekaniker-7",
       "mekaniker-3"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=F%C3%A6lgen%20Autocenter%20Hellerup"
+      }
+    ]
   },
   {
     "id": "taendroeret-auto",
@@ -7946,11 +8052,9 @@
       ],
       "updatedAt": "2026-10-06"
     },
-    "trustpilot": {
-      "score": 4.1,
-      "reviews": 421,
-      "url": "https://dk.trustpilot.com/review/taendroeret-auto.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4.1,
+      "reviews": 17
     },
     "authorizations": [],
     "memberships": [
@@ -8022,7 +8126,13 @@
       "mekaniker-8",
       "mekaniker-3"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=T%C3%A6ndr%C3%B8ret%20Auto%20S%C3%B8borg"
+      }
+    ]
   },
   {
     "id": "kardan-auto",
@@ -8082,11 +8192,9 @@
       ],
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 18,
-      "url": "https://dk.trustpilot.com/review/kardan-auto.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -8219,11 +8327,9 @@
       ],
       "updatedAt": "2026-10-05"
     },
-    "trustpilot": {
-      "score": 4,
-      "reviews": 30,
-      "url": "https://dk.trustpilot.com/review/hjulspind-autoservice.example",
-      "updatedAt": "2026-10-18"
+    "demoReviews": {
+      "average": 4,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -8298,6 +8404,12 @@
       "mekaniker-5",
       "mekaniker-1",
       "mekaniker-9"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Hjulspind%20Autoservice%20H%C3%B8jbjerg"
+      }
     ]
   },
   {
@@ -8358,11 +8470,9 @@
       ],
       "updatedAt": "2026-10-03"
     },
-    "trustpilot": {
-      "score": 4,
-      "reviews": 47,
-      "url": "https://dk.trustpilot.com/review/kobling-og-co.example",
-      "updatedAt": "2026-10-18"
+    "demoReviews": {
+      "average": 4,
+      "reviews": 2
     },
     "authorizations": [],
     "memberships": [],
@@ -8486,11 +8596,9 @@
       ],
       "updatedAt": "2026-10-05"
     },
-    "trustpilot": {
-      "score": 4.1,
-      "reviews": 14,
-      "url": "https://dk.trustpilot.com/review/motorlauget.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.1,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -8617,11 +8725,9 @@
       ],
       "updatedAt": "2026-10-11"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 323,
-      "url": "https://dk.trustpilot.com/review/servo-autovaerksted.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 13
     },
     "authorizations": [],
     "memberships": [],
@@ -8681,7 +8787,13 @@
     },
     "demo": true,
     "updatedAt": "2026-10-18",
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Servo%20Autov%C3%A6rksted%20Odense%20S%C3%98"
+      }
+    ]
   },
   {
     "id": "bremsefalken",
@@ -8804,7 +8916,13 @@
     },
     "demo": true,
     "updatedAt": "2026-10-13",
-    "insurer": "Kyst Forsikring"
+    "insurer": "Kyst Forsikring",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Bremsefalken%20Aalborg%20SV"
+      }
+    ]
   },
   {
     "id": "knastaksel-auto",
@@ -8864,11 +8982,9 @@
       ],
       "updatedAt": "2026-10-01"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 23,
-      "url": "https://dk.trustpilot.com/review/knastaksel-auto.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -8935,7 +9051,13 @@
       ]
     },
     "insurer": "Kyst Forsikring",
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Knastaksel%20Auto%20Aalborg"
+      }
+    ]
   },
   {
     "id": "penselstroeget",
@@ -8995,11 +9117,9 @@
       ],
       "updatedAt": "2026-10-06"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 31,
-      "url": "https://dk.trustpilot.com/review/penselstroeget.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -9201,6 +9321,12 @@
       "maler-5",
       "maler-3",
       "maler-4"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Rullen%20%26%20S%C3%B8n%20S%C3%B8borg"
+      }
     ]
   },
   {
@@ -9261,11 +9387,9 @@
       ],
       "updatedAt": "2026-10-02"
     },
-    "trustpilot": {
-      "score": 3.9,
-      "reviews": 40,
-      "url": "https://dk.trustpilot.com/review/farvelauget.example",
-      "updatedAt": "2026-10-18"
+    "demoReviews": {
+      "average": 3.9,
+      "reviews": 2
     },
     "authorizations": [],
     "memberships": [
@@ -9399,11 +9523,9 @@
       ],
       "updatedAt": "2026-10-12"
     },
-    "trustpilot": {
-      "score": 3.9,
-      "reviews": 18,
-      "url": "https://dk.trustpilot.com/review/kalkmalerne.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 3.9,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -9604,6 +9726,12 @@
       "maler-3",
       "maler-4",
       "maler-1"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=D%C3%A6kfarven%20Kastrup"
+      }
     ]
   },
   {
@@ -9664,11 +9792,9 @@
       ],
       "updatedAt": "2026-10-13"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 159,
-      "url": "https://dk.trustpilot.com/review/spartel-og-co.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 6
     },
     "authorizations": [],
     "memberships": [],
@@ -9743,7 +9869,13 @@
       "maler-2",
       "maler-5"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Spartel%20%26%20Co.%20K%C3%B8benhavn%20V"
+      }
+    ]
   },
   {
     "id": "glans-og-mat-malere",
@@ -9803,11 +9935,9 @@
       ],
       "updatedAt": "2026-10-03"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 28,
-      "url": "https://dk.trustpilot.com/review/glans-og-mat-malere.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -9870,7 +10000,13 @@
       "maler-5",
       "maler-1"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Glans%20%26%20Mat%20Malere%20Aarhus%20N"
+      }
+    ]
   },
   {
     "id": "nuance-malerne",
@@ -9930,11 +10066,9 @@
       ],
       "updatedAt": "2026-10-15"
     },
-    "trustpilot": {
-      "score": 4.7,
-      "reviews": 387,
-      "url": "https://dk.trustpilot.com/review/nuance-malerne.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.7,
+      "reviews": 15
     },
     "authorizations": [],
     "memberships": [],
@@ -10188,11 +10322,9 @@
       ],
       "updatedAt": "2026-10-12"
     },
-    "trustpilot": {
-      "score": 4.1,
-      "reviews": 103,
-      "url": "https://dk.trustpilot.com/review/okker-malerfirma.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4.1,
+      "reviews": 4
     },
     "authorizations": [],
     "memberships": [],
@@ -10261,7 +10393,13 @@
       "maler-1",
       "maler-3"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Okker%20Malerfirma%20Odense%20M"
+      }
+    ]
   },
   {
     "id": "lasur-malerne",
@@ -10321,11 +10459,9 @@
       ],
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 4.7,
-      "reviews": 42,
-      "url": "https://dk.trustpilot.com/review/lasur-malerne.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4.7,
+      "reviews": 2
     },
     "authorizations": [],
     "memberships": [
@@ -10394,7 +10530,13 @@
       "maler-5",
       "maler-4"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Lasur%20Malerne%20Odense%20S%C3%98"
+      }
+    ]
   },
   {
     "id": "kuloer-og-kvalitet",
@@ -10454,11 +10596,9 @@
       ],
       "updatedAt": "2026-10-08"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 342,
-      "url": "https://dk.trustpilot.com/review/kuloer-og-kvalitet.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 14
     },
     "authorizations": [],
     "memberships": [
@@ -10589,11 +10729,9 @@
       ],
       "updatedAt": "2026-10-01"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 37,
-      "url": "https://dk.trustpilot.com/review/skygge-og-lys-malere.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -10721,11 +10859,9 @@
       ],
       "updatedAt": "2026-10-10"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 140,
-      "url": "https://dk.trustpilot.com/review/tagrenden-tagdaekning.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 6
     },
     "authorizations": [],
     "memberships": [
@@ -10797,7 +10933,13 @@
       ]
     },
     "insurer": "Kyst Forsikring",
-    "guaranteeScheme": "garantiordningen hos DI Byggeri"
+    "guaranteeScheme": "garantiordningen hos DI Byggeri",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Tagrenden%20Tagd%C3%A6kning%20Ballerup"
+      }
+    ]
   },
   {
     "id": "tagpapfalken",
@@ -10858,11 +11000,9 @@
       ],
       "updatedAt": "2026-10-07"
     },
-    "trustpilot": {
-      "score": 4.4,
-      "reviews": 81,
-      "url": "https://dk.trustpilot.com/review/tagpapfalken.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.4,
+      "reviews": 3
     },
     "authorizations": [],
     "memberships": [
@@ -10997,11 +11137,9 @@
       ],
       "updatedAt": "2026-10-05"
     },
-    "trustpilot": {
-      "score": 4.4,
-      "reviews": 128,
-      "url": "https://dk.trustpilot.com/review/kvistlyset-tag.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.4,
+      "reviews": 5
     },
     "authorizations": [],
     "memberships": [
@@ -11138,11 +11276,9 @@
       ],
       "updatedAt": "2026-10-01"
     },
-    "trustpilot": {
-      "score": 4.4,
-      "reviews": 13,
-      "url": "https://dk.trustpilot.com/review/rygningen-tagservice.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.4,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -11279,11 +11415,9 @@
       ],
       "updatedAt": "2026-10-12"
     },
-    "trustpilot": {
-      "score": 4,
-      "reviews": 8,
-      "url": "https://dk.trustpilot.com/review/tagfladen.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 4,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -11416,11 +11550,9 @@
       ],
       "updatedAt": "2026-10-05"
     },
-    "trustpilot": {
-      "score": 3.9,
-      "reviews": 22,
-      "url": "https://dk.trustpilot.com/review/skifer-og-soen.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 3.9,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -11483,6 +11615,12 @@
       "tagdaekker-1",
       "tagdaekker-4",
       "tagdaekker-3"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Skifer%20%26%20S%C3%B8n%20K%C3%B8benhavn%20S"
+      }
     ]
   },
   {
@@ -11544,11 +11682,9 @@
       ],
       "updatedAt": "2026-10-12"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 521,
-      "url": "https://dk.trustpilot.com/review/tagstenen.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 21
     },
     "authorizations": [],
     "memberships": [
@@ -11629,7 +11765,13 @@
       "tagdaekker-2",
       "tagdaekker-3"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Tagstenen%20H%C3%B8jbjerg"
+      }
+    ]
   },
   {
     "id": "vindskeden-tag",
@@ -11689,11 +11831,9 @@
       ],
       "updatedAt": "2026-10-02"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 155,
-      "url": "https://dk.trustpilot.com/review/vindskeden-tag.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 6
     },
     "authorizations": [],
     "memberships": [],
@@ -11810,11 +11950,9 @@
       ],
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 8,
-      "url": "https://dk.trustpilot.com/review/taglaegten.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -11944,11 +12082,9 @@
       ],
       "updatedAt": "2026-10-15"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 330,
-      "url": "https://dk.trustpilot.com/review/nedloebet-tagservice.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 13
     },
     "authorizations": [],
     "memberships": [
@@ -12020,7 +12156,13 @@
       ]
     },
     "insurer": "Kyst Forsikring",
-    "guaranteeScheme": "garantiordningen hos DI Byggeri"
+    "guaranteeScheme": "garantiordningen hos DI Byggeri",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Nedl%C3%B8bet%20Tagservice%20Odense%20C"
+      }
+    ]
   },
   {
     "id": "tagfoden",
@@ -12081,11 +12223,9 @@
       ],
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 4.9,
-      "reviews": 84,
-      "url": "https://dk.trustpilot.com/review/tagfoden.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.9,
+      "reviews": 3
     },
     "authorizations": [],
     "memberships": [],
@@ -12142,7 +12282,13 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-15"
+    "updatedAt": "2026-10-15",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Tagfoden%20Odense%20M"
+      }
+    ]
   },
   {
     "id": "moenning-tag",
@@ -12267,7 +12413,13 @@
       "tagdaekker-1",
       "tagdaekker-2"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=M%C3%B8nning%20Tag%20N%C3%B8rresundby"
+      }
+    ]
   },
   {
     "id": "sternbraedt-tag",
@@ -12328,11 +12480,9 @@
       ],
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 622,
-      "url": "https://dk.trustpilot.com/review/sternbraedt-tag.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 25
     },
     "authorizations": [],
     "memberships": [
@@ -12468,11 +12618,9 @@
       ],
       "updatedAt": "2026-10-11"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 27,
-      "url": "https://dk.trustpilot.com/review/noeglehullet-laaseservice.example",
-      "updatedAt": "2026-10-17"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -12548,6 +12696,12 @@
       "laasesmed-1",
       "laasesmed-3",
       "laasesmed-2"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=N%C3%B8glehullet%20L%C3%A5seservice%20K%C3%B8benhavn%20%C3%98"
+      }
     ]
   },
   {
@@ -12609,11 +12763,9 @@
       ],
       "updatedAt": "2026-10-02"
     },
-    "trustpilot": {
-      "score": 4.9,
-      "reviews": 35,
-      "url": "https://dk.trustpilot.com/review/cylinderen-laasesmed.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.9,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -12752,11 +12904,9 @@
       ],
       "updatedAt": "2026-10-05"
     },
-    "trustpilot": {
-      "score": 3.8,
-      "reviews": 42,
-      "url": "https://dk.trustpilot.com/review/dirk-og-soen-laase.example",
-      "updatedAt": "2026-10-17"
+    "demoReviews": {
+      "average": 3.8,
+      "reviews": 2
     },
     "authorizations": [],
     "memberships": [],
@@ -12823,6 +12973,12 @@
       "laasesmed-2",
       "laasesmed-1",
       "laasesmed-3"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Dirk%20%26%20S%C3%B8n%20L%C3%A5se%20S%C3%B8borg"
+      }
     ]
   },
   {
@@ -12884,11 +13040,9 @@
       ],
       "updatedAt": "2026-10-05"
     },
-    "trustpilot": {
-      "score": 4.4,
-      "reviews": 118,
-      "url": "https://dk.trustpilot.com/review/slaa-og-laas-laasesmed.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.4,
+      "reviews": 5
     },
     "authorizations": [],
     "memberships": [],
@@ -13023,11 +13177,9 @@
       ],
       "updatedAt": "2026-10-11"
     },
-    "trustpilot": {
-      "score": 4.7,
-      "reviews": 17,
-      "url": "https://dk.trustpilot.com/review/fallen-laaseservice.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.7,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -13087,7 +13239,13 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-13"
+    "updatedAt": "2026-10-13",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Fallen%20L%C3%A5seservice%20Kongens%20Lyngby"
+      }
+    ]
   },
   {
     "id": "noeglebundtet",
@@ -13148,11 +13306,9 @@
       ],
       "updatedAt": "2026-10-13"
     },
-    "trustpilot": {
-      "score": 4,
-      "reviews": 231,
-      "url": "https://dk.trustpilot.com/review/noeglebundtet.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4,
+      "reviews": 9
     },
     "authorizations": [],
     "memberships": [],
@@ -13221,6 +13377,12 @@
       "laasesmed-3",
       "laasesmed-1",
       "laasesmed-2"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=N%C3%B8glebundtet%20K%C3%B8benhavn%20V"
+      }
     ]
   },
   {
@@ -13350,6 +13512,12 @@
       "laasesmed-1",
       "laasesmed-2",
       "laasesmed-3"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Kode%20%26%20L%C3%A5s%20Brabrand"
+      }
     ]
   },
   {
@@ -13411,11 +13579,9 @@
       ],
       "updatedAt": "2026-10-01"
     },
-    "trustpilot": {
-      "score": 4.1,
-      "reviews": 141,
-      "url": "https://dk.trustpilot.com/review/laasefalken.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.1,
+      "reviews": 6
     },
     "authorizations": [],
     "memberships": [],
@@ -13480,6 +13646,12 @@
       "laasesmed-1",
       "laasesmed-3",
       "laasesmed-2"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=L%C3%A5sefalken%20Aarhus%20N"
+      }
     ]
   },
   {
@@ -13540,11 +13712,9 @@
       ],
       "updatedAt": "2026-10-10"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 689,
-      "url": "https://dk.trustpilot.com/review/riglen-laasesmed.example",
-      "updatedAt": "2026-10-17"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 28
     },
     "authorizations": [],
     "memberships": [],
@@ -13622,6 +13792,12 @@
       "laasesmed-2",
       "laasesmed-3",
       "laasesmed-1"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Riglen%20L%C3%A5sesmed%20Viby%20J"
+      }
     ]
   },
   {
@@ -13682,11 +13858,9 @@
       ],
       "updatedAt": "2026-10-13"
     },
-    "trustpilot": {
-      "score": 4.7,
-      "reviews": 14,
-      "url": "https://dk.trustpilot.com/review/sikkerhedslauget.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.7,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -13812,11 +13986,9 @@
       ],
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 3.8,
-      "reviews": 765,
-      "url": "https://dk.trustpilot.com/review/doergrebet-laase.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 3.8,
+      "reviews": 31
     },
     "authorizations": [],
     "memberships": [],
@@ -13890,6 +14062,12 @@
       "laasesmed-1",
       "laasesmed-3",
       "laasesmed-2"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=D%C3%B8rgrebet%20L%C3%A5se%20Odense%20M"
+      }
     ]
   },
   {
@@ -13950,11 +14128,9 @@
       ],
       "updatedAt": "2026-10-15"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 8,
-      "url": "https://dk.trustpilot.com/review/hasp-og-haengsel.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -14090,11 +14266,9 @@
       ],
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 574,
-      "url": "https://dk.trustpilot.com/review/noeglekompagniet.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 23
     },
     "authorizations": [],
     "memberships": [],
@@ -14235,11 +14409,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 4.7,
-      "reviews": 194,
-      "url": "https://se.trustpilot.com/review/kopparkallan-vvs.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4.7,
+      "reviews": 8
     },
     "authorizations": [],
     "memberships": [],
@@ -14374,11 +14546,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 4.4,
-      "reviews": 6,
-      "url": "https://se.trustpilot.com/review/vattenfallet-vvs.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.4,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -14507,11 +14677,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 4,
-      "reviews": 483,
-      "url": "https://se.trustpilot.com/review/rorverket-vvs.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4,
+      "reviews": 19
     },
     "authorizations": [],
     "memberships": [
@@ -14640,11 +14808,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-10"
     },
-    "trustpilot": {
-      "score": 4.7,
-      "reviews": 15,
-      "url": "https://se.trustpilot.com/review/ljusgnistan-el.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.7,
+      "reviews": 1
     },
     "authorizations": [
       {
@@ -14728,7 +14894,13 @@
       "el-5",
       "el-1"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Ljusgnistan%20El%20%C3%96stermalm%2C%20Stockholm"
+      }
+    ]
   },
   {
     "id": "stromkretsen-el",
@@ -14791,11 +14963,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-05"
     },
-    "trustpilot": {
-      "score": 4.2,
-      "reviews": 202,
-      "url": "https://se.trustpilot.com/review/stromkretsen-el.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.2,
+      "reviews": 8
     },
     "authorizations": [
       {
@@ -14936,11 +15106,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 269,
-      "url": "https://se.trustpilot.com/review/gnistan-el.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 11
     },
     "authorizations": [
       {
@@ -15085,11 +15253,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-10"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 53,
-      "url": "https://se.trustpilot.com/review/ekspaanet-snickeri.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 2
     },
     "authorizations": [],
     "memberships": [
@@ -15156,6 +15322,12 @@
       "toemrer-4",
       "toemrer-3",
       "toemrer-6"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Eksp%C3%A5net%20Snickeri%20%C3%96stermalm%2C%20Stockholm"
+      }
     ]
   },
   {
@@ -15219,11 +15391,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-05"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 6,
-      "url": "https://se.trustpilot.com/review/hyvelbanken-snickeri.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -15288,7 +15458,13 @@
     "demo": true,
     "updatedAt": "2026-10-11",
     "insurer": "Kyst Forsikring",
-    "guaranteeScheme": "garantiordningen hos Byggföretagen"
+    "guaranteeScheme": "garantiordningen hos Byggföretagen",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Hyvelb%C3%A4nken%20Snickeri%20Nacka"
+      }
+    ]
   },
   {
     "id": "bjalklaget-snickeri",
@@ -15351,11 +15527,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-10"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 456,
-      "url": "https://se.trustpilot.com/review/bjalklaget-snickeri.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 18
     },
     "authorizations": [],
     "memberships": [],
@@ -15477,11 +15651,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-02"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 9,
-      "url": "https://se.trustpilot.com/review/tegelrod-mureri.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -15556,6 +15728,12 @@
       "murer-1",
       "murer-5",
       "murer-2"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Tegelr%C3%B6d%20Mureri%20Kungsholmen%2C%20Stockholm"
+      }
     ]
   },
   {
@@ -15619,11 +15797,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-15"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 760,
-      "url": "https://se.trustpilot.com/review/kalkstenen-mureri.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 30
     },
     "authorizations": [],
     "memberships": [
@@ -15690,7 +15866,13 @@
       "murer-4",
       "murer-1"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Kalkstenen%20Mureri%20Vasastan%2C%20Stockholm"
+      }
+    ]
   },
   {
     "id": "fogmastaren-mureri",
@@ -15752,11 +15934,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-11"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 726,
-      "url": "https://se.trustpilot.com/review/fogmastaren-mureri.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 29
     },
     "authorizations": [],
     "memberships": [
@@ -15885,11 +16065,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-15"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 105,
-      "url": "https://se.trustpilot.com/review/kolvverket-bilverkstad.example",
-      "updatedAt": "2026-10-17"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 4
     },
     "authorizations": [],
     "memberships": [],
@@ -16024,11 +16202,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 4,
-      "reviews": 218,
-      "url": "https://se.trustpilot.com/review/kugghjulet-bilverkstad.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4,
+      "reviews": 9
     },
     "authorizations": [],
     "memberships": [],
@@ -16098,7 +16274,13 @@
       "mekaniker-4",
       "mekaniker-2"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Kugghjulet%20Bilverkstad%20Vasastan%2C%20Stockholm"
+      }
+    ]
   },
   {
     "id": "vevaxeln-bilverkstad",
@@ -16160,11 +16342,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 265,
-      "url": "https://se.trustpilot.com/review/vevaxeln-bilverkstad.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 11
     },
     "authorizations": [],
     "memberships": [],
@@ -16305,11 +16485,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 4.7,
-      "reviews": 8,
-      "url": "https://se.trustpilot.com/review/fargklicken-maaleri.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4.7,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -16388,6 +16566,12 @@
       "maler-4",
       "maler-2",
       "maler-3"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=F%C3%A4rgklicken%20M%C3%A5leri%20Vasastan%2C%20Stockholm"
+      }
     ]
   },
   {
@@ -16450,11 +16634,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-03"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 8,
-      "url": "https://se.trustpilot.com/review/penseldraget-maaleri.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -16533,7 +16715,13 @@
       "maler-1",
       "maler-5"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Penseldraget%20M%C3%A5leri%20S%C3%B6dermalm%2C%20Stockholm"
+      }
+    ]
   },
   {
     "id": "fargglad-maaleri",
@@ -16595,11 +16783,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 13,
-      "url": "https://se.trustpilot.com/review/fargglad-maaleri.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -16664,6 +16850,12 @@
       "maler-5",
       "maler-1",
       "maler-2"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=F%C3%A4rgglad%20M%C3%A5leri%20Nacka"
+      }
     ]
   },
   {
@@ -16853,11 +17045,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-06"
     },
-    "trustpilot": {
-      "score": 4.4,
-      "reviews": 30,
-      "url": "https://se.trustpilot.com/review/taknocken-tak.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4.4,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -16926,7 +17116,13 @@
       ]
     },
     "insurer": "Kyst Forsikring",
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Taknocken%20Tak%20S%C3%B6dermalm%2C%20Stockholm"
+      }
+    ]
   },
   {
     "id": "hangrannan-tak",
@@ -16989,11 +17185,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 3.9,
-      "reviews": 72,
-      "url": "https://se.trustpilot.com/review/hangrannan-tak.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 3.9,
+      "reviews": 3
     },
     "authorizations": [],
     "memberships": [
@@ -17116,11 +17310,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-12"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 145,
-      "url": "https://se.trustpilot.com/review/laaskolven-laas.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 6
     },
     "authorizations": [],
     "memberships": [
@@ -17255,11 +17447,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-01"
     },
-    "trustpilot": {
-      "score": 4.1,
-      "reviews": 67,
-      "url": "https://se.trustpilot.com/review/nyckelknippan-laas.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4.1,
+      "reviews": 3
     },
     "authorizations": [],
     "memberships": [],
@@ -17335,6 +17525,12 @@
       "laasesmed-1",
       "laasesmed-3",
       "laasesmed-2"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Nyckelknippan%20L%C3%A5s%20Vasastan%2C%20Stockholm"
+      }
     ]
   },
   {
@@ -17397,11 +17593,9 @@
       "currency": "SEK",
       "updatedAt": "2026-10-08"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 279,
-      "url": "https://se.trustpilot.com/review/regelfast-laas.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 11
     },
     "authorizations": [],
     "memberships": [
@@ -17481,6 +17675,12 @@
       "laasesmed-3",
       "laasesmed-2",
       "laasesmed-1"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Regelfast%20L%C3%A5s%20Vasastan%2C%20Stockholm"
+      }
     ]
   },
   {
@@ -17543,11 +17743,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-08"
     },
-    "trustpilot": {
-      "score": 4,
-      "reviews": 54,
-      "url": "https://no.trustpilot.com/review/kobberbekken-roer.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4,
+      "reviews": 2
     },
     "authorizations": [],
     "memberships": [],
@@ -17605,7 +17803,13 @@
     },
     "demo": true,
     "updatedAt": "2026-10-14",
-    "insurer": "Kyst Forsikring"
+    "insurer": "Kyst Forsikring",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Kobberbekken%20R%C3%B8r%20Nordstrand%2C%20Oslo"
+      }
+    ]
   },
   {
     "id": "fossefallet-roer",
@@ -17668,11 +17872,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-06"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 486,
-      "url": "https://no.trustpilot.com/review/fossefallet-roer.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 19
     },
     "authorizations": [],
     "memberships": [
@@ -17811,11 +18013,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-07"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 32,
-      "url": "https://no.trustpilot.com/review/roerverket-roer.example",
-      "updatedAt": "2026-10-18"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -17954,11 +18154,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-06"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 17,
-      "url": "https://no.trustpilot.com/review/lysgnisten-elektro.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 1
     },
     "authorizations": [
       {
@@ -18095,11 +18293,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-09"
     },
-    "trustpilot": {
-      "score": 4.7,
-      "reviews": 641,
-      "url": "https://no.trustpilot.com/review/stroemkretsen-elektro.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.7,
+      "reviews": 26
     },
     "authorizations": [
       {
@@ -18173,7 +18369,13 @@
         "insurance"
       ]
     },
-    "insurer": "Håndværkernes Forsikring"
+    "insurer": "Håndværkernes Forsikring",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Str%C3%B8mkretsen%20Elektro%20Gamle%20Oslo"
+      }
+    ]
   },
   {
     "id": "gnisten-elektro",
@@ -18378,11 +18580,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-03"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 364,
-      "url": "https://no.trustpilot.com/review/eikesponet-snekkeri.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 15
     },
     "authorizations": [],
     "memberships": [],
@@ -18457,6 +18657,12 @@
       "toemrer-5",
       "toemrer-1",
       "toemrer-4"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Eikesponet%20Snekkeri%20Nordstrand%2C%20Oslo"
+      }
     ]
   },
   {
@@ -18520,11 +18726,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 4,
-      "reviews": 8,
-      "url": "https://no.trustpilot.com/review/hoevelbenken-snekkeri.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 4,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -18717,7 +18921,13 @@
         "identity"
       ]
     },
-    "insurer": "Kyst Forsikring"
+    "insurer": "Kyst Forsikring",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Bjelkelaget%20Snekkeri%20Frogner%2C%20Oslo"
+      }
+    ]
   },
   {
     "id": "teglroed-mur",
@@ -18780,11 +18990,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-03"
     },
-    "trustpilot": {
-      "score": 3.7,
-      "reviews": 512,
-      "url": "https://no.trustpilot.com/review/teglroed-mur.example",
-      "updatedAt": "2026-10-18"
+    "demoReviews": {
+      "average": 3.7,
+      "reviews": 20
     },
     "authorizations": [],
     "memberships": [
@@ -18916,11 +19124,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-15"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 137,
-      "url": "https://no.trustpilot.com/review/kalksteinen-mur.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 5
     },
     "authorizations": [],
     "memberships": [],
@@ -18986,6 +19192,12 @@
       "murer-5",
       "murer-4",
       "murer-1"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Kalksteinen%20Mur%20Sagene%2C%20Oslo"
+      }
     ]
   },
   {
@@ -19049,11 +19261,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 7,
-      "url": "https://no.trustpilot.com/review/fugemesteren-mur.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -19118,7 +19328,13 @@
       "murer-5",
       "murer-4"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Fugemesteren%20Mur%20Majorstuen%2C%20Oslo"
+      }
+    ]
   },
   {
     "id": "stempelverket-bilverksted",
@@ -19180,11 +19396,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-05"
     },
-    "trustpilot": {
-      "score": 4.4,
-      "reviews": 53,
-      "url": "https://no.trustpilot.com/review/stempelverket-bilverksted.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 4.4,
+      "reviews": 2
     },
     "authorizations": [],
     "memberships": [
@@ -19265,6 +19479,12 @@
       "mekaniker-7",
       "mekaniker-1",
       "mekaniker-8"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Stempelverket%20Bilverksted%20Nordstrand%2C%20Oslo"
+      }
     ]
   },
   {
@@ -19399,7 +19619,13 @@
       ]
     },
     "insurer": "Nordisk Erhvervsforsikring",
-    "guaranteeScheme": "garantiordningen hos Norges Bilbransjeforbund"
+    "guaranteeScheme": "garantiordningen hos Norges Bilbransjeforbund",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Tannhjulet%20Bilverksted%20Frogner%2C%20Oslo"
+      }
+    ]
   },
   {
     "id": "veivakselen-bilverksted",
@@ -19461,11 +19687,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-02"
     },
-    "trustpilot": {
-      "score": 4.2,
-      "reviews": 838,
-      "url": "https://no.trustpilot.com/review/veivakselen-bilverksted.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4.2,
+      "reviews": 34
     },
     "authorizations": [],
     "memberships": [
@@ -19532,7 +19756,13 @@
     },
     "demo": true,
     "updatedAt": "2026-10-17",
-    "guaranteeScheme": "garantiordningen hos Norges Bilbransjeforbund"
+    "guaranteeScheme": "garantiordningen hos Norges Bilbransjeforbund",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Veivakselen%20Bilverksted%20Frogner%2C%20Oslo"
+      }
+    ]
   },
   {
     "id": "fargeklatten-maler",
@@ -19594,11 +19824,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-09"
     },
-    "trustpilot": {
-      "score": 4.4,
-      "reviews": 61,
-      "url": "https://no.trustpilot.com/review/fargeklatten-maler.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4.4,
+      "reviews": 2
     },
     "authorizations": [],
     "memberships": [],
@@ -19726,11 +19954,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 4.7,
-      "reviews": 202,
-      "url": "https://no.trustpilot.com/review/penselstroeket-maler.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4.7,
+      "reviews": 8
     },
     "authorizations": [],
     "memberships": [],
@@ -19791,7 +20017,13 @@
       }
     },
     "demo": true,
-    "updatedAt": "2026-10-10"
+    "updatedAt": "2026-10-10",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Penselstr%C3%B8ket%20Maler%20Gamle%20Oslo"
+      }
+    ]
   },
   {
     "id": "fargeglad-maler",
@@ -19853,11 +20085,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-03"
     },
-    "trustpilot": {
-      "score": 4.7,
-      "reviews": 21,
-      "url": "https://no.trustpilot.com/review/fargeglad-maler.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.7,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -19998,11 +20228,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-02"
     },
-    "trustpilot": {
-      "score": 4.1,
-      "reviews": 210,
-      "url": "https://no.trustpilot.com/review/skiferhatten-tak.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4.1,
+      "reviews": 8
     },
     "authorizations": [],
     "memberships": [
@@ -20064,7 +20292,13 @@
     },
     "demo": true,
     "updatedAt": "2026-10-15",
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Skiferhatten%20Tak%20Gamle%20Oslo"
+      }
+    ]
   },
   {
     "id": "takmoenet-tak",
@@ -20127,11 +20361,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-07"
     },
-    "trustpilot": {
-      "score": 3.9,
-      "reviews": 6,
-      "url": "https://no.trustpilot.com/review/takmoenet-tak.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 3.9,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -20204,6 +20436,12 @@
       "tagdaekker-2",
       "tagdaekker-3",
       "tagdaekker-1"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Takm%C3%B8net%20Tak%20Gr%C3%BCnerl%C3%B8kka%2C%20Oslo"
+      }
     ]
   },
   {
@@ -20267,11 +20505,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-09"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 344,
-      "url": "https://no.trustpilot.com/review/takrenna-tak.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 14
     },
     "authorizations": [],
     "memberships": [],
@@ -20407,11 +20643,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-12"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 518,
-      "url": "https://no.trustpilot.com/review/laasbolten-laasservice.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 21
     },
     "authorizations": [],
     "memberships": [
@@ -20540,11 +20774,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-08"
     },
-    "trustpilot": {
-      "score": 4.2,
-      "reviews": 224,
-      "url": "https://no.trustpilot.com/review/noekkelknippet-laasservice.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.2,
+      "reviews": 9
     },
     "authorizations": [],
     "memberships": [
@@ -20624,6 +20856,12 @@
       "laasesmed-3",
       "laasesmed-1",
       "laasesmed-2"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=N%C3%B8kkelknippet%20L%C3%A5sservice%20Gr%C3%BCnerl%C3%B8kka%2C%20Oslo"
+      }
     ]
   },
   {
@@ -20686,11 +20924,9 @@
       "currency": "NOK",
       "updatedAt": "2026-10-15"
     },
-    "trustpilot": {
-      "score": 4.7,
-      "reviews": 12,
-      "url": "https://no.trustpilot.com/review/regelfast-laasservice.example",
-      "updatedAt": "2026-10-17"
+    "demoReviews": {
+      "average": 4.7,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -20761,6 +20997,12 @@
       "laasesmed-2",
       "laasesmed-3",
       "laasesmed-1"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Regelfast%20L%C3%A5sservice%20Nordstrand%2C%20Oslo"
+      }
     ]
   },
   {
@@ -20823,11 +21065,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-09"
     },
-    "trustpilot": {
-      "score": 4.9,
-      "reviews": 206,
-      "url": "https://de.trustpilot.com/review/kupferquelle-haustechnik.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 4.9,
+      "reviews": 8
     },
     "authorizations": [],
     "memberships": [
@@ -20966,11 +21206,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-01"
     },
-    "trustpilot": {
-      "score": 3.8,
-      "reviews": 17,
-      "url": "https://de.trustpilot.com/review/wasserlauf-haustechnik.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 3.8,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -21039,7 +21277,13 @@
       ]
     },
     "insurer": "Nordisk Erhvervsforsikring",
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Wasserlauf%20Haustechnik%20Charlottenburg%2C%20Berlin"
+      }
+    ]
   },
   {
     "id": "rohrwerk-haustechnik",
@@ -21101,11 +21345,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-12"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 561,
-      "url": "https://de.trustpilot.com/review/rohrwerk-haustechnik.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 22
     },
     "authorizations": [],
     "memberships": [],
@@ -21234,11 +21476,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-02"
     },
-    "trustpilot": {
-      "score": 4,
-      "reviews": 7,
-      "url": "https://de.trustpilot.com/review/lichtfunke-elektrotechnik.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -21361,11 +21601,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 15,
-      "url": "https://de.trustpilot.com/review/stromkreis-elektrotechnik.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -21441,7 +21679,13 @@
       "el-6",
       "el-2"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Stromkreis%20Elektrotechnik%20Prenzlauer%20Berg%2C%20Berlin"
+      }
+    ]
   },
   {
     "id": "funkenflug-elektrotechnik",
@@ -21504,11 +21748,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 621,
-      "url": "https://de.trustpilot.com/review/funkenflug-elektrotechnik.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 25
     },
     "authorizations": [],
     "memberships": [
@@ -21575,7 +21817,13 @@
       "el-4",
       "el-2"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Funkenflug%20Elektrotechnik%20Friedrichshain%2C%20Berlin"
+      }
+    ]
   },
   {
     "id": "eichenspan-zimmerei",
@@ -21638,11 +21886,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 14,
-      "url": "https://de.trustpilot.com/review/eichenspan-zimmerei.example",
-      "updatedAt": "2026-10-18"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -21715,6 +21961,12 @@
       "toemrer-5",
       "toemrer-6",
       "toemrer-3"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Eichenspan%20Zimmerei%20Charlottenburg%2C%20Berlin"
+      }
     ]
   },
   {
@@ -21915,11 +22167,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-14"
     },
-    "trustpilot": {
-      "score": 3.6,
-      "reviews": 458,
-      "url": "https://de.trustpilot.com/review/balkenwerk-zimmerei.example",
-      "updatedAt": "2026-10-18"
+    "demoReviews": {
+      "average": 3.6,
+      "reviews": 18
     },
     "authorizations": [],
     "memberships": [
@@ -21990,6 +22240,12 @@
       "toemrer-7",
       "toemrer-2",
       "toemrer-4"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Balkenwerk%20Zimmerei%20Friedrichshain%2C%20Berlin"
+      }
     ]
   },
   {
@@ -22053,11 +22309,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-03"
     },
-    "trustpilot": {
-      "score": 4.4,
-      "reviews": 156,
-      "url": "https://de.trustpilot.com/review/ziegelrot-maurerbetrieb.example",
-      "updatedAt": "2026-10-17"
+    "demoReviews": {
+      "average": 4.4,
+      "reviews": 6
     },
     "authorizations": [],
     "memberships": [],
@@ -22192,11 +22446,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-06"
     },
-    "trustpilot": {
-      "score": 3.6,
-      "reviews": 79,
-      "url": "https://de.trustpilot.com/review/kalkstein-maurerbetrieb.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 3.6,
+      "reviews": 3
     },
     "authorizations": [],
     "memberships": [],
@@ -22259,6 +22511,12 @@
       "murer-2",
       "murer-1",
       "murer-3"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Kalkstein%20Maurerbetrieb%20Prenzlauer%20Berg%2C%20Berlin"
+      }
     ]
   },
   {
@@ -22322,11 +22580,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-09"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 773,
-      "url": "https://de.trustpilot.com/review/fugenmeister-maurerbetrieb.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 31
     },
     "authorizations": [],
     "memberships": [],
@@ -22458,11 +22714,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-07"
     },
-    "trustpilot": {
-      "score": 4.9,
-      "reviews": 43,
-      "url": "https://de.trustpilot.com/review/kolbenwerk-kfz-werkstatt.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4.9,
+      "reviews": 2
     },
     "authorizations": [],
     "memberships": [
@@ -22597,11 +22851,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-06"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 8,
-      "url": "https://de.trustpilot.com/review/zahnrad-kfz-werkstatt.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -22678,7 +22930,13 @@
       ]
     },
     "insurer": "Kyst Forsikring",
-    "guaranteeScheme": "garantiordningen hos Kfz-Innung Berlin"
+    "guaranteeScheme": "garantiordningen hos Kfz-Innung Berlin",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Zahnrad%20Kfz-Werkstatt%20Prenzlauer%20Berg%2C%20Berlin"
+      }
+    ]
   },
   {
     "id": "kurbelwelle-kfz-werkstatt",
@@ -22740,11 +22998,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-10"
     },
-    "trustpilot": {
-      "score": 4.2,
-      "reviews": 23,
-      "url": "https://de.trustpilot.com/review/kurbelwelle-kfz-werkstatt.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4.2,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -22870,11 +23126,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-07"
     },
-    "trustpilot": {
-      "score": 3.8,
-      "reviews": 14,
-      "url": "https://de.trustpilot.com/review/farbtupfer-malerbetrieb.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 3.8,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -22945,7 +23199,13 @@
       ]
     },
     "insurer": "Kyst Forsikring",
-    "guaranteeScheme": "garantiordningen hos Handwerkskammer Berlin"
+    "guaranteeScheme": "garantiordningen hos Handwerkskammer Berlin",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Farbtupfer%20Malerbetrieb%20Charlottenburg%2C%20Berlin"
+      }
+    ]
   },
   {
     "id": "pinselstrich-malerbetrieb",
@@ -23222,6 +23482,12 @@
       "maler-2",
       "maler-3",
       "maler-4"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Farbenfroh%20Malerbetrieb%20Mitte%2C%20Berlin"
+      }
     ]
   },
   {
@@ -23285,11 +23551,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-01"
     },
-    "trustpilot": {
-      "score": 4.4,
-      "reviews": 101,
-      "url": "https://de.trustpilot.com/review/schieferhut-dachdeckerei.example",
-      "updatedAt": "2026-10-13"
+    "demoReviews": {
+      "average": 4.4,
+      "reviews": 4
     },
     "authorizations": [],
     "memberships": [],
@@ -23418,11 +23682,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-06"
     },
-    "trustpilot": {
-      "score": 4.2,
-      "reviews": 7,
-      "url": "https://de.trustpilot.com/review/dachfirst-dachdeckerei.example",
-      "updatedAt": "2026-10-17"
+    "demoReviews": {
+      "average": 4.2,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -23566,11 +23828,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-10"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 486,
-      "url": "https://de.trustpilot.com/review/regenrinne-dachdeckerei.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 19
     },
     "authorizations": [],
     "memberships": [],
@@ -23635,7 +23895,13 @@
       "tagdaekker-3",
       "tagdaekker-1"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Regenrinne%20Dachdeckerei%20Friedrichshain%2C%20Berlin"
+      }
+    ]
   },
   {
     "id": "riegelfest-schlusseldienst",
@@ -23824,11 +24090,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-15"
     },
-    "trustpilot": {
-      "score": 3.8,
-      "reviews": 28,
-      "url": "https://de.trustpilot.com/review/schlusselbund-schlusseldienst.example",
-      "updatedAt": "2026-10-17"
+    "demoReviews": {
+      "average": 3.8,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -23963,11 +24227,9 @@
       "currency": "EUR",
       "updatedAt": "2026-10-03"
     },
-    "trustpilot": {
-      "score": 3.6,
-      "reviews": 301,
-      "url": "https://de.trustpilot.com/review/schliesswerk-schlusseldienst.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 3.6,
+      "reviews": 12
     },
     "authorizations": [],
     "memberships": [
@@ -24101,11 +24363,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 4.1,
-      "reviews": 672,
-      "url": "https://uk.trustpilot.com/review/copperleaf-plumbing-and-heating.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4.1,
+      "reviews": 27
     },
     "authorizations": [
       {
@@ -24184,7 +24444,13 @@
       ]
     },
     "guaranteeScheme": "garantiordningen hos Gas Safe Register",
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Copperleaf%20Plumbing%20%26%20Heating%20Brixton%2C%20London"
+      }
+    ]
   },
   {
     "id": "tidewell-plumbing-and-heating",
@@ -24247,11 +24513,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-10"
     },
-    "trustpilot": {
-      "score": 4.7,
-      "reviews": 90,
-      "url": "https://uk.trustpilot.com/review/tidewell-plumbing-and-heating.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.7,
+      "reviews": 4
     },
     "authorizations": [
       {
@@ -24391,11 +24655,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 3.9,
-      "reviews": 276,
-      "url": "https://uk.trustpilot.com/review/millbrook-plumbing-and-heating.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 3.9,
+      "reviews": 11
     },
     "authorizations": [
       {
@@ -24540,11 +24802,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-02"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 124,
-      "url": "https://uk.trustpilot.com/review/brightwire-electrical.example",
-      "updatedAt": "2026-10-16"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 5
     },
     "authorizations": [],
     "memberships": [],
@@ -24615,6 +24875,12 @@
       "el-5",
       "el-1",
       "el-2"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Brightwire%20Electrical%20Islington%2C%20London"
+      }
     ]
   },
   {
@@ -24678,11 +24944,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-06"
     },
-    "trustpilot": {
-      "score": 4.4,
-      "reviews": 26,
-      "url": "https://uk.trustpilot.com/review/ambervolt-electrical.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.4,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -24758,7 +25022,13 @@
       "el-2",
       "el-4"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Ambervolt%20Electrical%20Hackney%2C%20London"
+      }
+    ]
   },
   {
     "id": "sparkhill-electrical",
@@ -24821,11 +25091,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 3.7,
-      "reviews": 20,
-      "url": "https://uk.trustpilot.com/review/sparkhill-electrical.example",
-      "updatedAt": "2026-10-18"
+    "demoReviews": {
+      "average": 3.7,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -25038,7 +25306,13 @@
     },
     "insurer": "Håndværkernes Forsikring",
     "guaranteeScheme": "garantiordningen hos Federation of Master Builders",
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Oakgrain%20Carpentry%20Clapham%2C%20London"
+      }
+    ]
   },
   {
     "id": "larchwood-carpentry",
@@ -25101,11 +25375,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-04"
     },
-    "trustpilot": {
-      "score": 4.1,
-      "reviews": 32,
-      "url": "https://uk.trustpilot.com/review/larchwood-carpentry.example",
-      "updatedAt": "2026-10-12"
+    "demoReviews": {
+      "average": 4.1,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -25240,11 +25512,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-11"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 92,
-      "url": "https://uk.trustpilot.com/review/timberline-carpentry.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 4
     },
     "authorizations": [],
     "memberships": [
@@ -25313,7 +25583,13 @@
       "toemrer-6",
       "toemrer-4"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Timberline%20Carpentry%20Islington%2C%20London"
+      }
+    ]
   },
   {
     "id": "redkiln-brickwork-and-tiling",
@@ -25376,11 +25652,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-06"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 388,
-      "url": "https://uk.trustpilot.com/review/redkiln-brickwork-and-tiling.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 16
     },
     "authorizations": [],
     "memberships": [
@@ -25459,6 +25733,12 @@
       "murer-1",
       "murer-5",
       "murer-2"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Redkiln%20Brickwork%20%26%20Tiling%20Clapham%2C%20London"
+      }
     ]
   },
   {
@@ -25522,11 +25802,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-15"
     },
-    "trustpilot": {
-      "score": 4.4,
-      "reviews": 590,
-      "url": "https://uk.trustpilot.com/review/flintmoor-brickwork-and-tiling.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.4,
+      "reviews": 24
     },
     "authorizations": [],
     "memberships": [],
@@ -25657,11 +25935,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-03"
     },
-    "trustpilot": {
-      "score": 4.8,
-      "reviews": 92,
-      "url": "https://uk.trustpilot.com/review/mortarby-brickwork-and-tiling.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.8,
+      "reviews": 4
     },
     "authorizations": [],
     "memberships": [
@@ -25738,6 +26014,12 @@
       "murer-4",
       "murer-3",
       "murer-5"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Mortarby%20Brickwork%20%26%20Tiling%20Hackney%2C%20London"
+      }
     ]
   },
   {
@@ -25800,11 +26082,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-08"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 15,
-      "url": "https://uk.trustpilot.com/review/torquelane-motors.example",
-      "updatedAt": "2026-10-18"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -25882,6 +26162,12 @@
       "mekaniker-1",
       "mekaniker-6",
       "mekaniker-7"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Torquelane%20Motors%20Islington%2C%20London"
+      }
     ]
   },
   {
@@ -25944,11 +26230,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-07"
     },
-    "trustpilot": {
-      "score": 4,
-      "reviews": 126,
-      "url": "https://uk.trustpilot.com/review/gearwright-motors.example",
-      "updatedAt": "2026-10-14"
+    "demoReviews": {
+      "average": 4,
+      "reviews": 5
     },
     "authorizations": [],
     "memberships": [
@@ -26084,11 +26368,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-10"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 239,
-      "url": "https://uk.trustpilot.com/review/pistonbay-motors.example",
-      "updatedAt": "2026-10-18"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 10
     },
     "authorizations": [],
     "memberships": [
@@ -26229,11 +26511,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-13"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 73,
-      "url": "https://uk.trustpilot.com/review/freshcoat-decorators.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 3
     },
     "authorizations": [],
     "memberships": [],
@@ -26298,6 +26578,12 @@
       "maler-4",
       "maler-5",
       "maler-1"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Freshcoat%20Decorators%20Greenwich%2C%20London"
+      }
     ]
   },
   {
@@ -26360,11 +26646,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-07"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 586,
-      "url": "https://uk.trustpilot.com/review/hueberry-decorators.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 23
     },
     "authorizations": [],
     "memberships": [
@@ -26436,7 +26720,13 @@
       ]
     },
     "insurer": "Håndværkernes Forsikring",
-    "guaranteeScheme": "garantiordningen hos Painting & Decorating Association"
+    "guaranteeScheme": "garantiordningen hos Painting & Decorating Association",
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Hueberry%20Decorators%20Brixton%2C%20London"
+      }
+    ]
   },
   {
     "id": "brushfield-decorators",
@@ -26569,7 +26859,13 @@
       "maler-4",
       "maler-3"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Brushfield%20Decorators%20Camden%2C%20London"
+      }
+    ]
   },
   {
     "id": "slatecrest-roofing",
@@ -26632,11 +26928,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-12"
     },
-    "trustpilot": {
-      "score": 4.6,
-      "reviews": 649,
-      "url": "https://uk.trustpilot.com/review/slatecrest-roofing.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.6,
+      "reviews": 26
     },
     "authorizations": [],
     "memberships": [
@@ -26703,7 +26997,13 @@
       "tagdaekker-1",
       "tagdaekker-3"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Slatecrest%20Roofing%20Brixton%2C%20London"
+      }
+    ]
   },
   {
     "id": "ridgeline-roofing",
@@ -26766,11 +27066,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-08"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 122,
-      "url": "https://uk.trustpilot.com/review/ridgeline-roofing.example",
-      "updatedAt": "2026-10-17"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 5
     },
     "authorizations": [],
     "memberships": [
@@ -26851,7 +27149,13 @@
       "tagdaekker-1",
       "tagdaekker-4"
     ],
-    "videoCheck": true
+    "videoCheck": true,
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Ridgeline%20Roofing%20Clapham%2C%20London"
+      }
+    ]
   },
   {
     "id": "eavesford-roofing",
@@ -26914,11 +27218,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-13"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 44,
-      "url": "https://uk.trustpilot.com/review/eavesford-roofing.example",
-      "updatedAt": "2026-10-10"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 2
     },
     "authorizations": [],
     "memberships": [
@@ -27058,11 +27360,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-09"
     },
-    "trustpilot": {
-      "score": 4.3,
-      "reviews": 17,
-      "url": "https://uk.trustpilot.com/review/keyhaven-locksmiths.example",
-      "updatedAt": "2026-10-15"
+    "demoReviews": {
+      "average": 4.3,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -27195,11 +27495,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-05"
     },
-    "trustpilot": {
-      "score": 3.9,
-      "reviews": 9,
-      "url": "https://uk.trustpilot.com/review/latchley-locksmiths.example",
-      "updatedAt": "2026-10-17"
+    "demoReviews": {
+      "average": 3.9,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [
@@ -27279,6 +27577,12 @@
       "laasesmed-1",
       "laasesmed-3",
       "laasesmed-2"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Latchley%20Locksmiths%20Greenwich%2C%20London"
+      }
     ]
   },
   {
@@ -27342,11 +27646,9 @@
       "currency": "GBP",
       "updatedAt": "2026-10-09"
     },
-    "trustpilot": {
-      "score": 4.5,
-      "reviews": 21,
-      "url": "https://uk.trustpilot.com/review/boltwise-locksmiths.example",
-      "updatedAt": "2026-10-11"
+    "demoReviews": {
+      "average": 4.5,
+      "reviews": 1
     },
     "authorizations": [],
     "memberships": [],
@@ -27415,6 +27717,12 @@
       "laasesmed-2",
       "laasesmed-3",
       "laasesmed-1"
+    ],
+    "reviewLinks": [
+      {
+        "site": "google",
+        "url": "https://www.google.com/maps/search/?api=1&query=Boltwise%20Locksmiths%20Islington%2C%20London"
+      }
     ]
   }
 ]

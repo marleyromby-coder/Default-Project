@@ -16,7 +16,6 @@ import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { initials } from '@/lib/business-text';
 import { showDialog } from '@/lib/dialog';
-import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { formatDate } from '@/lib/format';
 import { countryName } from '@/lib/markets';
 import { weightsFromPriorities } from '@/lib/ranking';
@@ -266,13 +265,9 @@ export default function ProfileScreen() {
           <ListRow
             icon="sliders"
             title={t('Dine prioriteter')}
-            value={[weights.price, weights.distance, ...(TRUSTPILOT_ENABLED ? [weights.reviews] : [])]
-              .map((w) => Math.round(w * 100))
-              .join('/')}
+            value={[weights.price, weights.distance, weights.reviews].map((w) => Math.round(w * 100)).join('/')}
             onPress={() => router.push('/prioriteter')}
-            accessibilityHint={
-              TRUSTPILOT_ENABLED ? t('Pris, afstand og anmeldelser i procent') : t('Pris og afstand i procent')
-            }
+            accessibilityHint={t('Pris, afstand og anmeldelser i procent')}
           />
         </ListSection>
 

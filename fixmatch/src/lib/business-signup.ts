@@ -4,6 +4,7 @@ import { APP_INFO } from '@/constants/app-info';
 import { getLanguage, msg, t } from '@/i18n';
 
 import { isLaunched, type CountryCode } from './markets';
+import { MAX_REVIEW_LINKS, REVIEW_SITES, reviewSiteOf, splitReviewLinks } from './review-links';
 import { supabase } from './supabase';
 import type { CategoryId } from './types';
 import { requiredChecks } from './verification';
@@ -40,6 +41,8 @@ export interface BusinessSignup {
   phone: string;
   email: string;
   website: string;
+  /** Links to the business's own profiles on other review sites (lib/review-links.ts), as typed. */
+  reviewLinks: string;
   hourlyMin: string;
   hourlyMax: string;
   calloutFee: string;
@@ -69,6 +72,7 @@ export function emptySignup(country: CountryCode): BusinessSignup {
     phone: '',
     email: '',
     website: '',
+    reviewLinks: '',
     hourlyMin: '',
     hourlyMax: '',
     calloutFee: '',
@@ -92,6 +96,9 @@ export function needsAuthorization(trades: CategoryId[]): boolean {
   return requiredChecks({ categories: trades }).includes('authorization');
 }
 
+/** The review sites a business may link to, e.g. "Google, Anmeld Håndværker". */
+export const REVIEW_SITE_NAMES = REVIEW_SITES.map((site) => site.name).join(', ');
+
 const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 const PHONE = /^\+?[0-9 ()-]{6,20}$/;
 const amount = (value: string) =>
@@ -111,6 +118,12 @@ export function signupErrors(signup: BusinessSignup): Partial<Record<SignupField
     errors.phone = t('Skriv et telefonnummer, gerne med landekode.');
   }
   if (!EMAIL.test(signup.email.trim())) errors.email = t('Skriv en gyldig e-mailadresse.');
+  const links = splitReviewLinks(signup.reviewLinks);
+  if (links.some((link) => !reviewSiteOf(link))) {
+    errors.reviewLinks = t('Linket skal gå til jeres profil på {sites}.', { sites: REVIEW_SITE_NAMES });
+  } else if (links.length > MAX_REVIEW_LINKS) {
+    errors.reviewLinks = t('Højst {max} links.', { max: MAX_REVIEW_LINKS });
+  }
   const min = amount(signup.hourlyMin);
   const max = amount(signup.hourlyMax) ?? min;
   if (!(min !== undefined && Number.isInteger(min) && min > 0))
@@ -134,6 +147,9 @@ export function signupErrors(signup: BusinessSignup): Partial<Record<SignupField
 export function signupRow(signup: BusinessSignup) {
   const min = amount(signup.hourlyMin) as number;
   const website = signup.website.trim();
+  const reviewLinks = splitReviewLinks(signup.reviewLinks)
+    .filter((link) => reviewSiteOf(link))
+    .slice(0, MAX_REVIEW_LINKS);
   return {
     source: Platform.OS === 'web' ? 'web' : 'app',
     language: getLanguage(),
@@ -147,6 +163,7 @@ export function signupRow(signup: BusinessSignup) {
     phone: signup.phone.trim(),
     email: signup.email.trim(),
     website: website ? (/^https?:\/\//.test(website) ? website : `https://${website}`) : null,
+    review_links: reviewLinks.length > 0 ? reviewLinks : null,
     hourly_min: min,
     hourly_max: amount(signup.hourlyMax) ?? min,
     callout_fee: amount(signup.calloutFee) ?? null,

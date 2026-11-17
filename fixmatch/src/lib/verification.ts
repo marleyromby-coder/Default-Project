@@ -1,7 +1,6 @@
 import { CATEGORIES } from '@/data/categories';
 import { msg } from '@/i18n';
 
-import { TRUSTPILOT_ENABLED } from './features';
 import type { Business, Verification, VerificationCheck } from './types';
 
 /**
@@ -10,9 +9,9 @@ import type { Business, Verification, VerificationCheck } from './types';
  * never changes the FixMatch score. A check lasts a year; then FixMatch checks again.
  */
 export const VERIFICATION_VALID_DAYS = 365;
-/** "Topbedømt": a verified business with at least this TrustScore and this many reviews. */
+/** "Topbedømt": a verified business with at least this average and this many FixMatch reviews. */
 export const TOP_RATED_MIN_SCORE = 4.5;
-export const TOP_RATED_MIN_REVIEWS = 25;
+export const TOP_RATED_MIN_REVIEWS = 10;
 
 const DAY_MS = 86_400_000;
 
@@ -79,20 +78,18 @@ export function passedChecks(business: Pick<Business, 'verified'>): Verification
 }
 
 /**
- * "Topbedømt": verified and rated highly by many customers. Reviews come from Trustpilot, so the
- * badge only exists while Trustpilot is switched on.
+ * "Topbedømt": verified and rated highly in many FixMatch reviews, from users who contacted the
+ * business through FixMatch. Like Verificeret, the badge never changes the FixMatch score.
  */
 export function isTopRated(
-  business: Pick<Business, 'categories' | 'verified' | 'trustpilot'>,
+  business: Pick<Business, 'categories' | 'verified' | 'reviewSummary'>,
   now = new Date(),
-  reviews = TRUSTPILOT_ENABLED,
 ): boolean {
-  const trustpilot = business.trustpilot;
+  const summary = business.reviewSummary;
   return (
-    reviews &&
     isVerified(business, now) &&
-    trustpilot !== undefined &&
-    trustpilot.score >= TOP_RATED_MIN_SCORE &&
-    trustpilot.reviews >= TOP_RATED_MIN_REVIEWS
+    summary !== undefined &&
+    summary.average >= TOP_RATED_MIN_SCORE &&
+    summary.reviews >= TOP_RATED_MIN_REVIEWS
   );
 }

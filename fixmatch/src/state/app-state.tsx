@@ -11,6 +11,13 @@ import { setDistanceUnit } from '@/lib/format';
 import { getMarket, isLaunched, type CountryCode, type Market } from '@/lib/markets';
 import { DEFAULT_PRIORITIES } from '@/lib/ranking';
 import { loadAnswerRates } from '@/state/answers';
+import {
+  loadReviewSummaries,
+  reviewSource,
+  type ReviewSource,
+  subscribeReviewSource,
+  withReviews,
+} from '@/state/community';
 import { supabase } from '@/lib/supabase';
 import type { Business, Filters, Priorities, UserLocation } from '@/lib/types';
 import { syncWidgets } from '@/widgets/sync';
@@ -34,12 +41,15 @@ interface State extends Persisted {
   filters: Filters;
   /** Free days the businesses marked on the server ("Hvem har tid i dag?"). */
   availability: AvailabilityMap;
+  /** FixMatch's own reviews: the server's summaries and the user's own reviews (state/community.ts). */
+  reviews: ReviewSource;
 }
 
 type Action =
   | { type: 'hydrate'; persisted: Partial<Persisted> }
   | { type: 'businesses'; businesses: Business[] }
   | { type: 'availability'; availability?: AvailabilityMap }
+  | { type: 'reviews'; reviews: ReviewSource }
   | { type: 'onboarded'; value: boolean }
   | { type: 'location'; location: UserLocation }
   | { type: 'priorities'; priorities: Priorities }
@@ -57,18 +67,23 @@ const INITIAL_PERSISTED: Persisted = {
   compare: [],
 };
 
-/** The businesses with their free days: the server's, and made-up ones for demo businesses. */
-function available(businesses: Business[], server: AvailabilityMap): Business[] {
-  return withAvailability(businesses, { ...demoAvailability(businesses), ...server });
+/**
+ * The businesses with their free days (the server's, and made-up ones for demo businesses) and
+ * their FixMatch reviews, which the ranking, filters and badges read.
+ */
+function enrich(businesses: Business[], server: AvailabilityMap, reviews: ReviewSource): Business[] {
+  return withReviews(withAvailability(businesses, { ...demoAvailability(businesses), ...server }), reviews);
 }
 
 function initialState(): State {
+  const reviews = reviewSource();
   return {
     ...INITIAL_PERSISTED,
     ready: false,
-    businesses: available(bundledBusinesses(), {}),
+    businesses: enrich(bundledBusinesses(), {}, reviews),
     filters: DEFAULT_FILTERS,
     availability: {},
+    reviews,
   };
 }
 
@@ -84,15 +99,17 @@ function reducer(state: State, action: Action): State {
       const ids = new Set(action.businesses.map((b) => b.id));
       return {
         ...state,
-        businesses: available(action.businesses, state.availability),
+        businesses: enrich(action.businesses, state.availability, state.reviews),
         favorites: state.favorites.filter((id) => ids.has(id)),
         compare: state.compare.filter((id) => ids.has(id)),
       };
     }
     case 'availability': {
       const availability = action.availability ?? state.availability;
-      return { ...state, availability, businesses: available(state.businesses, availability) };
+      return { ...state, availability, businesses: enrich(state.businesses, availability, state.reviews) };
     }
+    case 'reviews':
+      return { ...state, reviews: action.reviews, businesses: withReviews(state.businesses, action.reviews) };
     case 'onboarded':
       return { ...state, onboarded: action.value };
     case 'location':
@@ -116,7 +133,13 @@ function reducer(state: State, action: Action): State {
     case 'filters':
       return { ...state, filters: action.filters };
     case 'reset':
-      return { ...initialState(), businesses: state.businesses, availability: state.availability, ready: true };
+      return {
+        ...initialState(),
+        businesses: state.businesses,
+        availability: state.availability,
+        reviews: state.reviews,
+        ready: true,
+      };
     default:
       return state;
   }
@@ -223,14 +246,23 @@ export function AppStateProvider({ children }: PropsWithChildren) {
     };
   }, []);
 
+  // FixMatch's own reviews count in the ranking: when the summaries from the server or the
+  // user's own reviews change, the businesses get the new numbers and the lists re-rank.
+  useEffect(() => {
+    dispatch({ type: 'reviews', reviews: reviewSource() });
+    return subscribeReviewSource((reviews) => dispatch({ type: 'reviews', reviews }));
+  }, []);
+
   // "Hvem har tid i dag?": fetched at start and whenever the app comes back, so a business
   // that marks free time is seen within minutes. Coming back also rolls the demo days over.
+  // Answer rates and review summaries are refreshed at the same time.
   useEffect(() => {
     const refresh = () => {
       fetchAvailability()
         .then((availability) => dispatch({ type: 'availability', availability: availability ?? undefined }))
         .catch(() => undefined);
       loadAnswerRates().catch(() => undefined);
+      loadReviewSummaries().catch(() => undefined);
     };
     refresh();
     const subscription = AppState.addEventListener('change', (next) => {

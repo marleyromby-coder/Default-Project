@@ -12,7 +12,6 @@ import { GPS_MESSAGES, useGps } from '@/hooks/use-gps';
 import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { showDialog } from '@/lib/dialog';
-import { TRUSTPILOT_ENABLED } from '@/lib/features';
 import { taxNote } from '@/lib/markets';
 import { useApp, useMarket } from '@/state/app-state';
 import { t } from '@/i18n';
@@ -38,7 +37,9 @@ export default function WelcomeScreen() {
 
   return (
     <View style={[styles.flex, { backgroundColor: colors.background }]}>
-      <ScrollView contentContainerStyle={[styles.scroll, column, { paddingTop: insets.top + Spacing.md }]} bounces={false}>
+      <ScrollView
+        contentContainerStyle={[styles.scroll, column, { paddingTop: insets.top + Spacing.md }]}
+        bounces={false}>
         {step === 0 ? (
           <>
             <View
@@ -84,13 +85,11 @@ export default function WelcomeScreen() {
               text={t('Timepris og eksempelpriser {tax} – før du ringer.', { tax: taxNote(market) })}
             />
             <Feature icon="pin" title={t('Afstand')} text={t('Se hvem der er tættest på, og hvor langt de kører.')} />
-            {TRUSTPILOT_ENABLED ? (
-              <Feature
-                icon="star"
-                title={t('Anmeldelser')}
-                text={t('TrustScore fra Trustpilot ved hver virksomhed.')}
-              />
-            ) : null}
+            <Feature
+              icon="star"
+              title={t('Anmeldelser')}
+              text={t('Kun fra brugere, der har kontaktet virksomheden gennem FixMatch.')}
+            />
             <Feature
               icon="phone"
               title={t('Ring direkte')}

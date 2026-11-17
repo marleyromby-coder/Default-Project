@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSyncExternalStore } from 'react';
 
 import { supabase } from '@/lib/supabase';
-import type { Business, CategoryId, CountryCode } from '@/lib/types';
+import type { Business, CategoryId, CountryCode, ReviewSummary } from '@/lib/types';
 
 import { useContacts } from './account';
 
@@ -43,10 +43,7 @@ export interface Review {
   mine?: boolean;
 }
 
-export interface ReviewSummary {
-  average: number;
-  reviews: number;
-}
+export type { ReviewSummary } from '@/lib/types';
 
 const PRICES_KEY = 'fixmatch:price-reports';
 const REVIEWS_KEY = 'fixmatch:reviews';
@@ -59,6 +56,7 @@ interface Store {
   prices: PriceReport[];
   /** Reviews by business, fetched when a business page opens. */
   reviews: Record<string, Review[]>;
+  /** Every business's average and count from the server (review_summary), for the ranking. */
   summaries: Record<string, ReviewSummary>;
   /** The user's own price reports and reviews, kept on the phone. */
   myPrices: PriceReport[];
@@ -206,15 +204,14 @@ export async function loadReviews(businessId: string): Promise<void> {
       mine: mine !== undefined && mine.id === String(row.id),
     }),
   );
-  set({
-    reviews: { ...store.reviews, [businessId]: reviews },
-    summaries: {
-      ...store.summaries,
-      ...(summary.data
-        ? { [businessId]: { average: Number(summary.data.average), reviews: summary.data.reviews } }
-        : {}),
-    },
-  });
+  const summaries = { ...store.summaries };
+  if (summary.data && Number(summary.data.reviews) > 0) {
+    summaries[businessId] = { average: Number(summary.data.average), reviews: Number(summary.data.reviews) };
+  } else if (!summary.error) {
+    // Every review hidden or deleted since the list was loaded.
+    delete summaries[businessId];
+  }
+  set({ reviews: { ...store.reviews, [businessId]: reviews }, summaries });
 }
 
 /** The reviews of a business: the server's when loaded, else the user's own. */
@@ -226,11 +223,73 @@ export function useReviews(businessId: string): Review[] {
   return mine.filter((r) => r.businessId === businessId);
 }
 
-export function useReviewSummary(businessId: string): ReviewSummary | undefined {
-  const summaries = useSyncExternalStore(subscribe, () => store.summaries);
-  const reviews = useReviews(businessId);
-  if (summaries[businessId]) return summaries[businessId];
-  return summarize(reviews);
+/** What the review summaries are made of: the server's numbers and the user's own reviews. */
+export type ReviewSource = Pick<Store, 'summaries' | 'myReviews'>;
+
+/** The current source, for the app state (state/app-state.tsx). */
+export function reviewSource(): ReviewSource {
+  return { summaries: store.summaries, myReviews: store.myReviews };
+}
+
+/** Calls the listener when the summaries or the user's own reviews change. */
+export function subscribeReviewSource(listener: (source: ReviewSource) => void): () => void {
+  let last = reviewSource();
+  const unsubscribe = subscribe(() => {
+    const next = reviewSource();
+    if (next.summaries === last.summaries && next.myReviews === last.myReviews) return;
+    last = next;
+    listener(next);
+  });
+  return () => {
+    unsubscribe();
+  };
+}
+
+/**
+ * The business's FixMatch reviews: the server's summary, or the made-up one for a demo business,
+ * plus the user's own review on this phone until the server has it. Each user has one review per
+ * business, so an edited review replaces the old one instead of counting twice.
+ */
+export function reviewSummaryOf(business: Business, source: ReviewSource = store): ReviewSummary | undefined {
+  const server = source.summaries[business.id];
+  if (server) return server;
+  const base = business.demo ? business.demoReviews : undefined;
+  const mine = source.myReviews.find((r) => r.businessId === business.id);
+  if (!mine) return base;
+  const count = (base?.reviews ?? 0) + 1;
+  const average = ((base?.average ?? 0) * (base?.reviews ?? 0) + mine.rating) / count;
+  return { average: Math.round(average * 100) / 100, reviews: count };
+}
+
+/** The businesses with their FixMatch reviews set (business.reviewSummary), for ranking and lists. */
+export function withReviews(businesses: Business[], source: ReviewSource): Business[] {
+  return businesses.map((business) => {
+    const summary = reviewSummaryOf(business, source);
+    const current = business.reviewSummary;
+    if (summary?.average === current?.average && summary?.reviews === current?.reviews) return business;
+    return { ...business, reviewSummary: summary };
+  });
+}
+
+/** Fetches every business's average and count from the server (one small row per business). */
+export async function loadReviewSummaries(): Promise<void> {
+  if (!supabase) return;
+  const { data, error } = await supabase.from('review_summary').select('business_id, average, reviews').limit(5000);
+  if (error || !data) return;
+  const summaries: Record<string, ReviewSummary> = {};
+  for (const row of data as { business_id: string; average: number | string; reviews: number | string }[]) {
+    const average = Number(row.average);
+    const reviews = Number(row.reviews);
+    if (Number.isFinite(average) && Number.isInteger(reviews) && reviews > 0) {
+      summaries[row.business_id] = { average, reviews };
+    }
+  }
+  set({ summaries });
+}
+
+export function useReviewSummary(business: Business): ReviewSummary | undefined {
+  const current = useSyncExternalStore(subscribe, () => store);
+  return reviewSummaryOf(business, current);
 }
 
 export function summarize(reviews: Review[]): ReviewSummary | undefined {

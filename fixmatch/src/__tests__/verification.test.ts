@@ -9,6 +9,7 @@ import {
   isVerified,
   passedChecks,
   requiredChecks,
+  TOP_RATED_MIN_REVIEWS,
   verificationExpiry,
 } from '@/lib/verification';
 
@@ -54,13 +55,16 @@ describe('Verificeret', () => {
     expect(first.verified).toBeUndefined();
   });
 
-  it('gives Topbedømt only to verified businesses with many good reviews, and only with Trustpilot on', () => {
-    const trustpilot = { score: 4.7, reviews: 80, url: 'x', updatedAt: '2026-10-01' };
-    const verified = makeBusiness({ id: 'v', trustpilot, verified: { ...checked, checks: [...checked.checks] } });
-    expect(isTopRated(verified, NOW, true)).toBe(true);
-    expect(isTopRated(verified, NOW, false)).toBe(false);
-    expect(isTopRated({ ...verified, trustpilot: { ...trustpilot, reviews: 10 } }, NOW, true)).toBe(false);
-    expect(isTopRated({ ...verified, verified: undefined }, NOW, true)).toBe(false);
+  it('gives Topbedømt only to verified businesses with at least 10 FixMatch reviews of 4.5 or more', () => {
+    const reviewSummary = { average: 4.7, reviews: 12 };
+    const verified = makeBusiness({ id: 'v', reviewSummary, verified: { ...checked, checks: [...checked.checks] } });
+    expect(TOP_RATED_MIN_REVIEWS).toBe(10);
+    expect(isTopRated(verified, NOW)).toBe(true);
+    expect(isTopRated({ ...verified, reviewSummary: { average: 4.5, reviews: 10 } }, NOW)).toBe(true);
+    expect(isTopRated({ ...verified, reviewSummary: { ...reviewSummary, reviews: 5 } }, NOW)).toBe(false);
+    expect(isTopRated({ ...verified, reviewSummary: { average: 4.4, reviews: 50 } }, NOW)).toBe(false);
+    expect(isTopRated({ ...verified, reviewSummary: undefined }, NOW)).toBe(false);
+    expect(isTopRated({ ...verified, verified: undefined }, NOW)).toBe(false);
   });
 
   it('can filter the list to verified businesses without changing the score', () => {

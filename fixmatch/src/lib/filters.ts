@@ -2,7 +2,7 @@ import { availableWhen } from './availability';
 import { timeZoneOf } from './business-text';
 import { formatRating } from './format';
 import { isOpenNow } from './opening-hours';
-import { priceLevel, type ScoredBusiness } from './ranking';
+import { priceLevel, reviewCount, type ScoredBusiness } from './ranking';
 import type { Business, CategoryId, Filters } from './types';
 import { isVerified } from './verification';
 import { t } from '@/i18n';
@@ -15,7 +15,6 @@ export const DEFAULT_FILTERS: Filters = {
   emergency: false,
   authorizedOnly: false,
   verifiedOnly: false,
-  trustpilotOnly: false,
   availableSoon: false,
   videoCheckOnly: false,
 };
@@ -37,6 +36,9 @@ export function isSameDistance(a: number | null, b: number | null): boolean {
   return Math.abs(a - b) <= 0.1 * Math.max(a, b);
 }
 
+/** The rating filter only keeps businesses with at least this many FixMatch reviews. */
+export const MIN_REVIEWS_FOR_FILTER = 3;
+
 export const RATING_OPTIONS: { value: number | null; label: string }[] = [
   { value: null, label: t('Alle') },
   ...[3.5, 4, 4.5].map((value) => ({ value, label: `${formatRating(value)}+` })),
@@ -50,8 +52,11 @@ export function applyFilters(
   const now = context.now ?? new Date();
   return list.filter(({ business, distanceKm }) => {
     if (filters.maxDistanceKm !== null && distanceKm > filters.maxDistanceKm) return false;
-    if (filters.minRating !== null && (business.trustpilot?.score ?? 0) < filters.minRating) return false;
-    if (filters.trustpilotOnly && !business.trustpilot) return false;
+    if (filters.minRating !== null) {
+      // A rating needs a few reviews behind it; one happy customer is not enough.
+      if (reviewCount(business) < MIN_REVIEWS_FOR_FILTER) return false;
+      if ((business.reviewSummary?.average ?? 0) < filters.minRating) return false;
+    }
     if (filters.emergency && !business.emergency) return false;
     if (filters.authorizedOnly && business.authorizations.length === 0) return false;
     if (filters.verifiedOnly && !isVerified(business, now)) return false;
@@ -75,7 +80,6 @@ export function activeFilterCount(filters: Filters): number {
   if (filters.emergency) count += 1;
   if (filters.authorizedOnly) count += 1;
   if (filters.verifiedOnly) count += 1;
-  if (filters.trustpilotOnly) count += 1;
   if (filters.availableSoon) count += 1;
   if (filters.videoCheckOnly) count += 1;
   return count;

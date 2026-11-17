@@ -1,3 +1,7 @@
+/// <reference types="node" />
+import fs from 'node:fs';
+import path from 'node:path';
+
 import places from '@/data/places.json';
 
 // The import script is plain Node.js (CommonJS) so the team can run it without a build step.
@@ -16,7 +20,7 @@ const context = {
 };
 
 const HEADER =
-  'navn;kategorier;cvr;telefon;hjemmeside;postnummer;by;timepris_min;timepris_max;prisexempler;trustpilot_score;trustpilot_antal;trustpilot_url;autorisationer;aabningstider;doegnvagt;samtykke_dato';
+  'navn;kategorier;cvr;telefon;hjemmeside;postnummer;by;timepris_min;timepris_max;prisexempler;anmeldelseslinks;autorisationer;aabningstider;doegnvagt;samtykke_dato';
 
 function row(values: string) {
   return csv.parseCsv(`${HEADER}\n${values}`)[0];
@@ -31,7 +35,7 @@ describe('CSV import', () => {
   it('accepts a complete, consented row', () => {
     const { business, errors } = csv.rowToBusiness(
       row(
-        'Test VVS;VVS;12345674;22 33 44 55;www.test.dk;2200;København N;550;650;"Stoppet afløb=1.200-2.500";4,6;120;https://dk.trustpilot.com/review/test.dk;vvs:12345;"man-tor 07:00-15:30; fre 7-14";ja;2026-10-01',
+        'Test VVS;VVS;12345674;22 33 44 55;www.test.dk;2200;København N;550;650;"Stoppet afløb=1.200-2.500";"g.page/test-vvs | https://dk.trustpilot.com/review/test.dk";vvs:12345;"man-tor 07:00-15:30; fre 7-14";ja;2026-10-01',
       ),
       context,
     );
@@ -40,7 +44,10 @@ describe('CSV import', () => {
     expect(business.pricing.examples).toEqual([
       { job: 'stoppet-afloeb', label: 'Stoppet afløb', min: 1200, max: 2500, unit: 'opgave' },
     ]);
-    expect(business.trustpilot.score).toBe(4.6);
+    expect(business.reviewLinks).toEqual([
+      { site: 'google', url: 'https://g.page/test-vvs' },
+      { site: 'trustpilot', url: 'https://dk.trustpilot.com/review/test.dk' },
+    ]);
     expect(business.hours[0]).toEqual(['07:00', '15:30']);
     expect(business.hours[4]).toEqual(['07:00', '14:00']);
     expect(business.hours[5]).toBeNull();
@@ -49,13 +56,13 @@ describe('CSV import', () => {
   });
 
   it('refuses rows without consent', () => {
-    const { errors } = csv.rowToBusiness(row('Test VVS;vvs;12345674;22334455;;2200;;550;650;;;;;vvs:1;;nej;'), context);
+    const { errors } = csv.rowToBusiness(row('Test VVS;vvs;12345674;22334455;;2200;;550;650;;;vvs:1;;nej;'), context);
     expect(errors.some((e: string) => e.startsWith('Samtykke mangler'))).toBe(true);
   });
 
   it('explains bad data in Danish', () => {
     const { errors } = csv.rowToBusiness(
-      row(';snedker x;123;1234;ftp://x;9999;;50;40;;7;;http://evil.example;;;;2026-10-01'),
+      row(';snedker x;123;1234;ftp://x;9999;;50;40;;http://evil.example;;;;2026-10-01'),
       context,
     );
     expect(errors).toEqual(
@@ -64,9 +71,45 @@ describe('CSV import', () => {
         'CVR skal være 8 cifre',
         'Telefonnummer skal være et dansk nummer med 8 cifre',
         'Postnummer skal være et gyldigt dansk postnummer',
-        'Trustpilot-score skal være mellem 1 og 5',
+        expect.stringMatching(
+          /^Anmeldelseslink "http:\/\/evil\.example" skal være et link til virksomhedens egen profil/,
+        ),
       ]),
     );
+  });
+
+  it('refuses review links to other pages and more than three links', () => {
+    const parse = (links: string) =>
+      csv.rowToBusiness(row(`Test VVS;vvs;12345674;22334455;;2200;;550;650;;${links};vvs:1;;nej;2026-10-01`), context);
+    expect(parse('https://www.google.com/search?q=test').errors).toHaveLength(1);
+    expect(parse('https://g.page.evil.example/x').errors).toHaveLength(1);
+    const four = ['https://g.page/a', 'https://g.page/b', 'https://g.page/c', 'https://g.page/d'].join('|');
+    expect(parse(four).errors).toEqual(['Højst 3 anmeldelseslinks']);
+    const { business, errors } = parse('');
+    expect(errors).toEqual([]);
+    expect(business).not.toHaveProperty('reviewLinks');
+  });
+
+  it('ignores scores and counts from other review sites in old sheets', () => {
+    const header = 'navn;kategorier;cvr;telefon;postnummer;timepris_min;samtykke_dato;gammel_score;gammel_antal';
+    const { business, errors, warnings } = csv.rowToBusiness(
+      csv.parseCsv(`${header}\nTest VVS;vvs;12345674;22334455;2200;550;2026-10-01;4,6;312`)[0],
+      context,
+    );
+    expect(errors).toEqual([]);
+    expect(warnings.join(' ')).toMatch(/gammel_score, gammel_antal bruges ikke/);
+    expect(Object.keys(business).filter((key) => /score|antal|review|rating/i.test(key))).toEqual([]);
+  });
+
+  it('imports the template without score columns', () => {
+    const template = fs.readFileSync(path.join(__dirname, '../../templates/virksomheder-skabelon.csv'), 'utf8');
+    const [header] = template.split('\n');
+    expect(header).toContain('anmeldelseslinks');
+    expect(header).not.toMatch(/score|antal|rating/i);
+    // The example row has a made-up phone number and no consent date, so only check the links.
+    const { business, errors } = csv.rowToBusiness(csv.parseCsv(template)[0], context);
+    expect(errors.filter((e: string) => /anmeldelse/i.test(e))).toEqual([]);
+    expect(business.reviewLinks).toEqual([{ site: 'google', url: 'https://g.page/eksempel-vvs' }]);
   });
 
   it('validates CVR check digits and phone numbers', () => {
@@ -106,7 +149,10 @@ describe('CSV import of the Verificeret check', () => {
   it('reads the date and the checks', () => {
     const { business, errors } = parse(`${base};2026-10-15;"cvr|ejer|autorisation|forsikring"`);
     expect(errors).toEqual([]);
-    expect(business.verified).toEqual({ date: '2026-10-15', checks: ['cvr', 'identity', 'authorization', 'insurance'] });
+    expect(business.verified).toEqual({
+      date: '2026-10-15',
+      checks: ['cvr', 'identity', 'authorization', 'insurance'],
+    });
     expect(parse(`${base};;`).business.verified).toBeUndefined();
   });
 

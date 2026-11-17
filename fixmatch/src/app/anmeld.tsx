@@ -57,9 +57,7 @@ export default function ReviewScreen() {
       <EmptyState
         icon="phone"
         title={t('Ring til dem først')}
-        message={t(
-          'Kun kunder, der har kontaktet virksomheden gennem FixMatch, kan anmelde den. Så er alle anmeldelser ægte.',
-        )}
+        message={t('Kun brugere, der har kontaktet virksomheden gennem FixMatch, kan anmelde den.')}
         action={<Button title={t('Luk')} onPress={() => router.back()} />}
       />
     );

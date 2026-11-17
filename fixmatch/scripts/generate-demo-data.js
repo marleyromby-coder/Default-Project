@@ -789,7 +789,9 @@ function buildBusiness(category, name, area, quality, photo, index, market = DAN
     return { job, label, min: low, max: Math.max(low + 1, localPrice(highDkk, market)), unit };
   });
 
-  const hasTrustpilot = chance(0.9);
+  // Made-up FixMatch reviews (demoReviews) for about 90 %. The draws keep their old order, so
+  // the rest of the data does not change.
+  const hasReviews = chance(0.9);
   const score = Math.round((3.6 + 1.3 * quality) * 10) / 10;
   const reviews = Math.round(Math.exp(between(Math.log(6), Math.log(900))));
   const slug = slugify(name, danish ? 'og' : 'and');
@@ -816,7 +818,7 @@ function buildBusiness(category, name, area, quality, photo, index, market = DAN
   const serviceRadiusKm = [15, 20, 25, 30, 40][pickIndex(5)];
   const phone = danish ? fakePhone(int) : market.phone(int);
   const updatedPricing = isoDay(10, int(1, 15));
-  const trustpilotDay = hasTrustpilot ? isoDay(10, int(10, 18)) : undefined;
+  if (hasReviews) int(10, 18); // A review date that is no longer used; drawn so later values stay the same.
   const memberships = membership && chance(membershipChance) ? [membership] : [];
   const serviceOrder = shuffleIndices(setup.services.length).slice(0, int(4, 6));
   const hours = hoursFor(category, chance);
@@ -864,16 +866,7 @@ function buildBusiness(category, name, area, quality, photo, index, market = DAN
       ...(danish ? {} : { currency: market.currency }),
       updatedAt: updatedPricing,
     },
-    ...(hasTrustpilot
-      ? {
-          trustpilot: {
-            score,
-            reviews,
-            url: `https://${danish ? 'dk' : market.trustpilot}.trustpilot.com/review/${slug}.example`,
-            updatedAt: trustpilotDay,
-          },
-        }
-      : {}),
+    ...(hasReviews ? { demoReviews: { average: score, reviews: Math.max(1, Math.round(reviews / 25)) } } : {}),
     authorizations: auth,
     memberships,
     services: own.services,
@@ -946,7 +939,6 @@ const ABROAD = [
     country: 'SE',
     currency: 'SEK',
     fromDkk: 1.45,
-    trustpilot: 'se',
     words: TRADE_WORDS.se,
     prefixes: [
       'Kopparkällan',
@@ -1001,7 +993,6 @@ const ABROAD = [
     country: 'NO',
     currency: 'NOK',
     fromDkk: 1.7,
-    trustpilot: 'no',
     words: TRADE_WORDS.no,
     prefixes: [
       'Kobberbekken',
@@ -1056,7 +1047,6 @@ const ABROAD = [
     country: 'DE',
     currency: 'EUR',
     fromDkk: 0.13,
-    trustpilot: 'de',
     words: TRADE_WORDS.de,
     prefixes: [
       'Kupferquelle',
@@ -1111,7 +1101,6 @@ const ABROAD = [
     country: 'GB',
     currency: 'GBP',
     fromDkk: 0.115,
-    trustpilot: 'uk',
     words: TRADE_WORDS.en,
     prefixes: [
       'Copperleaf',
@@ -1206,7 +1195,7 @@ function main() {
   // One clearly labelled advertisement per trade in the Copenhagen demo area.
   for (const category of ['vvs', 'elektriker', 'mekaniker']) {
     const candidate = businesses.find(
-      (b) => !b.country && b.categories[0] === category && b.address.postalCode < '3000' && b.trustpilot,
+      (b) => !b.country && b.categories[0] === category && b.address.postalCode < '3000' && b.demoReviews,
     );
     if (candidate) candidate.promoted = true;
   }
@@ -1257,6 +1246,16 @@ function main() {
   const videoRandom = mulberry32(20261112);
   for (const business of businesses) {
     if (business.categories[0] !== 'laasesmed' && videoRandom() < 0.4) business.videoCheck = true;
+  }
+
+  // A plain link to the business on Google Maps for about half, to show "Se anmeldelser andre
+  // steder" (src/lib/review-links.ts). A search for the name, never a score. The app shows the
+  // demo notice instead of opening it.
+  const linkRandom = mulberry32(20261117);
+  for (const business of businesses) {
+    if (linkRandom() > 0.5) continue;
+    const query = encodeURIComponent(`${business.name} ${business.address.city}`).replace(/'/g, '%27');
+    business.reviewLinks = [{ site: 'google', url: `https://www.google.com/maps/search/?api=1&query=${query}` }];
   }
 
   const outPath = path.join(__dirname, '..', 'src', 'data', 'demo-businesses.json');
