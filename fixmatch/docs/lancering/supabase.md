@@ -112,16 +112,29 @@ Naboer går sammen om en opgave i **group_jobs** med en kode på 6 tegn, og **gr
 
 Når en bruger trykker **Rapportér** ved en anmeldelse eller en Naborabat-gruppe, kommer der en række i **Table Editor → content_reports**: `kind` (`review`, `group` eller `photo`), `target_id` (anmeldelsens eller gruppens id), `reason` og `created_at`. Uden server eller internet kommer rapporten som e-mail med samme id. Det rapporterede er skjult på brugerens egen telefon med det samme.
 
-Vilkårene lover, at I ser på rapporter **inden for 24 timer på hverdage** (App Store-retningslinje 1.2). Kig i tabellen hver hverdag, sorteret efter `created_at`, og slet ikke rækkerne; de er jeres dokumentation.
+Vilkårene lover, at I ser på rapporter **inden for 24 timer på hverdage** (App Store-retningslinje 1.2). Kig i tabellen hver hverdag, sorteret efter `created_at`, og filtrér på `handled_at` er tom. Slet ikke rækkerne, mens sagen kører; de er jeres dokumentation.
 
 - **Anmeldelse:** find den under **Table Editor → reviews** (filtrér på `id`). Bryder den reglerne (personoplysninger, krænkende, ikke om virksomheden, skrevet af virksomheden selv eller en konkurrent), så sæt `hidden` til `true`. Ret aldrig i teksten.
 - **Gruppe:** find den under **group_jobs** (filtrér på `id`), og sæt `hidden` til `true`.
 - **Billede af udført arbejde:** slet rækken i **business_photos** og filen i **Storage → work-photos**.
 - **Nultolerance:** Skriver en bruger krænkende eller truende indhold igen og igen, så slet brugeren under **Authentication → Users**. Så forsvinder alt, brugeren har skrevet.
 
-Har den, der rapporterede, skrevet en e-mail, så svar dem, og skriv kort til den, hvis indhold I skjuler, hvorfor (DSA art. 16 og 17). Reglerne står på siderne "Om anmeldelser" og "Vilkår for brug" i appen.
+Når I har taget stilling, så gør begge dele (DSA art. 16 og 17). Reglerne står på siderne "Om anmeldelser" og "Vilkår for brug" i appen.
 
-### Priser, kunder har delt
+1. **Skriv altid til den, hvis indhold I skjuler eller sletter,** og sig kort hvorfor – også når rapporten kom fra knappen i appen uden e-mail. Find forfatteren: for en anmeldelse kolonnen `user_id` i **reviews**, for en gruppe kolonnen `created_by` i **group_jobs**. Slå id'et op under **Authentication → Users**, hvor e-mailen står (ved Log ind med Apple kan det være Apples skjulte adresse, som også virker). Er det et billede af udført arbejde, så skriv til virksomheden: `user_id` i **business_members** for virksomhedens id, eller kontaktpersonens e-mail i **business_signups**.
+2. **Svar den, der rapporterede,** hvis de har skrevet en e-mail. Rapporter fra knappen i appen har ingen e-mail; dem svarer I ikke på.
+
+Sæt så `handled_at` til tidspunktet (fx `now()`) på rækken i **content_reports**. Lader I indholdet blive, sætter I også `handled_at`.
+
+**Sletning af gamle rapporter (én gang om måneden).** Privatlivspolitikken lover, at en rapport slettes senest 12 måneder efter, sagen er afsluttet. Kør i SQL Editor:
+
+```sql
+delete from public.content_reports where handled_at < now() - interval '12 months';
+```
+
+Slet også e-mails med rapporter og svar 12 måneder efter, sagen er afsluttet.
+
+### Priser, brugere har delt
 
 **Table Editor → price_reports** viser alle delte priser. Appen viser kun priser fra de seneste 24 måneder og først fra 3 priser pr. opgave. Ligner en pris en fejl (fx 10 gange for meget), så slet rækken.
 
@@ -130,6 +143,7 @@ Har den, der rapporterede, skrevet en e-mail, så svar dem, og skriv kort til de
 - Brugere sletter selv deres konto i appen (Profil → Slet bruger). Navn, telefon, opkaldsliste, anmeldelser og delte priser slettes med det samme.
 - Slet brugere, der ikke har logget ind i 24 måneder, mindst én gang om året: **Authentication → Users**, sortér efter "Last sign in" (det står i privatlivspolitikken).
 - Vil en virksomhed fjernes, så fjern den fra `live-businesses.json` (og evt. regnearket), og sæt `status` til `rejected` i `business_signups`. Behold selve rækken som dokumentation i 12 måneder.
+- Rapporter i `content_reports`: én gang om måneden, 12 måneder efter `handled_at` (se "Rapporter fra brugere").
 
 ## Godt at vide
 

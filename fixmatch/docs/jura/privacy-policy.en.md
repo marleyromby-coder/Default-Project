@@ -86,7 +86,7 @@ We show information about businesses (such as name, company number, phone number
 
 If you write to us, we use your email address and what you write to answer you. We delete the message no later than 12 months after the matter is closed.
 
-**Reports.** If you tap "Report" on a review or a group, we store what you reported, why and when, with Supabase in the EU. If you are signed in, we also store your account, so we can see if anyone misuses the button. We only use it to handle the report (GDPR Article 6(1)(c) and (f): the Digital Services Act and a safe app). Others cannot see who reported it. If you delete your account, the link to you is removed, and the report is deleted no later than 12 months after the matter is closed.
+**Reports.** If you tap "Report" on a review or a group, we store what you reported, why and when, with Supabase in the EU. If you are signed in, we also store your account, so we can see if anyone misuses the button. We only use it to handle the report (GDPR Article 6(1)(c) and (f): the Digital Services Act and a safe app). Others cannot see who reported it. When we have handled the report, we note when the matter was closed, and we delete the report no later than 12 months after that. If you delete your account before then, the link to you is removed at once.
 
 ## 14. Your rights
 

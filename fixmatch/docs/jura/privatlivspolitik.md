@@ -90,7 +90,7 @@ Vi viser oplysninger om virksomheder (fx navn, CVR, telefonnummer og priser), so
 
 Skriver du til os, bruger vi din e-mail og det, du skriver, til at svare dig. Vi sletter henvendelsen senest 12 måneder efter, sagen er afsluttet.
 
-**Rapporter.** Trykker du "Rapportér" ved en anmeldelse eller en gruppe, gemmer vi, hvad du rapporterede, hvorfor, og hvornår, hos Supabase i EU. Er du logget ind, gemmer vi også din bruger, så vi kan se, om nogen misbruger knappen. Vi bruger det kun til at behandle rapporten (GDPR art. 6, stk. 1, litra c og f: Digital Services Act og en tryg app). Andre kan ikke se, hvem der rapporterede. Sletter du din bruger, fjernes koblingen til dig, og rapporten slettes senest 12 måneder efter, sagen er afsluttet.
+**Rapporter.** Trykker du "Rapportér" ved en anmeldelse eller en gruppe, gemmer vi, hvad du rapporterede, hvorfor, og hvornår, hos Supabase i EU. Er du logget ind, gemmer vi også din bruger, så vi kan se, om nogen misbruger knappen. Vi bruger det kun til at behandle rapporten (GDPR art. 6, stk. 1, litra c og f: Digital Services Act og en tryg app). Andre kan ikke se, hvem der rapporterede. Når vi har behandlet rapporten, noterer vi, hvornår sagen blev afsluttet, og vi sletter rapporten senest 12 måneder efter. Sletter du din bruger før da, fjernes koblingen til dig med det samme.
 
 ## 14. Dine rettigheder
 
