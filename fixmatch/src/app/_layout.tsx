@@ -95,6 +95,7 @@ function RootNavigator() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false, title: t('Find') }} />
         <Stack.Screen name="kategori/[id]" options={{ title: '' }} />
         <Stack.Screen name="virksomhed/[id]" options={{ headerShown: false, title: t('Virksomhed') }} />
+        <Stack.Screen name="virksomhed/anmeldelser/[id]" options={{ title: t('Anmeldelser') }} />
         <Stack.Screen
           name="sammenlign"
           options={{

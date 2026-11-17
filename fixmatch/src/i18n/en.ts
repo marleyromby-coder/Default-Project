@@ -812,6 +812,8 @@ const en: Record<string, string> = {
   'Rapportér anmeldelsen': 'Report the review',
   Rapportér: 'Report',
   'Sådan virker anmeldelserne': 'How reviews work',
+  'Vis alle {count} anmeldelser': 'Show all {count} reviews',
+  'Alle anmeldelser, også de dårlige, med de nyeste først.': 'All reviews, the bad ones too, newest first.',
   'Hvem har tid i dag?': 'Who has time today?',
   'Virksomheder nær dig, der selv har meldt ledig tid': 'Businesses near you that have marked free time',
   '{name}, {trade}, {when}, {distance} væk': '{name}, {trade}, {when}, {distance} away',

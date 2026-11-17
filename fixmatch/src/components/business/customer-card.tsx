@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import { ReviewItem } from '@/components/business/review-item';
 import { Button } from '@/components/ui/button';
 import { Card, CardTitle, Divider } from '@/components/ui/card';
 import { Stars } from '@/components/ui/stars';
@@ -9,10 +10,9 @@ import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { MinTouchSize, Spacing } from '@/constants/theme';
 import { getCategory } from '@/data/categories';
-import { useTheme } from '@/hooks/use-theme';
 import { currencyOf } from '@/lib/business-text';
 import { openReviewLink } from '@/lib/contact';
-import { formatDate, formatPriceRange, formatRating } from '@/lib/format';
+import { formatPriceRange, formatRating } from '@/lib/format';
 import { MIN_PAID_PRICES } from '@/lib/prices';
 import { reviewSiteName } from '@/lib/review-links';
 import type { Business, JobType } from '@/lib/types';
@@ -26,22 +26,9 @@ import {
   useReviewSummary,
   useSharedPrices,
 } from '@/state/community';
-import { confirmReport, useHiddenIds } from '@/state/reports';
+import { useHiddenIds } from '@/state/reports';
 
-/**
- * Reports a review that breaks the rules (DSA art. 16, App Store guideline 1.2). It is hidden
- * on this phone at once; without a server the report goes by e-mail with the review's id.
- */
-function reportReview(business: Business, reviewId: string) {
-  confirmReport({
-    kind: 'review',
-    id: reviewId,
-    subject: t('Rapportér anmeldelse af {name}', { name: business.name }),
-    body: t('Anmeldelse {id} hos {name} bryder reglerne, fordi:', { id: reviewId, name: business.name }),
-  });
-}
-
-/** Reviews shown on the page; the rest are a tap away later. */
+/** Reviews shown on the page; "Vis alle" opens the rest (app/virksomhed/anmeldelser/[id].tsx). */
 const SHOWN_REVIEWS = 5;
 
 function percentile(sorted: number[], p: number): number {
@@ -59,7 +46,6 @@ function percentile(sorted: number[], p: number): number {
  * their scores, and they do not count in the FixMatch score.
  */
 export function CustomerCard({ business }: { business: Business }) {
-  const colors = useTheme();
   const hiddenReviews = useHiddenIds('review');
   // Reviews the user reported are hidden on this phone; their own is always shown.
   const reviews = useReviews(business.id).filter((review) => review.mine || !hiddenReviews.has(review.id));
@@ -68,6 +54,8 @@ export function CustomerCard({ business }: { business: Business }) {
   const mine = useMyReview(business.id);
   const shared = useSharedPrices();
   const links = business.reviewLinks ?? [];
+  // A demo business's numbers are made up and have no review texts: count only the loaded ones.
+  const total = business.demo ? reviews.length : Math.max(summary?.reviews ?? 0, reviews.length);
 
   useEffect(() => {
     loadReviews(business.id).catch(() => undefined);
@@ -117,38 +105,17 @@ export function CustomerCard({ business }: { business: Business }) {
       {reviews.slice(0, SHOWN_REVIEWS).map((review) => (
         <View key={review.id} style={styles.review}>
           <Divider />
-          <View style={styles.reviewHead}>
-            <View style={[styles.initial, { backgroundColor: colors.brandSoft }]}>
-              <AppText variant="footnote" weight="700" style={{ color: colors.brandText }}>
-                {review.initial}
-              </AppText>
-            </View>
-            <Stars value={review.rating} size={13} />
-            <AppText variant="caption" tone="textSecondary" style={styles.flex}>
-              {[
-                review.mine ? t('Din anmeldelse') : undefined,
-                review.job ? jobs.find((j) => j.id === review.job)?.name : undefined,
-                formatDate(review.createdAt.slice(0, 10)),
-              ]
-                .filter(Boolean)
-                .join(' · ')}
-            </AppText>
-          </View>
-          {review.text ? <AppText variant="subhead">{review.text}</AppText> : null}
-          {!review.mine ? (
-            <Tappable
-              onPress={() => reportReview(business, review.id)}
-              accessibilityRole="button"
-              accessibilityLabel={t('Rapportér anmeldelsen')}
-              hitSlop={8}
-              style={styles.report}>
-              <AppText variant="caption" tone="textSecondary">
-                {t('Rapportér')}
-              </AppText>
-            </Tappable>
-          ) : null}
+          <ReviewItem business={business} review={review} style={styles.reviewBody} />
         </View>
       ))}
+      {total > SHOWN_REVIEWS ? (
+        <Button
+          title={t('Vis alle {count} anmeldelser', { count: total })}
+          variant="link"
+          chevron
+          onPress={() => router.push({ pathname: '/virksomhed/anmeldelser/[id]', params: { id: business.id } })}
+        />
+      ) : null}
 
       {links.length > 0 ? (
         <View style={styles.elsewhere}>
@@ -246,13 +213,11 @@ const styles = StyleSheet.create({
   spaced: { marginTop: Spacing.xs },
   summary: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   review: { gap: Spacing.xs, marginTop: Spacing.sm },
-  reviewHead: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, marginTop: Spacing.sm },
-  initial: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
+  reviewBody: { marginTop: Spacing.sm },
   paid: { gap: Spacing.xs, marginTop: Spacing.sm },
   elsewhere: { gap: Spacing.xs, marginTop: Spacing.sm },
   links: { flexDirection: 'row', flexWrap: 'wrap', columnGap: Spacing.lg },
   link: { minHeight: MinTouchSize, justifyContent: 'center' },
-  report: { alignSelf: 'flex-start' },
   paidRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   actions: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginTop: Spacing.md },
 });

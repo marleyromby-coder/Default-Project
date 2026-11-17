@@ -178,21 +178,25 @@ export function useMyPriceReport(businessId: string, job?: string): PriceReport 
   return mine.find((r) => r.businessId === businessId && (job === undefined || r.job === job));
 }
 
-/** Loads a business's reviews and summary when its page opens. */
-export async function loadReviews(businessId: string): Promise<void> {
-  if (!supabase) return;
-  const [list, summary] = await Promise.all([
-    supabase
-      .from('public_reviews')
-      .select('id, business_id, rating, text, job, created_at, initial')
-      .eq('business_id', businessId)
-      .order('created_at', { ascending: false })
-      .limit(50),
-    supabase.from('review_summary').select('average, reviews').eq('business_id', businessId).maybeSingle(),
-  ]);
-  if (list.error || !list.data) return;
+/** Reviews are read from the server this many at a time. */
+export const REVIEW_PAGE_SIZE = 50;
+
+/**
+ * One page of a business's reviews from the server, newest first: rows from, from + 1, …,
+ * from + REVIEW_PAGE_SIZE − 1. Empty without a server.
+ */
+export async function fetchReviewPage(businessId: string, from: number): Promise<Review[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from('public_reviews')
+    .select('id, business_id, rating, text, job, created_at, initial')
+    .eq('business_id', businessId)
+    .order('created_at', { ascending: false })
+    .order('id', { ascending: false })
+    .range(from, from + REVIEW_PAGE_SIZE - 1);
+  if (error) throw error;
   const mine = store.myReviews.find((r) => r.businessId === businessId);
-  const reviews = list.data.map(
+  return (data ?? []).map(
     (row): Review => ({
       id: String(row.id),
       businessId: row.business_id,
@@ -204,6 +208,35 @@ export async function loadReviews(businessId: string): Promise<void> {
       mine: mine !== undefined && mine.id === String(row.id),
     }),
   );
+}
+
+/** The pages read so far, and whether the last one was the end. */
+export interface Pages<T> {
+  items: T[];
+  done: boolean;
+}
+
+/**
+ * Reads the page after the items already loaded. A page with fewer than pageSize rows is the
+ * last one. "Alle anmeldelser" uses it to read every review, 50 at a time.
+ */
+export async function loadNextPage<T>(
+  loaded: T[],
+  fetchPage: (from: number) => Promise<T[]>,
+  pageSize = REVIEW_PAGE_SIZE,
+): Promise<Pages<T>> {
+  const page = await fetchPage(loaded.length);
+  return { items: [...loaded, ...page], done: page.length < pageSize };
+}
+
+/** Loads a business's newest reviews and its summary when its page opens. */
+export async function loadReviews(businessId: string): Promise<void> {
+  if (!supabase) return;
+  const [reviews, summary] = await Promise.all([
+    fetchReviewPage(businessId, 0).catch(() => undefined),
+    supabase.from('review_summary').select('average, reviews').eq('business_id', businessId).maybeSingle(),
+  ]);
+  if (!reviews) return;
   const summaries = { ...store.summaries };
   if (summary.data && Number(summary.data.reviews) > 0) {
     summaries[businessId] = { average: Number(summary.data.average), reviews: Number(summary.data.reviews) };
