@@ -621,10 +621,7 @@ function QuickAction({
       onPress={onPress}
       accessibilityLabel={label}
       accessibilityState={selected === undefined ? undefined : { selected }}
-      style={[
-        styles.quickAction,
-        { backgroundColor: background, borderColor: primary || selected ? background : colors.border },
-      ]}>
+      style={[styles.quickAction, { backgroundColor: background }]}>
       <Icon name={icon} size={20} color={primary ? colors.onBrand : colors.brandText} weight="semibold" />
       <AppText
         variant="caption"
@@ -718,10 +715,7 @@ function FloatingButton({
 }) {
   const colors = useTheme();
   return (
-    <Tappable
-      onPress={onPress}
-      accessibilityLabel={label}
-      style={[styles.floating, { backgroundColor: colors.surfaceAlt, borderColor: colors.border }]}>
+    <Tappable onPress={onPress} accessibilityLabel={label} style={[styles.floating, { backgroundColor: colors.fill }]}>
       <Icon name={icon} size={18} color={active ? colors.brand : colors.text} weight="bold" />
     </Tappable>
   );
@@ -768,7 +762,7 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 64,
     borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderCurve: 'continuous',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 4,
@@ -822,7 +816,6 @@ const styles = StyleSheet.create({
     width: MinTouchSize,
     height: MinTouchSize,
     borderRadius: MinTouchSize / 2,
-    borderWidth: StyleSheet.hairlineWidth,
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -15,13 +15,7 @@ interface CardProps extends PropsWithChildren {
 export function Card({ children, style, padded = true }: CardProps) {
   const colors = useTheme();
   return (
-    <View
-      style={[
-        styles.card,
-        { backgroundColor: colors.surface, borderColor: colors.border },
-        padded ? styles.padded : null,
-        style,
-      ]}>
+    <View style={[styles.card, { backgroundColor: colors.surface }, padded ? styles.padded : null, style]}>
       {children}
     </View>
   );
@@ -52,11 +46,8 @@ export function Divider({ inset = 0 }: { inset?: number }) {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
-    overflow: 'hidden',
-  },
+  // Surfaces separate from the background by fill, not by an outline (like iOS grouped lists).
+  card: { borderRadius: Radius.lg, borderCurve: 'continuous', overflow: 'hidden' },
   padded: { padding: Spacing.lg },
   titleRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, marginBottom: Spacing.md },
   titleText: { flex: 1 },

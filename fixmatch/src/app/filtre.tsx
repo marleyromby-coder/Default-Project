@@ -92,7 +92,7 @@ export default function FiltersScreen() {
             {t('Sammenlignet med den typiske timepris i faget.')}
           </AppText>
         </Group>
-        <View style={[styles.switches, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.switches, { backgroundColor: colors.surface }]}>
           <SwitchRow
             label={t('Åben nu')}
             hint={t('Virksomheder med døgnvagt tæller med')}
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   content: { padding: ScreenPadding, gap: Spacing.xl, paddingTop: Spacing.xl },
   group: { gap: Spacing.sm },
   options: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
-  switches: { borderRadius: Radius.md, borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden' },
+  switches: { borderRadius: Radius.lg, borderCurve: 'continuous', overflow: 'hidden' },
   switchRow: {
     flexDirection: 'row',
     alignItems: 'center',

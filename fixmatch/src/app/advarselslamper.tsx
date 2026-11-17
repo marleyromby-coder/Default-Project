@@ -71,7 +71,7 @@ export default function WarningLampsScreen() {
           .map((r) => ({ job: r.job, total: r.total, quantity: r.quantity }));
         const typical = job ? summarizeJobPrice(job, garages, market, paid) : undefined;
         return (
-          <View key={lamp.id} style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View key={lamp.id} style={[styles.card, { backgroundColor: colors.surface }]}>
             <Tappable
               onPress={() => setOpen(expanded ? undefined : lamp.id)}
               accessibilityRole="button"
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   legend: { flexDirection: 'row', gap: Spacing.lg, marginBottom: Spacing.xs },
   legendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   dot: { width: 10, height: 10, borderRadius: 5 },
-  card: { borderRadius: Radius.lg, borderWidth: StyleSheet.hairlineWidth, padding: Spacing.md },
+  card: { borderRadius: Radius.lg, borderCurve: 'continuous', padding: Spacing.md },
   head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   lamp: { width: 44, height: 44, borderRadius: Radius.md, alignItems: 'center', justifyContent: 'center' },
   body: { gap: Spacing.sm, marginTop: Spacing.md },

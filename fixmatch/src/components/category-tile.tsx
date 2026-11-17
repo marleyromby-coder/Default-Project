@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { Icon } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
@@ -15,8 +15,8 @@ interface Props {
 }
 
 /**
- * A trade on the home screen, four to a row: the icon in pine, the name, and how many
- * businesses are nearby in the corner. One colour for all trades keeps the grid calm.
+ * A trade on the home screen, four to a row: the icon in pine and the name. How many
+ * businesses are nearby is read out by VoiceOver. One colour for all trades keeps the grid calm.
  */
 export function CategoryTile({ category, nearby }: Props) {
   const colors = useTheme();
@@ -30,15 +30,8 @@ export function CategoryTile({ category, nearby }: Props) {
         count,
       })}
       pressedOpacity={0.7}
-      style={[styles.tile, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-      <View style={styles.top}>
-        <Icon name={category.id} size={22} color={colors.brand} weight="semibold" />
-        {nearby > 0 ? (
-          <AppText variant="caption2" tone="textTertiary" tabular maxFontSizeMultiplier={1.2}>
-            {nearby}
-          </AppText>
-        ) : null}
-      </View>
+      style={[styles.tile, { backgroundColor: colors.surface }]}>
+      <Icon name={category.id} size={22} color={colors.brand} weight="semibold" />
       <AppText
         variant="caption"
         weight="600"
@@ -57,11 +50,10 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 76,
     borderRadius: Radius.md,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderCurve: 'continuous',
     paddingHorizontal: Spacing.sm,
     paddingVertical: Spacing.sm + 2,
     justifyContent: 'space-between',
     gap: Spacing.sm,
   },
-  top: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
 });

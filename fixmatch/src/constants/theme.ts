@@ -16,6 +16,10 @@ export const Colors = {
     background: '#F4F1EA',
     surface: '#FFFDF9',
     surfaceAlt: '#FAF7F1',
+    /** Quiet fill for badges, segmented tracks and disabled buttons, on any surface. */
+    fill: '#EAE5DA',
+    /** The raised part on a `fill`, like the selected segment. */
+    fillRaised: '#FFFDF9',
     border: '#E6E0D4',
     text: '#1C1A17',
     textSecondary: '#5E574C',
@@ -52,8 +56,10 @@ export const Colors = {
   },
   dark: {
     background: '#11130F',
-    surface: '#1A1D18',
-    surfaceAlt: '#22261F',
+    surface: '#20241E',
+    surfaceAlt: '#2A2F27',
+    fill: '#2A2F27',
+    fillRaised: '#4A5246',
     border: '#30352D',
     text: '#F2EEE5',
     textSecondary: '#B8B1A4',

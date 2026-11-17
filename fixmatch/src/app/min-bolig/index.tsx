@@ -169,7 +169,7 @@ export default function MyHomeScreen() {
             date: formatDate(job.date),
             price: formatPrice(job.total, market.currency),
           })}
-          style={[styles.job, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          style={[styles.job, { backgroundColor: colors.surface }]}>
           {job.photos[0] ? (
             <Image
               source={{ uri: job.photos[0] }}
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
     padding: Spacing.md,
     borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderCurve: 'continuous',
   },
   thumb: { width: 56, height: 56, borderRadius: Radius.md },
   thumbEmpty: { alignItems: 'center', justifyContent: 'center' },

@@ -31,7 +31,7 @@ export function ListSection({ title, footer, children }: SectionProps) {
           {title}
         </AppText>
       ) : null}
-      <View style={[styles.group, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+      <View style={[styles.group, { backgroundColor: colors.surface }]}>
         {rows.map((row, index) => (
           <Fragment key={index}>
             {index > 0 ? <Divider inset={52} /> : null}
@@ -123,7 +123,7 @@ export function ListRow({
 const styles = StyleSheet.create({
   section: { gap: Spacing.sm },
   sectionTitle: { paddingHorizontal: Spacing.lg },
-  group: { borderRadius: Radius.md, borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden' },
+  group: { borderRadius: Radius.lg, borderCurve: 'continuous', overflow: 'hidden' },
   footer: { paddingHorizontal: Spacing.lg },
   row: {
     minHeight: MinTouchSize + 6,
@@ -133,7 +133,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.sm + 2,
   },
-  iconTile: { width: 28, height: 28, borderRadius: 7, alignItems: 'center', justifyContent: 'center' },
+  iconTile: {
+    width: 28,
+    height: 28,
+    borderRadius: 7,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   rowText: { flex: 1, gap: 2 },
   value: { maxWidth: '45%' },
 });

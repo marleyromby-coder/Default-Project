@@ -92,7 +92,7 @@ export function ProblemPhotos() {
   const remaining = MAX_PHOTOS - photos.length;
 
   return (
-    <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+    <View style={[styles.card, { backgroundColor: colors.surface }]}>
       <View style={styles.row}>
         <View style={[styles.icon, { backgroundColor: colors.brandSoft }]}>
           <Icon name="camera" size={17} color={colors.brand} weight="semibold" />
@@ -135,7 +135,7 @@ export function ProblemPhotos() {
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  card: { borderRadius: Radius.lg, borderWidth: StyleSheet.hairlineWidth, padding: Spacing.md, gap: Spacing.md },
+  card: { borderRadius: Radius.lg, borderCurve: 'continuous', padding: Spacing.md, gap: Spacing.md },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   icon: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center' },
   strip: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },

@@ -29,7 +29,7 @@ export function GroupCard({ group }: { group: GroupJob }) {
         from: formatDate(group.wantedFrom),
         to: formatDate(group.wantedTo),
       })}
-      style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+      style={[styles.card, { backgroundColor: colors.surface }]}>
       <View style={[styles.icon, { backgroundColor: colors.brandSoft }]}>
         <Icon name={group.category} size={18} color={colors.brand} weight="semibold" />
       </View>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
     padding: Spacing.md,
     borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderCurve: 'continuous',
   },
   icon: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center' },
   badges: { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 4 },

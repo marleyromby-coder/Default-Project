@@ -152,7 +152,7 @@ export default function MatchScreen() {
     <View style={[styles.flex, { backgroundColor: colors.background }]}>
       <Stack.Screen options={{ title: t('Dit match') }} />
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={[styles.content, column]}>
-        <View style={[styles.summary, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.summary, { backgroundColor: colors.surface }]}>
           <View style={styles.row}>
             <View style={[styles.tradeIcon, { backgroundColor: colors.brandSoft }]}>
               <Icon name={category.id} size={18} color={colors.brand} weight="semibold" />
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
   content: { padding: ScreenPadding, paddingBottom: 140, gap: Spacing.lg },
   summary: {
     borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderCurve: 'continuous',
     padding: Spacing.md,
     gap: Spacing.md,
   },

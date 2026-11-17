@@ -204,7 +204,7 @@ export default function QuoteCheckScreen() {
         ) : null}
 
         {job ? (
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface }]}>
             {job.unit !== 'opgave' ? (
               <AmountField
                 label={job.unit === 'm2' ? t('Antal m²') : t('Antal stk.')}
@@ -255,7 +255,7 @@ export default function QuoteCheckScreen() {
         ) : null}
 
         {job ? (
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface }]}>
             <View style={styles.row}>
               <View style={styles.flex}>
                 <AppText variant="headline">{t('Grøn energiforbedring')}</AppText>
@@ -298,7 +298,7 @@ export default function QuoteCheckScreen() {
         ) : null}
 
         {job ? (
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface }]}>
             <AppText variant="headline" accessibilityRole="header">
               {t('Tjek også tilbuddet for')}
             </AppText>
@@ -432,7 +432,7 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   card: {
     borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderCurve: 'continuous',
     padding: Spacing.md,
     gap: Spacing.md,
   },

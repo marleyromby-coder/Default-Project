@@ -140,7 +140,7 @@ export default function HomeScreen() {
         onPress={() => router.push('/soeg')}
         accessibilityRole="search"
         accessibilityLabel={t('Søg efter opgave, fag eller virksomhed')}
-        style={[styles.search, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        style={[styles.search, { backgroundColor: colors.surface }]}>
         <Icon name="search" size={18} color={colors.textSecondary} weight="semibold" />
         <AppText variant="body" tone="textTertiary" numberOfLines={1}>
           {t('Hvad skal laves? Fx “stoppet afløb”')}
@@ -168,7 +168,7 @@ export default function HomeScreen() {
       <Tappable
         onPress={() => router.push('/tilbudstjek')}
         accessibilityLabel={t('Tilbudstjek: se om et tilbud, du har fået, er lavt, normalt eller højt')}
-        style={[styles.quoteCheck, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        style={[styles.quoteCheck, { backgroundColor: colors.surface }]}>
         <View style={[styles.describeIcon, { backgroundColor: colors.accentSoft }]}>
           <Icon name="receipt" size={19} color={colors.brandText} weight="semibold" />
         </View>
@@ -185,7 +185,7 @@ export default function HomeScreen() {
         <Tappable
           onPress={() => router.push('/groen-guide')}
           accessibilityLabel={t('Grøn guide: fradrag, tilskud og besparelser på grønne forbedringer')}
-          style={[styles.smallTile, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          style={[styles.smallTile, { backgroundColor: colors.surface }]}>
           <View style={[styles.smallIcon, { backgroundColor: colors.successSoft }]}>
             <Icon name="leaf" size={17} color={colors.success} weight="semibold" />
           </View>
@@ -201,7 +201,7 @@ export default function HomeScreen() {
         <Tappable
           onPress={() => router.push('/advarselslamper')}
           accessibilityLabel={t('Advarselslampe i bilen: hvad betyder den, og kan du køre videre')}
-          style={[styles.smallTile, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          style={[styles.smallTile, { backgroundColor: colors.surface }]}>
           <View style={[styles.smallIcon, { backgroundColor: colors.warningSoft }]}>
             <Icon name="warning" size={17} color={colors.warning} weight="semibold" />
           </View>
@@ -319,7 +319,7 @@ export default function HomeScreen() {
               key={item.label}
               onPress={() => router.push({ pathname: '/akut', params: { type: item.type } })}
               accessibilityLabel={t('{label}: første skridt og nærmeste døgnvagt', { label: item.label })}
-              style={[styles.urgent, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              style={[styles.urgent, { backgroundColor: colors.surface }]}>
               <View style={[styles.urgentIcon, { backgroundColor: colors.warningSoft }]}>
                 <Icon name={item.icon} size={18} color={colors.warning} weight="semibold" />
               </View>
@@ -351,7 +351,7 @@ export default function HomeScreen() {
                   when: when === 'today' ? t('ledig i dag') : t('ledig i morgen'),
                   distance: formatDistance(km),
                 })}
-                style={[styles.topCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                style={[styles.topCard, { backgroundColor: colors.surface }]}>
                 <View style={styles.topBody}>
                   <BusinessMark business={business} size={40} />
                   <AppText variant="caption" tone="textSecondary" weight="600">
@@ -374,7 +374,7 @@ export default function HomeScreen() {
       <Tappable
         onPress={() => router.push('/faelles')}
         accessibilityLabel={t('Naborabat: gå sammen med naboerne om en opgave, og få rabat')}
-        style={[styles.quoteCheck, styles.groupTile, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        style={[styles.quoteCheck, styles.groupTile, { backgroundColor: colors.surface }]}>
         <View style={[styles.describeIcon, { backgroundColor: colors.brandSoft }]}>
           <Icon name="people" size={19} color={colors.brand} weight="semibold" />
         </View>
@@ -408,7 +408,7 @@ export default function HomeScreen() {
                   priceRange: formatPriceRange(price.min, price.max, price.unit, price.currency),
                   plural: category.plural,
                 })}
-                style={[styles.jobCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                style={[styles.jobCard, { backgroundColor: colors.surface }]}>
                 <View style={[styles.jobIcon, { backgroundColor: colors.brandSoft }]}>
                   <Icon name={categoryId} size={16} color={colors.brand} weight="semibold" />
                 </View>
@@ -438,7 +438,7 @@ export default function HomeScreen() {
                   name: business.name,
                   distance: formatDistance(km),
                 })}
-                style={[styles.featured, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                style={[styles.featured, { backgroundColor: colors.surface }]}>
                 <View style={styles.featuredBody}>
                   <View style={styles.rowBetween}>
                     <BusinessMark business={business} size={44} />
@@ -478,7 +478,7 @@ export default function HomeScreen() {
                   name2: getCategory(business.categories[0])?.name,
                   distance: formatDistance(km),
                 })}
-                style={[styles.topCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                style={[styles.topCard, { backgroundColor: colors.surface }]}>
                 <View style={styles.topBody}>
                   <BusinessMark business={business} size={40} />
                   <AppText variant="caption" tone="textSecondary" weight="600">
@@ -499,7 +499,7 @@ export default function HomeScreen() {
       ) : null}
 
       <Section title={t('Sådan virker FixMatch')}>
-        <View style={[styles.steps, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.steps, { backgroundColor: colors.surface }]}>
           <Step number={1} title={t('Vælg fag eller opgave')} text={t('VVS, el, tømrer, murer, mekaniker og flere.')} />
           <Step
             number={2}
@@ -592,7 +592,7 @@ const styles = StyleSheet.create({
     marginTop: -Spacing.sm,
     minHeight: 50,
     borderRadius: Radius.md,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderCurve: 'continuous',
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.sm,
@@ -602,6 +602,7 @@ const styles = StyleSheet.create({
     marginHorizontal: ScreenPadding,
     marginTop: -Spacing.sm,
     borderRadius: Radius.lg,
+    borderCurve: 'continuous',
     padding: Spacing.md,
     flexDirection: 'row',
     alignItems: 'center',
@@ -611,7 +612,7 @@ const styles = StyleSheet.create({
     marginHorizontal: ScreenPadding,
     marginTop: -Spacing.sm,
     borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderCurve: 'continuous',
     padding: Spacing.md,
     flexDirection: 'row',
     alignItems: 'center',
@@ -626,7 +627,7 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
     padding: Spacing.sm,
     borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderCurve: 'continuous',
   },
   smallIcon: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center' },
   describeIcon: {
@@ -655,7 +656,7 @@ const styles = StyleSheet.create({
   urgent: {
     flex: 1,
     borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderCurve: 'continuous',
     padding: Spacing.md,
     gap: Spacing.sm,
     alignItems: 'flex-start',
@@ -665,20 +666,20 @@ const styles = StyleSheet.create({
   jobCard: {
     width: 156,
     borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderCurve: 'continuous',
     padding: Spacing.md,
     gap: Spacing.xs,
   },
   jobIcon: { width: 30, height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center', marginBottom: 2 },
-  featured: { width: 290, borderRadius: Radius.lg, borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden' },
+  featured: { width: 290, borderRadius: Radius.lg, borderCurve: 'continuous', overflow: 'hidden' },
   featuredBody: { padding: Spacing.md, gap: Spacing.xs },
   rowBetween: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
-  topCard: { width: 210, borderRadius: Radius.lg, borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden' },
+  topCard: { width: 210, borderRadius: Radius.lg, borderCurve: 'continuous', overflow: 'hidden' },
   topBody: { padding: Spacing.md, gap: 3 },
   steps: {
     marginHorizontal: ScreenPadding,
     borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderCurve: 'continuous',
     padding: Spacing.lg,
     gap: Spacing.lg,
   },

@@ -157,7 +157,7 @@ export default function GreenGuideScreen() {
         );
       })}
 
-      <View style={[styles.note, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+      <View style={[styles.note, { backgroundColor: colors.surface }]}>
         <AppText variant="footnote" tone="textSecondary">
           {t(
             'Priser og besparelser er typiske tal for et dansk parcelhus i 2026 og vejledende. Fradragets regler og puljerne ændrer sig hvert år. Tjek altid skat.dk og sparenergi.dk, og aftal tilskud, før arbejdet går i gang.',
@@ -205,5 +205,5 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   subsidy: { flexDirection: 'row', gap: Spacing.sm, padding: Spacing.sm, borderRadius: Radius.md },
   actions: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginTop: Spacing.xs },
-  note: { borderRadius: Radius.lg, borderWidth: StyleSheet.hairlineWidth, padding: Spacing.md, gap: Spacing.sm },
+  note: { borderRadius: Radius.lg, borderCurve: 'continuous', padding: Spacing.md, gap: Spacing.sm },
 });

@@ -59,9 +59,7 @@ export default function PrioritiesScreen() {
         </View>
 
         {FACTORS.map((factor) => (
-          <View
-            key={factor.key}
-            style={[styles.factor, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View key={factor.key} style={[styles.factor, { backgroundColor: colors.surface }]}>
             <View style={styles.factorHeader}>
               <View style={[styles.factorIcon, { backgroundColor: colors.brandSoft }]}>
                 <Icon name={factor.icon} size={16} color={colors.brand} weight="semibold" />
@@ -134,7 +132,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   content: { padding: ScreenPadding, gap: Spacing.lg, paddingTop: Spacing.xl },
   presets: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
-  factor: { borderRadius: Radius.lg, borderWidth: StyleSheet.hairlineWidth, padding: Spacing.lg, gap: Spacing.md },
+  factor: { borderRadius: Radius.lg, borderCurve: 'continuous', padding: Spacing.lg, gap: Spacing.md },
   factorHeader: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   factorIcon: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
   levels: { flexDirection: 'row', gap: 6 },

@@ -18,20 +18,25 @@ interface Props {
 export function Badge({ label, tone = 'neutral', icon, accessibilityLabel }: Props) {
   const colors = useTheme();
   const palette = {
-    neutral: { bg: colors.surfaceAlt, fg: colors.textSecondary, border: colors.border },
-    brand: { bg: colors.brandSoft, fg: colors.brandText, border: 'transparent' },
-    success: { bg: colors.successSoft, fg: colors.success, border: 'transparent' },
-    danger: { bg: colors.dangerSoft, fg: colors.danger, border: 'transparent' },
-    warning: { bg: colors.warningSoft, fg: colors.warning, border: 'transparent' },
-    info: { bg: colors.infoSoft, fg: colors.info, border: 'transparent' },
+    neutral: { bg: colors.fill, fg: colors.textSecondary },
+    brand: { bg: colors.brandSoft, fg: colors.brandText },
+    success: { bg: colors.successSoft, fg: colors.success },
+    danger: { bg: colors.dangerSoft, fg: colors.danger },
+    warning: { bg: colors.warningSoft, fg: colors.warning },
+    info: { bg: colors.infoSoft, fg: colors.info },
   }[tone];
   return (
     <View
       accessible
       accessibilityLabel={accessibilityLabel ?? label}
-      style={[styles.badge, { backgroundColor: palette.bg, borderColor: palette.border }]}>
+      style={[styles.badge, { backgroundColor: palette.bg }]}>
       {icon ? <Icon name={icon} size={12} color={palette.fg} weight="semibold" /> : null}
-      <AppText variant="caption" weight="600" style={{ color: palette.fg }} numberOfLines={1} maxFontSizeMultiplier={1.3}>
+      <AppText
+        variant="caption"
+        weight="600"
+        style={{ color: palette.fg }}
+        numberOfLines={1}
+        maxFontSizeMultiplier={1.3}>
         {label}
       </AppText>
     </View>
@@ -46,7 +51,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.sm,
     paddingVertical: 3,
     borderRadius: Radius.pill,
-    borderWidth: StyleSheet.hairlineWidth,
     alignSelf: 'flex-start',
   },
 });

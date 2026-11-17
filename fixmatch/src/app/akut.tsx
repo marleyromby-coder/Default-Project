@@ -81,7 +81,7 @@ export default function EmergencyScreen() {
                 key={item.id}
                 onPress={() => setPicked(item.id)}
                 accessibilityLabel={t(item.title)}
-                style={[styles.tile, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                style={[styles.tile, { backgroundColor: colors.surface }]}>
                 <View style={[styles.tileIcon, { backgroundColor: colors.warningSoft }]}>
                   <Icon name={item.icon} size={20} color={colors.warning} weight="semibold" />
                 </View>
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     padding: Spacing.md,
     gap: Spacing.sm,
     borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderCurve: 'continuous',
     minHeight: 104,
   },
   tileIcon: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center' },

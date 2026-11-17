@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
 import { Radius, Spacing } from '@/constants/theme';
-import { useIsDark, useTheme } from '@/hooks/use-theme';
+import { useTheme } from '@/hooks/use-theme';
 
 import { Tappable } from './tappable';
 import { AppText } from './text';
@@ -22,12 +22,11 @@ interface Props<T extends string> {
 /** iOS-style segmented control. */
 export function Segmented<T extends string>({ options, value, onChange, accessibilityLabel }: Props<T>) {
   const colors = useTheme();
-  const dark = useIsDark();
   return (
     <View
       accessibilityRole="tablist"
       accessibilityLabel={accessibilityLabel}
-      style={[styles.track, { backgroundColor: dark ? colors.surfaceAlt : '#EAE5DA' }]}>
+      style={[styles.track, { backgroundColor: colors.fill }]}>
       {options.map((option) => {
         const selected = option.value === value;
         return (
@@ -38,10 +37,7 @@ export function Segmented<T extends string>({ options, value, onChange, accessib
             accessibilityState={{ selected }}
             accessibilityLabel={option.accessibilityLabel ?? option.label}
             pressedOpacity={0.75}
-            style={[
-              styles.segment,
-              selected ? [styles.selected, { backgroundColor: dark ? colors.border : colors.surface }] : null,
-            ]}>
+            style={[styles.segment, selected ? [styles.selected, { backgroundColor: colors.fillRaised }] : null]}>
             <AppText
               variant="footnote"
               weight={selected ? '600' : '500'}
@@ -61,6 +57,7 @@ const styles = StyleSheet.create({
   track: {
     flexDirection: 'row',
     borderRadius: Radius.sm + 2,
+    borderCurve: 'continuous',
     padding: 2,
   },
   segment: {
@@ -70,6 +67,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: Spacing.xs,
     borderRadius: Radius.sm,
+    borderCurve: 'continuous',
   },
   selected: {
     shadowColor: '#000',

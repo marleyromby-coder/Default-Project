@@ -79,7 +79,7 @@ export default function SearchScreen() {
             <AppText variant="footnote" tone="textSecondary" style={styles.label}>
               {t('Alle fag')}
             </AppText>
-            <View style={[styles.group, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View style={[styles.group, { backgroundColor: colors.surface }]}>
               {CATEGORIES.map((c, i) => (
                 <View key={c.id}>
                   {i > 0 ? <Divider inset={52} /> : null}
@@ -164,7 +164,7 @@ function ResultGroup({ title, children }: { title: string; children: React.React
       <AppText variant="subhead" weight="600" tone="textSecondary" style={styles.label} accessibilityRole="header">
         {title}
       </AppText>
-      <View style={[styles.group, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+      <View style={[styles.group, { backgroundColor: colors.surface }]}>
         {children.map((child, i) => (
           <View key={i}>
             {i > 0 ? <Divider inset={52} /> : null}
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   content: { padding: ScreenPadding, gap: Spacing.md },
   label: { letterSpacing: 0.3, paddingHorizontal: Spacing.xs },
   suggestions: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
-  group: { borderRadius: Radius.md, borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden' },
+  group: { borderRadius: Radius.lg, borderCurve: 'continuous', overflow: 'hidden' },
   resultGroup: { gap: Spacing.sm },
   row: {
     flexDirection: 'row',

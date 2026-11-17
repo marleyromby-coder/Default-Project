@@ -97,8 +97,7 @@ export default function LocationScreen() {
           return (
             <View
               style={[
-                styles.rowWrap,
-                { backgroundColor: colors.surface, borderColor: colors.border },
+                { backgroundColor: colors.surface },
                 index === 0 && styles.first,
                 index === section.data.length - 1 && styles.last,
               ]}>
@@ -145,17 +144,17 @@ const styles = StyleSheet.create({
   },
   input: { flex: 1, fontSize: 17, minHeight: 44, outlineStyle: 'none' } as never,
   label: { letterSpacing: 0.3, paddingHorizontal: Spacing.xs, marginTop: Spacing.lg, marginBottom: Spacing.sm },
-  rowWrap: { borderLeftWidth: StyleSheet.hairlineWidth, borderRightWidth: StyleSheet.hairlineWidth },
+  // One borderless group per section, with the corners of a ListSection.
   first: {
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopLeftRadius: Radius.md,
-    borderTopRightRadius: Radius.md,
+    borderTopLeftRadius: Radius.lg,
+    borderTopRightRadius: Radius.lg,
+    borderCurve: 'continuous',
     overflow: 'hidden',
   },
   last: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomLeftRadius: Radius.md,
-    borderBottomRightRadius: Radius.md,
+    borderBottomLeftRadius: Radius.lg,
+    borderBottomRightRadius: Radius.lg,
+    borderCurve: 'continuous',
     overflow: 'hidden',
   },
   row: {

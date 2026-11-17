@@ -107,7 +107,7 @@ export default function GroupsScreen() {
 
       <Button title={t('Start en gruppe')} icon="plus" size="large" onPress={() => router.push('/faelles/ny')} block />
 
-      <View style={[styles.codeBox, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+      <View style={[styles.codeBox, { backgroundColor: colors.surface }]}>
         <View style={styles.flex}>
           <TextField
             label={t('Har du fået en kode af en nabo?')}
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
     padding: Spacing.md,
     borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderCurve: 'continuous',
   },
   section: { gap: Spacing.sm },
 });

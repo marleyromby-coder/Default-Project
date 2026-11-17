@@ -134,7 +134,7 @@ export default function ProfileScreen() {
               : t('Opret bruger eller log ind')
           }
           pressedOpacity={0.7}
-          style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          style={[styles.card, { backgroundColor: colors.surface }]}>
           <View style={[styles.avatar, { backgroundColor: signedIn ? colors.brandSoft : colors.surfaceAlt }]}>
             {name ? (
               <AppText variant="title2" style={{ color: colors.brandText }}>
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
     padding: Spacing.md,
     borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderCurve: 'continuous',
   },
   avatar: { width: 60, height: 60, borderRadius: 30, alignItems: 'center', justifyContent: 'center' },
   empty: { alignItems: 'center', gap: Spacing.sm, padding: Spacing.lg },

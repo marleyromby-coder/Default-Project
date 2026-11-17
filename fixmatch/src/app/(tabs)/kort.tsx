@@ -279,7 +279,7 @@ export default function MapScreen() {
       <View style={[styles.top, { paddingTop: insets.top + Spacing.sm }]} pointerEvents="box-none">
         <View style={styles.topRow} pointerEvents="box-none">
           {describe}
-          <LocationPill />
+          <LocationPill onMap />
         </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
           {chips}
