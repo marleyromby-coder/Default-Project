@@ -8,15 +8,17 @@ const STAR = 'M12 2.5l2.94 6.12 6.56.83-4.82 4.62 1.2 6.53L12 17.4l-5.88 3.2 1.2
 interface Props {
   value: number;
   size?: number;
+  /** How many stars to draw. One full star is the compact form, next to the average as a number. */
+  count?: number;
 }
 
 /** Five stars with partial fill, e.g. 4.3 → four full stars and one 30 % star. Decorative only. */
-export function Stars({ value, size = 14 }: Props) {
+export function Stars({ value, size = 14, count = 5 }: Props) {
   const colors = useTheme();
   const gap = Math.round(size * 0.12);
   return (
     <View style={{ flexDirection: 'row', gap }} accessible={false} importantForAccessibility="no-hide-descendants">
-      {[0, 1, 2, 3, 4].map((index) => {
+      {Array.from({ length: count }, (_, index) => {
         const fill = Math.max(0, Math.min(1, value - index));
         const id = `clip-${index}-${Math.round(fill * 100)}`;
         return (

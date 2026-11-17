@@ -9,13 +9,17 @@ import type { ReviewSummary } from '@/lib/types';
 
 /**
  * FixMatch's own reviews in one line: stars, the average and the count. Shown only when there
- * is at least one review, so cards stay clean while a business has none.
+ * is at least one review, so cards stay clean while a business has none. `compact` draws one
+ * star instead of five and never shrinks, for a line it shares with other text.
  */
-export function ReviewRating({ summary }: { summary?: ReviewSummary }) {
+export function ReviewRating({ summary, compact }: { summary?: ReviewSummary; compact?: boolean }) {
   if (!summary || summary.reviews < 1) return null;
   return (
-    <View style={styles.row} accessible accessibilityLabel={reviewRatingLabel(summary)}>
-      <Stars value={summary.average} size={13} />
+    <View
+      style={[styles.row, compact ? styles.fixed : null]}
+      accessible
+      accessibilityLabel={reviewRatingLabel(summary)}>
+      {compact ? <Stars value={1} count={1} size={13} /> : <Stars value={summary.average} size={13} />}
       <AppText variant="footnote" weight="600" tabular>
         {formatRating(summary.average)}
       </AppText>
@@ -28,4 +32,5 @@ export function ReviewRating({ summary }: { summary?: ReviewSummary }) {
 
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs + 1, flexShrink: 1 },
+  fixed: { flexShrink: 0 },
 });

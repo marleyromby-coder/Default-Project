@@ -390,11 +390,14 @@ function MapCard({ item, width, selected }: { item: ScoredBusiness; width: numbe
             <AppText variant="headline" numberOfLines={1}>
               {business.name}
             </AppText>
-            <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
-              {trade?.name} · {formatDistance(distanceKm)}
-            </AppText>
+            {/* The rating shares the short trade line, so the card keeps its fixed height. */}
+            <View style={styles.metaRow}>
+              <AppText variant="footnote" tone="textSecondary" numberOfLines={1} style={styles.flexShrink}>
+                {trade?.name} · {formatDistance(distanceKm)}
+              </AppText>
+              <ReviewRating summary={business.reviewSummary} compact />
+            </View>
             <OpenStatus business={business} />
-            <ReviewRating summary={business.reviewSummary} />
           </View>
           <Icon name="chevronRight" size={14} color={colors.textTertiary} weight="semibold" />
         </Tappable>
@@ -517,6 +520,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
   },
   cardBody: { flex: 1, gap: 2 },
+  metaRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   cardFooter: {
     flexDirection: 'row',
     alignItems: 'center',
