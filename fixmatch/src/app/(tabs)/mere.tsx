@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { LogoMark } from '@/components/logo';
 import { ScreenHeader } from '@/components/screen-header';
+import { StatusBarScrim } from '@/components/status-bar-scrim';
 import { ListRow, ListSection } from '@/components/ui/list';
 import { AppText } from '@/components/ui/text';
 import { APP_INFO } from '@/constants/app-info';
@@ -64,65 +65,77 @@ export default function MoreScreen() {
     );
 
   return (
-    <ScrollView
-      style={{ backgroundColor: colors.background }}
-      contentContainerStyle={[
-        styles.content,
-        column,
-        { paddingTop: insets.top + Spacing.md, paddingBottom: insets.bottom + 110 },
-      ]}
-      contentInsetAdjustmentBehavior="never">
-      <ScreenHeader title={t('Mere')} />
-      <View style={styles.sections}>
-        <ListSection
-          title={t('Gennemsigtighed')}
-          footer={t('Ingen kan betale sig til en bedre placering i søgeresultaterne.')}>
-          <ListRow icon="list" title={t('Sådan rangerer vi')} onPress={info('rangering')} />
-          <ListRow icon="verified" title={t('Sådan verificerer vi')} onPress={info('verificering')} />
-          <ListRow icon="star" title={t('Om anmeldelser')} onPress={info('anmeldelser')} />
-          <ListRow icon="tag" title={t('Om priserne')} onPress={info('priser')} />
-          <ListRow icon="leaf" title={t('Grøn guide')} onPress={() => router.push('/groen-guide')} />
-          <ListRow icon="people" title={t('Naborabat')} onPress={() => router.push('/faelles')} />
-          <ListRow icon="siren" title={t('Akut hjælp')} onPress={() => router.push('/akut')} />
-          <ListRow icon="warning" title={t('Advarselslampe i bilen')} onPress={() => router.push('/advarselslamper')} />
-          <ListRow icon="scale" title={t('Hvis noget går galt')} onPress={info('hjaelp')} />
-        </ListSection>
+    <View style={styles.flex}>
+      <ScrollView
+        style={{ backgroundColor: colors.background }}
+        contentContainerStyle={[
+          styles.content,
+          column,
+          { paddingTop: insets.top + Spacing.md, paddingBottom: insets.bottom + 110 },
+        ]}
+        contentInsetAdjustmentBehavior="never">
+        <ScreenHeader title={t('Mere')} />
+        <View style={styles.sections}>
+          <ListSection
+            title={t('Gennemsigtighed')}
+            footer={t('Ingen kan betale sig til en bedre placering i søgeresultaterne.')}>
+            <ListRow icon="list" title={t('Sådan rangerer vi')} onPress={info('rangering')} />
+            <ListRow icon="verified" title={t('Sådan verificerer vi')} onPress={info('verificering')} />
+            <ListRow icon="star" title={t('Om anmeldelser')} onPress={info('anmeldelser')} />
+            <ListRow icon="tag" title={t('Om priserne')} onPress={info('priser')} />
+            <ListRow icon="leaf" title={t('Grøn guide')} onPress={() => router.push('/groen-guide')} />
+            <ListRow icon="people" title={t('Naborabat')} onPress={() => router.push('/faelles')} />
+            <ListRow icon="siren" title={t('Akut hjælp')} onPress={() => router.push('/akut')} />
+            <ListRow
+              icon="warning"
+              title={t('Advarselslampe i bilen')}
+              onPress={() => router.push('/advarselslamper')}
+            />
+            <ListRow icon="scale" title={t('Hvis noget går galt')} onPress={info('hjaelp')} />
+          </ListSection>
 
-        <ListSection
-          title={t('For virksomheder')}
-          footer={t('Gratis. Udfyld oplysningerne, og giv samtykke på et par minutter.')}>
-          <ListRow icon="store" title={t('Tilmeld din virksomhed')} onPress={() => router.push('/tilmeld')} />
-          <ListRow icon="person" title={t('Log ind som virksomhed')} onPress={() => router.push('/virksomhed-login')} />
-          <ListRow icon="info" title={t('Sådan fungerer det for virksomheder')} onPress={info('virksomheder')} />
-          <ListRow icon="flag" title={t('Ret eller fjern oplysninger')} onPress={() => reportProblem()} />
-        </ListSection>
+          <ListSection
+            title={t('For virksomheder')}
+            footer={t('Gratis. Udfyld oplysningerne, og giv samtykke på et par minutter.')}>
+            <ListRow icon="store" title={t('Tilmeld din virksomhed')} onPress={() => router.push('/tilmeld')} />
+            <ListRow
+              icon="person"
+              title={t('Log ind som virksomhed')}
+              onPress={() => router.push('/virksomhed-login')}
+            />
+            <ListRow icon="info" title={t('Sådan fungerer det for virksomheder')} onPress={info('virksomheder')} />
+            <ListRow icon="flag" title={t('Ret eller fjern oplysninger')} onPress={() => reportProblem()} />
+          </ListSection>
 
-        <ListSection title={t('Om')}>
-          <ListRow icon="wrench" title={t('Om FixMatch')} onPress={info('om')} />
-          <ListRow icon="privacy" title={t('Privatlivspolitik')} onPress={info('privatliv')} />
-          <ListRow icon="doc" title={t('Vilkår for brug')} onPress={info('vilkaar')} />
-          <ListRow icon="mail" title={t('Kontakt os')} value={APP_INFO.email} onPress={() => reportProblem()} />
-        </ListSection>
+          <ListSection title={t('Om')}>
+            <ListRow icon="wrench" title={t('Om FixMatch')} onPress={info('om')} />
+            <ListRow icon="privacy" title={t('Privatlivspolitik')} onPress={info('privatliv')} />
+            <ListRow icon="doc" title={t('Vilkår for brug')} onPress={info('vilkaar')} />
+            <ListRow icon="mail" title={t('Kontakt os')} value={APP_INFO.email} onPress={() => reportProblem()} />
+          </ListSection>
 
-        <ListSection>
-          <ListRow icon="trash" title={t('Nulstil app-data')} destructive onPress={confirmReset} />
-        </ListSection>
+          <ListSection>
+            <ListRow icon="trash" title={t('Nulstil app-data')} destructive onPress={confirmReset} />
+          </ListSection>
 
-        <View style={styles.about}>
-          <LogoMark size={36} />
-          <AppText variant="footnote" tone="textSecondary" align="center">
-            {`FixMatch ${Constants.expoConfig?.version ?? '1.0.0'}${DATA_MODE === 'demo' ? ` · ${t('demodata')}` : ''}`}
-          </AppText>
-          <AppText variant="caption" tone="textTertiary" align="center">
-            {t('Lavet i Danmark · {company}', { company: APP_INFO.company })}
-          </AppText>
+          <View style={styles.about}>
+            <LogoMark size={36} />
+            <AppText variant="footnote" tone="textSecondary" align="center">
+              {`FixMatch ${Constants.expoConfig?.version ?? '1.0.0'}${DATA_MODE === 'demo' ? ` · ${t('demodata')}` : ''}`}
+            </AppText>
+            <AppText variant="caption" tone="textTertiary" align="center">
+              {t('Lavet i Danmark · {company}', { company: APP_INFO.company })}
+            </AppText>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+      <StatusBarScrim />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  flex: { flex: 1 },
   content: {},
   sections: { paddingHorizontal: ScreenPadding, gap: Spacing.xxl },
   about: { alignItems: 'center', gap: Spacing.xs, paddingTop: Spacing.sm },

@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BusinessMark } from '@/components/business/business-mark';
 import { VerifiedMark } from '@/components/business/verified-mark';
 import { ScreenHeader } from '@/components/screen-header';
+import { StatusBarScrim } from '@/components/status-bar-scrim';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { ListRow, ListSection } from '@/components/ui/list';
@@ -116,194 +117,197 @@ export default function ProfileScreen() {
     .slice(0, 10);
 
   return (
-    <ScrollView
-      style={{ backgroundColor: colors.background }}
-      contentContainerStyle={[
-        styles.content,
-        column,
-        { paddingTop: insets.top + Spacing.md, paddingBottom: insets.bottom + 110 },
-      ]}
-      contentInsetAdjustmentBehavior="never">
-      <ScreenHeader title={t('Profil')} />
-      <View style={styles.sections}>
-        <Tappable
-          onPress={openAccount(signedIn ? 'profile' : 'settings')}
-          accessibilityLabel={
-            signedIn
-              ? t('{name}. Ret navn og telefonnummer', { name: name ?? t('Tilføj navn og telefonnummer') })
-              : t('Opret bruger eller log ind')
-          }
-          pressedOpacity={0.7}
-          style={[styles.card, { backgroundColor: colors.surface }]}>
-          <View style={[styles.avatar, { backgroundColor: signedIn ? colors.brandSoft : colors.surfaceAlt }]}>
-            {name ? (
-              <AppText variant="title2" style={{ color: colors.brandText }}>
-                {initials(name)}
+    <View style={styles.flex}>
+      <ScrollView
+        style={{ backgroundColor: colors.background }}
+        contentContainerStyle={[
+          styles.content,
+          column,
+          { paddingTop: insets.top + Spacing.md, paddingBottom: insets.bottom + 110 },
+        ]}
+        contentInsetAdjustmentBehavior="never">
+        <ScreenHeader title={t('Profil')} />
+        <View style={styles.sections}>
+          <Tappable
+            onPress={openAccount(signedIn ? 'profile' : 'settings')}
+            accessibilityLabel={
+              signedIn
+                ? t('{name}. Ret navn og telefonnummer', { name: name ?? t('Tilføj navn og telefonnummer') })
+                : t('Opret bruger eller log ind')
+            }
+            pressedOpacity={0.7}
+            style={[styles.card, { backgroundColor: colors.surface }]}>
+            <View style={[styles.avatar, { backgroundColor: signedIn ? colors.brandSoft : colors.surfaceAlt }]}>
+              {name ? (
+                <AppText variant="title2" style={{ color: colors.brandText }}>
+                  {initials(name)}
+                </AppText>
+              ) : (
+                <Icon name="person" size={30} color={colors.textSecondary} />
+              )}
+            </View>
+            <View style={styles.flex}>
+              <AppText variant="title3" numberOfLines={1}>
+                {signedIn ? (name ?? t('Tilføj navn og telefonnummer')) : t('Du er ikke logget ind')}
               </AppText>
+              <AppText variant="footnote" tone="textSecondary" numberOfLines={2}>
+                {signedIn
+                  ? [account.profile?.phone, account.email].filter(Boolean).join(' · ') ||
+                    t('Virksomhederne skal kunne se, hvem der ringer.')
+                  : t('Opret en bruger, så virksomhederne kan se dit navn og nummer, når du ringer.')}
+              </AppText>
+            </View>
+            <Icon name="chevronRight" size={14} color={colors.textTertiary} weight="semibold" />
+          </Tappable>
+
+          {!signedIn ? (
+            <Button title={t('Opret bruger eller log ind')} icon="person" onPress={openAccount('settings')} block />
+          ) : null}
+
+          <ListSection
+            title={t('Dine opkald')}
+            footer={
+              recent.length > 0
+                ? t('Listen ligger kun på din telefon. Virksomheden ser dit navn og nummer, når du ringer.')
+                : t('Virksomheder, du ringer til eller skriver til gennem FixMatch, vises her.')
+            }>
+            {recent.length === 0 ? (
+              <View style={styles.empty}>
+                <Icon name="phone" size={22} color={colors.textTertiary} />
+                <AppText variant="subhead" tone="textSecondary" align="center">
+                  {t('Du har ikke kontaktet nogen endnu.')}
+                </AppText>
+                <Button
+                  title={t('Find en håndværker')}
+                  variant="plain"
+                  size="small"
+                  onPress={() => router.navigate('/')}
+                />
+              </View>
             ) : (
-              <Icon name="person" size={30} color={colors.textSecondary} />
+              recent.map(({ contact, business }) => (
+                <Tappable
+                  key={business.id}
+                  onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
+                  accessibilityLabel={t('{name}, {when}', { name: business.name, when: formatDate(contact.at) })}
+                  pressedOpacity={0.5}
+                  style={styles.contactRow}>
+                  <BusinessMark business={business} size={40} />
+                  <View style={styles.flex}>
+                    <View style={styles.nameRow}>
+                      <AppText variant="body" numberOfLines={1} style={styles.shrink}>
+                        {business.name}
+                      </AppText>
+                      <VerifiedMark business={business} size={14} />
+                    </View>
+                    <AppText variant="footnote" tone="textSecondary">
+                      {contact.channel === 'call'
+                        ? t('Ringet {date}', { date: formatDate(contact.at) })
+                        : t('Kontaktet {date}', { date: formatDate(contact.at) })}
+                    </AppText>
+                  </View>
+                  <Icon name="chevronRight" size={13} color={colors.textTertiary} weight="semibold" />
+                </Tappable>
+              ))
             )}
-          </View>
-          <View style={styles.flex}>
-            <AppText variant="title3" numberOfLines={1}>
-              {signedIn ? (name ?? t('Tilføj navn og telefonnummer')) : t('Du er ikke logget ind')}
-            </AppText>
-            <AppText variant="footnote" tone="textSecondary" numberOfLines={2}>
-              {signedIn
-                ? [account.profile?.phone, account.email].filter(Boolean).join(' · ') ||
-                  t('Virksomhederne skal kunne se, hvem der ringer.')
-                : t('Opret en bruger, så virksomhederne kan se dit navn og nummer, når du ringer.')}
-            </AppText>
-          </View>
-          <Icon name="chevronRight" size={14} color={colors.textTertiary} weight="semibold" />
-        </Tappable>
+            {recent.length > 0 ? <ListRow icon="trash" title={t('Ryd listen')} onPress={confirmClearContacts} /> : null}
+          </ListSection>
 
-        {!signedIn ? (
-          <Button title={t('Opret bruger eller log ind')} icon="person" onPress={openAccount('settings')} block />
-        ) : null}
+          <ListSection
+            title={t('Er du håndværker?')}
+            footer={
+              managedName
+                ? t('Se opkald, meld ledig tid og ret jeres priser.')
+                : t('Log ind med koden fra FixMatch for at se opkald og melde ledig tid. Gratis.')
+            }>
+            <ListRow
+              icon="store"
+              title={managedName ? t('Min virksomhed') : t('Log ind som virksomhed')}
+              value={managedName}
+              onPress={() => router.push(managedName ? '/min-virksomhed' : '/virksomhed-login')}
+            />
+          </ListSection>
 
-        <ListSection
-          title={t('Dine opkald')}
-          footer={
-            recent.length > 0
-              ? t('Listen ligger kun på din telefon. Virksomheden ser dit navn og nummer, når du ringer.')
-              : t('Virksomheder, du ringer til eller skriver til gennem FixMatch, vises her.')
-          }>
-          {recent.length === 0 ? (
-            <View style={styles.empty}>
-              <Icon name="phone" size={22} color={colors.textTertiary} />
-              <AppText variant="subhead" tone="textSecondary" align="center">
-                {t('Du har ikke kontaktet nogen endnu.')}
-              </AppText>
-              <Button
-                title={t('Find en håndværker')}
-                variant="plain"
-                size="small"
-                onPress={() => router.navigate('/')}
+          <ListSection
+            title={t('Min bolig')}
+            footer={t('Faktura, billeder, garanti og fradrag for alt, du får lavet. Bliver på telefonen.')}>
+            <ListRow
+              icon="home"
+              title={t('Min bolig')}
+              value={homeJobs.length > 0 ? String(homeJobs.length) : undefined}
+              onPress={() => router.push('/min-bolig')}
+            />
+          </ListSection>
+
+          <ListSection title={t('Naborabat')} footer={t('Gå sammen med naboerne om en opgave, og få rabat.')}>
+            <ListRow
+              icon="people"
+              title={t('Mine grupper')}
+              value={groups.length > 0 ? String(groups.length) : undefined}
+              onPress={() => router.push('/faelles')}
+            />
+          </ListSection>
+
+          <ListSection title={t('Gemte')}>
+            <ListRow
+              icon="heartFill"
+              title={t('Gemte håndværkere')}
+              value={String(state.favorites.length)}
+              onPress={() => router.navigate('/gemte')}
+            />
+          </ListSection>
+
+          <ListSection title={t('Din søgning')}>
+            <ListRow
+              icon="pin"
+              title={t('Placering')}
+              value={
+                (state.location.country ?? 'DK') === 'DK'
+                  ? state.location.label
+                  : `${state.location.label}, ${countryName(state.location.country ?? '')}`
+              }
+              onPress={() => router.push('/placering')}
+            />
+            <ListRow
+              icon="globe"
+              title={t('Sprog')}
+              value={LANGUAGES.find((l) => l.value === getLanguage())?.label}
+              onPress={changeLanguage}
+            />
+            <ListRow
+              icon="sliders"
+              title={t('Dine prioriteter')}
+              value={[weights.price, weights.distance, weights.reviews].map((w) => Math.round(w * 100)).join('/')}
+              onPress={() => router.push('/prioriteter')}
+              accessibilityHint={t('Pris, afstand og anmeldelser i procent')}
+            />
+          </ListSection>
+
+          <ListSection title={t('Udseende')} footer={t('Automatisk følger telefonens indstilling.')}>
+            <View style={styles.appearance}>
+              <Segmented
+                options={[
+                  { value: 'system', label: t('Automatisk') },
+                  { value: 'light', label: t('Lys') },
+                  { value: 'dark', label: t('Mørk') },
+                ]}
+                value={appearance}
+                onChange={setAppearance}
+                accessibilityLabel={t('Udseende')}
               />
             </View>
-          ) : (
-            recent.map(({ contact, business }) => (
-              <Tappable
-                key={business.id}
-                onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
-                accessibilityLabel={t('{name}, {when}', { name: business.name, when: formatDate(contact.at) })}
-                pressedOpacity={0.5}
-                style={styles.contactRow}>
-                <BusinessMark business={business} size={40} />
-                <View style={styles.flex}>
-                  <View style={styles.nameRow}>
-                    <AppText variant="body" numberOfLines={1} style={styles.shrink}>
-                      {business.name}
-                    </AppText>
-                    <VerifiedMark business={business} size={14} />
-                  </View>
-                  <AppText variant="footnote" tone="textSecondary">
-                    {contact.channel === 'call'
-                      ? t('Ringet {date}', { date: formatDate(contact.at) })
-                      : t('Kontaktet {date}', { date: formatDate(contact.at) })}
-                  </AppText>
-                </View>
-                <Icon name="chevronRight" size={13} color={colors.textTertiary} weight="semibold" />
-              </Tappable>
-            ))
-          )}
-          {recent.length > 0 ? <ListRow icon="trash" title={t('Ryd listen')} onPress={confirmClearContacts} /> : null}
-        </ListSection>
-
-        <ListSection
-          title={t('Er du håndværker?')}
-          footer={
-            managedName
-              ? t('Se opkald, meld ledig tid og ret jeres priser.')
-              : t('Log ind med koden fra FixMatch for at se opkald og melde ledig tid. Gratis.')
-          }>
-          <ListRow
-            icon="store"
-            title={managedName ? t('Min virksomhed') : t('Log ind som virksomhed')}
-            value={managedName}
-            onPress={() => router.push(managedName ? '/min-virksomhed' : '/virksomhed-login')}
-          />
-        </ListSection>
-
-        <ListSection
-          title={t('Min bolig')}
-          footer={t('Faktura, billeder, garanti og fradrag for alt, du får lavet. Bliver på telefonen.')}>
-          <ListRow
-            icon="home"
-            title={t('Min bolig')}
-            value={homeJobs.length > 0 ? String(homeJobs.length) : undefined}
-            onPress={() => router.push('/min-bolig')}
-          />
-        </ListSection>
-
-        <ListSection title={t('Naborabat')} footer={t('Gå sammen med naboerne om en opgave, og få rabat.')}>
-          <ListRow
-            icon="people"
-            title={t('Mine grupper')}
-            value={groups.length > 0 ? String(groups.length) : undefined}
-            onPress={() => router.push('/faelles')}
-          />
-        </ListSection>
-
-        <ListSection title={t('Gemte')}>
-          <ListRow
-            icon="heartFill"
-            title={t('Gemte håndværkere')}
-            value={String(state.favorites.length)}
-            onPress={() => router.navigate('/gemte')}
-          />
-        </ListSection>
-
-        <ListSection title={t('Din søgning')}>
-          <ListRow
-            icon="pin"
-            title={t('Placering')}
-            value={
-              (state.location.country ?? 'DK') === 'DK'
-                ? state.location.label
-                : `${state.location.label}, ${countryName(state.location.country ?? '')}`
-            }
-            onPress={() => router.push('/placering')}
-          />
-          <ListRow
-            icon="globe"
-            title={t('Sprog')}
-            value={LANGUAGES.find((l) => l.value === getLanguage())?.label}
-            onPress={changeLanguage}
-          />
-          <ListRow
-            icon="sliders"
-            title={t('Dine prioriteter')}
-            value={[weights.price, weights.distance, weights.reviews].map((w) => Math.round(w * 100)).join('/')}
-            onPress={() => router.push('/prioriteter')}
-            accessibilityHint={t('Pris, afstand og anmeldelser i procent')}
-          />
-        </ListSection>
-
-        <ListSection title={t('Udseende')} footer={t('Automatisk følger telefonens indstilling.')}>
-          <View style={styles.appearance}>
-            <Segmented
-              options={[
-                { value: 'system', label: t('Automatisk') },
-                { value: 'light', label: t('Lys') },
-                { value: 'dark', label: t('Mørk') },
-              ]}
-              value={appearance}
-              onChange={setAppearance}
-              accessibilityLabel={t('Udseende')}
-            />
-          </View>
-        </ListSection>
-
-        {signedIn ? (
-          <ListSection footer={t('Sletter du brugeren, slettes navn, telefonnummer og dine opkald for altid.')}>
-            <ListRow icon="logout" title={t('Log ud')} onPress={confirmSignOut} />
-            <ListRow icon="trash" title={t('Slet bruger')} destructive onPress={confirmDelete} />
           </ListSection>
-        ) : null}
-      </View>
-    </ScrollView>
+
+          {signedIn ? (
+            <ListSection footer={t('Sletter du brugeren, slettes navn, telefonnummer og dine opkald for altid.')}>
+              <ListRow icon="logout" title={t('Log ud')} onPress={confirmSignOut} />
+              <ListRow icon="trash" title={t('Slet bruger')} destructive onPress={confirmDelete} />
+            </ListSection>
+          ) : null}
+        </View>
+      </ScrollView>
+      <StatusBarScrim />
+    </View>
   );
 }
 

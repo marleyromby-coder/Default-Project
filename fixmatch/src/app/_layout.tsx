@@ -1,12 +1,13 @@
 import { Fraunces_600SemiBold } from '@expo-google-fonts/fraunces/600SemiBold';
 import { Fraunces_700Bold } from '@expo-google-fonts/fraunces/700Bold';
 import { useFonts } from 'expo-font';
-import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
+import { DarkTheme, DefaultTheme, router, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { type PropsWithChildren, useEffect } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 
+import { Button } from '@/components/ui/button';
 import { MaxContentWidth, SerifFonts } from '@/constants/theme';
 import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { canContact, useAccount, useAccountSkipped } from '@/state/account';
@@ -78,7 +79,11 @@ function RootNavigator() {
       screenOptions={{
         headerBackButtonDisplayMode: 'minimal',
         headerTintColor: colors.brandText,
-        headerTitleStyle: { color: colors.text, fontFamily: SerifFonts.regular },
+        // Inline titles are SF Pro, like the back chevron beside them; large titles are Fraunces.
+        headerTitleStyle: { color: colors.text },
+        headerLargeTitleStyle: { fontFamily: SerifFonts.bold, color: colors.text },
+        headerLargeTitleShadowVisible: false,
+        headerLargeStyle: { backgroundColor: colors.background },
         headerShadowVisible: false,
         headerStyle: { backgroundColor: colors.background },
         contentStyle: { backgroundColor: colors.background },
@@ -90,7 +95,14 @@ function RootNavigator() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false, title: t('Find') }} />
         <Stack.Screen name="kategori/[id]" options={{ title: '' }} />
         <Stack.Screen name="virksomhed/[id]" options={{ headerShown: false, title: t('Virksomhed') }} />
-        <Stack.Screen name="sammenlign" options={{ presentation: 'modal', title: t('Sammenlign') }} />
+        <Stack.Screen
+          name="sammenlign"
+          options={{
+            presentation: 'modal',
+            title: t('Sammenlign'),
+            headerLeft: () => <CloseButton title={t('Luk')} />,
+          }}
+        />
         <Stack.Screen name="soeg" options={{ presentation: 'modal', headerShown: false, title: t('Søg') }} />
         <Stack.Screen
           name="filtre"
@@ -131,18 +143,54 @@ function RootNavigator() {
           }}
         />
         <Stack.Screen name="match" options={{ title: t('Dit match') }} />
-        <Stack.Screen name="placering" options={{ presentation: 'modal', title: t('Vælg placering') }} />
-        <Stack.Screen name="konto" options={{ presentation: 'modal', title: t('Din bruger') }} />
-        <Stack.Screen name="tilmeld" options={{ presentation: 'modal', title: t('Tilmeld din virksomhed') }} />
-        <Stack.Screen name="virksomhed-login" options={{ presentation: 'modal', title: t('Log ind som virksomhed') }} />
+        <Stack.Screen
+          name="placering"
+          options={{
+            presentation: 'modal',
+            title: t('Vælg placering'),
+            headerLeft: () => <CloseButton title={t('Luk')} />,
+          }}
+        />
+        <Stack.Screen
+          name="konto"
+          options={{
+            presentation: 'modal',
+            title: t('Din bruger'),
+            headerLeft: () => <CloseButton title={t('Annuller')} />,
+          }}
+        />
+        <Stack.Screen
+          name="tilmeld"
+          options={{
+            presentation: 'modal',
+            title: t('Tilmeld din virksomhed'),
+            headerLeft: () => <CloseButton title={t('Luk')} />,
+          }}
+        />
+        <Stack.Screen
+          name="virksomhed-login"
+          options={{
+            presentation: 'modal',
+            title: t('Log ind som virksomhed'),
+            headerLeft: () => <CloseButton title={t('Annuller')} />,
+          }}
+        />
         <Stack.Screen name="min-virksomhed/index" options={{ title: t('Min virksomhed') }} />
         <Stack.Screen name="min-virksomhed/ret" options={{ title: t('Ret oplysninger') }} />
-        <Stack.Screen name="tryghed/[id]" options={{ title: t('Tryghed') }} />
-        <Stack.Screen name="min-bolig/index" options={{ title: t('Min bolig') }} />
-        <Stack.Screen name="groen-guide" options={{ title: t('Grøn guide') }} />
-        <Stack.Screen name="akut" options={{ title: t('Akut hjælp') }} />
-        <Stack.Screen name="faelles/index" options={{ title: t('Naborabat') }} />
-        <Stack.Screen name="faelles/ny" options={{ presentation: 'modal', title: t('Start en gruppe') }} />
+        {/* Large titles on pushed pages that scroll; long titles and result lists stay inline. */}
+        <Stack.Screen name="tryghed/[id]" options={{ title: t('Tryghed'), headerLargeTitleEnabled: true }} />
+        <Stack.Screen name="min-bolig/index" options={{ title: t('Min bolig'), headerLargeTitleEnabled: true }} />
+        <Stack.Screen name="groen-guide" options={{ title: t('Grøn guide'), headerLargeTitleEnabled: true }} />
+        <Stack.Screen name="akut" options={{ title: t('Akut hjælp'), headerLargeTitleEnabled: true }} />
+        <Stack.Screen name="faelles/index" options={{ title: t('Naborabat'), headerLargeTitleEnabled: true }} />
+        <Stack.Screen
+          name="faelles/ny"
+          options={{
+            presentation: 'modal',
+            title: t('Start en gruppe'),
+            headerLeft: () => <CloseButton title={t('Annuller')} />,
+          }}
+        />
         <Stack.Screen name="faelles/[id]" options={{ title: '' }} />
         <Stack.Screen name="advarselslamper" options={{ title: t('Advarselslampe i bilen') }} />
         <Stack.Screen name="tilbud-foto" options={{ title: t('Tjek hele tilbuddet') }} />
@@ -162,6 +210,18 @@ function RootNavigator() {
       {/* Terms and privacy are linked from the sign-up screen too, before the app is open. */}
       <Stack.Screen name="info/[slug]" options={{ title: '' }} />
     </Stack>
+  );
+}
+
+/** "Luk" or "Annuller" at the top left of a modal, as on iOS. */
+function CloseButton({ title }: { title: string }) {
+  return (
+    <Button
+      title={title}
+      variant="plain"
+      size="small"
+      onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
+    />
   );
 }
 

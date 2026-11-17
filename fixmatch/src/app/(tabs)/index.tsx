@@ -9,6 +9,7 @@ import { ReviewRating } from '@/components/business/review-rating';
 import { CategoryTile } from '@/components/category-tile';
 import { LocationPill } from '@/components/location-pill';
 import { Logo } from '@/components/logo';
+import { StatusBarScrim } from '@/components/status-bar-scrim';
 import { Badge } from '@/components/ui/badge';
 import { Icon } from '@/components/ui/icon';
 import { ListRow, ListSection } from '@/components/ui/list';
@@ -96,292 +97,303 @@ export default function HomeScreen() {
   }, [local, origin, state.priorities]);
 
   return (
-    <ScrollView
-      style={{ backgroundColor: colors.background }}
-      contentContainerStyle={[
-        styles.content,
-        column,
-        { paddingTop: insets.top + Spacing.sm, paddingBottom: insets.bottom + 96 },
-      ]}
-      contentInsetAdjustmentBehavior="never">
-      <View style={styles.top}>
-        <View style={styles.topBar}>
-          <Logo />
-          <LocationPill />
+    <View style={styles.flex}>
+      <ScrollView
+        style={{ backgroundColor: colors.background }}
+        contentContainerStyle={[
+          styles.content,
+          column,
+          { paddingTop: insets.top + Spacing.sm, paddingBottom: insets.bottom + 96 },
+        ]}
+        contentInsetAdjustmentBehavior="never">
+        <View style={styles.top}>
+          <View style={styles.topBar}>
+            <Logo />
+            <LocationPill />
+          </View>
+
+          <View style={styles.hero}>
+            <AppText variant="title1">
+              {t('Den rette håndværker.')}
+              {'\n'}
+              <Text style={{ color: colors.brandText }}>{t('Til den rette pris.')}</Text>
+            </AppText>
+            <AppText variant="callout" tone="textSecondary">
+              {t('Se prisen, før du ringer.')}
+            </AppText>
+          </View>
+
+          <Tappable
+            onPress={() => router.push('/soeg')}
+            accessibilityRole="search"
+            accessibilityLabel={t('Søg efter opgave, fag eller virksomhed')}
+            style={[styles.search, { backgroundColor: colors.surface }]}>
+            <Icon name="search" size={18} color={colors.textSecondary} weight="semibold" />
+            <AppText variant="body" tone="textTertiary" numberOfLines={1}>
+              {t('Hvad skal laves? Fx “stoppet afløb”')}
+            </AppText>
+          </Tappable>
+
+          {state.location.abroad ? (
+            // The GPS put the user outside FixMatch's countries (e.g. an App Store reviewer in the
+            // US): the app shows the default city instead of an empty list, and says so.
+            <Notice
+              icon="world"
+              text={t('Du er i {country}. FixMatch er kun i {countries} endnu, så vi viser virksomheder i {label}.', {
+                country: countryName(state.location.abroad),
+                countries: open.map(countryName).join(', ') || countryName(state.location.country ?? 'DK'),
+                label: state.location.label,
+              })}
+              action={{
+                label: t('Vælg by'),
+                accessibilityLabel: t('Vælg en by'),
+                onPress: () => router.push('/placering'),
+              }}
+              style={styles.notice}
+            />
+          ) : null}
+
+          {!supported ? (
+            <Notice
+              icon="world"
+              text={t('FixMatch er endnu ikke i {country}. Vi er i {countries}.', {
+                country: countryName(state.location.country ?? ''),
+                countries: open.map(countryName).join(', '),
+              })}
+              // One tap back to København, unless that is where the app already is.
+              action={
+                state.location.label !== DEFAULT_LOCATION.label
+                  ? {
+                      label: t('Vis {label}', { label: DEFAULT_LOCATION.label }),
+                      onPress: () => setLocation(DEFAULT_LOCATION),
+                    }
+                  : {
+                      label: t('Vælg by'),
+                      accessibilityLabel: t('Vælg en by'),
+                      onPress: () => router.push('/placering'),
+                    }
+              }
+              style={styles.notice}
+            />
+          ) : DATA_MODE === 'demo' ? (
+            <Notice
+              text={t('Demoversion: virksomhederne er fiktive eksempler, indtil de rigtige har givet samtykke.')}
+              style={styles.notice}
+            />
+          ) : null}
         </View>
 
-        <View style={styles.hero}>
-          <AppText variant="title1">
-            {t('Den rette håndværker.')}
-            {'\n'}
-            <Text style={{ color: colors.brandText }}>{t('Til den rette pris.')}</Text>
-          </AppText>
-          <AppText variant="callout" tone="textSecondary">
-            {t('Se prisen, før du ringer.')}
-          </AppText>
-        </View>
+        <Section title={t('Vælg fag')}>
+          <View style={styles.grid}>
+            {chunk(CATEGORIES, 4).map((row) => (
+              <View key={row[0].id} style={styles.gridRow}>
+                {row.map((category) => (
+                  <CategoryTile key={category.id} category={category} nearby={nearbyCount.get(category.id) ?? 0} />
+                ))}
+              </View>
+            ))}
+          </View>
+        </Section>
 
         <Tappable
-          onPress={() => router.push('/soeg')}
-          accessibilityRole="search"
-          accessibilityLabel={t('Søg efter opgave, fag eller virksomhed')}
-          style={[styles.search, { backgroundColor: colors.surface }]}>
-          <Icon name="search" size={18} color={colors.textSecondary} weight="semibold" />
-          <AppText variant="body" tone="textTertiary" numberOfLines={1}>
-            {t('Hvad skal laves? Fx “stoppet afløb”')}
-          </AppText>
+          onPress={() => router.push('/beskriv')}
+          accessibilityLabel={t('Beskriv dit problem og dit budget, så matcher vi dig med virksomheder')}
+          style={[styles.describe, { backgroundColor: colors.ink }]}>
+          <View style={[styles.describeIcon, { backgroundColor: colors.accent }]}>
+            <Icon name="chat" size={20} color={colors.ink} weight="semibold" />
+          </View>
+          <View style={styles.flex}>
+            <AppText variant="headline" style={{ color: colors.onInk }}>
+              {t('Beskriv dit problem')}
+            </AppText>
+            <AppText variant="footnote" style={{ color: colors.onInkSoft }}>
+              {t('Skriv hvad der er galt og dit budget – vi finder dem, der passer.')}
+            </AppText>
+          </View>
+          <Icon name="chevronRight" size={16} color={colors.onInkSoft} weight="semibold" />
         </Tappable>
 
-        {state.location.abroad ? (
-          // The GPS put the user outside FixMatch's countries (e.g. an App Store reviewer in the
-          // US): the app shows the default city instead of an empty list, and says so.
-          <Notice
-            icon="world"
-            text={t('Du er i {country}. FixMatch er kun i {countries} endnu, så vi viser virksomheder i {label}.', {
-              country: countryName(state.location.abroad),
-              countries: open.map(countryName).join(', ') || countryName(state.location.country ?? 'DK'),
-              label: state.location.label,
-            })}
-            action={{
-              label: t('Vælg by'),
-              accessibilityLabel: t('Vælg en by'),
-              onPress: () => router.push('/placering'),
-            }}
-            style={styles.notice}
-          />
-        ) : null}
-
-        {!supported ? (
-          <Notice
-            icon="world"
-            text={t('FixMatch er endnu ikke i {country}. Vi er i {countries}.', {
-              country: countryName(state.location.country ?? ''),
-              countries: open.map(countryName).join(', '),
-            })}
-            // One tap back to København, unless that is where the app already is.
-            action={
-              state.location.label !== DEFAULT_LOCATION.label
-                ? {
-                    label: t('Vis {label}', { label: DEFAULT_LOCATION.label }),
-                    onPress: () => setLocation(DEFAULT_LOCATION),
-                  }
-                : { label: t('Vælg by'), accessibilityLabel: t('Vælg en by'), onPress: () => router.push('/placering') }
-            }
-            style={styles.notice}
-          />
-        ) : DATA_MODE === 'demo' ? (
-          <Notice
-            text={t('Demoversion: virksomhederne er fiktive eksempler, indtil de rigtige har givet samtykke.')}
-            style={styles.notice}
-          />
-        ) : null}
-      </View>
-
-      <Section title={t('Vælg fag')}>
-        <View style={styles.grid}>
-          {chunk(CATEGORIES, 4).map((row) => (
-            <View key={row[0].id} style={styles.gridRow}>
-              {row.map((category) => (
-                <CategoryTile key={category.id} category={category} nearby={nearbyCount.get(category.id) ?? 0} />
-              ))}
-            </View>
-          ))}
-        </View>
-      </Section>
-
-      <Tappable
-        onPress={() => router.push('/beskriv')}
-        accessibilityLabel={t('Beskriv dit problem og dit budget, så matcher vi dig med virksomheder')}
-        style={[styles.describe, { backgroundColor: colors.ink }]}>
-        <View style={[styles.describeIcon, { backgroundColor: colors.accent }]}>
-          <Icon name="chat" size={20} color={colors.ink} weight="semibold" />
-        </View>
-        <View style={styles.flex}>
-          <AppText variant="headline" style={{ color: colors.onInk }}>
-            {t('Beskriv dit problem')}
-          </AppText>
-          <AppText variant="footnote" style={{ color: colors.onInkSoft }}>
-            {t('Skriv hvad der er galt og dit budget – vi finder dem, der passer.')}
-          </AppText>
-        </View>
-        <Icon name="chevronRight" size={16} color={colors.onInkSoft} weight="semibold" />
-      </Tappable>
-
-      {freeSoon.length > 0 ? (
-        <Section title={t('Hvem har tid i dag?')} subtitle={t('Virksomheder nær dig, der selv har meldt ledig tid')}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
-            {freeSoon.map(({ business, km, when }) => (
-              <Tappable
-                key={business.id}
-                onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
-                accessibilityLabel={t('{name}, {trade}, {when}, {distance} væk', {
-                  name: business.name,
-                  trade: getCategory(business.categories[0])?.name ?? '',
-                  when: when === 'today' ? t('ledig i dag') : t('ledig i morgen'),
-                  distance: formatDistance(km),
-                })}
-                style={[styles.topCard, { backgroundColor: colors.surface }]}>
-                <View style={styles.topBody}>
-                  <BusinessMark business={business} size={40} />
-                  <AppText variant="caption" tone="textSecondary" weight="600">
-                    {getCategory(business.categories[0])?.name}
-                  </AppText>
-                  <AppText variant="subhead" weight="600" numberOfLines={1}>
-                    {business.name}
-                  </AppText>
-                  <AppText variant="caption" weight="600" tone={when === 'today' ? 'success' : 'textSecondary'}>
-                    {when === 'today' ? t('Ledig i dag') : t('Ledig i morgen')}
-                  </AppText>
-                  <AppText variant="caption" tone="textSecondary">
-                    {formatDistance(km)}
-                  </AppText>
-                </View>
-              </Tappable>
-            ))}
-          </ScrollView>
-        </Section>
-      ) : null}
-
-      <Section
-        title={t('Hvad koster det typisk?')}
-        subtitle={t('Prisintervaller {tax} fra virksomhederne i appen', { tax: taxNote(market) })}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
-          {POPULAR_JOBS.map(([categoryId, jobId]) => {
-            const category = getCategory(categoryId);
-            const job = category?.jobs.find((j) => j.id === jobId);
-            if (!category || !job) return null;
-            const price = summarizeJobPrice(job, local, market);
-            return (
-              <Tappable
-                key={jobId}
-                onPress={() => router.push({ pathname: '/kategori/[id]', params: { id: categoryId, job: jobId } })}
-                accessibilityLabel={t('{name}, typisk {priceRange}. Vis {plural}', {
-                  name: job.name,
-                  priceRange: formatPriceRange(price.min, price.max, price.unit, price.currency),
-                  plural: category.plural,
-                })}
-                style={[styles.jobCard, { backgroundColor: colors.surface }]}>
-                <View style={[styles.jobIcon, { backgroundColor: colors.brandSoft }]}>
-                  <Icon name={categoryId} size={16} color={colors.brand} weight="semibold" />
-                </View>
-                <AppText variant="subhead" weight="600" numberOfLines={2} style={styles.jobName}>
-                  {job.name}
-                </AppText>
-                <AppText variant="subhead" weight="600" tabular numberOfLines={1}>
-                  {formatPriceRange(price.min, price.max, price.unit, price.currency)}
-                </AppText>
-                <AppText variant="caption" tone="textSecondary" numberOfLines={1}>
-                  {category.name}
-                </AppText>
-              </Tappable>
-            );
-          })}
-        </ScrollView>
-      </Section>
-
-      <Section title={t('Værktøjer')}>
-        <View style={styles.tools}>
-          <ListSection>
-            <ListRow icon="siren" title={t('Akut hjælp – døgnvagt')} onPress={() => router.push('/akut')} />
-            <ListRow icon="receipt" title={t('Tilbudstjek')} onPress={() => router.push('/tilbudstjek')} />
-            <ListRow icon="leaf" title={t('Grøn guide')} onPress={() => router.push('/groen-guide')} />
-            <ListRow
-              icon="warning"
-              title={t('Advarselslampe i bilen')}
-              onPress={() => router.push('/advarselslamper')}
-            />
-            <ListRow icon="people" title={t('Naborabat')} onPress={() => router.push('/faelles')} />
-          </ListSection>
-        </View>
-      </Section>
-
-      {promoted.length > 0 ? (
-        <Section title={t('Fremhævet')} subtitle={t('Betalt annonce – påvirker ikke rækkefølgen i søgeresultater')}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
-            {promoted.map(({ business, score, km }) => (
-              <Tappable
-                key={business.id}
-                onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
-                accessibilityLabel={t('Annonce: {name}, {distance} væk', {
-                  name: business.name,
-                  distance: formatDistance(km),
-                })}
-                style={[styles.featured, { backgroundColor: colors.surface }]}>
-                <View style={styles.featuredBody}>
-                  <View style={styles.rowBetween}>
-                    <BusinessMark business={business} size={44} />
-                    <View style={styles.flex}>
-                      <AppText variant="headline" numberOfLines={1}>
-                        {business.name}
-                      </AppText>
-                      <Badge label={t('Annonce')} tone="neutral" />
-                    </View>
-                    <MatchBadge score={score} />
+        {freeSoon.length > 0 ? (
+          <Section title={t('Hvem har tid i dag?')} subtitle={t('Virksomheder nær dig, der selv har meldt ledig tid')}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
+              {freeSoon.map(({ business, km, when }) => (
+                <Tappable
+                  key={business.id}
+                  onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
+                  accessibilityLabel={t('{name}, {trade}, {when}, {distance} væk', {
+                    name: business.name,
+                    trade: getCategory(business.categories[0])?.name ?? '',
+                    when: when === 'today' ? t('ledig i dag') : t('ledig i morgen'),
+                    distance: formatDistance(km),
+                  })}
+                  style={[styles.topCard, { backgroundColor: colors.surface }]}>
+                  <View style={styles.topBody}>
+                    <BusinessMark business={business} size={40} />
+                    <AppText variant="caption" tone="textSecondary" weight="600">
+                      {getCategory(business.categories[0])?.name}
+                    </AppText>
+                    <AppText variant="subhead" weight="600" numberOfLines={1}>
+                      {business.name}
+                    </AppText>
+                    <AppText variant="caption" weight="600" tone={when === 'today' ? 'success' : 'textSecondary'}>
+                      {when === 'today' ? t('Ledig i dag') : t('Ledig i morgen')}
+                    </AppText>
+                    <AppText variant="caption" tone="textSecondary">
+                      {formatDistance(km)}
+                    </AppText>
                   </View>
-                  <ReviewRating summary={business.reviewSummary} />
-                  <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
-                    {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business))} ·{' '}
-                    {formatDistance(km)}
-                  </AppText>
-                </View>
-              </Tappable>
-            ))}
-          </ScrollView>
-        </Section>
-      ) : null}
+                </Tappable>
+              ))}
+            </ScrollView>
+          </Section>
+        ) : null}
 
-      {topRated.length > 0 ? (
         <Section
-          title={t('Bedst anmeldt nær dig')}
-          subtitle={t('Flest stjerner fra brugere via FixMatch inden for {distance}', {
-            distance: formatDistance(10),
-          })}>
+          title={t('Hvad koster det typisk?')}
+          subtitle={t('Prisintervaller {tax} fra virksomhederne i appen', { tax: taxNote(market) })}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
-            {topRated.map(({ business, km }) => (
-              <Tappable
-                key={business.id}
-                onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
-                accessibilityLabel={t('{name}, {name2}, {distance} væk', {
-                  name: business.name,
-                  name2: getCategory(business.categories[0])?.name,
-                  distance: formatDistance(km),
-                })}
-                style={[styles.topCard, { backgroundColor: colors.surface }]}>
-                <View style={styles.topBody}>
-                  <BusinessMark business={business} size={40} />
-                  <AppText variant="caption" tone="textSecondary" weight="600">
-                    {getCategory(business.categories[0])?.name}
+            {POPULAR_JOBS.map(([categoryId, jobId]) => {
+              const category = getCategory(categoryId);
+              const job = category?.jobs.find((j) => j.id === jobId);
+              if (!category || !job) return null;
+              const price = summarizeJobPrice(job, local, market);
+              return (
+                <Tappable
+                  key={jobId}
+                  onPress={() => router.push({ pathname: '/kategori/[id]', params: { id: categoryId, job: jobId } })}
+                  accessibilityLabel={t('{name}, typisk {priceRange}. Vis {plural}', {
+                    name: job.name,
+                    priceRange: formatPriceRange(price.min, price.max, price.unit, price.currency),
+                    plural: category.plural,
+                  })}
+                  style={[styles.jobCard, { backgroundColor: colors.surface }]}>
+                  <View style={[styles.jobIcon, { backgroundColor: colors.brandSoft }]}>
+                    <Icon name={categoryId} size={16} color={colors.brand} weight="semibold" />
+                  </View>
+                  <AppText variant="subhead" weight="600" numberOfLines={2} style={styles.jobName}>
+                    {job.name}
                   </AppText>
-                  <AppText variant="subhead" weight="600" numberOfLines={1}>
-                    {business.name}
+                  <AppText variant="subhead" weight="600" tabular numberOfLines={1}>
+                    {formatPriceRange(price.min, price.max, price.unit, price.currency)}
                   </AppText>
-                  <ReviewRating summary={business.reviewSummary} />
-                  <AppText variant="caption" tone="textSecondary">
-                    {formatDistance(km)}
+                  <AppText variant="caption" tone="textSecondary" numberOfLines={1}>
+                    {category.name}
                   </AppText>
-                </View>
-              </Tappable>
-            ))}
+                </Tappable>
+              );
+            })}
           </ScrollView>
         </Section>
-      ) : null}
 
-      <Section title={t('Sådan virker FixMatch')}>
-        <View style={[styles.steps, { backgroundColor: colors.surface }]}>
-          <Step number={1} title={t('Vælg fag eller opgave')} text={t('VVS, el, tømrer, murer, mekaniker og flere.')} />
-          <Step
-            number={2}
-            title={t('Sammenlign')}
-            text={t('Pris {tax}, afstand og anmeldelser – side om side.', { tax: taxNote(market) })}
-          />
-          <Step
-            number={3}
-            title={t('Ring direkte')}
-            text={t('Ingen mellemled og ingen gebyrer. Du aftaler prisen direkte.')}
-          />
-        </View>
-      </Section>
-    </ScrollView>
+        <Section title={t('Værktøjer')}>
+          <View style={styles.tools}>
+            <ListSection>
+              <ListRow icon="siren" title={t('Akut hjælp – døgnvagt')} onPress={() => router.push('/akut')} />
+              <ListRow icon="receipt" title={t('Tilbudstjek')} onPress={() => router.push('/tilbudstjek')} />
+              <ListRow icon="leaf" title={t('Grøn guide')} onPress={() => router.push('/groen-guide')} />
+              <ListRow
+                icon="warning"
+                title={t('Advarselslampe i bilen')}
+                onPress={() => router.push('/advarselslamper')}
+              />
+              <ListRow icon="people" title={t('Naborabat')} onPress={() => router.push('/faelles')} />
+            </ListSection>
+          </View>
+        </Section>
+
+        {promoted.length > 0 ? (
+          <Section title={t('Fremhævet')} subtitle={t('Betalt annonce – påvirker ikke rækkefølgen i søgeresultater')}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
+              {promoted.map(({ business, score, km }) => (
+                <Tappable
+                  key={business.id}
+                  onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
+                  accessibilityLabel={t('Annonce: {name}, {distance} væk', {
+                    name: business.name,
+                    distance: formatDistance(km),
+                  })}
+                  style={[styles.featured, { backgroundColor: colors.surface }]}>
+                  <View style={styles.featuredBody}>
+                    <View style={styles.rowBetween}>
+                      <BusinessMark business={business} size={44} />
+                      <View style={styles.flex}>
+                        <AppText variant="headline" numberOfLines={1}>
+                          {business.name}
+                        </AppText>
+                        <Badge label={t('Annonce')} tone="neutral" />
+                      </View>
+                      <MatchBadge score={score} />
+                    </View>
+                    <ReviewRating summary={business.reviewSummary} />
+                    <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
+                      {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business))} ·{' '}
+                      {formatDistance(km)}
+                    </AppText>
+                  </View>
+                </Tappable>
+              ))}
+            </ScrollView>
+          </Section>
+        ) : null}
+
+        {topRated.length > 0 ? (
+          <Section
+            title={t('Bedst anmeldt nær dig')}
+            subtitle={t('Flest stjerner fra brugere via FixMatch inden for {distance}', {
+              distance: formatDistance(10),
+            })}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
+              {topRated.map(({ business, km }) => (
+                <Tappable
+                  key={business.id}
+                  onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
+                  accessibilityLabel={t('{name}, {name2}, {distance} væk', {
+                    name: business.name,
+                    name2: getCategory(business.categories[0])?.name,
+                    distance: formatDistance(km),
+                  })}
+                  style={[styles.topCard, { backgroundColor: colors.surface }]}>
+                  <View style={styles.topBody}>
+                    <BusinessMark business={business} size={40} />
+                    <AppText variant="caption" tone="textSecondary" weight="600">
+                      {getCategory(business.categories[0])?.name}
+                    </AppText>
+                    <AppText variant="subhead" weight="600" numberOfLines={1}>
+                      {business.name}
+                    </AppText>
+                    <ReviewRating summary={business.reviewSummary} />
+                    <AppText variant="caption" tone="textSecondary">
+                      {formatDistance(km)}
+                    </AppText>
+                  </View>
+                </Tappable>
+              ))}
+            </ScrollView>
+          </Section>
+        ) : null}
+
+        <Section title={t('Sådan virker FixMatch')}>
+          <View style={[styles.steps, { backgroundColor: colors.surface }]}>
+            <Step
+              number={1}
+              title={t('Vælg fag eller opgave')}
+              text={t('VVS, el, tømrer, murer, mekaniker og flere.')}
+            />
+            <Step
+              number={2}
+              title={t('Sammenlign')}
+              text={t('Pris {tax}, afstand og anmeldelser – side om side.', { tax: taxNote(market) })}
+            />
+            <Step
+              number={3}
+              title={t('Ring direkte')}
+              text={t('Ingen mellemled og ingen gebyrer. Du aftaler prisen direkte.')}
+            />
+          </View>
+        </Section>
+      </ScrollView>
+      <StatusBarScrim />
+    </View>
   );
 }
 

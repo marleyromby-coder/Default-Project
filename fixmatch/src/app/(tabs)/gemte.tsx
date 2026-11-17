@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BusinessCard } from '@/components/business/business-card';
 import { CompareTray } from '@/components/business/compare-tray';
 import { ScreenHeader } from '@/components/screen-header';
+import { StatusBarScrim } from '@/components/status-bar-scrim';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 import { ScreenPadding, Spacing } from '@/constants/theme';
@@ -60,6 +61,7 @@ export default function SavedScreen() {
         contentContainerStyle={[styles.list, column, { paddingBottom: insets.bottom + 160 }]}
         contentInsetAdjustmentBehavior="never"
       />
+      <StatusBarScrim />
       <CompareTray bottomOffset={60} />
     </View>
   );
