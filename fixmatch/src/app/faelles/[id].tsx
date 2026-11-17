@@ -11,7 +11,7 @@ import { Card, CardTitle } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Icon } from '@/components/ui/icon';
 import { AppText } from '@/components/ui/text';
-import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
+import { IconWell, Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { getCategory } from '@/data/categories';
 import { DEFAULT_LOCATION } from '@/data/places';
 import { useTheme } from '@/hooks/use-theme';
@@ -340,7 +340,14 @@ const styles = StyleSheet.create({
   content: { padding: ScreenPadding, gap: Spacing.md },
   notice: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md },
   head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  icon: { width: 48, height: 48, borderRadius: 24, alignItems: 'center', justifyContent: 'center' },
+  icon: {
+    width: IconWell.card.size,
+    height: IconWell.card.size,
+    borderRadius: IconWell.card.radius,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   badges: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs },
   spaced: { marginTop: Spacing.sm },
   code: { padding: Spacing.md, borderRadius: Radius.md, alignItems: 'center' },

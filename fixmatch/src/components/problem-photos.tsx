@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
-import { Radius, Spacing } from '@/constants/theme';
+import { IconWell, Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { showDialog } from '@/lib/dialog';
 import { t } from '@/i18n';
@@ -137,7 +137,14 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   card: { borderRadius: Radius.lg, borderCurve: 'continuous', padding: Spacing.md, gap: Spacing.md },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  icon: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center' },
+  icon: {
+    width: IconWell.card.size,
+    height: IconWell.card.size,
+    borderRadius: IconWell.card.radius,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   strip: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   thumb: { borderRadius: Radius.md, borderWidth: StyleSheet.hairlineWidth },
   remove: {
