@@ -88,7 +88,6 @@ const en: Record<string, string> = {
   'Din søgning': 'Your search',
   'Din valgte placering': 'Your chosen location',
   'Din vægtning lige nu': 'Your weighting right now',
-  'Din vægtning:': 'Your weighting:',
   'Din vægtning: {weights}. Juster': 'Your weighting: {weights}. Adjust',
   'Dine prioriteter': 'Your priorities',
   'Dit budget': 'Your budget',
@@ -214,7 +213,6 @@ const en: Record<string, string> = {
   'Intet at sammenligne endnu': 'Nothing to compare yet',
   'Intet budget': 'No budget',
   Ja: 'Yes',
-  Justér: 'Adjust',
   'Juster dine prioriteter': 'Adjust your priorities',
   'Kan ikke ringe fra denne enhed': "Can't call from this device",
   'Kan passe': 'Could fit',
@@ -1557,6 +1555,7 @@ const en: Record<string, string> = {
   'Se prisen, før du ringer.': 'See the price before you call.',
   Værktøjer: 'Tools',
   'Tager telefonen {answered} ud af {outOf} gange': 'Answers the phone {answered} out of {outOf} times',
+  Vægtning: 'Weighting',
 };
 
 export default en;

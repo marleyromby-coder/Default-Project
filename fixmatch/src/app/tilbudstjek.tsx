@@ -168,7 +168,11 @@ export default function QuoteCheckScreen() {
           <AppText variant="subhead" weight="600" tone="textSecondary" accessibilityRole="header">
             {t('Fag')}
           </AppText>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.chipScroll}
+            contentContainerStyle={styles.chips}>
             {CATEGORIES.map((c) => (
               <Chip
                 key={c.id}
@@ -427,7 +431,9 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   content: { padding: ScreenPadding, gap: Spacing.lg },
   block: { gap: Spacing.sm },
-  chips: { gap: Spacing.sm, paddingRight: Spacing.md },
+  // The chips scroll out to the screen edge, and start in line with the text above.
+  chipScroll: { marginHorizontal: -ScreenPadding },
+  chips: { gap: Spacing.sm, paddingHorizontal: ScreenPadding },
   wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   card: {

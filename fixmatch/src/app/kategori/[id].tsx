@@ -7,9 +7,7 @@ import { CompareTray } from '@/components/business/compare-tray';
 import { Button, IconButton } from '@/components/ui/button';
 import { Chip } from '@/components/ui/chip';
 import { EmptyState } from '@/components/ui/empty-state';
-import { Icon } from '@/components/ui/icon';
 import { Segmented } from '@/components/ui/segmented';
-import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { AUTHORIZATION_LABELS, getCategory } from '@/data/categories';
@@ -99,28 +97,16 @@ export default function CategoryScreen() {
 
   const header = (
     <View style={styles.header}>
-      <View style={styles.summaryRow}>
-        <AppText variant="subhead" tone="textSecondary" style={styles.flex}>
-          {filters.maxDistanceKm === null
-            ? t('{count} {trade} i hele landet', { count: results.items.length, trade: tradeWord })
-            : t('{count} {trade} inden for {distance} af {place}', {
-                count: results.items.length,
-                trade: tradeWord,
-                distance: formatDistance(filters.maxDistanceKm),
-                place: state.location.label,
-              })}
-        </AppText>
-        <Tappable
-          onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'rangering' } })}
-          accessibilityRole="link"
-          accessibilityLabel={t('Sådan rangerer vi')}
-          style={styles.inlineLink}>
-          <Icon name="info" size={14} color={colors.brandText} weight="semibold" />
-          <AppText variant="footnote" tone="brandText" weight="600">
-            {t('Sådan rangerer vi')}
-          </AppText>
-        </Tappable>
-      </View>
+      <AppText variant="footnote" tone="textSecondary">
+        {filters.maxDistanceKm === null
+          ? t('{count} {trade} i hele landet', { count: results.items.length, trade: tradeWord })
+          : t('{count} {trade} inden for {distance} af {place}', {
+              count: results.items.length,
+              trade: tradeWord,
+              distance: formatDistance(filters.maxDistanceKm),
+              place: state.location.label,
+            })}
+      </AppText>
 
       {job && jobPrice ? (
         <View style={[styles.jobBanner, { backgroundColor: colors.brandSoft }]}>
@@ -138,7 +124,12 @@ export default function CategoryScreen() {
 
       <Segmented options={SORT_OPTIONS} value={sort} onChange={setSort} accessibilityLabel={t('Sortering')} />
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
+      {/* Only the chips that open a sheet have an icon. */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.chipScroll}
+        contentContainerStyle={styles.chips}>
         <Chip
           label={t('Filtre')}
           icon="filter"
@@ -147,51 +138,31 @@ export default function CategoryScreen() {
           accessibilityLabel={filterCount ? t('Filtre, {count} aktive', { count: filterCount }) : t('Filtre')}
         />
         <Chip
-          label={t('Verificeret')}
-          icon="verified"
-          selected={filters.verifiedOnly}
-          onPress={() => toggle('verifiedOnly')}
+          label={t('Vægtning')}
+          icon="sliders"
+          onPress={() => router.push('/prioriteter')}
+          accessibilityLabel={t('Din vægtning: {weights}. Juster', { weights: weightsText(weights, true) })}
         />
         <Chip label={t('Åben nu')} selected={filters.openNow} onPress={() => toggle('openNow')} />
-        <Chip label={t('Døgnvagt')} icon="bolt" selected={filters.emergency} onPress={() => toggle('emergency')} />
+        <Chip label={t('Verificeret')} selected={filters.verifiedOnly} onPress={() => toggle('verifiedOnly')} />
         {category.authorization ? (
-          <Chip
-            label={t('Autoriseret')}
-            icon="shield"
-            selected={filters.authorizedOnly}
-            onPress={() => toggle('authorizedOnly')}
-          />
+          <Chip label={t('Autoriseret')} selected={filters.authorizedOnly} onPress={() => toggle('authorizedOnly')} />
         ) : null}
+        <Chip label={t('Døgnvagt')} selected={filters.emergency} onPress={() => toggle('emergency')} />
       </ScrollView>
-
-      <Tappable
-        onPress={() => router.push('/prioriteter')}
-        accessibilityLabel={t('Din vægtning: {weights}. Juster', { weights: weightsText(weights, true) })}
-        style={[styles.weights, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-        <Icon name="sliders" size={16} color={colors.brand} weight="semibold" />
-        <AppText variant="footnote" style={styles.flex} numberOfLines={2}>
-          <AppText variant="footnote" weight="600">
-            {t('Din vægtning:')}{' '}
-          </AppText>
-          {weightsText(weights)}
-        </AppText>
-        <AppText variant="footnote" tone="brandText" weight="700">
-          {t('Justér')}
-        </AppText>
-      </Tappable>
-
-      {category.authorization ? (
-        <AppText variant="caption" tone="textSecondary">
-          {country === 'DK'
-            ? t('Arbejde med {work} kræver ifølge loven en {licence}.', {
-                work: category.authorization === 'el' ? t('el-installationer') : t('vand og afløb'),
-                licence: AUTHORIZATION_LABELS[category.authorization].toLowerCase(),
-              })
-            : t(market.licenceNote)}
-        </AppText>
-      ) : null}
     </View>
   );
+
+  const footer = category.authorization ? (
+    <AppText variant="footnote" tone="textSecondary" style={styles.footer}>
+      {country === 'DK'
+        ? t('Arbejde med {work} kræver ifølge loven en {licence}.', {
+            work: category.authorization === 'el' ? t('el-installationer') : t('vand og afløb'),
+            licence: AUTHORIZATION_LABELS[category.authorization].toLowerCase(),
+          })
+        : t(market.licenceNote)}
+    </AppText>
+  ) : undefined;
 
   return (
     <View style={[styles.flex, { backgroundColor: colors.background }]}>
@@ -199,13 +170,22 @@ export default function CategoryScreen() {
         options={{
           title: category.plural,
           headerRight: () => (
-            <IconButton
-              icon="map"
-              onPress={() => router.navigate({ pathname: '/kort', params: { kategori: category.id } })}
-              accessibilityLabel={t('Vis {plural} på kort', { plural: category.plural.toLowerCase() })}
-              background="transparent"
-              color={colors.brandText}
-            />
+            <View style={styles.headerButtons}>
+              <IconButton
+                icon="info"
+                onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'rangering' } })}
+                accessibilityLabel={t('Sådan rangerer vi')}
+                background="transparent"
+                color={colors.brandText}
+              />
+              <IconButton
+                icon="map"
+                onPress={() => router.navigate({ pathname: '/kort', params: { kategori: category.id } })}
+                accessibilityLabel={t('Vis {plural} på kort', { plural: category.plural.toLowerCase() })}
+                background="transparent"
+                color={colors.brandText}
+              />
+            </View>
           ),
         }}
       />
@@ -221,6 +201,7 @@ export default function CategoryScreen() {
           />
         )}
         ListHeaderComponent={header}
+        ListFooterComponent={footer}
         ListEmptyComponent={
           <EmptyState
             icon="search"
@@ -265,17 +246,10 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   list: { paddingHorizontal: ScreenPadding, paddingBottom: 120 },
   header: { gap: Spacing.md, paddingTop: Spacing.sm, paddingBottom: Spacing.md },
-  summaryRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
-  inlineLink: { flexDirection: 'row', alignItems: 'center', gap: 4, minHeight: 36 },
+  headerButtons: { flexDirection: 'row' },
   jobBanner: { borderRadius: Radius.md, padding: Spacing.md, gap: 2 },
-  chips: { gap: Spacing.sm, paddingRight: Spacing.lg },
-  weights: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.sm,
-    borderRadius: Radius.md,
-    borderWidth: StyleSheet.hairlineWidth,
-    paddingHorizontal: Spacing.md,
-    minHeight: 44,
-  },
+  // The chips scroll out to the screen edge, and start in line with the text above.
+  chipScroll: { marginHorizontal: -ScreenPadding },
+  chips: { gap: Spacing.sm, paddingHorizontal: ScreenPadding },
+  footer: { marginTop: Spacing.lg },
 });

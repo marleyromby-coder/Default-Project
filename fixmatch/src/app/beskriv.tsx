@@ -229,7 +229,11 @@ export default function DescribeProblemScreen() {
             </View>
 
             {category ? (
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={styles.chipScroll}
+                contentContainerStyle={styles.chips}>
                 {category.jobs.map((j) => (
                   <Chip
                     key={j.id}
@@ -246,7 +250,11 @@ export default function DescribeProblemScreen() {
               <AppText variant="caption" tone="textSecondary" weight="600">
                 {category ? t('ANDET FAG?') : t('HVILKET FAG?')}
               </AppText>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={styles.chipScroll}
+                contentContainerStyle={styles.chips}>
                 {otherCategories.map((c) => (
                   <Chip key={c.id} label={c.name} icon={c.id} onPress={() => pickCategory(c.id)} />
                 ))}
@@ -316,7 +324,11 @@ export default function DescribeProblemScreen() {
               {`${currencySymbol(market.currency)} ${taxNote(market)}`}
             </AppText>
           </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.chipScroll}
+            contentContainerStyle={styles.chips}>
             {presets.map((value) => (
               <Chip
                 key={value}
@@ -428,7 +440,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  chips: { gap: Spacing.sm, paddingRight: Spacing.md },
+  // The chips scroll out to the edge of their card, and start in line with the text above.
+  chipScroll: { marginHorizontal: -Spacing.md },
+  chips: { gap: Spacing.sm, paddingHorizontal: Spacing.md },
   card: {
     borderRadius: Radius.lg,
     borderWidth: StyleSheet.hairlineWidth,
