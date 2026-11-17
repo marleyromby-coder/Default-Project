@@ -12,7 +12,7 @@
 
 ## 2. Kort fortalt
 
-FixMatch har ingen reklamer og ingen sporing. Opretter du en bruger, gemmer vi din e-mail, dit navn og dit telefonnummer i EU, så de virksomheder, du ringer til gennem FixMatch, ved, hvem de taler med (punkt 7). Anmeldelser og priser, du selv vælger at dele, gemmes også (punkt 9). Alt andet bliver på din telefon.
+Ingen reklamenetværk og ingen sporing. Betalte annoncer er altid markeret "Annonce" og ændrer ikke rækkefølgen. Opretter du en bruger, gemmer vi din e-mail, dit navn og dit telefonnummer i EU, så de virksomheder, du ringer til gennem FixMatch, ved, hvem de taler med (punkt 7). Anmeldelser og priser, du selv vælger at dele, gemmes også (punkt 9). Alt andet bliver på din telefon.
 
 ## 3. Placering
 

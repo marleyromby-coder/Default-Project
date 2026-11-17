@@ -10,7 +10,7 @@
 
 ## 2. In short
 
-FixMatch has no ads and no tracking. If you create an account, we store your e-mail, name and phone number in the EU, so the businesses you call through FixMatch know who they are talking to (section 7). Reviews and prices you choose to share are stored too (section 9). Everything else stays on your phone.
+No ad networks and no tracking. Paid ads are always labelled "Ad" and never change the order. If you create an account, we store your e-mail, name and phone number in the EU, so the businesses you call through FixMatch know who they are talking to (section 7). Reviews and prices you choose to share are stored too (section 9). Everything else stays on your phone.
 
 ## 3. Location
 

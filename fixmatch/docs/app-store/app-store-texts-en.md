@@ -85,7 +85,7 @@ TRADES IN FIXMATCH
 Plumbers, electricians, carpenters, bricklayers, mechanics, painters, roofers and locksmiths – with more to come.
 
 YOUR PRIVACY
-FixMatch has no ads and no tracking. Your location is only used on your phone to work out distances. Your account is stored on servers in the EU, and you can delete it in the app.
+No ad networks and no tracking. Paid ads are always labelled "Ad" and never change the order. Your location is only used on your phone to work out distances. Your account is stored on servers in the EU, and you can delete it in the app.
 
 Are you a tradesperson or a garage? Sign up for free under More → Sign up your business.
 ```

@@ -74,7 +74,7 @@ FAG I FIXMATCH
 VVS'er, elektriker, tømrer, murer, mekaniker, maler, tagdækker og låsesmed – flere kommer til.
 
 DIT PRIVATLIV
-FixMatch har ingen reklamer og ingen sporing. Din placering bruges kun på din telefon til at beregne afstande. Din bruger ligger på servere i EU, og du kan slette den i appen.
+Ingen reklamenetværk og ingen sporing. Betalte annoncer er altid markeret "Annonce" og ændrer ikke rækkefølgen. Din placering bruges kun på din telefon til at beregne afstande. Din bruger ligger på servere i EU, og du kan slette den i appen.
 
 Er du håndværker eller værksted? Tilmeld dig gratis under Mere → Tilmeld din virksomhed.
 ```
