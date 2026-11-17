@@ -47,6 +47,7 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 ## 4. App Store Connect
 
 - [ ] Tekster, søgeord og noter fra `app-store-tekster.md` (dansk) og `app-store-texts-en.md` (engelsk, til alle andre lande).
+- [ ] App Review Information: flueben ved **Sign-in required**, og virksomhedens id og kode til "Min virksomhed" i *User name* og *Password* (se `app-store-tekster.md` → Noter til Apples review-team). Prøv selv koden i appen først.
 - [ ] App Privacy: datatyperne fra `app-store-tekster.md` → App Privacy (navn, e-mail, telefon, bruger-id, produktinteraktion, købshistorik, andet brugerindhold).
 - [ ] Supabase er sat op (`docs/lancering/supabase.md`), og `fixmatch/.env` har URL og publishable key i den build, der indsendes.
 - [ ] Aldersgrænse 4+.
@@ -60,7 +61,9 @@ Der kræves **ikke** et CVR-nummer. Se `docs/lancering/global-lancering.md`.
 | --- | --- | --- |
 | 2.1 App Completeness | Demodata eller tomme lister | Indsend kun med rigtige, samtykkede virksomheder |
 | 2.2 Beta Testing | Demoversion i App Store | Demoer og betaversioner hører hjemme på TestFlight |
-| 2.1 Review fra USA | Apple tester ofte fra USA og ser en tom app | Skriv i review-noterne, hvilken by de skal vælge (Profil → Placering), og vælg kun lande med virksomheder |
+| 2.1 Review fra USA | Apple tester ofte fra USA og ser en tom app | Uden for Danmark viser appen København og siger det. Review-noterne forklarer også, hvordan man vælger by (Profil → Placering). Vælg kun lande med virksomheder |
+| 1.2 Brugerindhold | Anmeldelser og grupper uden mulighed for at rapportere | "Rapportér" ved anmeldelser og grupper, tekstfilter, nultolerance i vilkårene, og I ser på rapporter inden for 24 timer på hverdage (`docs/lancering/supabase.md`) |
+| 5.1.1(v) Login | Navn og telefon kræves, før man kan bruge appen | Hele appen kan ses uden bruger ("Spring over", og "Ikke nu" efter Log ind med Apple). Kun opkald og beskeder kræver navn og nummer, og review-noterne forklarer hvorfor |
 | 4.2 Minimum Functionality | "Bare en hjemmeside" | Appen har native kort, sammenligning, filtre, placering – fremhæv det i review-noterne |
 | 5.1.1 Privacy | Manglende privatlivspolitik | Link i appen ✅ og i App Store Connect |
 | 5.2.2 Tredjepartsindhold | Scorer eller anmeldelser fra andre sider uden tilladelse | Vis kun FixMatch' egne anmeldelser og almindelige tekstlinks til virksomhedens egen profil. Forklar det i review-noterne |

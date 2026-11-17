@@ -39,7 +39,7 @@ Mangler du en VVS'er, elektriker, tømrer, murer eller mekaniker? FixMatch finde
 TILBUDSTJEK – ER PRISEN FAIR?
 • Tast et tilbud ind, også et du har fået et andet sted, og se om prisen er lav, normal eller høj
 • Se hvad det grønne håndværkerfradrag giver tilbage i kroner
-• Find verificerede virksomheder i nærheden, der tager mindre for samme opgave
+• Find virksomheder i nærheden, der tager mindre for samme opgave
 
 BESKRIV DIT PROBLEM – VI MATCHER DIT BUDGET
 • Skriv med dine egne ord, fx "køkkenvasken er stoppet", og hvad du vil give
@@ -64,7 +64,7 @@ TJEKKET OG GENNEMSIGTIGT
 • Verificeret-mærket: FixMatch har selv tjekket CVR, ejer og autorisation
 • CVR-nummer og autorisation fra Sikkerhedsstyrelsen for el og VVS
 • Anmeldelser kun fra brugere, der har kontaktet virksomheden gennem FixMatch
-• Ingen kan betale sig til en bedre placering. Annoncer er altid tydeligt markeret
+• Ingen kan betale sig til en bedre placering
 
 RING DIREKTE
 • Telefonnummer, hjemmeside og rutevejledning lige ved hånden
@@ -106,7 +106,7 @@ Vælg disse datatyper. For hver: **Knyttet til brugeren: Ja**, **Bruges til spor
 | Kategori | Datatype | Hvorfor |
 | --- | --- | --- |
 | Kontaktoplysninger | Navn | Virksomheden ser, hvem der ringer |
-| Kontaktoplysninger | E-mailadresse | Login med kode (eller fra Log ind med Apple) |
+| Kontaktoplysninger | E-mailadresse | Fra Log ind med Apple (kan være Apples skjulte adresse) |
 | Kontaktoplysninger | Telefonnummer | Virksomheden ser, hvem der ringer |
 | Id'er | Bruger-id | Brugerkontoen hos Supabase |
 | Brugsdata | Produktinteraktion | Hvilke virksomheder brugeren har ringet til, så virksomheden kan se det |
@@ -121,22 +121,46 @@ Samme typer står i privacy manifestet (`ios.privacyManifests.NSPrivacyCollected
 
 ## Noter til Apples review-team (på engelsk)
 
-Udfyld byen i firkantede parenteser med den by, hvor I har rigtige virksomheder.
+App Store Connect → appen → versionen → **App Review Information**. Sæt flueben ved **Sign-in required**, og skriv virksomhedens id og kode til "Min virksomhed" i felterne. De står ikke i git; lav dem med `issue_business_key` i Supabase (`docs/lancering/supabase.md` → "Hvem har tid i dag?") til jeres egen virksomhed eller en virksomhed, der har sagt ja til det.
+
+| Felt | Værdi |
+| --- | --- |
+| User name | `[forretnings-id]` (virksomhedens id fra `live-businesses.json`, fx `fjordvand-vvs`) |
+| Password | `[kode]` (koden fra `issue_business_key`) |
+
+Kopiér noterne nedenfor ind i feltet **Notes**. De passer til et `production`-build: kun Log ind med Apple, rigtige virksomheder i København.
 
 ```
-FixMatch helps people find and compare local tradespeople (plumbers, electricians, carpenters, bricklayers, mechanics, painters, roofers, locksmiths) by price range, distance and FixMatch's own reviews, and contact them directly by phone or website.
+FixMatch helps people in Denmark find and compare local tradespeople and mechanics (plumbers, electricians, carpenters, bricklayers, mechanics, painters, roofers, locksmiths) on price, distance and FixMatch's own reviews, and contact them directly. The app follows the device language (English or Danish); Danish labels are in brackets.
 
-• You can skip sign-up ("Spring over" / "Skip") and browse everything. An account is only required to call a business, so the business knows who is calling. To test it, use Sign in with Apple, or tap "Continue with e-mail" and enter the code from the e-mail.
-• The account can be deleted in the app: Profile → Delete account.
-• Businesses sign themselves up and give consent under More → Sign up your business.
-• The app is in English and Danish and follows the device language (Settings → FixMatch → Language).
-• Businesses are currently listed in [Copenhagen, Denmark]. If you review from another country, open Profile → Location and search for "[København]" to see the listings. Elsewhere the app says that FixMatch is not in that country yet.
-• Location permission is optional. Without it, the user picks a city manually (Profile → Location). Location is processed on the device only.
-• All listed businesses have given written consent to be listed. Prices are provided by the businesses.
-• The map uses Apple MapKit. The pins are the businesses' own addresses; the app does not store any map data.
-• "Describe your problem" matches the user's text and budget on the device; the text is not sent anywhere.
-• Reviews are FixMatch's own: only users who contacted a business through the app can review it, once each. The app shows no ratings, scores or logos from Trustpilot, Google or other review sites. A business may add plain text links to its own profiles there; the app does not fetch anything from those sites.
-• To test: tap "Plumber" → tap a business → "Call" opens the phone dialer. Or tap "Describe your problem" → tap an example → "Find a match".
+SIGN-IN
+- Sign in with Apple is the only way to log in. There is no password and no e-mail login.
+- The first screen offers Sign in with Apple. Tap "Skip" ("Spring over") to use the app without an account. If you sign in with Apple there, the next screen asks for a name and phone number; tap "Not now" ("Ikke nu") to go straight into the app.
+- Everything can be browsed without an account: listings, business pages, prices, the map, compare, Quote check, Describe your problem, Emergency help and the guides.
+- Calling, messaging or FaceTiming a business needs an account with a name and phone number. This is the core of the service: the business sees who contacted it through FixMatch, so it knows who it is talking to and can call back, and only people who really contacted a business can review it. The name and number are shown only to the business the user contacts, never to other users.
+- Neighbour discount ("Naborabat") also needs sign-in to start or join a group, so neighbours know a group is real. Groups can be viewed without an account.
+- The account can be deleted in the app: Profile > Delete account ("Profil > Slet bruger").
+
+LOCATION
+- The businesses are in Copenhagen, Denmark. If location is allowed and you are outside Denmark, the app shows Copenhagen and says so at the top of the home screen. Without location, it starts in Copenhagen.
+- To choose a city: Profile > Location ("Profil > Placering"), search for "København" and tap it.
+- Location permission is optional and is only used on the device.
+
+STEPS TO TEST
+1. Home > "Plumber" > tap a business > "Call" ("Ring"). Sign in with Apple, enter a name and phone number, and the phone app opens with the business's number.
+2. Home > "Describe your problem" > tap an example > "Find a match".
+3. After a call, the business page offers "Write a review". Each review from another user and each Neighbour discount group has "Report" ("Rapportér").
+4. My business: Profile > "Log in as a business" ("Log ind som virksomhed"). Sign in with Apple first. Search for the business id from the Sign-In Information (User name), tap the business and enter the code (Password). You then see who called, can mark free time and ask FixMatch to change prices.
+5. Neighbour discount: Home > "Neighbour discount" > "Start a group".
+
+USER CONTENT
+- Reviews, Neighbour discount groups and businesses' photos of their work are user content. Every review and group can be reported in the app ("Report"). A reported item is hidden on the reporter's phone at once, and FixMatch reviews every report within 24 hours on weekdays and removes content that breaks the rules. Texts with slurs, phone numbers or links are stopped before they are posted. The terms (More > Terms of use) have a zero-tolerance clause for objectionable content and abusive users.
+- Reviews are FixMatch's own: only users who contacted a business through the app can review it, once each. The app shows no ratings, scores or logos from Trustpilot, Google or other review sites. A business may add plain text links to its own profiles there; the app fetches nothing from those sites.
+
+OTHER
+- Businesses are only listed after they sign up themselves or give written consent. Prices come from the businesses. Businesses sign up under More > Sign up your business.
+- The map uses Apple MapKit. The pins are the businesses' own addresses; the app stores no map data.
+- "Describe your problem" matches the user's text and budget on the device; the text is not sent anywhere.
 ```
 
 ## Skærmbilleder

@@ -258,7 +258,7 @@ export function infoPagesEn(): Record<
         {
           heading: 'Your account',
           paragraphs: [
-            'You can browse and compare without an account. The first time you call a business, we ask you to create one. We store your e-mail (or your Apple ID), your name, your phone number and which businesses you have called and when – with Supabase on servers in the EU (Frankfurt).',
+            'You can browse and compare without an account. The first time you call or message a business, we ask you to sign in with Apple. We store the ID and e-mail Apple gives us (Apple can hide your real e-mail), your name, your phone number and which businesses you have contacted and when – with Supabase on servers in the EU (Frankfurt).',
             'Only the business you call sees your name and number. We never sell them. You delete it all under Profile → Delete account.',
           ],
         },
@@ -303,7 +303,7 @@ export function infoPagesEn(): Record<
       sections: [
         {
           bullets: [
-            'The app is free and needs no login.',
+            'The app is free. You can browse and compare without an account. To call or message a business, you sign in with Apple and give your name and phone number, which the business sees.',
             'Prices, opening hours and other details come from the businesses. We work to keep them correct but cannot guarantee it.',
             'Reviews only come from users who contacted the business through FixMatch.',
             'Reviews, groups and photos must not be offensive, threatening or obscene. We have zero tolerance: the content is hidden, and the user may be deleted.',

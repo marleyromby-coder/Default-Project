@@ -49,7 +49,7 @@ Need a plumber, electrician, carpenter, bricklayer or mechanic? FixMatch finds l
 QUOTE CHECK – IS THE PRICE FAIR?
 • Type in a quote, even one you got somewhere else, and see whether the price is low, normal or high
 • See what the Danish green tradesperson deduction gives back
-• Find verified businesses nearby that charge less for the same job
+• Find businesses nearby that charge less for the same job
 
 DESCRIBE YOUR PROBLEM – WE MATCH YOUR BUDGET
 • Write in your own words, e.g. "the kitchen sink is blocked", and what you want to spend
@@ -71,7 +71,7 @@ COMPARE ON ONE SCREEN
 • Sort by price, distance or reviews, and filter by open now, 24/7 and licensed
 
 TRANSPARENT BY DESIGN
-• Nobody can pay for a better ranking. Ads are always clearly marked
+• Nobody can pay for a better ranking
 • We explain exactly how the ranking works, inside the app
 • The Verified badge: FixMatch has checked the company number, the owner and the licence
 • Registration numbers and licences on each business page, where they apply
@@ -110,7 +110,13 @@ The pages are built with `npm run website:build` from `docs/jura/privacy-policy.
 
 ## Review notes
 
-Use the notes in `app-store-tekster.md` (they are already in English). They tell the reviewer which city to pick, since Apple often reviews from the U.S.
+App Review Information is the same for every language, so there is one set of notes: copy them from `app-store-tekster.md` → "Noter til Apples review-team" (they are in English). In short, they tell the reviewer:
+
+- Sign in with Apple is the only login, and the whole app can be browsed without an account ("Skip" on the first screen, "Not now" after Sign in with Apple).
+- Calling or messaging a business needs a name and phone number, because the business sees who contacted it. That is the core of the service. Neighbour discount needs sign-in too.
+- The businesses are in Copenhagen; outside Denmark the app shows Copenhagen. Profile → Location → "København" picks it by hand.
+- How to test My business: tick **Sign-in required** and put the business id in *User name* and its code in *Password* (`[forretnings-id]` and `[kode]` in `app-store-tekster.md`). They are not stored in git.
+- How to report reviews and groups, and that FixMatch reviews reports within 24 hours on weekdays.
 
 ## Screenshots
 

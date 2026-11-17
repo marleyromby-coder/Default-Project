@@ -10,7 +10,7 @@ Nej. Appen er gratis. Du betaler kun virksomheden for arbejdet, og prisen aftale
 
 ### Skal jeg oprette en bruger?
 
-Du kan se og sammenligne alt uden bruger. Første gang du ringer til en virksomhed gennem FixMatch, opretter du en med Log ind med Apple eller din e-mail, dit navn og dit telefonnummer, så virksomheden ved, hvem den taler med. Du kan slette brugeren under *Profil → Slet bruger*.
+Du kan se og sammenligne alt uden bruger. Første gang du ringer eller skriver til en virksomhed gennem FixMatch, logger du ind med Apple og skriver dit navn og telefonnummer, så virksomheden ved, hvem den taler med. Log ind med Apple er den eneste måde at logge ind på. Du kan slette brugeren under *Profil → Slet bruger*.
 
 ### Hvad betyder fluebenet ved navnet?
 
@@ -40,6 +40,10 @@ Kun på din telefon, til at beregne afstande, og kun hvis du giver lov. Den send
 
 Tryk på *Rapportér fejl eller ulovligt indhold* nederst på virksomhedens side, eller skriv til {{email}}.
 
+### Hvordan rapporterer jeg en anmeldelse eller en gruppe?
+
+Tryk *Rapportér* ved anmeldelsen eller nederst i gruppen, og vælg hvorfor. Den bliver skjult på din telefon med det samme. Vi ser på alle rapporter inden for 24 timer på hverdage og fjerner krænkende indhold.
+
 ### Jeg har en virksomhed. Hvordan kommer jeg med?
 
-Det er gratis. Skriv til {{email}}, så sender vi en samtykkeerklæring, hvor du godkender dine oplysninger og priser. Du kan altid få dem rettet eller fjernet inden for 2 hverdage.
+Det er gratis. Tilmeld dig i appen under *Mere → Tilmeld din virksomhed* eller på hjemmesiden. Du godkender dine oplysninger og priser og giver samtykke i tilmeldingen. Du kan altid få dem rettet eller fjernet inden for 2 hverdage.

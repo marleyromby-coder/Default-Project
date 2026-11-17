@@ -10,7 +10,7 @@ No. The app is free. You only pay the business for the work, and you agree the p
 
 ### Do I need an account?
 
-You can look at and compare everything without one. The first time you call a business through FixMatch, you create one with Sign in with Apple or your e-mail, your name and your phone number, so the business knows who it is talking to. You can delete it under *Profile → Delete account*.
+You can look at and compare everything without one. The first time you call or message a business through FixMatch, you sign in with Apple and give your name and phone number, so the business knows who it is talking to. Sign in with Apple is the only way to log in. You can delete it under *Profile → Delete account*.
 
 ### What does the tick next to the name mean?
 
@@ -40,6 +40,10 @@ Only on your phone, to work out distances, and only if you allow it. It is not s
 
 Tap *Report an error or unlawful content* at the bottom of the business page, or write to {{email}}.
 
+### How do I report a review or a group?
+
+Tap *Report* next to the review or at the bottom of the group, and choose why. It is hidden on your phone at once. We look at every report within 24 hours on weekdays and remove offensive content.
+
 ### I run a business. How do I get listed?
 
-It is free. Write to {{email}} and we will send you a consent form where you approve your details and prices. You can always have them corrected or removed within 2 working days.
+It is free. Sign up in the app under *More → Sign up your business* or on the website. You approve your details and prices and give your consent when you sign up. You can always have them corrected or removed within 2 working days.
