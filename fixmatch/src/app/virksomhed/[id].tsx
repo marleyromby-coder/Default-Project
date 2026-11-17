@@ -152,26 +152,30 @@ export default function BusinessScreen() {
           <View style={styles.heroBadges}>
             {category ? <Badge label={category.name} tone="neutral" icon={category.id} /> : null}
             <AvailabilityBadge business={business} />
-            {verified ? <Badge label={t('Verificeret')} tone="success" icon="verified" /> : null}
             {isTopRated(business) ? <Badge label={t('Topbedømt')} tone="brand" icon="star" /> : null}
-            {business.videoCheck ? <Badge label={t('Videotjek')} tone="info" icon="video" /> : null}
-            {business.demo ? <Badge label={t('Eksempel')} tone="warning" /> : null}
+            {business.videoCheck ? <Badge label={t('Videotjek')} tone="brand" icon="video" /> : null}
           </View>
           <View style={[styles.stats, { borderTopColor: colors.border }]}>
-            <Stat label={t('Match')} value={String(scored.score)} detail={matchLabel(scored.score)} />
-            {business.reviewSummary ? (
-              <Stat
-                label={t('Anmeldelser')}
-                value={formatRating(business.reviewSummary.average)}
-                detail={t('{number} anm.', { number: formatNumber(business.reviewSummary.reviews) })}
-              />
-            ) : null}
-            <Stat
-              label={t('Timepris')}
-              value={formatPriceRange(business.pricing.hourlyMin, business.pricing.hourlyMax, 'opgave', currency)}
-              detail={taxNote(market)}
-            />
-            <Stat label={t('Afstand')} value={formatDistance(scored.distanceKm)} detail={t('i luftlinje')} />
+            {[
+              { label: t('Match'), value: String(scored.score), detail: matchLabel(scored.score) },
+              business.reviewSummary
+                ? {
+                    label: t('Anmeldelser'),
+                    value: formatRating(business.reviewSummary.average),
+                    detail: t('{number} anm.', { number: formatNumber(business.reviewSummary.reviews) }),
+                  }
+                : undefined,
+              {
+                label: t('Timepris'),
+                value: formatPriceRange(business.pricing.hourlyMin, business.pricing.hourlyMax, 'opgave', currency),
+                detail: taxNote(market),
+              },
+              { label: t('Afstand'), value: formatDistance(scored.distanceKm), detail: t('i luftlinje') },
+            ]
+              .filter((stat) => stat !== undefined)
+              .map((stat, index) => (
+                <Stat key={stat.label} {...stat} first={index === 0} />
+              ))}
           </View>
         </View>
 
@@ -185,7 +189,6 @@ export default function BusinessScreen() {
           ) : null}
 
           <View style={styles.quickActions}>
-            <QuickAction icon="phone" label={t('Ring')} onPress={() => callBusiness(business)} primary />
             {business.contact.website ? (
               <QuickAction icon="globe" label={t('Hjemmeside')} onPress={() => openWebsite(business)} />
             ) : null}
@@ -197,6 +200,56 @@ export default function BusinessScreen() {
               selected={comparing}
             />
           </View>
+
+          <Card>
+            <CardTitle title={t('Priser')} />
+            <View style={styles.priceHeader}>
+              <AppText variant="title2" rounded>
+                {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currency)}
+              </AppText>
+              <AppText variant="footnote" tone="textSecondary">
+                {[
+                  t('Timepris {tax}', { tax: taxNote(market) }),
+                  business.pricing.calloutFee
+                    ? t('kørsel/opstart {price} pr. besøg', {
+                        price: formatPrice(business.pricing.calloutFee, currency),
+                      })
+                    : t('ingen kørselsgebyr'),
+                ].join(' · ')}
+              </AppText>
+              <PriceLevel level={level} trade={tradePlural} />
+            </View>
+            {business.pricing.examples.length > 0 ? (
+              <View style={styles.examples}>
+                <AppText variant="subhead" weight="600">
+                  {t('Eksempelpriser')}
+                </AppText>
+                {business.pricing.examples.map((example) => (
+                  <View key={example.label} style={styles.exampleRow}>
+                    <AppText variant="subhead" style={styles.flex}>
+                      {jobName(example.job, example.label)}
+                    </AppText>
+                    <AppText variant="subhead" weight="600" tabular>
+                      {formatPriceRange(example.min, example.max, example.unit, currency)}
+                    </AppText>
+                  </View>
+                ))}
+              </View>
+            ) : null}
+            <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
+              {t(
+                'Vejledende priser oplyst af virksomheden {date}. Materialer kan komme oveni. Bed altid om et skriftligt tilbud.',
+                { date: formatDate(business.pricing.updatedAt) },
+              )}
+            </AppText>
+            <InfoLink label={t('Om priserne og håndværkerfradrag')} slug="priser" />
+            <Button
+              title={t('Har du fået et tilbud? Tjek prisen')}
+              variant="link"
+              chevron
+              onPress={() => router.push({ pathname: '/tilbudstjek', params: { kategori: business.categories[0] } })}
+            />
+          </Card>
 
           {business.videoCheck ? (
             <Card>
@@ -264,22 +317,17 @@ export default function BusinessScreen() {
               icon="phone"
               label={t('Telefon')}
               value={formatPhone(business.contact.phone)}
+              detail={
+                answers
+                  ? t('Tager telefonen {answered} ud af {outOf} gange', {
+                      answered: answers.answered,
+                      outOf: answers.outOf,
+                    })
+                  : undefined
+              }
               onPress={() => callBusiness(business)}
             />
             <Divider inset={30} />
-            {answers ? (
-              <>
-                <InfoRow
-                  icon="check"
-                  label={t('Tager telefonen')}
-                  value={t('{answered} ud af {outOf} gange, ifølge kunder via FixMatch', {
-                    answered: answers.answered,
-                    outOf: answers.outOf,
-                  })}
-                />
-                <Divider inset={30} />
-              </>
-            ) : null}
             {business.contact.website ? (
               <>
                 <InfoRow
@@ -297,15 +345,6 @@ export default function BusinessScreen() {
               value={`${business.address.street}, ${business.address.postalCode} ${business.address.city}`}
               onPress={() => openDirections(business)}
             />
-            <Divider inset={30} />
-            <InfoRow
-              icon="route"
-              label={t('Afstand')}
-              value={t('{distance} i luftlinje · kører op til {radius}', {
-                distance: formatDistance(scored.distanceKm),
-                radius: formatDistance(business.serviceRadiusKm),
-              })}
-            />
             {text.responseTime ? (
               <>
                 <Divider inset={30} />
@@ -317,56 +356,6 @@ export default function BusinessScreen() {
           <CustomerCard business={business} />
 
           <Card>
-            <CardTitle title={t('Priser')} />
-            <View style={styles.priceHeader}>
-              <AppText variant="title2" rounded>
-                {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currency)}
-              </AppText>
-              <AppText variant="footnote" tone="textSecondary">
-                {[
-                  t('Timepris {tax}', { tax: taxNote(market) }),
-                  business.pricing.calloutFee
-                    ? t('kørsel/opstart {price} pr. besøg', {
-                        price: formatPrice(business.pricing.calloutFee, currency),
-                      })
-                    : t('ingen kørselsgebyr'),
-                ].join(' · ')}
-              </AppText>
-              <PriceLevel level={level} trade={tradePlural} />
-            </View>
-            {business.pricing.examples.length > 0 ? (
-              <View style={styles.examples}>
-                <AppText variant="subhead" weight="600">
-                  {t('Eksempelpriser')}
-                </AppText>
-                {business.pricing.examples.map((example) => (
-                  <View key={example.label} style={styles.exampleRow}>
-                    <AppText variant="subhead" style={styles.flex}>
-                      {jobName(example.job, example.label)}
-                    </AppText>
-                    <AppText variant="subhead" weight="600" tabular>
-                      {formatPriceRange(example.min, example.max, example.unit, currency)}
-                    </AppText>
-                  </View>
-                ))}
-              </View>
-            ) : null}
-            <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
-              {t(
-                'Vejledende priser oplyst af virksomheden {date}. Materialer kan komme oveni. Bed altid om et skriftligt tilbud.',
-                { date: formatDate(business.pricing.updatedAt) },
-              )}
-            </AppText>
-            <InfoLink label={t('Om priserne og håndværkerfradrag')} slug="priser" />
-            <Button
-              title={t('Har du fået et tilbud? Tjek prisen')}
-              variant="link"
-              chevron
-              onPress={() => router.push({ pathname: '/tilbudstjek', params: { kategori: business.categories[0] } })}
-            />
-          </Card>
-
-          <Card>
             <CardTitle
               title={t('Match-score {score} · {matchLabel}', {
                 score: scored.score,
@@ -376,7 +365,7 @@ export default function BusinessScreen() {
             <ScoreBars parts={scored.parts} weights={weights} />
             <View style={styles.buttonRow}>
               <Button
-                title={t('Justér dine prioriteter')}
+                title={t('Juster dine prioriteter')}
                 icon="sliders"
                 variant="tinted"
                 size="small"
@@ -390,14 +379,14 @@ export default function BusinessScreen() {
             <CardTitle title={t('Åbningstider')} trailing={<OpenStatus business={business} />} />
             {business.hours.map((slot, index) => (
               <View key={WEEKDAYS[index]} style={styles.hoursRow} accessible>
-                <AppText variant="subhead" weight={index === today ? '700' : '400'} style={styles.flex}>
+                <AppText variant="subhead" weight={index === today ? '600' : '400'} style={styles.flex}>
                   {WEEKDAYS[index]}
                   {index === today ? ` (${t('i dag')})` : ''}
                 </AppText>
                 <AppText
                   variant="subhead"
                   tone={slot ? 'text' : 'textSecondary'}
-                  weight={index === today ? '700' : '400'}
+                  weight={index === today ? '600' : '400'}
                   tabular>
                   {slot ? `${formatTime(slot[0])}–${formatTime(slot[1])}` : t('Lukket')}
                 </AppText>
@@ -598,26 +587,24 @@ function QuickAction({
   icon,
   label,
   onPress,
-  primary,
   selected,
 }: {
   icon: IconName;
   label: string;
   onPress: () => void;
-  primary?: boolean;
   selected?: boolean;
 }) {
   const colors = useTheme();
-  // One filled button per screen (Ring). A selected toggle is tinted, not filled.
-  const background = primary ? colors.brandStrong : selected ? colors.brandSoft : colors.surface;
-  const foreground = primary ? colors.onBrand : selected ? colors.brandText : colors.text;
+  // The call bar at the bottom is the one filled button. A selected toggle is tinted, not filled.
+  const background = selected ? colors.brandSoft : colors.surface;
+  const foreground = selected ? colors.brandText : colors.text;
   return (
     <Tappable
       onPress={onPress}
       accessibilityLabel={label}
       accessibilityState={selected === undefined ? undefined : { selected }}
       style={[styles.quickAction, { backgroundColor: background }]}>
-      <Icon name={icon} size={20} color={primary ? colors.onBrand : colors.brandText} weight="semibold" />
+      <Icon name={icon} size={20} color={colors.brandText} weight="semibold" />
       <AppText
         variant="caption"
         weight="600"
@@ -634,11 +621,14 @@ function InfoRow({
   icon,
   label,
   value,
+  detail,
   onPress,
 }: {
   icon: IconName;
   label: string;
   value: string;
+  /** A quiet line under the value, e.g. how often the business answers the phone. */
+  detail?: string;
   onPress?: () => void;
 }) {
   const colors = useTheme();
@@ -652,13 +642,21 @@ function InfoRow({
         <AppText variant="subhead" style={onPress ? { color: colors.brandText } : null} selectable={!onPress}>
           {value}
         </AppText>
+        {detail ? (
+          <AppText variant="caption" tone="textSecondary">
+            {detail}
+          </AppText>
+        ) : null}
       </View>
       {onPress ? <Icon name="chevronRight" size={13} color={colors.textTertiary} weight="semibold" /> : null}
     </View>
   );
   if (!onPress) return content;
   return (
-    <Tappable onPress={onPress} accessibilityLabel={t('{label}: {value}', { label, value })} pressedOpacity={0.5}>
+    <Tappable
+      onPress={onPress}
+      accessibilityLabel={[t('{label}: {value}', { label, value }), detail].filter(Boolean).join(', ')}
+      pressedOpacity={0.5}>
       {content}
     </Tappable>
   );
@@ -714,14 +712,24 @@ function FloatingButton({
   );
 }
 
-/** One column of the fact strip under the name, like the App Store's: label, value, detail. */
-function Stat({ label, value, detail }: { label: string; value: string; detail: string }) {
+/**
+ * One column of the fact strip under the name, like the App Store's: label, value, detail,
+ * with a hairline between the columns.
+ */
+function Stat({ label, value, detail, first }: { label: string; value: string; detail: string; first: boolean }) {
+  const colors = useTheme();
   return (
-    <View style={styles.stat} accessible accessibilityLabel={`${label}: ${value}, ${detail}`}>
+    <View
+      style={[
+        styles.stat,
+        first ? null : { borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: colors.border },
+      ]}
+      accessible
+      accessibilityLabel={`${label}: ${value}, ${detail}`}>
       <AppText variant="caption" tone="textSecondary" numberOfLines={1} maxFontSizeMultiplier={1.3}>
         {label}
       </AppText>
-      <AppText variant="headline" rounded tabular numberOfLines={1} adjustsFontSizeToFit maxFontSizeMultiplier={1.3}>
+      <AppText variant="title3" weight="600" tabular numberOfLines={1} adjustsFontSizeToFit maxFontSizeMultiplier={1.3}>
         {value}
       </AppText>
       <AppText variant="caption" tone="textSecondary" numberOfLines={1} maxFontSizeMultiplier={1.3}>

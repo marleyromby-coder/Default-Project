@@ -103,7 +103,6 @@ const en: Record<string, string> = {
   'Døgnvagt · {label}': '24/7 · {label}',
   'Døgnvagt: kan ringes op uden for åbningstid. Der kan være tillæg for akut udkald.':
     '24/7 service: can be called outside opening hours. Emergency call-outs may cost extra.',
-  Eksempel: 'Demo',
   Eksempelpriser: 'Example prices',
   Eksempelvirksomhed: 'Demo business',
   'El, VVS og kloak kræver autorisation fra Sikkerhedsstyrelsen.':
@@ -216,7 +215,7 @@ const en: Record<string, string> = {
   'Intet budget': 'No budget',
   Ja: 'Yes',
   Justér: 'Adjust',
-  'Justér dine prioriteter': 'Adjust your priorities',
+  'Juster dine prioriteter': 'Adjust your priorities',
   'Kan ikke ringe fra denne enhed': "Can't call from this device",
   'Kan passe': 'Could fit',
   'Kan ringes op uden for åbningstid': 'Can be called outside opening hours',
@@ -498,7 +497,6 @@ const en: Record<string, string> = {
   '{count} virksomheder. Zoom ind': '{count} businesses. Zoom in',
   '{count} {trade} i hele landet': '{count} {trade} in the whole country',
   '{count} {trade} inden for {distance} af {place}': '{count} {trade} within {distance} of {place}',
-  '{distance} i luftlinje · kører op til {radius}': '{distance} in a straight line · travels up to {radius}',
   '{distance} væk': '{distance} away',
   '{fitting} af {countText} passer eller ligger tæt på dit budget':
     '{fitting} of {countText} fit or are close to your budget',
@@ -1049,9 +1047,6 @@ const en: Record<string, string> = {
     'When no other board can take the case. Complain via Nævnenes Hus.',
   'gange I tog telefonen, ifølge kunder': 'times you answered, according to customers',
   'for få svar om telefonen endnu': 'too few answers about the phone yet',
-  'Tager telefonen': 'Answers the phone',
-  '{answered} ud af {outOf} gange, ifølge kunder via FixMatch':
-    '{answered} out of {outOf} times, according to customers via FixMatch',
   'tager telefonen {answered} ud af {outOf} gange': 'answers the phone {answered} out of {outOf} times',
   'Fjern billedet?': 'Remove the picture?',
   'Billedet forsvinder fra jeres side.': 'The picture disappears from your page.',
@@ -1561,6 +1556,7 @@ const en: Record<string, string> = {
   'Vis {label}': 'Show {label}',
   'Se prisen, før du ringer.': 'See the price before you call.',
   Værktøjer: 'Tools',
+  'Tager telefonen {answered} ud af {outOf} gange': 'Answers the phone {answered} out of {outOf} times',
 };
 
 export default en;

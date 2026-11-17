@@ -53,7 +53,7 @@ export default function InfoScreen() {
           </AppText>
           <AppText variant="subhead">{weightsText(weights)}</AppText>
           <Button
-            title={t('Justér dine prioriteter')}
+            title={t('Juster dine prioriteter')}
             variant="plain"
             size="small"
             onPress={() => router.push('/prioriteter')}
