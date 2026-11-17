@@ -1576,6 +1576,12 @@ const en: Record<string, string> = {
   'Rapportér gruppe {code}': 'Report group {code}',
   'Gruppen {code} ({id}) i {area} bryder reglerne, fordi:':
     'The group {code} ({id}) in {area} breaks the rules because:',
+  // After deleting the account
+  'Din bruger er slettet': 'Your account has been deleted',
+  'Har du brugt Log ind med Apple, kan du også fjerne FixMatch fra din Apple-konto: Indstillinger → dit navn → Log ind med Apple → FixMatch.':
+    'If you used Sign in with Apple, you can also remove FixMatch from your Apple Account: Settings → your name → Sign in with Apple → FixMatch.',
+  'Dit navn, dit telefonnummer og listen over virksomheder, du har kontaktet, er slettet.':
+    'Your name, your phone number and the list of businesses you have contacted have been deleted.',
 };
 
 export default en;

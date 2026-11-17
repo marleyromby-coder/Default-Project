@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BusinessMark } from '@/components/business/business-mark';
@@ -84,6 +84,16 @@ export default function ProfileScreen() {
                 clearAnswers();
                 clearGroups();
                 forgetManagedBusiness();
+                // FixMatch keeps no Apple token it could revoke, so the user is told how to stop
+                // using Sign in with Apple for FixMatch themselves (Apple TN3194).
+                showDialog(
+                  t('Din bruger er slettet'),
+                  Platform.OS === 'ios'
+                    ? t(
+                        'Har du brugt Log ind med Apple, kan du også fjerne FixMatch fra din Apple-konto: Indstillinger → dit navn → Log ind med Apple → FixMatch.',
+                      )
+                    : t('Dit navn, dit telefonnummer og listen over virksomheder, du har kontaktet, er slettet.'),
+                );
               })
               .catch(() =>
                 showDialog(t('Det lykkedes ikke'), t('Brugeren blev ikke slettet. Tjek internettet, og prøv igen.')),
