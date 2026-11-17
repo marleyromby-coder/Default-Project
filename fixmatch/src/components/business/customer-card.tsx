@@ -96,6 +96,12 @@ export function CustomerCard({ business }: { business: Business }) {
           {t('Ingen anmeldelser endnu. Kun brugere, der har kontaktet virksomheden gennem FixMatch, kan anmelde.')}
         </AppText>
       )}
+      {/* A demo business has a made-up average and count, but no texts: say so instead of showing nothing. */}
+      {summary && business.demo && reviews.length === 0 ? (
+        <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
+          {t('I demoen er anmeldelserne kun tal. Der er ingen tekster at læse.')}
+        </AppText>
+      ) : null}
 
       {reviews.slice(0, SHOWN_REVIEWS).map((review) => (
         <View key={review.id} style={styles.review}>

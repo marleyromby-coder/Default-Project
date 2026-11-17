@@ -80,6 +80,10 @@ describe('demo data', () => {
         expect(b.demoReviews.average).toBeLessThanOrEqual(5);
         expect(Number.isInteger(b.demoReviews.reviews)).toBe(true);
         expect(b.demoReviews.reviews).toBeGreaterThanOrEqual(1);
+        // Whole stars must be able to give the average, so one review is never 4.5.
+        const { average, reviews } = b.demoReviews;
+        const sums = Array.from({ length: 4 * reviews + 1 }, (_, i) => reviews + i);
+        expect(sums.some((sum) => Math.round((sum / reviews) * 10) / 10 === average)).toBe(true);
       }
       const other = b.country ? b.translations?.da : b.translations?.en;
       expect(other?.tagline).toBeTruthy();

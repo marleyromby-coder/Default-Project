@@ -120,6 +120,8 @@ const en: Record<string, string> = {
   'Faget findes ikke': 'Trade not found',
   'Fejl i oplysninger: {name}': 'Incorrect details: {name}',
   'Fiktiv (demo)': 'Fictional (demo)',
+  'I demoen er anmeldelserne kun tal. Der er ingen tekster at læse.':
+    'In the demo, the reviews are only numbers. There are no texts to read.',
   'Fiktiv eksempelvirksomhed. Navn, telefonnummer, CVR og anmeldelser er opdigtede, og opkald er slået fra.':
     'Fictional demo business. The name, phone number, company number and reviews are made up, and calls are turned off.',
   Filtre: 'Filters',

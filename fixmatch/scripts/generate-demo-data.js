@@ -866,7 +866,7 @@ function buildBusiness(category, name, area, quality, photo, index, market = DAN
       ...(danish ? {} : { currency: market.currency }),
       updatedAt: updatedPricing,
     },
-    ...(hasReviews ? { demoReviews: { average: score, reviews: Math.max(1, Math.round(reviews / 25)) } } : {}),
+    ...(hasReviews ? { demoReviews: possibleReviews(score, Math.max(1, Math.round(reviews / 25))) } : {}),
     authorizations: auth,
     memberships,
     services: own.services,
@@ -881,6 +881,15 @@ function buildBusiness(category, name, area, quality, photo, index, market = DAN
     demo: true,
     updatedAt,
   };
+}
+
+/**
+ * An average that whole stars can give: the nearest sum of `count` ratings from 1 to 5,
+ * divided by the count. A single review is never 4.5 stars.
+ */
+function possibleReviews(score, count) {
+  const sum = Math.min(5 * count, Math.max(count, Math.round(score * count)));
+  return { average: Math.round((sum / count) * 10) / 10, reviews: count };
 }
 
 /**
