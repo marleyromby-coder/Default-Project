@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { type ReactElement, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Badge, type BadgeTone } from '@/components/ui/badge';
@@ -94,7 +95,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
     business.emergency ? <Badge key="emergency" label={t('Døgnvagt')} tone="warning" icon="bolt" /> : null,
     authorized ? <Badge key="authorized" label={t('Autoriseret')} tone="brand" icon="shield" /> : null,
   ]
-    .filter(Boolean)
+    .filter((badge) => badge !== null)
     .slice(0, 2);
 
   return (
@@ -154,7 +155,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
         </View>
       </Tappable>
       <View style={[styles.footer, { borderTopColor: colors.border }]}>
-        <View style={styles.badges}>{badges}</View>
+        <FittingBadges badges={badges} />
         <Tappable
           onPress={() => toggleFavorite(business.id)}
           accessibilityLabel={
@@ -188,6 +189,41 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
   );
 }
 
+/**
+ * The footer badges on one row. A badge that does not fit whole on a narrow screen is hidden,
+ * also from screen readers, instead of being cut off; the first one always shows.
+ */
+function FittingBadges({ badges }: { badges: ReactElement[] }) {
+  const [width, setWidth] = useState(0);
+  const [ends, setEnds] = useState<number[]>([]);
+  return (
+    <View style={styles.badges} onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
+      {badges.map((badge, index) => {
+        const end = ends[index];
+        const fits = index === 0 || (width > 0 && end !== undefined && end <= width + 0.5);
+        return (
+          <View
+            key={badge.key}
+            onLayout={(event) => {
+              const { x, width: badgeWidth } = event.nativeEvent.layout;
+              setEnds((current) => {
+                if (current[index] === x + badgeWidth) return current;
+                const next = [...current];
+                next[index] = x + badgeWidth;
+                return next;
+              });
+            }}
+            style={fits ? null : styles.hidden}
+            accessibilityElementsHidden={!fits}
+            importantForAccessibility={fits ? 'auto' : 'no-hide-descendants'}>
+            {badge}
+          </View>
+        );
+      })}
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   card: { borderRadius: Radius.lg, borderCurve: 'continuous', borderWidth: 2, overflow: 'hidden' },
   top: { flexDirection: 'row', gap: Spacing.md, padding: Spacing.md },
@@ -210,6 +246,7 @@ const styles = StyleSheet.create({
     minHeight: MinTouchSize + 4,
   },
   badges: { flex: 1, flexDirection: 'row', flexWrap: 'nowrap', overflow: 'hidden', gap: Spacing.xs },
+  hidden: { opacity: 0 },
   footerButton: { width: MinTouchSize, height: MinTouchSize, alignItems: 'center', justifyContent: 'center' },
   compareButton: {
     flexDirection: 'row',
