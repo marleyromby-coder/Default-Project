@@ -27,15 +27,15 @@ Tjek, at et link peger på den rigtige virksomhed (navn og CVR), før I lægger 
 
 Markedsføringsloven § 6 b kræver, at vi siger, om og hvordan vi tjekker anmeldelserne. Det står på siden "Om anmeldelser" i appen og i vilkårene, punkt 4.
 
-- Kun brugere, der har ringet eller skrevet til virksomheden gennem FixMatch, kan anmelde den. Databasen tjekker kontakten, før anmeldelsen gemmes.
+- Kun brugere, der har kontaktet virksomheden gennem FixMatch, kan anmelde den. Når brugeren trykker Ring, starter FaceTime eller sender en besked til virksomheden fra appen ("Send beskrivelsen"), gemmer appen en række i `contacts`, og databasen tjekker, at rækken findes, før anmeldelsen gemmes. Ved opkald gemmes rækken, når der trykkes, før telefonen ringer op, så et opkald, der bliver afbrudt eller ikke besvaret, tæller også. En besked tæller kun, hvis den ikke blev annulleret.
 - Hver bruger kan anmelde en virksomhed én gang og kan rette sin anmeldelse senere.
-- Vi tjekker, at kontakten er sket – ikke om opgaven blev udført eller betalt.
+- Derfor skriver vi i vilkårene og på "Om anmeldelser": "Vi tjekker, at du har trykket Ring eller Skriv til virksomheden i FixMatch. Vi kan ikke se, om opkaldet blev besvaret, eller om opgaven blev udført." Lov aldrig mere end det.
 - Vi viser alle anmeldelser, også de dårlige, med de nyeste først. Vi ændrer aldrig i teksten.
 - Ingen kan betale for at fjerne eller flytte en anmeldelse, og vi belønner ikke brugere for at anmelde.
 - Vi skjuler anmeldelser, der bryder reglerne, og skriver kort til anmelderen hvorfor (DSA art. 16 og 17). Fremgangsmåden står i `docs/lancering/supabase.md`.
-- Anmeldelserne tæller med i FixMatch-scoren. Siden "Sådan rangerer vi" forklarer hvordan, også for virksomheder uden anmeldelser (§ 6 a).
+- Anmeldelserne tæller med i FixMatch-scoren sammen med pris og afstand, og brugeren vælger selv, hvad der vejer mest. En virksomhed uden anmeldelser tæller som 5 neutrale anmeldelser på 4,0. Siden "Sådan rangerer vi" forklarer det (§ 6 a).
 - Anmeldelser på andre sider tjekker vi ikke, og de tæller ikke med i FixMatch-scoren.
-- Skriv "anmeldelser fra rigtige opkald" eller "fra brugere, der har kontaktet virksomheden gennem FixMatch" – ikke "fra rigtige kunder". Vi kan ikke se, om de blev kunder (bilag 1, nr. 23 b).
+- Skriv "anmeldelser fra brugere, der har kontaktet virksomheden gennem FixMatch" eller kort "anmeldelser fra brugere via FixMatch". Skriv aldrig, at anmeldelserne kommer fra rigtige kunder eller rigtige opkald, eller at de er ægte eller verificerede. Vi kan ikke se, om opkaldet blev besvaret, eller om de blev kunder (bilag 1, nr. 23 b).
 - Demoanmeldelser er opdigtede og findes kun i demoversionen. Sig det, når I viser demoen.
 
 ## Plan B
