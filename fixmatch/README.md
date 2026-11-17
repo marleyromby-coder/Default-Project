@@ -1,13 +1,13 @@
 # FixMatch
 
-**Find den rette håndværker eller mekaniker – sammenlign pris, afstand og anmeldelser fra rigtige opkald, og ring direkte.**
+**Find den rette håndværker eller mekaniker – sammenlign pris, afstand og anmeldelser fra brugere via FixMatch, og ring direkte.**
 
 FixMatch er en iPhone-app (Expo / React Native) på dansk og engelsk, der lanceres i **Danmark først**. Sverige, Norge, Tyskland og Storbritannien (London) ligger klar i koden og slås til i `LAUNCHED_COUNTRIES` i `src/lib/markets.ts`, når Danmark virker. Brugeren vælger et fag eller en opgave og får lokale virksomheder rangeret efter en gennemsigtig FixMatch-score. Hver virksomhed har en side med telefonnummer, hjemmeside, prisinterval i landets valuta, anmeldelser fra brugere via FixMatch, registreringsnummer (fx CVR), autorisation og åbningstider.
 
 | Fag | VVS'er · Elektriker · Tømrer · Murer · Mekaniker · Maler · Tagdækker · Låsesmed |
 | --- | --- |
 | Sammenligning | Pris (timepris + eksempelpriser), afstand (luftlinje) og anmeldelser (kun fra brugere, der har kontaktet virksomheden gennem FixMatch). Ingen scorer fra andre sider – virksomheden kan give links til sine egne profiler (`docs/jura/anmeldelser.md`) |
-| Kontakt | Ring op, hjemmeside, rutevejledning, del. Første opkald kræver en bruger (Log ind med Apple eller e-mail-kode + navn og telefon), så virksomheden ved, hvem der ringer |
+| Kontakt | Ring op, hjemmeside, rutevejledning, del. Første opkald kræver en bruger (Log ind med Apple + navn og telefon), så virksomheden ved, hvem der ringer |
 | For virksomheder | Selvbetjent tilmelding med samtykke i appen og på hjemmesiden, gemt i Supabase (EU) og importeret med `npm run import:businesses` |
 | Tilbudstjek | Tast et tilbud ind (også fra en anden side), og se om prisen er lav, normal eller høj i forhold til virksomhederne i nærheden, hvad det grønne håndværkerfradrag giver, og hvem der tager mindre (`src/app/tilbudstjek.tsx`, `src/lib/quote-check.ts`) |
 | Verificeret | Gratis mærke ved navnet, når FixMatch har tjekket CVR, ejer og autorisation (og evt. forsikring og garantiordning). Gælder et år. Virksomheder beder om det i tilmeldingen; I sætter `verificeret` og `verificeret_tjek` i import-CSV'en (`src/lib/verification.ts`) og evt. `forsikringsselskab` og `garantiordning`, som vises på tryghedssiden. `billeder_arbejde` er op til 6 https-adresser på billeder af udført arbejde |
@@ -41,7 +41,7 @@ Scan QR-koden med iPhonens kamera → appen åbner i Expo Go. Alt du ændrer i k
 
 ## Brugere og virksomhedstilmeldinger (Supabase)
 
-- **Første skærm** er "Opret en bruger" med Log ind med Apple eller e-mail og en kode, og så navn og telefonnummer. Den kan springes over. Uden bruger beder appen om en, første gang man ringer til en virksomhed, så virksomheden kan se, hvem der ringer (`src/state/account.ts`, `src/components/account/sign-up-flow.tsx`). Under fanen **Profil** ser man sit navn og nummer, de virksomheder man har kontaktet (kun på telefonen), gemte, placering, sprog, prioriteter og udseende, og kan logge ud og slette brugeren.
+- **Første skærm** er "Opret en bruger" med Log ind med Apple og så navn og telefonnummer. Den kan springes over. Log ind med Apple er den eneste måde at logge ind på, når Supabase er sat op: e-mail-login er slået fra med `EXPO_PUBLIC_EMAIL_LOGIN=off` (`src/lib/supabase.ts`). Uden Supabase viser appen et e-mail-felt som lokal reserve, og brugeren gemmes kun på telefonen. Uden bruger beder appen om en, første gang man ringer til en virksomhed, så virksomheden kan se, hvem der ringer (`src/state/account.ts`, `src/components/account/sign-up-flow.tsx`). Under fanen **Profil** ser man sit navn og nummer, de virksomheder man har kontaktet (kun på telefonen), gemte, placering, sprog, prioriteter og udseende, og kan logge ud og slette brugeren.
 - **Virksomheder tilmelder sig selv** under Mere → Tilmeld din virksomhed (`src/app/tilmeld.tsx`) eller på hjemmesiden (`/tilmeld/`, `/en/sign-up/`). De sætter flueben ved tre samtykke-udsagn, og ordlyd, version og tidspunkt gemmes (`src/lib/business-signup.ts`).
 - **Serveren** er Supabase i Frankfurt. Skemaet med row level security står i `supabase/migrations/`, og opsætningen i `docs/lancering/supabase.md`. URL og publishable key står i `fixmatch/.env` (se `.env.example`). Uden dem gemmes brugeren kun på telefonen, og tilmeldinger går på e-mail – fint til en demo.
 
