@@ -11,6 +11,8 @@ describe('text filter', () => {
       'Vi er to huse på Stefansgade 12, der vil have renset tagrender inden vinter.',
       'Pikant lille opgave, men de klarede det. Godt arbejde.De kom til tiden.',
       'Great job on the boiler service, fair price and very tidy.',
+      'Vi skal bruge en huspasser, mens vi er væk. Huspasseren kom til tiden.',
+      'Jeg ringede 2 gange 10 11 2026, og de kom dagen efter.',
     ]) {
       expect(findTextProblem(text)).toBeUndefined();
     }
@@ -22,11 +24,27 @@ describe('text filter', () => {
     expect(findTextProblem('Din PERKER')).toBe('offensive');
     expect(findTextProblem('what a bastard')).toBe('offensive');
     expect(findTextProblem('Total asshole')).toBe('offensive');
+    expect(findTextProblem('Sikke en spasser')).toBe('offensive');
+    expect(findTextProblem('De er nogle spassere')).toBe('offensive');
   });
 
   it('stops phone numbers', () => {
     expect(findTextProblem('Ring til mig på 12 34 56 78')).toBe('phone');
     expect(findTextProblem('Mit nummer er +45 12345678')).toBe('phone');
+    for (const number of [
+      '12345678',
+      '1234 5678',
+      '+45 12 34 56 78',
+      '0045 25 12 20 26',
+      '25 12 20 26',
+      '123 45 678',
+    ]) {
+      expect({ number, problem: findTextProblem(`Ring på ${number}`) }).toEqual({ number, problem: 'phone' });
+    }
+    // Only a date with spaces is let through, also next to a phone number.
+    expect(findTextProblem('Kom 10 11 2026, ring 12 34 56 78')).toBe('phone');
+    // Eight digits in two groups cannot be told from a phone number, so they are stopped too.
+    expect(findTextProblem('Faktura 2026 1117 betalt')).toBe('phone');
   });
 
   it('stops links and e-mail addresses', () => {

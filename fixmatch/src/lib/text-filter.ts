@@ -29,12 +29,11 @@ const ANYWHERE = [
   'pikhoved',
   'bøsserøv',
   'svagpisser',
-  'spasser',
 ];
 
 /**
- * Only as a whole word, because they are part of ordinary words too ("pik" in "pikant"). Words
- * that are also ordinary Danish ("slut", "fag") are left out.
+ * Only as a whole word, because they are part of ordinary words too ("pik" in "pikant", "spasser"
+ * in "huspasser"). Words that are also ordinary Danish ("slut", "fag") are left out.
  */
 const WHOLE_WORDS = new Set([
   'pik',
@@ -56,6 +55,10 @@ const WHOLE_WORDS = new Set([
   'tranny',
   'bastard',
   'dickhead',
+  'spasser',
+  'spasseren',
+  'spassere',
+  'spasserne',
 ]);
 
 /**
@@ -63,6 +66,8 @@ const WHOLE_WORDS = new Set([
  * are left out, so a date like 17-11-2026 is not taken for a phone number.
  */
 const PHONE = /\d(?:\s?\d){7,}/;
+/** A date written with spaces, "10 11 2026". Taken out before looking for phone numbers. */
+const DATE = /\b(?:0[1-9]|[12]\d|3[01]) (?:0[1-9]|1[0-2]) (?:19|20)\d\d\b/g;
 const URL = /https?:\/\/|www\./i;
 const EMAIL = /[^\s@]+@[^\s@]+\.[a-z]{2,}/i;
 /** A bare domain in lower case, so "godt arbejde.De kom" (a missing space) is not a link. */
@@ -76,7 +81,7 @@ export function findTextProblem(text: string | undefined): TextProblem | undefin
   const words = value.split(/[^a-z0-9æøåäöüé]+/).filter(Boolean);
   if (words.some((word) => WHOLE_WORDS.has(word)) || ANYWHERE.some((part) => value.includes(part))) return 'offensive';
   if (URL.test(value) || EMAIL.test(value) || DOMAIN.test(original)) return 'link';
-  if (PHONE.test(value)) return 'phone';
+  if (PHONE.test(value.replace(DATE, ' '))) return 'phone';
   return undefined;
 }
 
