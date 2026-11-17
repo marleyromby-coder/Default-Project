@@ -140,7 +140,7 @@ Til App Store, når de rigtige virksomheder er på plads:
    npx eas-cli@latest submit -p ios --profile testflight
    ```
 
-   Når de rigtige virksomheder er importeret: `--profile production`. Tjek først med `npm run check:release`. EAS kører samme tjek automatisk (`eas-build-pre-install` i `package.json`) og stopper buildet, hvis der mangler rigtige virksomheder, hvis der er demodata eller manglende samtykke, eller hvis `app-info.ts` stadig har TODO-felter.
+   Når de rigtige virksomheder er importeret: `--profile production`. Tjek først med `npm run check:release`. EAS kører samme tjek automatisk (`eas-build-pre-install` i `package.json`) og stopper buildet, hvis der mangler rigtige virksomheder, hvis der er demodata, manglende samtykke eller et trustpilot-felt, hvis Supabase-URL eller -nøgle mangler, hvis `app-info.ts` stadig har TODO-felter, eller hvis App Store-teksterne har pladsholdere som `[København]`.
 
 5. Følg `docs/app-store/tjekliste.md` og brug teksterne i `docs/app-store/app-store-tekster.md`.
 
