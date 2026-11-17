@@ -796,6 +796,7 @@ const en: Record<string, string> = {
   'Bygger på {count} priser, som kunder har betalt.': 'Based on {count} prices customers have paid.',
   'Kundernes erfaringer': "Customers' experiences",
   '{rating} af 5 stjerner fra {count} brugere via FixMatch': '{rating} out of 5 stars from {count} users via FixMatch',
+  '{rating} af 5 stjerner fra 1 bruger via FixMatch': '{rating} out of 5 stars from 1 user via FixMatch',
   '1 anmeldelse fra en bruger via FixMatch': '1 review from a user via FixMatch',
   '{count} anmeldelser fra brugere via FixMatch': '{count} reviews from users via FixMatch',
   'Ingen anmeldelser endnu. Kun brugere, der har kontaktet virksomheden gennem FixMatch, kan anmelde.':
@@ -889,7 +890,8 @@ const en: Record<string, string> = {
   'Opgørelsen kunne ikke hentes.': 'The summary could not be loaded.',
   'Prøv igen': 'Try again',
   'opkald i {month}': 'calls in {month}',
-  'stjerner fra {count} kunder': 'stars from {count} customers',
+  'stjerner fra {count} brugere': 'stars from {count} users',
+  'stjerner fra 1 bruger': 'stars from 1 user',
   'ingen anmeldelser endnu': 'no reviews yet',
   '{calls} opkald · {messages} beskeder': '{calls} calls · {messages} messages',
   'Kundernes priser vises, når mindst {min} har delt for samme opgave.':

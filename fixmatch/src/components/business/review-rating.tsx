@@ -4,8 +4,8 @@ import { Stars } from '@/components/ui/stars';
 import { AppText } from '@/components/ui/text';
 import { Spacing } from '@/constants/theme';
 import { formatNumber, formatRating } from '@/lib/format';
+import { reviewRatingLabel } from '@/lib/review-label';
 import type { ReviewSummary } from '@/lib/types';
-import { t } from '@/i18n';
 
 /**
  * FixMatch's own reviews in one line: stars, the average and the count. Shown only when there
@@ -14,13 +14,7 @@ import { t } from '@/i18n';
 export function ReviewRating({ summary }: { summary?: ReviewSummary }) {
   if (!summary || summary.reviews < 1) return null;
   return (
-    <View
-      style={styles.row}
-      accessible
-      accessibilityLabel={t('{rating} af 5 stjerner fra {count} brugere via FixMatch', {
-        rating: formatRating(summary.average),
-        count: summary.reviews,
-      })}>
+    <View style={styles.row} accessible accessibilityLabel={reviewRatingLabel(summary)}>
       <Stars value={summary.average} size={13} />
       <AppText variant="footnote" weight="600" tabular>
         {formatRating(summary.average)}

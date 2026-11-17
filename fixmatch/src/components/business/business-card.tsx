@@ -9,10 +9,11 @@ import { AppText } from '@/components/ui/text';
 import { MinTouchSize, Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { businessText, currencyOf, timeZoneOf } from '@/lib/business-text';
-import { formatDistance, formatHourly, formatPriceRange, formatRating, speakablePrice } from '@/lib/format';
+import { formatDistance, formatHourly, formatPriceRange, speakablePrice } from '@/lib/format';
 import { availableWhen } from '@/lib/availability';
 import { getOpenStatus } from '@/lib/opening-hours';
 import type { ScoredBusiness } from '@/lib/ranking';
+import { reviewRatingLabel } from '@/lib/review-label';
 import type { JobType } from '@/lib/types';
 import { isTopRated, isVerified } from '@/lib/verification';
 import { answerRateText, useAnswerRate } from '@/state/answers';
@@ -68,12 +69,7 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
     topRated ? t('topbedømt') : undefined,
     highlight?.label,
     t('match {score} ud af 100', { score }),
-    business.reviewSummary
-      ? t('{rating} af 5 stjerner fra {count} brugere via FixMatch', {
-          rating: formatRating(business.reviewSummary.average),
-          count: business.reviewSummary.reviews,
-        })
-      : undefined,
+    reviewRatingLabel(business.reviewSummary),
     speakablePrice(priceText),
     t('{distance} væk', { distance: formatDistance(distanceKm) }),
     open.label,

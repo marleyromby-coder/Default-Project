@@ -13,6 +13,7 @@ import { ScreenPadding, Spacing } from '@/constants/theme';
 import { useLayout } from '@/hooks/use-layout';
 import { useTheme } from '@/hooks/use-theme';
 import { formatRating } from '@/lib/format';
+import { reviewRatingLabel } from '@/lib/review-label';
 import type { Business } from '@/lib/types';
 import { t } from '@/i18n';
 import { useBusiness } from '@/state/app-state';
@@ -88,13 +89,7 @@ function AllReviews({ business }: { business: Business }) {
         {business.name}
       </AppText>
       {summary ? (
-        <View
-          style={styles.summary}
-          accessible
-          accessibilityLabel={t('{rating} af 5 stjerner fra {count} brugere via FixMatch', {
-            rating: formatRating(summary.average),
-            count: summary.reviews,
-          })}>
+        <View style={styles.summary} accessible accessibilityLabel={reviewRatingLabel(summary)}>
           <AppText variant="title2" rounded>
             {formatRating(summary.average)}
           </AppText>

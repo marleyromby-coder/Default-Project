@@ -14,6 +14,7 @@ import { currencyOf } from '@/lib/business-text';
 import { openReviewLink } from '@/lib/contact';
 import { formatPriceRange, formatRating } from '@/lib/format';
 import { MIN_PAID_PRICES } from '@/lib/prices';
+import { reviewRatingLabel } from '@/lib/review-label';
 import { reviewSiteName } from '@/lib/review-links';
 import type { Business, JobType } from '@/lib/types';
 import { t } from '@/i18n';
@@ -77,13 +78,7 @@ export function CustomerCard({ business }: { business: Business }) {
     <Card>
       <CardTitle title={t('Kundernes erfaringer')} />
       {summary ? (
-        <View
-          style={styles.summary}
-          accessible
-          accessibilityLabel={t('{rating} af 5 stjerner fra {count} brugere via FixMatch', {
-            rating: formatRating(summary.average),
-            count: summary.reviews,
-          })}>
+        <View style={styles.summary} accessible accessibilityLabel={reviewRatingLabel(summary)}>
           <AppText variant="title2" rounded>
             {formatRating(summary.average)}
           </AppText>

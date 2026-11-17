@@ -244,7 +244,11 @@ function Dashboard({ managed, business }: { managed: ManagedBusiness; business: 
               <Stat
                 value={reviews ? formatRating(reviews.average) : '–'}
                 label={
-                  reviews ? t('stjerner fra {count} kunder', { count: reviews.reviews }) : t('ingen anmeldelser endnu')
+                  !reviews
+                    ? t('ingen anmeldelser endnu')
+                    : reviews.reviews === 1
+                      ? t('stjerner fra 1 bruger')
+                      : t('stjerner fra {count} brugere', { count: reviews.reviews })
                 }
               />
               <Stat
