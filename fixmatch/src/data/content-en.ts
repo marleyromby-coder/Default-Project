@@ -19,14 +19,14 @@ export function infoPagesEn(): Record<
     rangering: {
       title: 'How we rank',
       intro:
-        'The order is set by the FixMatch score, which you can adjust yourself. No business can pay for a better position.',
+        'We rank by price, distance and reviews from FixMatch users – you choose what matters most. The order cannot be bought.',
       sections: [
         {
           heading: 'The three factors',
           bullets: [
             'Price: the business’s hourly rate compared with the other businesses in the same trade and the same country. The cheapest gets the full score, the most expensive none. Prices are never compared across countries or currencies.',
             `Distance: the straight-line distance from your location. The score falls steadily with distance – at ${DISTANCE_SCALE_KM} km it is about a third of the score at 0 km.`,
-            `Reviews: the average stars from users who contacted the business through FixMatch. We add ${REVIEW_PRIOR_COUNT} neutral reviews of ${n(REVIEW_PRIOR_MEAN)}, so a handful of reviews cannot give an unfairly high or low score. A business without reviews counts as ${n(REVIEW_PRIOR_MEAN)} – neither better nor worse.`,
+            `Reviews: the average stars from users who contacted the business through FixMatch. We add ${REVIEW_PRIOR_COUNT} neutral reviews of ${n(REVIEW_PRIOR_MEAN)}, so a handful of reviews cannot give an unfairly high or low score. A business without reviews therefore counts as ${REVIEW_PRIOR_COUNT} neutral reviews of ${n(REVIEW_PRIOR_MEAN)} – neither better nor worse.`,
           ],
         },
         {
@@ -66,13 +66,13 @@ export function infoPagesEn(): Record<
         {
           heading: 'Who can write a review?',
           paragraphs: [
-            'Only users who called or wrote to the business through FixMatch. Each user can review a business once and can change the review later. Others only see your initial, never your name.',
+            'Only users who contacted the business through FixMatch. Each user can review a business once and can change the review later. Others only see your initial, never your name.',
           ],
         },
         {
           heading: 'Does FixMatch check the reviews?',
           paragraphs: [
-            'Yes, in part. We check that you contacted the business through FixMatch before you can review it. We cannot see whether the job was done or what you agreed. We show all reviews, the bad ones too, newest first, and we never change the text.',
+            'Yes, in part. Before you can review, we check that you tapped Call or sent the business a message in FixMatch. We cannot see whether the call was answered or whether the job was done. We show all reviews, the bad ones too, newest first, and we never change the text.',
             'This is the information section 6 b of the Danish Marketing Practices Act asks us for.',
           ],
         },
@@ -90,7 +90,7 @@ export function infoPagesEn(): Record<
         {
           heading: 'Do reviews affect the order?',
           paragraphs: [
-            `Yes. The average stars count in the FixMatch score with the weight you choose. A few reviews weigh less than many, and a business without reviews counts as ${n(REVIEW_PRIOR_MEAN)} (see "How we rank").`,
+            `Yes. The average stars count in the FixMatch score with the weight you choose. A few reviews weigh less than many, and a business without reviews counts as ${REVIEW_PRIOR_COUNT} neutral reviews of ${n(REVIEW_PRIOR_MEAN)} (see "How we rank").`,
           ],
         },
         {
@@ -104,7 +104,7 @@ export function infoPagesEn(): Record<
     priser: {
       title: 'About prices',
       intro:
-        'Hourly rates and example prices come from the businesses themselves. "What customers paid" comes from customers. All prices include VAT and are a guide – you agree the final price with the business.',
+        'Hourly rates and example prices come from the businesses themselves. "What customers paid" shows prices that users shared themselves. All prices include VAT and are a guide – you agree the final price with the business.',
       sections: [
         {
           heading: 'Hourly rate and examples',
@@ -234,7 +234,7 @@ export function infoPagesEn(): Record<
     },
     privatliv: {
       title: 'Privacy policy',
-      intro: `In short: FixMatch has no ads and no tracking. If you create an account, we store your name, phone number and e-mail in the EU, so the businesses you call know who they are talking to. Everything else stays on your phone. Controller: ${APP_INFO.company}, ${APP_INFO.email}.`,
+      intro: `In short: FixMatch uses no ad networks and no tracking. Paid ads are always labelled "Ad" and never change the order. If you create an account, we store your name, phone number and e-mail in the EU, so the businesses you call know who they are talking to. Everything else stays on your phone. Controller: ${APP_INFO.company}, ${APP_INFO.email}.`,
       sections: [
         {
           heading: 'Your location',
@@ -307,7 +307,7 @@ export function infoPagesEn(): Record<
           bullets: [
             'The app is free. You can browse and compare without an account. To call or message a business, you sign in with Apple and give your name and phone number, which the business sees.',
             'Prices, opening hours and other details come from the businesses. We work to keep them correct but cannot guarantee it.',
-            'Reviews only come from users who contacted the business through FixMatch.',
+            'Reviews only come from users who contacted the business through FixMatch. We check that you tapped Call or sent the business a message in FixMatch. We cannot see whether the call was answered or whether the job was done.',
             'Reviews, groups and photos must not be offensive, threatening or obscene. We have zero tolerance: the content is hidden, and the user may be deleted.',
             'Tap "Report" on a review or group, or "Report an error or unlawful content" at the bottom of the business page. We look at it within 24 hours on weekdays.',
             'Danish law applies, without limiting the consumer rights you have where you live.',

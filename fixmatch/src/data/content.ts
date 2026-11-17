@@ -39,14 +39,14 @@ export function infoPagesDa() {
     rangering: {
       title: 'Sådan rangerer vi',
       intro:
-        'Rækkefølgen bestemmes af FixMatch-scoren, som du selv kan påvirke. Ingen virksomhed kan betale sig til en bedre placering.',
+        'Vi rangerer efter pris, afstand og anmeldelser fra brugere via FixMatch – du vælger selv, hvad der vejer mest. Rækkefølgen kan ikke købes.',
       sections: [
         {
           heading: 'De tre parametre',
           bullets: [
             'Pris: virksomhedens timepris sammenlignet med de andre virksomheder i samme fag og samme land. Den billigste får fuld score, den dyreste ingen. Priser sammenlignes aldrig på tværs af lande og valutaer.',
             `Afstand: afstanden i luftlinje fra din placering. Scoren falder jævnt med afstanden – ved ${DISTANCE_SCALE_KM} km er den ca. en tredjedel af scoren ved 0 km.`,
-            `Anmeldelser: gennemsnittet af stjernerne fra brugere, der har kontaktet virksomheden gennem FixMatch. Vi lægger ${REVIEW_PRIOR_COUNT} neutrale anmeldelser på ${n(REVIEW_PRIOR_MEAN)} til, så få anmeldelser ikke giver en urimelig høj eller lav score. En virksomhed uden anmeldelser regnes som ${n(REVIEW_PRIOR_MEAN)} – hverken bedre eller dårligere.`,
+            `Anmeldelser: gennemsnittet af stjernerne fra brugere, der har kontaktet virksomheden gennem FixMatch. Vi lægger ${REVIEW_PRIOR_COUNT} neutrale anmeldelser på ${n(REVIEW_PRIOR_MEAN)} til, så få anmeldelser ikke giver en urimelig høj eller lav score. En virksomhed uden anmeldelser regnes altså som ${REVIEW_PRIOR_COUNT} neutrale anmeldelser på ${n(REVIEW_PRIOR_MEAN)} – hverken bedre eller dårligere.`,
           ],
         },
         {
@@ -86,13 +86,13 @@ export function infoPagesDa() {
         {
           heading: 'Hvem kan anmelde?',
           paragraphs: [
-            'Kun brugere, der har ringet eller skrevet til virksomheden gennem FixMatch. Hver bruger kan anmelde en virksomhed én gang og kan rette sin anmeldelse senere. Andre ser kun dit forbogstav, aldrig dit navn.',
+            'Kun brugere, der har kontaktet virksomheden gennem FixMatch. Hver bruger kan anmelde en virksomhed én gang og kan rette sin anmeldelse senere. Andre ser kun dit forbogstav, aldrig dit navn.',
           ],
         },
         {
           heading: 'Kontrollerer FixMatch anmeldelserne?',
           paragraphs: [
-            'Ja, delvist. Vi tjekker, at du har kontaktet virksomheden gennem FixMatch, før du kan anmelde den. Vi kan ikke se, om opgaven blev udført, eller hvad I aftalte. Vi viser alle anmeldelser, også de dårlige, med de nyeste først, og vi ændrer aldrig i teksten.',
+            'Ja, delvist. Før du kan anmelde, tjekker vi, at du har trykket Ring eller skrevet til virksomheden i FixMatch. Vi kan ikke se, om opkaldet blev besvaret, eller om opgaven blev udført. Vi viser alle anmeldelser, også de dårlige, med de nyeste først, og vi ændrer aldrig i teksten.',
             'Det er de oplysninger, markedsføringslovens § 6 b kræver af os.',
           ],
         },
@@ -110,7 +110,7 @@ export function infoPagesDa() {
         {
           heading: 'Påvirker anmeldelserne rækkefølgen?',
           paragraphs: [
-            `Ja. Gennemsnittet af stjernerne indgår i FixMatch-scoren med den vægt, du selv vælger. Få anmeldelser vejer mindre end mange, og en virksomhed uden anmeldelser regnes som ${n(REVIEW_PRIOR_MEAN)} (se "Sådan rangerer vi").`,
+            `Ja. Gennemsnittet af stjernerne indgår i FixMatch-scoren med den vægt, du selv vælger. Få anmeldelser vejer mindre end mange, og en virksomhed uden anmeldelser regnes som ${REVIEW_PRIOR_COUNT} neutrale anmeldelser på ${n(REVIEW_PRIOR_MEAN)} (se "Sådan rangerer vi").`,
           ],
         },
         {
@@ -124,7 +124,7 @@ export function infoPagesDa() {
     priser: {
       title: 'Om priserne',
       intro:
-        'Timepriser og eksempelpriser er oplyst af virksomhederne selv. "Det har kunder betalt" kommer fra kunder. Alle priser er inklusive moms og vejledende – den endelige pris aftaler du med virksomheden.',
+        'Timepriser og eksempelpriser er oplyst af virksomhederne selv. "Det har kunder betalt" er priser, som brugere selv har delt. Alle priser er inklusive moms og vejledende – den endelige pris aftaler du med virksomheden.',
       sections: [
         {
           heading: 'Timepris og eksempler',
@@ -257,7 +257,7 @@ export function infoPagesDa() {
     },
     privatliv: {
       title: 'Privatlivspolitik',
-      intro: `Kort fortalt: FixMatch har ingen reklamer og ingen sporing. Opretter du en bruger, gemmer vi dit navn, dit telefonnummer og din e-mail i EU, så de virksomheder, du ringer til, ved, hvem de taler med. Alt andet bliver på din telefon. Dataansvarlig: ${APP_INFO.company}, ${APP_INFO.email}.`,
+      intro: `Kort fortalt: FixMatch bruger ingen reklamenetværk og ingen sporing. Betalte annoncer er altid markeret "Annonce" og ændrer ikke rækkefølgen. Opretter du en bruger, gemmer vi dit navn, dit telefonnummer og din e-mail i EU, så de virksomheder, du ringer til, ved, hvem de taler med. Alt andet bliver på din telefon. Dataansvarlig: ${APP_INFO.company}, ${APP_INFO.email}.`,
       sections: [
         {
           heading: 'Din placering',
@@ -330,7 +330,7 @@ export function infoPagesDa() {
           bullets: [
             'Appen er gratis. Du kan se og sammenligne uden en bruger. For at ringe eller skrive til en virksomhed logger du ind med Apple og giver dit navn og telefonnummer, som virksomheden ser.',
             'Priser, åbningstider og andre oplysninger er oplyst af virksomhederne. Vi gør os umage for, at de er korrekte, men kan ikke garantere det.',
-            'Anmeldelser kommer kun fra brugere, der har kontaktet virksomheden gennem FixMatch.',
+            'Anmeldelser kommer kun fra brugere, der har kontaktet virksomheden gennem FixMatch. Vi tjekker, at du har trykket Ring eller skrevet til virksomheden i FixMatch. Vi kan ikke se, om opkaldet blev besvaret, eller om opgaven blev udført.',
             'Anmeldelser, grupper og billeder må ikke være krænkende, truende eller uanstændige. Vi har nultolerance: indholdet skjules, og brugeren kan blive slettet.',
             'Tryk "Rapportér" ved en anmeldelse eller gruppe, eller "Rapportér fejl eller ulovligt indhold" nederst på virksomhedens side. Vi ser på det inden for 24 timer på hverdage.',
             'Dansk ret gælder.',

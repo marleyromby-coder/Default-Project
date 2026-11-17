@@ -26,9 +26,10 @@ import { MAX_REVIEW_LENGTH, type Review, submitReview, useCanReview, useMyReview
 const STAR_MEANING = [msg('Meget dårligt'), msg('Dårligt'), msg('Okay'), msg('Godt'), msg('Rigtig godt')] as const;
 
 /**
- * A review from a real call: only users who contacted the business through FixMatch can write
- * one, once per business (they can change it later). The contact is the proof that they were
- * a customer, so no fake reviews (markedsføringslovens § 6 b).
+ * A review of a business: only users who contacted the business through FixMatch (tapped Ring
+ * or sent a message) can write one, once per business (they can change it later). That is the
+ * check we describe under "Om anmeldelser" (markedsføringslovens § 6 b); it does not prove that
+ * the call was answered or the job done.
  */
 export default function ReviewScreen() {
   const colors = useTheme();

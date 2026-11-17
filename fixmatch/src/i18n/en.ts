@@ -392,7 +392,8 @@ const en: Record<string, string> = {
   'Trin {step} af {STEPS}': 'Step {step} of {STEPS}',
   'Kun fra brugere, der har kontaktet virksomheden gennem FixMatch.':
     'Only from users who contacted the business through FixMatch.',
-  'Stjerner fra brugere, der har ringet via FixMatch': 'Stars from users who called through FixMatch',
+  'Stjerner fra brugere, der har kontaktet virksomheden gennem FixMatch':
+    'Stars from users who contacted the business through FixMatch',
   'Tryk på hjertet ved en virksomhed, så finder du den hurtigt her næste gang.':
     "Tap the heart on a business and you'll find it here quickly next time.",
   'Tryk på “Sammenlign” ved op til tre virksomheder i et fag, så vises de her side om side.':
@@ -795,7 +796,7 @@ const en: Record<string, string> = {
   'Priser vises først, når mindst 3 har delt for samme opgave. Du kan rette din pris ved at dele igen.':
     'Prices are shown once at least 3 people have shared for the same job. You can correct your price by sharing again.',
   'Del prisen': 'Share the price',
-  'Bygger på {count} priser, som kunder har betalt.': 'Based on {count} prices customers have paid.',
+  'Bygger på {count} priser, som brugere selv har delt.': 'Based on {count} prices that users shared themselves.',
   'Kundernes erfaringer': "Customers' experiences",
   '{rating} af 5 stjerner fra {count} brugere via FixMatch': '{rating} out of 5 stars from {count} users via FixMatch',
   '{rating} af 5 stjerner fra 1 bruger via FixMatch': '{rating} out of 5 stars from 1 user via FixMatch',
@@ -805,11 +806,11 @@ const en: Record<string, string> = {
     'No reviews yet. Only users who contacted the business through FixMatch can review it.',
   'Din anmeldelse': 'Your review',
   'Det har kunder betalt': 'What customers paid',
-  'Fra fakturaer, kunder har delt. Vises fra {min} priser pr. opgave.':
-    'From invoices customers have shared. Shown from {min} prices per job.',
+  'Priser, som brugere selv har delt. Vises fra {min} priser pr. opgave.':
+    'Prices that users shared themselves. Shown from {min} prices per job.',
   'Skriv en anmeldelse': 'Write a review',
-  'Når du har ringet til dem gennem FixMatch, kan du anmelde dem og dele, hvad du betalte.':
-    'Once you have called them through FixMatch, you can review them and share what you paid.',
+  'Når du har kontaktet dem gennem FixMatch, kan du anmelde dem og dele, hvad du betalte.':
+    'Once you have contacted them through FixMatch, you can review them and share what you paid.',
   'Rapportér anmeldelse af {name}': 'Report review of {name}',
   'Anmeldelse {id} hos {name} bryder reglerne, fordi:': 'Review {id} of {name} breaks the rules because:',
   'Rapportér anmeldelsen': 'Report the review',

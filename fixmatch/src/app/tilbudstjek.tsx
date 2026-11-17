@@ -133,7 +133,7 @@ export default function QuoteCheckScreen() {
   const sourceText = !result
     ? ''
     : result.source === 'paid'
-      ? t('Bygger på {count} priser, som kunder har betalt.', { count: result.count })
+      ? t('Bygger på {count} priser, som brugere selv har delt.', { count: result.count })
       : result.count === 0
         ? t('Ingen virksomheder har oplyst en pris for opgaven endnu, så det er FixMatch’ eget skøn.')
         : result.scope === 'nearby'

@@ -164,7 +164,7 @@ export function CustomerCard({ business }: { business: Business }) {
             </View>
           ))}
           <AppText variant="caption" tone="textSecondary">
-            {t('Fra fakturaer, kunder har delt. Vises fra {min} priser pr. opgave.', { min: MIN_PAID_PRICES })}
+            {t('Priser, som brugere selv har delt. Vises fra {min} priser pr. opgave.', { min: MIN_PAID_PRICES })}
           </AppText>
         </View>
       ) : null}
@@ -189,7 +189,7 @@ export function CustomerCard({ business }: { business: Business }) {
           </>
         ) : (
           <AppText variant="caption" tone="textSecondary">
-            {t('Når du har ringet til dem gennem FixMatch, kan du anmelde dem og dele, hvad du betalte.')}
+            {t('Når du har kontaktet dem gennem FixMatch, kan du anmelde dem og dele, hvad du betalte.')}
           </AppText>
         )}
       </View>

@@ -7,9 +7,10 @@ import type { Business, CategoryId, CountryCode, ReviewSummary } from '@/lib/typ
 import { useContacts } from './account';
 
 /**
- * What users share with each other: what they paid ("Del, hvad du betalte") and reviews
- * from real calls. Both come from users who contacted the business through FixMatch, which
- * the server checks against the contacts table (supabase/migrations). Without a server the
+ * What users share with each other: what they paid ("Del, hvad du betalte") and reviews.
+ * Both come from users who contacted the business through FixMatch: the server checks for a
+ * row in the contacts table (supabase/migrations), which the app writes when the user taps
+ * Ring or sends a message. It cannot tell whether the call was answered or the job done. Without a server the
  * user's own entries are kept on the phone, so the screens work in the demo too.
  */
 

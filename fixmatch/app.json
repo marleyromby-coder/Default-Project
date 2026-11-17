@@ -3,7 +3,7 @@
     "name": "FixMatch",
     "slug": "fixmatch",
     "version": "1.0.0",
-    "description": "Find and compare tradespeople and mechanics on price, distance and reviews from real calls – and call them directly. Danish and English.",
+    "description": "Find and compare tradespeople and mechanics on price, distance and reviews from FixMatch users – and call them directly. Danish and English.",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "fixmatch",

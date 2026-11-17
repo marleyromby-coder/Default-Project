@@ -23,7 +23,7 @@ const FACTORS: { key: keyof Priorities; label: string; hint: string; icon: IconN
   {
     key: 'reviews',
     label: t('Gode anmeldelser'),
-    hint: t('Stjerner fra brugere, der har ringet via FixMatch'),
+    hint: t('Stjerner fra brugere, der har kontaktet virksomheden gennem FixMatch'),
     icon: 'star',
   },
 ];
