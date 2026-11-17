@@ -48,7 +48,7 @@ export function GroupCard({ group }: { group: GroupJob }) {
           />
           {group.mine === 'created' ? <Badge label={t('Din gruppe')} tone="brand" /> : null}
           {group.mine === 'joined' ? <Badge label={t('Du er med')} tone="brand" /> : null}
-          {group.status === 'sent' ? <Badge label={t('Sendt til virksomhed')} tone="info" /> : null}
+          {group.status === 'sent' ? <Badge label={t('Sendt til virksomhed')} tone="neutral" /> : null}
         </View>
       </View>
       <Icon name="chevronRight" size={13} color={colors.textTertiary} weight="semibold" />

@@ -13,6 +13,7 @@ import { Logo } from '@/components/logo';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Icon, type IconName } from '@/components/ui/icon';
+import { Notice } from '@/components/ui/notice';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
@@ -219,83 +220,60 @@ export default function HomeScreen() {
       {state.location.abroad ? (
         // The GPS put the user outside FixMatch's countries (e.g. an App Store reviewer in the
         // US): the app shows the default city instead of an empty list, and says so.
-        <View style={[styles.notice, { backgroundColor: colors.infoSoft }]}>
-          <Icon name="globe" size={16} color={colors.info} weight="semibold" />
-          <AppText variant="footnote" style={[styles.flex, { color: colors.text }]}>
-            {t('Du er i {country}. FixMatch er kun i {countries} endnu, så vi viser virksomheder i {label}.', {
-              country: countryName(state.location.abroad),
-              countries: open.map(countryName).join(', ') || countryName(state.location.country ?? 'DK'),
-              label: state.location.label,
-            })}
-          </AppText>
-          <Tappable
-            onPress={() => router.push('/placering')}
-            accessibilityLabel={t('Vælg en by')}
-            style={styles.noticeAction}>
-            <AppText variant="footnote" weight="700" style={{ color: colors.info }}>
-              {t('Vælg by')}
-            </AppText>
-          </Tappable>
-        </View>
+        <Notice
+          icon="world"
+          text={t('Du er i {country}. FixMatch er kun i {countries} endnu, så vi viser virksomheder i {label}.', {
+            country: countryName(state.location.abroad),
+            countries: open.map(countryName).join(', ') || countryName(state.location.country ?? 'DK'),
+            label: state.location.label,
+          })}
+          action={{
+            label: t('Vælg by'),
+            accessibilityLabel: t('Vælg en by'),
+            onPress: () => router.push('/placering'),
+          }}
+          style={styles.notice}
+        />
       ) : state.location.source === 'default' ? (
-        <View style={[styles.notice, { backgroundColor: colors.infoSoft }]}>
-          <Icon name="info" size={16} color={colors.info} weight="semibold" />
-          <AppText variant="footnote" style={[styles.flex, { color: colors.text }]}>
-            {t('Afstande regnes fra {label}. Brug din placering for at se de nærmeste.', {
-              label: state.location.label,
-            })}
-          </AppText>
-          <Tappable
-            onPress={useMyLocation}
-            disabled={busy}
-            accessibilityLabel={t('Brug min placering')}
-            style={styles.noticeAction}>
-            <AppText variant="footnote" weight="700" style={{ color: colors.info }}>
-              {busy ? t('Finder…') : t('Brug placering')}
-            </AppText>
-          </Tappable>
-        </View>
+        <Notice
+          text={t('Afstande regnes fra {label}. Brug din placering for at se de nærmeste.', {
+            label: state.location.label,
+          })}
+          action={{
+            label: busy ? t('Finder…') : t('Brug placering'),
+            accessibilityLabel: t('Brug min placering'),
+            onPress: useMyLocation,
+            disabled: busy,
+          }}
+          style={styles.notice}
+        />
       ) : null}
 
       {!supported ? (
-        <View style={[styles.notice, { backgroundColor: colors.brandSoft }]}>
-          <Icon name="globe" size={16} color={colors.brandText} weight="semibold" />
-          <AppText variant="footnote" style={[styles.flex, { color: colors.text }]}>
-            {t('FixMatch er endnu ikke i {country}. Vi er i {countries}.', {
-              country: countryName(state.location.country ?? ''),
-              countries: open.map(countryName).join(', '),
-            })}
-          </AppText>
-          {/* One tap back to København, unless that is where the app already is. */}
-          {state.location.label !== DEFAULT_LOCATION.label ? (
-            <Tappable
-              onPress={() => setLocation(DEFAULT_LOCATION)}
-              accessibilityLabel={t('Vis {label}', { label: DEFAULT_LOCATION.label })}
-              style={styles.noticeAction}>
-              <AppText variant="footnote" weight="700" tone="brandText">
-                {t('Vis {label}', { label: DEFAULT_LOCATION.label })}
-              </AppText>
-            </Tappable>
-          ) : (
-            <Tappable
-              onPress={() => router.push('/placering')}
-              accessibilityLabel={t('Vælg en by')}
-              style={styles.noticeAction}>
-              <AppText variant="footnote" weight="700" tone="brandText">
-                {t('Vælg by')}
-              </AppText>
-            </Tappable>
-          )}
-        </View>
+        <Notice
+          icon="world"
+          text={t('FixMatch er endnu ikke i {country}. Vi er i {countries}.', {
+            country: countryName(state.location.country ?? ''),
+            countries: open.map(countryName).join(', '),
+          })}
+          // One tap back to København, unless that is where the app already is.
+          action={
+            state.location.label !== DEFAULT_LOCATION.label
+              ? {
+                  label: t('Vis {label}', { label: DEFAULT_LOCATION.label }),
+                  onPress: () => setLocation(DEFAULT_LOCATION),
+                }
+              : { label: t('Vælg by'), accessibilityLabel: t('Vælg en by'), onPress: () => router.push('/placering') }
+          }
+          style={styles.notice}
+        />
       ) : null}
 
       {DATA_MODE === 'demo' ? (
-        <View style={[styles.notice, { backgroundColor: colors.warningSoft }]}>
-          <Icon name="info" size={16} color={colors.warning} weight="semibold" />
-          <AppText variant="footnote" style={[styles.flex, { color: colors.text }]}>
-            {t('Demoversion: virksomhederne er fiktive eksempler, indtil de rigtige har givet samtykke.')}
-          </AppText>
-        </View>
+        <Notice
+          text={t('Demoversion: virksomhederne er fiktive eksempler, indtil de rigtige har givet samtykke.')}
+          style={styles.notice}
+        />
       ) : null}
 
       <Section title={t('Vælg fag')}>
@@ -637,16 +615,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  notice: {
-    marginHorizontal: ScreenPadding,
-    marginTop: -Spacing.sm,
-    borderRadius: Radius.md,
-    padding: Spacing.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.sm,
-  },
-  noticeAction: { minHeight: 36, justifyContent: 'center', paddingHorizontal: Spacing.xs },
+  notice: { marginHorizontal: ScreenPadding, marginTop: -Spacing.sm },
   flex: { flex: 1 },
   section: { gap: Spacing.md },
   sectionHeader: { paddingHorizontal: ScreenPadding, gap: 2 },

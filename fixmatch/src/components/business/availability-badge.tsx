@@ -17,7 +17,7 @@ export function AvailabilityBadge({ business, now }: { business: Business; now?:
   ) : (
     <Badge
       label={t('Ledig i morgen')}
-      tone="info"
+      tone="neutral"
       icon="calendar"
       accessibilityLabel={t('Har selv meldt ledig tid i morgen')}
     />

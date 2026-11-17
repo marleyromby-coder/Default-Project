@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Icon } from '@/components/ui/icon';
+import { Notice } from '@/components/ui/notice';
 import { Segmented } from '@/components/ui/segmented';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
@@ -89,7 +90,7 @@ export default function GreenGuideScreen() {
                       tone="brand"
                     />
                   ) : null}
-                  {measure.subsidy ? <Badge label={t('Tilskud')} tone="info" /> : null}
+                  {measure.subsidy ? <Badge label={t('Tilskud')} tone="neutral" /> : null}
                 </View>
               </View>
               <Icon
@@ -116,14 +117,7 @@ export default function GreenGuideScreen() {
                     value={t('ca. {years} år', { years: String(benefit.paybackYears).replace('.', ',') })}
                   />
                 ) : null}
-                {measure.subsidy ? (
-                  <View style={[styles.subsidy, { backgroundColor: colors.infoSoft }]}>
-                    <Icon name="info" size={14} color={colors.info} weight="semibold" />
-                    <AppText variant="footnote" style={styles.flex}>
-                      {t(measure.subsidy)}
-                    </AppText>
-                  </View>
-                ) : null}
+                {measure.subsidy ? <Notice text={t(measure.subsidy)} /> : null}
                 <View style={styles.actions}>
                   {category ? (
                     <Button
@@ -203,7 +197,6 @@ const styles = StyleSheet.create({
   badges: { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 4 },
   body: { gap: Spacing.sm, marginTop: Spacing.md },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  subsidy: { flexDirection: 'row', gap: Spacing.sm, padding: Spacing.sm, borderRadius: Radius.md },
   actions: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginTop: Spacing.xs },
   note: { borderRadius: Radius.lg, borderCurve: 'continuous', padding: Spacing.md, gap: Spacing.sm },
 });

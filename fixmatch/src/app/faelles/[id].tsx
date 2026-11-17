@@ -236,7 +236,7 @@ export default function GroupScreen() {
           icon="people"
         />
         <Badge label={`${formatDate(group.wantedFrom)}–${formatDate(group.wantedTo)}`} tone="neutral" icon="calendar" />
-        {group.status === 'sent' ? <Badge label={t('Sendt til virksomhed')} tone="info" /> : null}
+        {group.status === 'sent' ? <Badge label={t('Sendt til virksomhed')} tone="neutral" /> : null}
       </View>
       {group.note ? <AppText variant="body">{group.note}</AppText> : null}
 

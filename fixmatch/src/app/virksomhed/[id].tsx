@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardTitle, Divider } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Icon, type IconName } from '@/components/ui/icon';
+import { Notice } from '@/components/ui/notice';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { MinTouchSize, Radius, ScreenPadding, Spacing } from '@/constants/theme';
@@ -176,14 +177,11 @@ export default function BusinessScreen() {
 
         <View style={styles.body}>
           {business.demo ? (
-            <View style={[styles.notice, { backgroundColor: colors.warningSoft }]}>
-              <Icon name="info" size={16} color={colors.warning} weight="semibold" />
-              <AppText variant="footnote" style={styles.flex}>
-                {t(
-                  'Fiktiv eksempelvirksomhed. Navn, telefonnummer, CVR og anmeldelser er opdigtede, og opkald er slået fra.',
-                )}
-              </AppText>
-            </View>
+            <Notice
+              text={t(
+                'Fiktiv eksempelvirksomhed. Navn, telefonnummer, CVR og anmeldelser er opdigtede, og opkald er slået fra.',
+              )}
+            />
           ) : null}
 
           <View style={styles.quickActions}>
@@ -409,24 +407,24 @@ export default function BusinessScreen() {
               </View>
             ))}
             {free ? (
-              <View style={[styles.notice, styles.spaced, { backgroundColor: colors.successSoft }]}>
-                <Icon name="calendar" size={15} color={colors.success} weight="semibold" />
-                <AppText variant="footnote" style={styles.flex}>
-                  {free === 'today'
+              <Notice
+                icon="calendar"
+                text={
+                  free === 'today'
                     ? t('Ledig i dag: virksomheden har selv meldt, at den har tid i dag. Ring og aftal et tidspunkt.')
                     : t(
                         'Ledig i morgen: virksomheden har selv meldt, at den har tid i morgen. Ring og aftal et tidspunkt.',
-                      )}
-                </AppText>
-              </View>
+                      )
+                }
+                style={styles.spaced}
+              />
             ) : null}
             {business.emergency ? (
-              <View style={[styles.notice, styles.spaced, { backgroundColor: colors.warningSoft }]}>
-                <Icon name="bolt" size={15} color={colors.warning} weight="semibold" />
-                <AppText variant="footnote" style={styles.flex}>
-                  {t('Døgnvagt: kan ringes op uden for åbningstid. Der kan være tillæg for akut udkald.')}
-                </AppText>
-              </View>
+              <Notice
+                icon="bolt"
+                text={t('Døgnvagt: kan ringes op uden for åbningstid. Der kan være tillæg for akut udkald.')}
+                style={styles.spaced}
+              />
             ) : null}
           </Card>
 
@@ -756,7 +754,6 @@ const styles = StyleSheet.create({
   stats: { flexDirection: 'row', borderTopWidth: StyleSheet.hairlineWidth, paddingTop: Spacing.md },
   stat: { flex: 1, alignItems: 'center', gap: 1, paddingHorizontal: 2 },
   body: { padding: ScreenPadding, gap: Spacing.lg },
-  notice: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md },
   quickActions: { flexDirection: 'row', gap: Spacing.sm },
   quickAction: {
     flex: 1,

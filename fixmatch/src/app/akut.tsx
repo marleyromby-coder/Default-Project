@@ -8,6 +8,7 @@ import { ProblemPhotos } from '@/components/problem-photos';
 import { Button } from '@/components/ui/button';
 import { Card, CardTitle } from '@/components/ui/card';
 import { Icon } from '@/components/ui/icon';
+import { Notice } from '@/components/ui/notice';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
@@ -176,14 +177,11 @@ export default function EmergencyScreen() {
           {emergency.insurance ? (
             <>
               <ProblemPhotos />
-              <View style={[styles.insurance, { backgroundColor: colors.infoSoft }]}>
-                <Icon name="info" size={15} color={colors.info} weight="semibold" />
-                <AppText variant="footnote" style={styles.flex}>
-                  {t(
-                    'Ring til dit forsikringsselskab inden for 24 timer, og send dem billederne. Billederne bliver på din telefon, og du kan sende dem til håndværkeren fra virksomhedens side.',
-                  )}
-                </AppText>
-              </View>
+              <Notice
+                text={t(
+                  'Ring til dit forsikringsselskab inden for 24 timer, og send dem billederne. Billederne bliver på din telefon, og du kan sende dem til håndværkeren fra virksomhedens side.',
+                )}
+              />
             </>
           ) : null}
         </>
@@ -214,5 +212,4 @@ const styles = StyleSheet.create({
   spaced: { marginTop: Spacing.sm },
   helper: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingVertical: Spacing.sm, minHeight: 56 },
   callButton: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
-  insurance: { flexDirection: 'row', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md },
 });

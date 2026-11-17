@@ -196,7 +196,7 @@ export default function MyHomeScreen() {
                 />
               ) : null}
               {job.guaranteeYears ? (
-                <Badge label={t('{years} års garanti', { years: job.guaranteeYears })} tone="info" />
+                <Badge label={t('{years} års garanti', { years: job.guaranteeYears })} tone="neutral" />
               ) : null}
               {job.photos.length > 0 ? (
                 <Badge label={t('{count} billeder', { count: job.photos.length })} tone="neutral" icon="photo" />
