@@ -196,7 +196,7 @@ export default function ProfileScreen() {
                 </AppText>
                 <Button
                   title={t('Find en håndværker')}
-                  variant="plain"
+                  variant="tinted"
                   size="small"
                   onPress={() => router.navigate('/')}
                 />

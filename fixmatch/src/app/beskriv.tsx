@@ -248,7 +248,7 @@ export default function DescribeProblemScreen() {
 
             <View style={styles.block}>
               <AppText variant="caption" tone="textSecondary" weight="600">
-                {category ? t('ANDET FAG?') : t('HVILKET FAG?')}
+                {category ? t('Andet fag?') : t('Hvilket fag?')}
               </AppText>
               <ScrollView
                 horizontal

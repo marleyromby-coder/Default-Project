@@ -54,7 +54,7 @@ export default function SavedScreen() {
             icon="heart"
             title={t('Ingen gemte endnu')}
             message={t('Tryk på hjertet ved en virksomhed, så finder du den hurtigt her næste gang.')}
-            action={<Button title={t('Find håndværkere')} variant="tinted" onPress={() => router.navigate('/')} />}
+            action={<Button title={t('Find en håndværker')} variant="tinted" onPress={() => router.navigate('/')} />}
           />
         }
         ItemSeparatorComponent={() => <View style={{ height: Spacing.md }} />}

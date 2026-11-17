@@ -57,7 +57,7 @@ export default function MyHomeScreen() {
           message={t(
             'Gem faktura og billeder, hver gang du får lavet noget. Så ved du, hvem der lavede hvad, hvornår garantien udløber, og hvad fradraget giver i år. Det bliver på din telefon.',
           )}
-          action={<Button title={t('Tilføj en opgave')} icon="plus" onPress={() => router.push('/min-bolig/ny')} />}
+          action={<Button title={t('Tilføj en opgave')} onPress={() => router.push('/min-bolig/ny')} />}
         />
       </>
     );

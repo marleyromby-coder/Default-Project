@@ -52,7 +52,7 @@ export default function CompareScreen() {
           icon="compare"
           title={t('Intet at sammenligne endnu')}
           message={t('Tryk på “Sammenlign” ved op til tre virksomheder i et fag, så vises de her side om side.')}
-          action={<Button title={t('Find virksomheder')} onPress={() => router.dismissTo('/')} />}
+          action={<Button title={t('Find en håndværker')} variant="tinted" onPress={() => router.dismissTo('/')} />}
         />
       </View>
     );
