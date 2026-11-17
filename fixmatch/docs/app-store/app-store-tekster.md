@@ -136,10 +136,10 @@ Kopiér noterne nedenfor ind i feltet **Notes**. De passer til et `production`-b
 FixMatch helps people in Denmark find and compare local tradespeople and mechanics (plumbers, electricians, carpenters, bricklayers, mechanics, painters, roofers, locksmiths) on price, distance and FixMatch's own reviews, and contact them directly. The app follows the device language (English or Danish); Danish labels are in parentheses.
 
 SIGN-IN
-- Sign in with Apple is the only way to log in. There is no password and no e-mail login.
+- Sign in with Apple is the only way for users to log in. There is no e-mail login. The User name and Password in Sign-In Information are the id and code for the business area (My business), see step 4.
 - The first screen offers Sign in with Apple. Tap "Skip" ("Spring over") to use the app without an account. If you sign in with Apple there, the next screen asks for a name and phone number; tap "Not now" ("Ikke nu") to go straight into the app.
 - Everything can be browsed without an account: listings, business pages, prices, the map, compare, Quote check, Describe your problem, Emergency help and the guides.
-- Calling, messaging or FaceTiming a business needs an account with a name and phone number. This is the core of the service: the business sees who contacted it through FixMatch, so it knows who it is talking to and can call back, and only people who really contacted a business can review it. The name and number are shown only to the business the user contacts, never to other users.
+- Calling, messaging or FaceTiming a business needs an account with a name and phone number. This is the core of the service: the business sees who contacted it through FixMatch, so it knows who it is talking to and can call back, and only users who contacted a business through FixMatch can review it. The name and number are shown only to the business the user contacts, never to other users.
 - Neighbour discount ("Naborabat") also needs sign-in to start or join a group, so neighbours know a group is real. Groups can be viewed without an account.
 - The account can be deleted in the app: Profile > Delete account ("Profil > Slet bruger").
 

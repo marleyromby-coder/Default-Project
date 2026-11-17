@@ -112,10 +112,10 @@ The pages are built with `npm run website:build` from `docs/jura/privacy-policy.
 
 App Review Information is the same for every language, so there is one set of notes: copy them from `app-store-tekster.md` → "Noter til Apples review-team" (they are in English). In short, they tell the reviewer:
 
-- Sign in with Apple is the only login, and the whole app can be browsed without an account ("Skip" on the first screen, "Not now" after Sign in with Apple).
+- Sign in with Apple is the only user login, and the whole app can be browsed without an account ("Skip" on the first screen, "Not now" after Sign in with Apple).
 - Calling or messaging a business needs a name and phone number, because the business sees who contacted it. That is the core of the service. Neighbour discount needs sign-in too.
 - The businesses are in Copenhagen; outside Denmark the app shows Copenhagen. Profile → Location → "København" picks it by hand.
-- How to test My business: tick **Sign-in required** and put the business id in *User name* and its code in *Password* (`[forretnings-id]` and `[kode]` in `app-store-tekster.md`). They are not stored in git.
+- How to test My business (step 4): tick **Sign-in required** and put the business id in *User name* and its code in *Password* (`[forretnings-id]` and `[kode]` in `app-store-tekster.md`). They are not stored in git.
 - How to report reviews and groups, and that FixMatch reviews reports within 24 hours on weekdays.
 
 ## Screenshots
