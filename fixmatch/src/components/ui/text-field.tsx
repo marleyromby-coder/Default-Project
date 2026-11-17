@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
     borderRadius: Radius.md,
     borderWidth: 1,
     paddingHorizontal: Spacing.md,
-    minHeight: MinTouchSize + 6,
+    // 48 pt, the height of a regular Button, so a field and a button beside it line up.
+    minHeight: MinTouchSize + 4,
     justifyContent: 'center',
   },
   // The field's border shows focus, so the browser's own ring is hidden (as in beskriv.tsx).

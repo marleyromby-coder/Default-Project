@@ -1371,7 +1371,7 @@ const en: Record<string, string> = {
     'Gutter cleaning, boiler service or a tyre change: if you are at least {min} in the same street, the tradesperson saves the driving and typically gives {min_pct}–{max_pct} % off.',
   'Har du fået en kode af en nabo?': 'Did a neighbour give you a code?',
   'Dine grupper': 'Your groups',
-  'Åbne grupper nær {postal}': 'Open groups near {postal}',
+  'Åbne grupper nær {place}': 'Open groups near {place}',
   'Ingen åbne grupper i dit område endnu. Start den første, og del koden med naboerne.':
     'No open groups in your area yet. Start the first one and share the code with the neighbours.',
   'Andre ser kun opgaven, gaden og hvor mange I er. Aldrig navne eller adresser. Prisen aftaler I selv med virksomheden.':

@@ -5,7 +5,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { GroupCard } from '@/components/group-card';
 import { Button } from '@/components/ui/button';
-import { Icon } from '@/components/ui/icon';
 import { TextField } from '@/components/ui/text-field';
 import { AppText } from '@/components/ui/text';
 import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
@@ -90,21 +89,14 @@ export default function GroupsScreen() {
       keyboardShouldPersistTaps="handled">
       <Stack.Screen options={{ title: t('Naborabat') }} />
 
-      <View style={[styles.intro, { backgroundColor: colors.ink }]}>
-        <View style={[styles.introIcon, { backgroundColor: colors.accent }]}>
-          <Icon name="people" size={20} color={colors.ink} weight="semibold" />
-        </View>
-        <View style={styles.flex}>
-          <AppText variant="headline" style={{ color: colors.onInk }}>
-            {t('Gå sammen med naboerne')}
-          </AppText>
-          <AppText variant="footnote" style={{ color: colors.onInkSoft }}>
-            {t(
-              'Rensning af tagrender, service af fyret eller hjulskift: er I mindst {min} i samme gade, sparer håndværkeren kørslen og giver typisk {min_pct}–{max_pct} % rabat.',
-              { min: MIN_GROUP, min_pct: GROUP_DISCOUNT.min, max_pct: GROUP_DISCOUNT.max },
-            )}
-          </AppText>
-        </View>
+      <View style={styles.intro}>
+        <AppText variant="title3">{t('Gå sammen med naboerne')}</AppText>
+        <AppText variant="callout" tone="textSecondary">
+          {t(
+            'Rensning af tagrender, service af fyret eller hjulskift: er I mindst {min} i samme gade, sparer håndværkeren kørslen og giver typisk {min_pct}–{max_pct} % rabat.',
+            { min: MIN_GROUP, min_pct: GROUP_DISCOUNT.min, max_pct: GROUP_DISCOUNT.max },
+          )}
+        </AppText>
       </View>
 
       <Button title={t('Start en gruppe')} icon="plus" size="large" onPress={() => router.push('/faelles/ny')} block />
@@ -120,7 +112,7 @@ export default function GroupsScreen() {
             placeholder="ABC123"
           />
         </View>
-        <Button title={t('Deltag')} size="small" disabled={code.trim().length !== 6} loading={busy} onPress={join} />
+        <Button title={t('Deltag')} disabled={code.trim().length !== 6} loading={busy} onPress={join} />
       </View>
 
       {mine.length > 0 ? (
@@ -136,7 +128,7 @@ export default function GroupsScreen() {
 
       <View style={styles.section}>
         <AppText variant="title3" accessibilityRole="header">
-          {t('Åbne grupper nær {postal}', { postal: postalCode })}
+          {t('Åbne grupper nær {place}', { place: state.location.label })}
         </AppText>
         {nearby.length === 0 ? (
           <AppText variant="footnote" tone="textSecondary">
@@ -147,7 +139,7 @@ export default function GroupsScreen() {
         )}
       </View>
 
-      <AppText variant="caption" tone="textSecondary" align="center">
+      <AppText variant="caption" tone="textSecondary">
         {t(
           'Andre ser kun opgaven, gaden og hvor mange I er. Aldrig navne eller adresser. Prisen aftaler I selv med virksomheden.',
         )}
@@ -159,8 +151,7 @@ export default function GroupsScreen() {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   content: { padding: ScreenPadding, gap: Spacing.lg },
-  intro: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, padding: Spacing.md, borderRadius: Radius.lg },
-  introIcon: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
+  intro: { gap: Spacing.xs },
   codeBox: {
     flexDirection: 'row',
     alignItems: 'flex-end',

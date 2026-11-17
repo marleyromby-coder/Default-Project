@@ -174,6 +174,23 @@ export function formatDate(iso: string): string {
   return language === 'da' ? `${day}. ${MONTHS.da[month - 1]} ${year}` : `${day} ${MONTHS.en[month - 1]} ${year}`;
 }
 
+/**
+ * A span of days: "24. nov.–8. dec." (or "24 Nov–8 Dec"), with the years only when the span
+ * is not within the current year: "24. nov. 2026–8. jan. 2027".
+ */
+export function formatDateRange(fromIso: string, toIso: string, now: Date = new Date()): string {
+  const parse = (iso: string) => iso.slice(0, 10).split('-').map(Number);
+  const [fromYear, fromMonth, fromDay] = parse(fromIso);
+  const [toYear, toMonth, toDay] = parse(toIso);
+  const valid =
+    [fromYear, fromMonth, fromDay, toYear, toMonth, toDay].every(Boolean) && fromMonth <= 12 && toMonth <= 12;
+  const thisYear = now.getFullYear();
+  if (!valid || fromYear !== thisYear || toYear !== thisYear) return `${formatDate(fromIso)}–${formatDate(toIso)}`;
+  const short = (day: number, month: number) =>
+    getLanguage() === 'da' ? `${day}. ${MONTHS.da[month - 1]}` : `${day} ${MONTHS.en[month - 1]}`;
+  return `${short(fromDay, fromMonth)}–${short(toDay, toMonth)}`;
+}
+
 const MONTH_NAMES = {
   da: [
     'januar',

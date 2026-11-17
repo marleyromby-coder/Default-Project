@@ -1,6 +1,7 @@
 import {
   displayHost,
   formatDate,
+  formatDateRange,
   formatDistance,
   formatHourly,
   formatNumber,
@@ -57,6 +58,15 @@ describe('format', () => {
     expect(pluralize(1, 'anmeldelse', 'anmeldelser')).toBe('1 anmeldelse');
     expect(pluralize(1200, 'anmeldelse', 'anmeldelser')).toBe('1.200 anmeldelser');
   });
+
+  it('formats date ranges, with years only outside the current year', () => {
+    const now = new Date(2026, 10, 17);
+    expect(formatDateRange('2026-11-24', '2026-12-08', now)).toBe('24. nov.–8. dec.');
+    expect(formatDateRange('2026-05-01', '2026-05-15', now)).toBe('1. maj–15. maj');
+    expect(formatDateRange('2026-11-24', '2027-01-08', now)).toBe('24. nov. 2026–8. jan. 2027');
+    expect(formatDateRange('2027-02-01', '2027-02-14', now)).toBe('1. feb. 2027–14. feb. 2027');
+    expect(formatDateRange('snart', '2026-12-08', now)).toBe('snart–8. dec. 2026');
+  });
 });
 
 describe('format in English and other currencies', () => {
@@ -74,6 +84,7 @@ describe('format in English and other currencies', () => {
     expect(formatPriceRange(350, 650, 'm2', 'DKK')).toBe('DKK 350–650 per m²');
     expect(formatHourly(100, 175, 'GBP')).toBe('£100–175/hr');
     expect(formatDate('2026-10-14')).toBe('14 Oct 2026');
+    expect(formatDateRange('2026-11-24', '2026-12-08', new Date(2026, 10, 17))).toBe('24 Nov–8 Dec');
   });
 
   it('shows miles in the UK', () => {

@@ -8,7 +8,7 @@ import { AppText } from '@/components/ui/text';
 import { IconWell, Radius, Spacing } from '@/constants/theme';
 import { getCategory } from '@/data/categories';
 import { useTheme } from '@/hooks/use-theme';
-import { formatDate } from '@/lib/format';
+import { formatDate, formatDateRange } from '@/lib/format';
 import { type GroupJob, MIN_GROUP } from '@/state/groups';
 import { t } from '@/i18n';
 
@@ -38,7 +38,7 @@ export function GroupCard({ group }: { group: GroupJob }) {
           {title}
         </AppText>
         <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
-          {group.area}, {group.postalCode} · {formatDate(group.wantedFrom)}–{formatDate(group.wantedTo)}
+          {group.area} · {formatDateRange(group.wantedFrom, group.wantedTo)}
         </AppText>
         <View style={styles.badges}>
           <Badge
