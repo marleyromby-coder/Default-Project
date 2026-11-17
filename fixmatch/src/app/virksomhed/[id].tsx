@@ -11,6 +11,7 @@ import { WorkPhotosCard } from '@/components/business/work-photos';
 import { PhotoStrip } from '@/components/problem-photos';
 import { OpenStatus } from '@/components/business/open-status';
 import { PriceLevel } from '@/components/business/price-level';
+import { ReviewRating } from '@/components/business/review-rating';
 import { ScoreBars } from '@/components/business/score-bars';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -46,11 +47,9 @@ import {
   formatDate,
   formatDistance,
   formatHourly,
-  formatNumber,
   formatPhone,
   formatPrice,
   formatPriceRange,
-  formatRating,
   formatRegistryNumber,
 } from '@/lib/format';
 import { formatTime, mondayIndex, WEEKDAYS } from '@/lib/opening-hours';
@@ -147,6 +146,7 @@ export default function BusinessScreen() {
               <AppText variant="subhead" tone="textSecondary" numberOfLines={2}>
                 {text.tagline}
               </AppText>
+              <ReviewRating summary={business.reviewSummary} />
             </View>
           </View>
           <View style={styles.heroBadges}>
@@ -158,24 +158,16 @@ export default function BusinessScreen() {
           <View style={[styles.stats, { borderTopColor: colors.border }]}>
             {[
               { label: t('Match'), value: String(scored.score), detail: matchLabel(scored.score) },
-              business.reviewSummary
-                ? {
-                    label: t('Anmeldelser'),
-                    value: formatRating(business.reviewSummary.average),
-                    detail: t('{number} anm.', { number: formatNumber(business.reviewSummary.reviews) }),
-                  }
-                : undefined,
               {
                 label: t('Timepris'),
                 value: formatPriceRange(business.pricing.hourlyMin, business.pricing.hourlyMax, 'opgave', currency),
                 detail: taxNote(market),
+                wide: true,
               },
               { label: t('Afstand'), value: formatDistance(scored.distanceKm), detail: t('i luftlinje') },
-            ]
-              .filter((stat) => stat !== undefined)
-              .map((stat, index) => (
-                <Stat key={stat.label} {...stat} first={index === 0} />
-              ))}
+            ].map((stat, index) => (
+              <Stat key={stat.label} {...stat} first={index === 0} />
+            ))}
           </View>
         </View>
 
@@ -716,12 +708,26 @@ function FloatingButton({
  * One column of the fact strip under the name, like the App Store's: label, value, detail,
  * with a hairline between the columns.
  */
-function Stat({ label, value, detail, first }: { label: string; value: string; detail: string; first: boolean }) {
+function Stat({
+  label,
+  value,
+  detail,
+  first,
+  wide,
+}: {
+  label: string;
+  value: string;
+  detail: string;
+  first: boolean;
+  /** Gets more of the width, for a price range that is longer than the other values. */
+  wide?: boolean;
+}) {
   const colors = useTheme();
   return (
     <View
       style={[
         styles.stat,
+        wide ? styles.statWide : null,
         first ? null : { borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: colors.border },
       ]}
       accessible
@@ -762,6 +768,7 @@ const styles = StyleSheet.create({
   checkRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   stats: { flexDirection: 'row', borderTopWidth: StyleSheet.hairlineWidth, paddingTop: Spacing.md },
   stat: { flex: 1, alignItems: 'center', gap: 1, paddingHorizontal: 2 },
+  statWide: { flex: 1.4 },
   body: { padding: ScreenPadding, gap: Spacing.lg },
   quickActions: { flexDirection: 'row', gap: Spacing.sm },
   quickAction: {
