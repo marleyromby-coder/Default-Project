@@ -14,6 +14,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { localDay } from '@/lib/availability';
 import { showDialog } from '@/lib/dialog';
+import { success } from '@/lib/haptics';
 import { findTextProblem, TEXT_PROBLEM_MESSAGES } from '@/lib/text-filter';
 import type { CategoryId } from '@/lib/types';
 import { msg, t } from '@/i18n';
@@ -78,6 +79,7 @@ export default function NewGroupScreen() {
         },
         account.status === 'signedIn' ? account.userId : undefined,
       );
+      success();
       router.replace({ pathname: '/faelles/[id]', params: { id: group.id, ny: '1' } });
     } catch (error) {
       const reason = error instanceof GroupError ? error.reason : 'network';

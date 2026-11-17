@@ -2,6 +2,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 
 import { Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { select } from '@/lib/haptics';
 
 import { Icon, type IconName } from './icon';
 import { Tappable } from './tappable';
@@ -22,7 +23,10 @@ export function Chip({ label, selected = false, onPress, icon, count, accessibil
   const fg = selected ? colors.onBrand : colors.text;
   return (
     <Tappable
-      onPress={onPress}
+      onPress={() => {
+        select();
+        onPress();
+      }}
       accessibilityRole={Platform.OS === 'web' ? 'checkbox' : 'togglebutton'}
       accessibilityState={{ checked: selected }}
       aria-checked={selected}
@@ -34,13 +38,18 @@ export function Chip({ label, selected = false, onPress, icon, count, accessibil
           ? { backgroundColor: colors.brandStrong, borderColor: colors.brandStrong }
           : { backgroundColor: colors.surface, borderColor: colors.border },
       ]}>
-      {icon ? <Icon name={icon} size={14} color={selected ? colors.onBrand : colors.textSecondary} weight="semibold" /> : null}
+      {icon ? (
+        <Icon name={icon} size={14} color={selected ? colors.onBrand : colors.textSecondary} weight="semibold" />
+      ) : null}
       <AppText variant="subhead" weight="500" style={{ color: fg }} maxFontSizeMultiplier={1.3} numberOfLines={1}>
         {label}
       </AppText>
       {count ? (
         <View style={[styles.count, { backgroundColor: selected ? colors.onBrand : colors.brandStrong }]}>
-          <AppText variant="caption2" style={{ color: selected ? colors.brandStrong : colors.onBrand }} maxFontSizeMultiplier={1.2}>
+          <AppText
+            variant="caption2"
+            style={{ color: selected ? colors.brandStrong : colors.onBrand }}
+            maxFontSizeMultiplier={1.2}>
             {count}
           </AppText>
         </View>

@@ -18,6 +18,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { localDay } from '@/lib/availability';
 import { showDialog } from '@/lib/dialog';
+import { success } from '@/lib/haptics';
 import { currencySymbol } from '@/lib/format';
 import { defaultDeduction, type DeductionKind, hasInspections } from '@/lib/home-log';
 import type { CategoryId } from '@/lib/types';
@@ -145,6 +146,7 @@ export default function HomeJobScreen() {
     };
     if (existing) updateHomeJob(existing.id, entry);
     else addHomeJob(entry);
+    success();
     router.back();
   };
 

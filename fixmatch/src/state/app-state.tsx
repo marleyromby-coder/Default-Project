@@ -8,6 +8,7 @@ import { openCountries } from '@/lib/business-text';
 import { bundledBusinesses, parseBusinesses, REMOTE_DATA_URL } from '@/lib/data-source';
 import { DEFAULT_FILTERS } from '@/lib/filters';
 import { setDistanceUnit } from '@/lib/format';
+import * as haptics from '@/lib/haptics';
 import { getMarket, isLaunched, type CountryCode, type Market } from '@/lib/markets';
 import { DEFAULT_PRIORITIES } from '@/lib/ranking';
 import { loadAnswerRates } from '@/state/answers';
@@ -301,13 +302,20 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       setOnboarded: (v) => dispatch({ type: 'onboarded', value: v }),
       setLocation: (location) => dispatch({ type: 'location', location }),
       setPriorities: (priorities) => dispatch({ type: 'priorities', priorities }),
-      toggleFavorite: (id) => dispatch({ type: 'favorite', id }),
+      toggleFavorite: (id) => {
+        haptics.tap();
+        dispatch({ type: 'favorite', id });
+      },
       toggleCompare: (id) => {
         const trade = state.businesses.find((b) => b.id === id)?.categories[0];
         const sameTrade = state.compare.filter(
           (x) => state.businesses.find((b) => b.id === x)?.categories[0] === trade,
         );
-        if (!state.compare.includes(id) && sameTrade.length >= MAX_COMPARE) return false;
+        if (!state.compare.includes(id) && sameTrade.length >= MAX_COMPARE) {
+          haptics.warning();
+          return false;
+        }
+        haptics.select();
         dispatch({ type: 'compare', id });
         return true;
       },

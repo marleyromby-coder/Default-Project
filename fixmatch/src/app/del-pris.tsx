@@ -15,6 +15,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { countryOf } from '@/lib/business-text';
 import { showDialog } from '@/lib/dialog';
+import { success } from '@/lib/haptics';
 import { currencySymbol } from '@/lib/format';
 import { getMarket, taxNote } from '@/lib/markets';
 import { msg, t } from '@/i18n';
@@ -109,6 +110,7 @@ export default function SharePriceScreen() {
         },
         account.status === 'signedIn' ? account.userId : undefined,
       );
+      success();
       router.back();
       showDialog(
         t('Tak, fordi du delte'),

@@ -1,5 +1,4 @@
 import * as Clipboard from 'expo-clipboard';
-import * as Haptics from 'expo-haptics';
 import * as SMS from 'expo-sms';
 import * as WebBrowser from 'expo-web-browser';
 import { Linking, Platform, Share } from 'react-native';
@@ -12,6 +11,7 @@ import type { Problem } from '@/state/problem';
 
 import { showDialog } from './dialog';
 import { formatPhone, phoneHref } from './format';
+import * as haptics from './haptics';
 import { getMarket } from './markets';
 import { reviewSiteOf } from './review-links';
 import type { Business, ReviewLink } from './types';
@@ -33,10 +33,6 @@ export const SUPPORT_EMAIL = APP_INFO.email;
 
 /** Pine (`brandText` in the light theme) for the in-app browser's buttons. */
 const BRAND = '#1F5A46';
-
-function tap() {
-  if (Platform.OS !== 'web') Haptics.selectionAsync().catch(() => undefined);
-}
 
 function demoNotice(business: Business, what: string) {
   showDialog(
@@ -63,7 +59,7 @@ export async function openLink(url: string): Promise<void> {
 
 /** Calls the business. The first time, the user is asked for an account with a name and phone number. */
 export async function callBusiness(business: Business): Promise<void> {
-  tap();
+  haptics.select();
   if (!(await requireContactProfile())) return;
   const number = formatPhone(business.contact.phone);
   if (business.demo) {
@@ -89,7 +85,7 @@ export async function callBusiness(business: Business): Promise<void> {
 }
 
 export async function openWebsite(business: Business): Promise<void> {
-  tap();
+  haptics.select();
   if (!business.contact.website) return;
   if (business.demo) {
     demoNotice(business, t('åbner virksomhedens egen hjemmeside her.'));
@@ -100,7 +96,7 @@ export async function openWebsite(business: Business): Promise<void> {
 
 /** Opens the business's own profile on another review site. Only allow-listed links are opened. */
 export async function openReviewLink(business: Business, link: ReviewLink): Promise<void> {
-  tap();
+  haptics.select();
   const site = reviewSiteOf(link.url);
   if (!site) return;
   if (business.demo) {
@@ -111,7 +107,7 @@ export async function openReviewLink(business: Business, link: ReviewLink): Prom
 }
 
 export async function openDirections(business: Business): Promise<void> {
-  tap();
+  haptics.select();
   if (business.demo) {
     demoNotice(business, t('får du rutevejledning til virksomheden i Kort-appen.'));
     return;
@@ -126,7 +122,7 @@ export async function openDirections(business: Business): Promise<void> {
 }
 
 export async function openCvr(business: Business): Promise<void> {
-  tap();
+  haptics.select();
   if (business.demo) {
     demoNotice(business, t('kan du slå virksomheden op i det officielle virksomhedsregister.'));
     return;
@@ -136,7 +132,7 @@ export async function openCvr(business: Business): Promise<void> {
 }
 
 export async function shareBusiness(business: Business): Promise<void> {
-  tap();
+  haptics.select();
   const lines = [
     t('{name} – fundet på FixMatch', { name: business.name }),
     t('Telefon: {phone}', { phone: formatPhone(business.contact.phone) }),
@@ -154,7 +150,7 @@ export async function shareBusiness(business: Business): Promise<void> {
 }
 
 export async function reportProblem(business?: Business): Promise<void> {
-  tap();
+  haptics.select();
   const subject = encodeURIComponent(
     business ? t('Fejl i oplysninger: {name}', { name: business.name }) : t('Henvendelse til FixMatch'),
   );
@@ -174,7 +170,7 @@ export async function reportProblem(business?: Business): Promise<void> {
 
 /** Starts a FaceTime call to the business, for a video check before the visit. */
 export async function startFaceTime(business: Business): Promise<void> {
-  tap();
+  haptics.select();
   if (!(await requireContactProfile())) return;
   if (business.demo) {
     demoNotice(business, t('starter et FaceTime-opkald til virksomheden, så de kan se problemet med det samme.'));
@@ -235,7 +231,7 @@ export async function sendProblem(
   problem: Problem,
   options: { plain?: boolean } = {},
 ): Promise<void> {
-  tap();
+  haptics.select();
   if (!(await requireContactProfile())) return;
   if (business.demo) {
     demoNotice(business, t('åbner Beskeder med din beskrivelse og dine billeder, klar til at sende til virksomheden.'));

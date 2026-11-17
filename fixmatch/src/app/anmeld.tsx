@@ -15,6 +15,7 @@ import { getCategory } from '@/data/categories';
 import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { showDialog } from '@/lib/dialog';
+import { success } from '@/lib/haptics';
 import { findTextProblem, TEXT_PROBLEM_MESSAGES } from '@/lib/text-filter';
 import { msg, t } from '@/i18n';
 import { useAccount } from '@/state/account';
@@ -84,6 +85,7 @@ export default function ReviewScreen() {
           name: account.status === 'signedIn' ? account.profile?.name : undefined,
         },
       );
+      success();
       router.back();
       showDialog(t('Tak for din anmeldelse'), t('Den hjælper andre med at vælge den rette.'));
     } catch {

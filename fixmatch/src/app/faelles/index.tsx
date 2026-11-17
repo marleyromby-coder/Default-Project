@@ -15,6 +15,7 @@ import { useLayout } from '@/hooks/use-layout';
 import { localDay } from '@/lib/availability';
 import { codeFromLink } from '@/lib/group-link';
 import { showDialog } from '@/lib/dialog';
+import { success } from '@/lib/haptics';
 import { openSignIn, useAccount } from '@/state/account';
 import { useHiddenIds } from '@/state/reports';
 import { useApp, useMarket } from '@/state/app-state';
@@ -59,6 +60,7 @@ export default function GroupsScreen() {
     try {
       const group = await joinGroup(code, account.status === 'signedIn' ? account.userId : undefined);
       setCode('');
+      success();
       router.push({ pathname: '/faelles/[id]', params: { id: group.id } });
     } catch (error) {
       const reason = error instanceof GroupError ? error.reason : 'network';

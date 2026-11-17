@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { select } from '@/lib/haptics';
 
 import { Tappable } from './tappable';
 import { AppText } from './text';
@@ -32,7 +33,10 @@ export function Segmented<T extends string>({ options, value, onChange, accessib
         return (
           <Tappable
             key={option.value}
-            onPress={() => onChange(option.value)}
+            onPress={() => {
+              if (option.value !== value) select();
+              onChange(option.value);
+            }}
             accessibilityRole="tab"
             accessibilityState={{ selected }}
             accessibilityLabel={option.accessibilityLabel ?? option.label}
