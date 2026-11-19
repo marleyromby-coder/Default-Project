@@ -7,6 +7,7 @@
  */
 const { readGroupDiscount, readJobs, readNumber } = require('./app-data');
 const { readSupabase } = require('./signup-form');
+const { tradeArt } = require('./trade-art');
 
 const escape = (text) =>
   String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -54,6 +55,7 @@ const TEXT = {
 function groupPage(lang, { root }) {
   const text = TEXT[lang];
   const trades = readJobs(root);
+  const art = tradeArt(root);
   // Only the names the page needs: trade id → job id → name in this language.
   const jobs = Object.fromEntries(
     Object.entries(trades).map(([id, trade]) => [
@@ -70,6 +72,8 @@ function groupPage(lang, { root }) {
     jobs,
     minGroup: readNumber(root, 'src/state/groups.ts', 'MIN_GROUP'),
     discount: readGroupDiscount(root),
+    // The trade's tile from the app beside the job, chosen by the group's trade.
+    tiles: Object.fromEntries(Object.keys(trades).map((id) => [id, art.tile(id, { size: 56 })])),
   };
   return `<div id="group" class="group">
 <form class="code-form" data-form novalidate>
@@ -81,8 +85,13 @@ function groupPage(lang, { root }) {
 </form>
 <p class="status" role="status" aria-live="polite"></p>
 <article class="group-card" data-card hidden>
+<div class="group-head">
+<span class="group-tile" data-tile></span>
+<div>
 <p class="group-area" data-area></p>
 <h2 data-job></h2>
+</div>
+</div>
 <ul class="group-facts">
 <li data-members></li>
 <li data-progress></li>
@@ -117,6 +126,7 @@ function groupPage(lang, { root }) {
     const trade = config.jobs[group.category];
     field('area').textContent = group.area + ', ' + group.postal_code;
     field('job').textContent = (trade && trade.jobs[group.job]) || (trade && trade.name) || group.job;
+    field('tile').innerHTML = config.tiles[group.category] || '';
     field('members').textContent = group.members + ' ' + t.members[group.members === 1 ? 0 : 1];
     const missing = config.minGroup - group.members;
     field('progress').textContent =
@@ -183,14 +193,19 @@ const GROUP_STYLE = `
 .group { margin: 24px 0; }
 .code-form label { display: block; font-weight: 600; margin-bottom: 8px; }
 .code-row { display: flex; gap: 10px; }
-.code-row input { flex: 1; min-width: 0; min-height: 48px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font: inherit; font-size: 20px; letter-spacing: 0.2em; text-transform: uppercase; }
-.code-row button, .group-open { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 20px; border: 0; border-radius: 999px; background: var(--brand-strong); color: #F4F1EA; font: inherit; font-weight: 600; text-decoration: none; cursor: pointer; }
+.code-row input { flex: 1; min-width: 0; min-height: 52px; padding: 0 16px; border-radius: 14px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font: inherit; font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: 0.18em; text-transform: uppercase; }
+.code-row input:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
+.code-row button, .group-open { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 22px; border: 0; border-radius: 16px; background: var(--brand-strong); color: var(--on-brand); font: inherit; font-family: var(--display); font-weight: 700; font-size: 18px; letter-spacing: -0.01em; text-decoration: none; cursor: pointer; }
+.group-open { background: var(--accent); color: var(--on-accent); box-shadow: 0 8px 20px -10px rgba(26, 20, 0, 0.55); }
 .group .status { min-height: 1.6em; color: var(--muted); }
 .group .status.error { color: var(--danger); }
-.group-card { margin-top: 8px; padding: 22px; border-radius: 18px; border: 1px solid var(--border); background: var(--bg); }
+.group-card { margin-top: 8px; padding: 22px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface-alt); }
 .group-card[hidden], .group-open[hidden], .group-note[hidden], .group-sent[hidden] { display: none; }
+.group-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.group-tile:empty { display: none; }
+.group-tile svg { display: block; width: 56px; height: 56px; }
 .group-area { margin: 0; color: var(--muted); font-size: 15px; }
-.group-card h2 { margin: 4px 0 12px; }
+.group-card h2 { margin: 2px 0 0; font-size: 22px; line-height: 1.2; }
 .group-facts { list-style: none; padding: 0; margin: 0 0 16px; }
 .group-facts li { margin: 4px 0; }
 .group-note { font-style: italic; }

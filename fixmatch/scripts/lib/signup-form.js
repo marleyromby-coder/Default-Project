@@ -414,24 +414,29 @@ const CLIENT = `(() => {
 })();`;
 
 const FORM_STYLE = `
-:root { --danger: #B3261E; }
-@media (prefers-color-scheme: dark) { :root { --danger: #F2B8B5; } }
-.signup fieldset { border: 0; padding: 0; margin: 24px 0 0; display: grid; gap: 14px; }
-.signup legend { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 22px; margin-bottom: 4px; }
+.signup fieldset { border: 0; padding: 0; margin: 28px 0 0; display: grid; gap: 14px; }
+.signup legend { font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: -0.025em; margin-bottom: 4px; }
 .signup .field { display: grid; gap: 6px; font-weight: 600; font-size: 15px; color: var(--muted); }
 .signup .field small { font-weight: 400; }
-.signup input:not([type=checkbox]), .signup select, .signup textarea { font: inherit; font-size: 17px; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; width: 100%; box-sizing: border-box; }
+.signup input:not([type=checkbox]), .signup select, .signup textarea { font: inherit; font-size: 17px; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; min-height: 50px; width: 100%; box-sizing: border-box; }
 .signup input:focus, .signup select:focus, .signup textarea:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
 .signup .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .signup .choices { display: flex; flex-wrap: wrap; gap: 8px 16px; }
 .signup .choice { display: flex; gap: 10px; align-items: flex-start; color: var(--text); font-weight: 400; }
 .signup .choice input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--brand); flex: none; }
+.signup .choices:has(> .choice > input[name="trades"]) { gap: 8px; }
+.signup .choice:has(> input[name="trades"]) { align-items: center; gap: 8px; min-height: 44px; padding: 6px 12px 6px 10px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); font-weight: 600; cursor: pointer; }
+.signup .choice:has(> input[name="trades"]:checked) { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
+.signup .choice > input[name="trades"] { order: -1; margin: 0; }
+.signup .choice:has(> input[name="trades"])::before { content: ""; flex: none; width: 28px; height: 28px; background: center / contain no-repeat; }
 .signup .error { color: var(--danger); font-weight: 600; }
 .signup .hint { margin: 0; color: var(--muted); }
 .signup .verify-fields { display: grid; gap: 14px; }
 .signup [hidden] { display: none; }
-.signup button { margin-top: 24px; width: 100%; font: inherit; font-weight: 600; font-size: 18px; color: var(--surface); background: var(--brand); border: 0; border-radius: 14px; padding: 16px; cursor: pointer; }
+.signup button { margin-top: 24px; width: 100%; min-height: 56px; font: inherit; font-family: var(--display); font-weight: 700; font-size: 18px; letter-spacing: -0.01em; color: var(--on-brand); background: var(--brand-strong); border: 0; border-radius: 16px; padding: 14px 16px; cursor: pointer; }
+.signup button[type="submit"] { color: var(--on-accent); background: var(--accent); box-shadow: 0 8px 20px -10px rgba(26, 20, 0, 0.55); }
 .signup button:disabled { opacity: 0.6; }
+@media (prefers-color-scheme: dark) { .signup .choice:has(> input[name="trades"]:checked) { border-color: var(--brand); } }
 @media (max-width: 520px) { .signup .row { grid-template-columns: 1fr; } }
 `;
 

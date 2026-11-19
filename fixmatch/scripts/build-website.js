@@ -23,6 +23,7 @@ const { AVAILABILITY_STYLE, availabilityForm } = require('./lib/availability-for
 const { GROUP_STYLE, groupPage } = require('./lib/group-page');
 const { LANDING_STYLE, landing } = require('./lib/landing');
 const { FORM_STYLE, signupForm } = require('./lib/signup-form');
+const { tradeArt } = require('./lib/trade-art');
 
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'dist-website');
@@ -181,46 +182,101 @@ function formatDate(iso, locale) {
   );
 }
 
+/** The app's palette (src/constants/theme.ts, docs/design/designsystem.md) for light and dark mode. */
 const STYLE = `
-@font-face { font-family: Fraunces; font-weight: 600; font-display: swap; src: url("{{fonts}}Fraunces_600SemiBold.ttf") format("truetype"); }
-@font-face { font-family: Fraunces; font-weight: 700; font-display: swap; src: url("{{fonts}}Fraunces_700Bold.ttf") format("truetype"); }
-:root { --bg: #F4F1EA; --surface: #FFFDF9; --border: #E6E0D4; --text: #1C1A17; --muted: #5E574C; --brand: #1F5A46; --brand-strong: #1F4A3A; --brand-soft: #E2EBE4; --ink: #183A2E; --accent: #D09A2E; --danger: #B3261E; color-scheme: light dark; }
-@media (prefers-color-scheme: dark) { :root { --bg: #11130F; --surface: #1A1D18; --border: #30352D; --text: #F2EEE5; --muted: #B8B1A4; --brand: #8FCBAD; --brand-strong: #2F6B53; --brand-soft: #1D2C24; --ink: #1C3A2E; --accent: #E0AE4A; --danger: #F28B82; } }
+@font-face { font-family: "Schibsted Grotesk"; font-weight: 700; font-display: swap; src: url("{{fonts}}schibsted-grotesk-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Schibsted Grotesk"; font-weight: 800; font-display: swap; src: url("{{fonts}}schibsted-grotesk-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Schibsted Grotesk"; font-weight: 900; font-display: swap; src: url("{{fonts}}schibsted-grotesk-latin-900-normal.woff2") format("woff2"); }
+:root {
+  --bg: #F1F5F3; --surface: #FFFFFF; --surface-alt: #F6F9F7; --fill: #E7EEEA; --border: #DFE7E3;
+  --text: #0B1A15; --muted: #41524C; --muted-2: #5C6D66;
+  --brand: #00805C; --brand-strong: #00805C; --on-brand: #FFFFFF; --brand-text: #00704F; --brand-soft: #DCF4E9;
+  --panel: #007A56; --panel-2: #00614A; --on-panel: #FFFFFF; --on-panel-soft: #E6F7EF; --panel-sunk: rgba(11, 26, 21, 0.2);
+  --accent: #FFB800; --on-accent: #1A1400; --accent-soft: #FFF3CC; --accent-text: #7F5300;
+  --ink: #0B1A15; --on-ink: #FFFFFF; --on-ink-soft: #B9C9C2; --danger: #B42A18;
+  --shadow-card: 0 1px 2px rgba(11, 26, 21, 0.05), 0 6px 16px rgba(11, 26, 21, 0.06);
+  --shadow-raised: 0 2px 4px rgba(11, 26, 21, 0.06), 0 12px 28px rgba(11, 26, 21, 0.12);
+  --display: "Schibsted Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --bg: #0A1210; --surface: #131D1A; --surface-alt: #1A2622; --fill: #20302A; --border: #25342E;
+  --text: #ECF4F0; --muted: #A6B8B1; --muted-2: #889B94;
+  --brand: #2FD39C; --brand-strong: #2FD39C; --on-brand: #03140E; --brand-text: #45DCA8; --brand-soft: #0E2C22;
+  --panel: #0B5E48; --panel-2: #08443A; --on-panel-soft: #D5EFE4; --panel-sunk: rgba(0, 0, 0, 0.2);
+  --accent: #FFC21F; --accent-soft: #2C250F; --accent-text: #FFCF4D;
+  --ink: #22322C; --on-ink: #ECF4F0; --on-ink-soft: #B3C4BD; --danger: #FF9B85;
+  --shadow-card: none; --shadow-raised: 0 8px 24px rgba(0, 0, 0, 0.45);
+} }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-h1, h2, h3, .brand { font-family: Fraunces, Georgia, serif; font-weight: 600; letter-spacing: -0.01em; }
-header, main, footer { max-width: 760px; margin: 0 auto; padding: 0 20px; }
-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 20px; padding-bottom: 20px; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-text-size-adjust: 100%; }
+h1, h2, h3, .brand { font-family: var(--display); font-weight: 800; letter-spacing: -0.03em; }
+h1, h2, h3 { text-wrap: balance; }
+h3 { font-weight: 700; letter-spacing: -0.015em; }
+.dot { color: var(--accent); }
+.masthead { position: relative; color: var(--on-panel); background: radial-gradient(circle at calc(100% + 40px) -60px, rgba(255, 255, 255, 0.07) 0 230px, transparent 231px), radial-gradient(circle at calc(100% - 10px) 150px, transparent 0 74px, rgba(255, 255, 255, 0.08) 75px 76.5px, transparent 77.5px), linear-gradient(180deg, var(--panel), var(--panel-2)); border-radius: 0 0 28px 28px; padding-bottom: 76px; }
+header, footer, .page-head { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 18px; padding-bottom: 18px; }
 nav.top { display: flex; align-items: center; gap: 22px; }
-nav.top a { color: var(--text); text-decoration: none; font-weight: 500; white-space: nowrap; }
+nav.top a { color: var(--on-panel); text-decoration: none; font-weight: 600; white-space: nowrap; }
+nav.top a:hover { text-decoration: underline; text-underline-offset: 4px; }
 nav.top .short { display: none; }
-nav.top a:hover { color: var(--brand); }
-nav.top .language { padding: 6px 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); }
-.brand { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 700; font-size: 24px; text-decoration: none; }
-.brand .dot { color: var(--accent); }
-.brand img { width: 36px; height: 36px; border-radius: 9px; }
-main { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 8px 28px 28px; }
-h1 { font-size: 34px; line-height: 1.2; margin: 24px 0 8px; }
-h2 { font-size: 22px; margin: 32px 0 4px; }
-h3 { font-size: 18px; margin: 24px 0 0; }
+nav.top .language { display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 999px; background: var(--panel-sunk); }
+nav.top .language:hover { text-decoration: none; background: rgba(11, 26, 21, 0.32); }
+.brand { display: inline-flex; align-items: center; min-height: 44px; color: var(--on-panel); font-weight: 900; font-size: 28px; letter-spacing: -0.035em; text-decoration: none; }
+.page-head h1 { color: var(--on-panel); font-size: 40px; line-height: 1.08; margin: 12px 0 0; }
+main { position: relative; max-width: 760px; margin: -48px auto 0; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow-raised); padding: 12px 32px 32px; }
+main > :first-child { margin-top: 16px; }
+h1 { font-size: 34px; line-height: 1.12; margin: 24px 0 8px; }
+h2 { font-size: 24px; line-height: 1.2; margin: 36px 0 6px; }
+h3 { font-size: 19px; line-height: 1.3; margin: 24px 0 0; }
 p, li { color: var(--text); }
 ul, ol { padding-left: 24px; }
 li { margin: 6px 0; }
-a { color: var(--brand); }
+li::marker { color: var(--brand-text); }
+a { color: var(--brand-text); text-underline-offset: 2px; }
+strong { font-weight: 650; }
 code { font-size: 15px; }
-footer { padding-top: 24px; padding-bottom: 40px; color: var(--muted); font-size: 15px; }
+:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+.masthead :focus-visible { outline-color: var(--accent); }
+footer { padding-top: 32px; padding-bottom: 40px; color: var(--muted); font-size: 15px; }
 footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-bottom: 8px; }
-@media (max-width: 640px) { nav.top .wide-only { display: none; } nav.top { gap: 12px; font-size: 15px; } }
-@media (max-width: 420px) { nav.top .long { display: none; } nav.top .short { display: inline; } nav.top .language { padding: 6px 12px; } }
-@media (max-width: 520px) { header, footer { padding-left: 16px; padding-right: 16px; } main { padding: 4px 18px 20px; border-radius: 16px; } h1 { font-size: 28px; } .brand { font-size: 21px; } .brand img { width: 30px; height: 30px; } }
+footer nav a { font-weight: 600; text-decoration: none; }
+footer nav a:hover { text-decoration: underline; }
+@media (min-width: 800px) { .masthead { margin: 12px 12px 0; border-radius: 28px; } }
+@media (max-width: 640px) { nav.top .wide-only { display: none; } nav.top { gap: 14px; font-size: 15px; } }
+@media (max-width: 420px) { nav.top .long { display: none; } nav.top .short { display: inline; } nav.top .language { padding: 0 12px; } }
+@media (max-width: 520px) { header, footer, .page-head { padding-left: 16px; padding-right: 16px; } main { margin: -48px 12px 0; padding: 4px 18px 22px; border-radius: 20px; } .page-head h1 { font-size: 32px; } h1 { font-size: 28px; } h2 { font-size: 22px; } .brand { font-size: 25px; } }
 `;
 
-function page({ lang, html, title, description, here, other, info, notFound = false, wide = false, script = '' }) {
+/**
+ * One page: the panel at the top with the header and the page's title (or, on the front page,
+ * `top`: the hero), then the content on a card that overlaps the panel, like the app.
+ */
+/**
+ * The trade choices of the sign-up form as chips with the app's trade tiles. Only CSS (FORM_STYLE
+ * draws the chips), so the form's markup stays as it is.
+ */
+function tradeChoiceStyle(root = ROOT) {
+  const art = tradeArt(root);
+  return Object.keys(art.colors)
+    .map(
+      (id) =>
+        `.signup .choice:has(> input[name="trades"][value="${id}"])::before { background-image: url("data:image/svg+xml,${encodeURIComponent(art.tile(id, { size: 28 }))}"); }`,
+    )
+    .join('\n');
+}
+
+function page({ lang, html, title, description, here, other, info, notFound = false, wide = false, top, script = '' }) {
   const rel = (to) => path.posix.relative(here || '.', to || '.') || '.';
   const ui = UI[lang];
   const target = (dir) => `${rel(dir)}/`.replace(/^\.\/$/, './').replace(/\/\/$/, '/');
   const links = PAGES.slice(1).map((p) => p[lang][1]);
   const home = PAGES[0][lang][1];
+  // The page's title sits on the panel; the rest of the text goes on the card.
+  const heading = top === undefined ? html.match(/^<h1>.*?<\/h1>\n?/)?.[0] : undefined;
+  const head = top ?? (heading ? `<div class="page-head">${heading.trim()}</div>` : '');
+  const body = heading ? html.slice(heading.length) : html;
   return `<!doctype html>
 <html lang="${lang}">
 <head>
@@ -242,23 +298,26 @@ ${
 <meta property="og:image" content="${info.website}/icon.png">
 <meta property="og:locale" content="${UI[lang].locale.replace('-', '_')}">`
 }
-<meta name="theme-color" content="#F4F1EA" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#11130F" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#007A56" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B5E48" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="${rel('favicon.png')}">
 <link rel="apple-touch-icon" href="${rel('icon.png')}">
-<style>${STYLE.replaceAll('{{fonts}}', rel('fonts') + '/')}${html.includes('id="signup"') || html.includes('id="availability"') ? FORM_STYLE : ''}${html.includes('id="availability"') ? AVAILABILITY_STYLE : ''}${html.includes('id="group"') ? GROUP_STYLE : ''}${wide ? LANDING_STYLE : ''}</style>
+<style>${STYLE.replaceAll('{{fonts}}', rel('fonts') + '/')}${html.includes('id="signup"') || html.includes('id="availability"') ? FORM_STYLE : ''}${html.includes('id="availability"') ? AVAILABILITY_STYLE : ''}${html.includes('name="trades"') ? tradeChoiceStyle() : ''}${html.includes('id="group"') ? GROUP_STYLE : ''}${wide ? LANDING_STYLE : ''}</style>
 </head>
 <body${wide ? ' class="wide"' : ''}>
+<div class="masthead">
 <header>
-<a class="brand" href="${target(home)}" aria-label="${escape(info.name)}"><img src="${rel('favicon.png')}" alt=""><span>${escape(info.name.toLowerCase())}<span class="dot">.</span></span></a>
+<a class="brand" href="${target(home)}" aria-label="${escape(info.name)}">${escape(info.name.toLowerCase())}<span class="dot">.</span></a>
 <nav class="top" aria-label="${lang === 'da' ? 'Hovedmenu' : 'Main menu'}">
 <a class="wide-only" href="${here === home ? '' : target(home)}#${ui.featuresAnchor}">${ui.features}</a>
 <a href="${target(links[3])}">${ui.business}</a>
 <a class="language" href="${target(other)}" hreflang="${lang === 'da' ? 'en' : 'da'}" lang="${lang === 'da' ? 'en' : 'da'}" aria-label="${ui.other}"><span class="long">${ui.other}</span><span class="short">${lang === 'da' ? 'EN' : 'DA'}</span></a>
 </nav>
 </header>
+${head}
+</div>
 <main${wide ? ' class="landing"' : ''}>
-${html}
+${body}
 </main>
 ${script}
 <footer>
@@ -356,16 +415,9 @@ function buildWebsite(out = OUT, root = ROOT) {
   Cache-Control: public, max-age=604800
 `,
   );
-  // Fraunces (SIL Open Font License), the serif of the logo, for the headings.
-  fs.mkdirSync(path.join(out, 'fonts'));
-  for (const weight of ['600SemiBold', '700Bold']) {
-    const font = require.resolve(`@expo-google-fonts/fraunces/${weight}/Fraunces_${weight}.ttf`, { paths: [root] });
-    fs.copyFileSync(font, path.join(out, 'fonts', path.basename(font)));
-  }
-  fs.copyFileSync(
-    require.resolve('@expo-google-fonts/fraunces/LICENSE_FONT', { paths: [root] }),
-    path.join(out, 'fonts', 'OFL.txt'),
-  );
+  // Schibsted Grotesk (SIL Open Font License), the app's display font, for the logo and headings:
+  // only the weights the site uses, as woff2 with the Latin characters (website/fonts, from @fontsource).
+  fs.cpSync(path.join(root, 'website/fonts'), path.join(out, 'fonts'), { recursive: true });
   return { written, info, urls };
 }
 

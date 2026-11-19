@@ -3,8 +3,9 @@
  * screenshots from the app (website/images/app-*.webp), and live numbers from the same
  * Supabase project as the app. The numbers only show once there is something to show.
  */
-const { readGroupDiscount, readNumber } = require('./app-data');
+const { readGroupDiscount, readJobs, readNumber } = require('./app-data');
 const { readSupabase } = require('./signup-form');
+const { tradeArt } = require('./trade-art');
 
 const escape = (text) =>
   String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -23,6 +24,7 @@ const ICONS = {
   widget:
     '<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="18" height="8" rx="2"/>',
   check: '<path d="m5 12 5 5L20 7"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
   phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
   euro: '<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="M12 8v8M8 12h8"/>',
   star: '<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/>',
@@ -44,6 +46,7 @@ function text(lang, { minGroup, discount }) {
     soon: ['Kommer snart', 'til iPhone'],
     business: 'Har du en virksomhed?',
     liveTitle: 'Lige nu på FixMatch',
+    tradesLabel: 'Fagene i appen',
     live: {
       free: ['virksomhed har tid i dag', 'virksomheder har tid i dag'],
       groups: ['åben naborabat-gruppe', 'åbne naborabat-grupper'],
@@ -192,6 +195,7 @@ function text(lang, { minGroup, discount }) {
     soon: ['Coming soon', 'to iPhone'],
     business: 'Do you run a business?',
     liveTitle: 'On FixMatch right now',
+    tradesLabel: 'The trades in the app',
     live: {
       free: ['business has time today', 'businesses have time today'],
       groups: ['open neighbour group', 'open neighbour groups'],
@@ -350,14 +354,16 @@ function landing(lang, { root, assets = '' }) {
   const signUp = lang === 'da' ? 'tilmeld/' : 'sign-up/';
   const available = lang === 'da' ? 'ledig/' : 'available/';
 
+  // The last full stop of the heading in sun yellow, like "Se prisen, før du ringer." in the app.
+  const lastLine = escape(t.h1[1]).replace(/\.$/, '<span class="dot">.</span>');
   const hero = `<section class="hero">
 <div class="hero-text">
 <p class="eyebrow">${escape(t.eyebrow)}</p>
-<h1>${escape(t.h1[0])}<br><span>${escape(t.h1[1])}</span></h1>
+<h1>${escape(t.h1[0])}<br>${lastLine}</h1>
 <p class="lead">${escape(t.lead)}</p>
 <div class="actions">
 <span class="soon">${icon('phone')}<span><small>${escape(t.soon[0])}</small>${escape(t.soon[1])}</span></span>
-<a class="button secondary" href="${signUp}">${escape(t.business)}</a>
+<a class="button sun" href="${signUp}">${escape(t.business)}${icon('arrow')}</a>
 </div>
 <div class="live" data-live hidden>
 <p class="live-title"><span class="pulse" aria-hidden="true"></span>${escape(t.liveTitle)}</p>
@@ -366,6 +372,16 @@ function landing(lang, { root, assets = '' }) {
 </div>
 ${phone('home', lang === 'da' ? 'Forsiden i appen: søgefelt, Beskriv dit problem, Tilbudstjek og fagene' : 'The front page of the app: search, Describe your problem, Quote check and the trades', ' hero-phone')}
 </section>`;
+
+  // The eight trades as the app's tiles, on a card that overlaps the panel like the app's search card.
+  const art = tradeArt(root);
+  const trades = `<div class="trades">
+<ul class="trade-list" aria-label="${escape(t.tradesLabel)}">
+${Object.entries(readJobs(root))
+  .map(([id, trade]) => `<li>${art.tile(id)}<span>${escape(trade.name[lang])}</span></li>`)
+  .join('\n')}
+</ul>
+</div>`;
 
   const features = `<section class="features" id="${lang === 'da' ? 'funktioner' : 'features'}">
 <div class="section-head">
@@ -417,7 +433,7 @@ ${t.promises.map(([name, title, body]) => `<div class="tile">${icon(name)}<h3>${
 ${t.businessPoints.map((point) => `<li>${icon('check')}<div><span>${escape(point)}</span></div></li>`).join('\n')}
 </ul>
 <div class="actions">
-<a class="button accent" href="${signUp}">${escape(t.businessCta)}</a>
+<a class="button sun" href="${signUp}">${escape(t.businessCta)}${icon('arrow')}</a>
 <a class="button on-ink" href="${available}">${escape(t.availableCta)}</a>
 </div>
 </section>`;
@@ -471,99 +487,118 @@ ${t.faq.map(([question, answer]) => `<details><summary>${escape(question)}</summ
   return {
     title: t.title,
     description: t.description,
-    html: [hero, features, steps, promises, business, faq].join('\n'),
+    // The hero goes on the panel at the top of the page (build-website.js), the rest below it.
+    top: hero,
+    html: [trades, features, steps, promises, business, faq].join('\n'),
     script,
   };
 }
 
 const LANDING_STYLE = `
 body.wide header, body.wide footer { max-width: 1120px; }
-main.landing { max-width: 1120px; background: none; border: 0; border-radius: 0; padding: 0 20px; }
-.landing section { margin: 0 0 88px; }
-.landing h2 { font-size: clamp(28px, 4vw, 40px); line-height: 1.15; margin: 0 0 12px; }
+body.wide .masthead { padding-bottom: 128px; }
+main.landing { max-width: 1120px; margin: 0 auto; background: none; border: 0; border-radius: 0; box-shadow: none; padding: 0 20px; }
+.landing section { margin: 0 0 104px; }
+.landing h2 { font-size: clamp(30px, 4vw, 44px); line-height: 1.08; margin: 0 0 12px; }
 .landing h3 { font-size: 22px; line-height: 1.25; margin: 0; }
 .landing p { margin: 0; }
-.eyebrow { font-size: 14px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--brand); margin: 0 0 12px !important; }
+.eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-text); margin: 0 0 12px !important; }
 .lead { color: var(--muted) !important; font-size: 18px; }
 .icon { width: 22px; height: 22px; flex: none; }
-.button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border-radius: 999px; font-weight: 600; text-decoration: none; }
-.button.secondary { color: var(--text); background: var(--surface); border: 1px solid var(--border); }
-.button.accent { color: #1C1A17; background: var(--accent); }
-.button.on-ink { color: #F4F1EA; border: 1px solid rgba(244, 241, 234, 0.35); }
-.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 28px; }
-.hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 56px; align-items: center; padding-top: 32px; }
-.hero h1 { font-size: clamp(40px, 6.4vw, 68px); line-height: 1.04; margin: 0 0 20px; letter-spacing: -0.02em; }
-.hero h1 span { color: var(--brand); }
-.hero .lead { font-size: 20px; max-width: 560px; }
-.soon { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 20px 0 16px; border-radius: 14px; background: var(--ink); color: #F4F1EA; line-height: 1.15; font-weight: 600; font-size: 18px; }
-.soon small { display: block; font-size: 12px; font-weight: 500; opacity: 0.8; }
-.phone { margin: 0; width: 300px; flex: none; border-radius: 44px; padding: 10px; background: #1C1A17; box-shadow: 0 30px 60px -20px rgba(24, 58, 46, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.06); }
-.phone img { display: block; width: 100%; height: auto; border-radius: 34px; }
-.hero-phone { transform: rotate(2deg); }
-@media (prefers-color-scheme: dark) { .phone { box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6), 0 0 0 1px #3A4036; } }
-.live { margin-top: 32px; padding: 16px 20px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); max-width: 560px; }
-.live-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--muted); margin-bottom: 6px !important; }
-.pulse { width: 8px; height: 8px; border-radius: 50%; background: #25733F; box-shadow: 0 0 0 4px rgba(37, 115, 63, 0.18); }
-.live ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 20px; }
-.live li { margin: 0; }
-.section-head { text-align: center; max-width: 640px; margin: 0 auto 48px; }
-.feature { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 64px; align-items: center; margin: 0 auto 72px; max-width: 920px; }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; padding: 0 24px; border-radius: 16px; font-family: var(--display); font-weight: 700; font-size: 18px; letter-spacing: -0.01em; text-decoration: none; }
+.button .icon { width: 20px; height: 20px; stroke-width: 2.4; }
+.button.sun { color: var(--on-accent); background: var(--accent); box-shadow: 0 8px 20px -10px rgba(26, 20, 0, 0.55); }
+.button.sun:hover { filter: brightness(1.04); }
+.button.on-ink { color: var(--on-ink); border: 1.5px solid rgba(255, 255, 255, 0.28); }
+.button.on-ink:hover { background: rgba(255, 255, 255, 0.08); }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 32px; }
+.hero { max-width: 1120px; margin: 0 auto; padding: 20px 20px 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 56px; align-items: center; }
+.hero .eyebrow { color: var(--on-panel-soft); }
+.hero h1 { color: var(--on-panel); font-size: clamp(44px, 6.2vw, 74px); line-height: 1; letter-spacing: -0.045em; margin: 0 0 22px; }
+.hero .lead { color: var(--on-panel-soft) !important; font-size: 20px; max-width: 560px; }
+.soon { display: inline-flex; align-items: center; gap: 10px; min-height: 54px; padding: 0 20px 0 16px; border-radius: 16px; background: #0B1A15; color: #FFFFFF; line-height: 1.15; font-family: var(--display); font-weight: 700; font-size: 18px; }
+.soon small { display: block; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 12px; font-weight: 500; color: #B9C9C2; }
+.phone { margin: 0; width: 300px; flex: none; border-radius: 46px; padding: 10px; background: #0B1A15; box-shadow: 0 30px 60px -24px rgba(11, 26, 21, 0.45), 0 0 0 1px rgba(11, 26, 21, 0.08); }
+.phone img { display: block; width: 100%; height: auto; border-radius: 36px; }
+.hero-phone { transform: rotate(2deg); box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.12); }
+@media (prefers-color-scheme: dark) { .phone { box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6), 0 0 0 1px #2E423A; } }
+.live { margin-top: 28px; padding: 14px 18px; border-radius: 18px; background: var(--panel-sunk); border: 1px solid rgba(255, 255, 255, 0.12); max-width: 560px; }
+.live-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--on-panel-soft); margin-bottom: 4px !important; }
+.pulse { width: 8px; height: 8px; border-radius: 50%; background: #2FD39C; box-shadow: 0 0 0 4px rgba(47, 211, 156, 0.25); }
+.live ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 20px; }
+.live li { margin: 0; color: var(--on-panel-soft); font-size: 15px; line-height: 1.35; }
+.live strong { display: block; color: var(--on-panel); font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1.1; letter-spacing: -0.035em; }
+main.landing > .trades { position: relative; margin: -80px 0 96px; padding: 26px 24px 22px; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow-raised); }
+.trade-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 18px 12px; }
+.trade-list li { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; font-family: var(--display); font-weight: 700; font-size: 16px; line-height: 1.2; letter-spacing: -0.01em; }
+.trade-list .trade-tile { width: 72px; height: 72px; }
+.section-head { text-align: center; max-width: 680px; margin: 0 auto 56px; }
+.feature { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 72px; align-items: center; margin: 0 auto 88px; max-width: 940px; }
 .feature.flip { grid-template-columns: minmax(0, 1fr) 300px; }
 .feature.flip .phone { order: 2; }
-.feature h3 { font-size: 30px; }
-.feature .lead { margin: 10px 0 20px; }
-.badge { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background: var(--brand-soft); color: var(--brand); margin-bottom: 16px; }
-.points { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.feature h3 { font-size: 34px; font-weight: 800; line-height: 1.1; letter-spacing: -0.035em; }
+.feature .lead { margin: 12px 0 24px; }
+.badge { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 16px; background: var(--brand-soft); color: var(--brand-text); margin-bottom: 18px; }
+.points { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
 .points li { display: flex; gap: 12px; margin: 0; }
-.points li > .icon { width: 20px; height: 20px; margin-top: 3px; color: var(--brand); }
-.points strong { display: block; }
+.points li > .icon { box-sizing: content-box; width: 14px; height: 14px; padding: 4px; margin-top: 3px; border-radius: 50%; background: var(--brand-soft); color: var(--brand-text); stroke-width: 3; }
+.points strong { display: block; font-family: var(--display); font-weight: 700; font-size: 18px; letter-spacing: -0.01em; }
 .points span { color: var(--muted); }
-.caption { text-align: center; color: var(--muted); font-size: 14px; margin: -32px 0 56px !important; }
-.more-title { text-align: center; margin-bottom: 24px !important; }
+.caption { text-align: center; color: var(--muted); font-size: 14px; margin: -40px 0 64px !important; }
+.more-title { text-align: center; font-size: 26px !important; font-weight: 800; letter-spacing: -0.03em !important; margin-bottom: 24px !important; }
 .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
 .tiles.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.tile { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 22px; }
-.tile .icon { color: var(--brand); margin-bottom: 12px; }
-.tile h3, .tile h4 { font-family: inherit; font-size: 17px; font-weight: 650; letter-spacing: 0; margin: 0 0 6px; }
+.tile { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 24px; box-shadow: var(--shadow-card); }
+.tile .icon { box-sizing: content-box; padding: 11px; border-radius: 14px; background: var(--brand-soft); color: var(--brand-text); margin-bottom: 16px; }
+.tile h3, .tile h4 { font-family: var(--display); font-size: 19px; font-weight: 700; letter-spacing: -0.015em; margin: 0 0 6px; }
 .tile p { color: var(--muted); font-size: 15px; }
 .steps ol { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.steps li { margin: 0; padding: 24px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); }
-.steps .number { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #1C1A17; font-weight: 700; margin-bottom: 14px; }
-.steps h3 { margin-bottom: 6px; font-size: 20px; }
+.steps li { margin: 0; padding: 26px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-card); }
+.steps .number { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(180deg, var(--panel), var(--panel-2)); color: var(--on-panel); font-family: var(--display); font-weight: 800; font-size: 20px; margin-bottom: 16px; }
+.steps h3 { margin-bottom: 6px; font-size: 21px; }
 .steps p { color: var(--muted); }
 .promises h2 { margin-bottom: 28px; }
-.business { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 56px; padding: 48px; border-radius: 28px; background: var(--ink); color: #F4F1EA; }
-.business .eyebrow { color: var(--accent); }
-.business h2 { color: #F4F1EA; }
-.business .points span { color: rgba(244, 241, 234, 0.82); }
-.business .points li > .icon { color: var(--accent); }
+.business { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 56px; padding: 56px; border-radius: 28px; background: var(--ink); color: var(--on-ink); }
+.business .eyebrow { color: var(--on-ink-soft); }
+.business h2 { color: var(--on-ink); }
+.business .points span { color: var(--on-ink-soft); }
+.business .points li > .icon { background: rgba(47, 211, 156, 0.16); color: #2FD39C; }
 .business .actions { grid-column: 1 / -1; margin-top: 0; }
 .faq { max-width: 760px; margin-left: auto !important; margin-right: auto !important; }
 .faq h2 { margin-bottom: 20px; }
 .faq details { border-top: 1px solid var(--border); padding: 18px 0; }
 .faq details:last-of-type { border-bottom: 1px solid var(--border); }
-.faq summary { cursor: pointer; font-weight: 600; font-size: 18px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.faq summary { cursor: pointer; font-family: var(--display); font-weight: 700; font-size: 19px; letter-spacing: -0.015em; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 32px; }
 .faq summary::-webkit-details-marker { display: none; }
-.faq summary::after { content: "+"; color: var(--brand); font-size: 22px; line-height: 1; }
+.faq summary::after { content: "+"; flex: none; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--brand-soft); color: var(--brand-text); font-size: 20px; line-height: 1; }
 .faq details[open] summary::after { content: "–"; }
 .faq details p { color: var(--muted); margin-top: 10px; }
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; gap: 40px; padding-top: 8px; }
   .hero-phone { justify-self: center; transform: none; }
+  .trade-list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .feature, .feature.flip { grid-template-columns: 1fr; gap: 32px; }
   .feature .phone, .feature.flip .phone { order: 2; justify-self: center; width: 260px; }
   .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tiles.three, .steps ol, .business { grid-template-columns: 1fr; }
-  .business { padding: 32px 24px; }
+  .business { padding: 36px 24px; }
 }
 @media (max-width: 520px) {
-  main.landing { padding: 0 16px; }
-  .landing section { margin-bottom: 64px; }
+  body.wide .masthead { padding-bottom: 104px; }
+  main.landing { padding: 0 12px; }
+  .landing section { margin-bottom: 72px; }
+  .hero { padding: 4px 16px 0; }
+  .hero h1 { font-size: 42px; }
   .hero .lead { font-size: 18px; }
-  .phone { width: 260px; border-radius: 38px; padding: 8px; }
-  .phone img { border-radius: 30px; }
+  .phone { width: 260px; border-radius: 40px; padding: 8px; }
+  .phone img { border-radius: 32px; }
+  main.landing > .trades { margin: -64px 0 72px; padding: 18px 8px 16px; border-radius: 20px; }
+  .trade-list { gap: 14px 4px; }
+  .trade-list li { font-size: 14px; gap: 8px; }
+  .trade-list .trade-tile { width: 58px; height: 58px; }
+  .section-head, .faq h2, .steps h2, .promises h2 { padding: 0 4px; }
   .tiles { grid-template-columns: 1fr; }
-  .caption { margin-top: -16px !important; }
+  .caption { margin-top: -24px !important; }
 }
 `;
 
