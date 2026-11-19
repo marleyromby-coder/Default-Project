@@ -52,6 +52,7 @@ interface TabButtonProps extends Omit<TabTriggerSlotProps, 'ref'> {
 function TabButton({ icon, label, badge, isFocused, ...props }: TabButtonProps) {
   const colors = useTheme();
   const color = isFocused ? colors.brandText : colors.textSecondary;
+  const iconColor = isFocused ? colors.brand : colors.textSecondary;
   return (
     <Pressable
       {...props}
@@ -60,16 +61,16 @@ function TabButton({ icon, label, badge, isFocused, ...props }: TabButtonProps) 
       accessibilityLabel={badge ? `${label}, ${badge}` : label}
       style={styles.tab}>
       <View>
-        <Icon name={icon} size={24} color={color} weight={isFocused ? 'semibold' : 'regular'} />
+        <Icon name={icon} size={24} color={iconColor} weight={isFocused ? 'semibold' : 'regular'} />
         {badge ? (
           <View style={[styles.badge, { backgroundColor: colors.danger }]}>
-            <AppText variant="caption2" style={styles.badgeText}>
+            <AppText variant="caption2" weight="700" style={{ color: colors.surface }}>
               {badge}
             </AppText>
           </View>
         ) : null}
       </View>
-      <AppText variant="caption2" style={{ color }} maxFontSizeMultiplier={1.2}>
+      <AppText variant="caption2" weight={isFocused ? '700' : '500'} style={{ color }} maxFontSizeMultiplier={1.2}>
         {label}
       </AppText>
     </Pressable>
@@ -95,5 +96,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 4,
   },
-  badgeText: { color: '#FFFFFF' },
 });

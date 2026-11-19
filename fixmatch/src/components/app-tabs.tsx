@@ -4,7 +4,11 @@ import { useTheme } from '@/hooks/use-theme';
 import { useApp } from '@/state/app-state';
 import { t } from '@/i18n';
 
-/** Native tab bar (Liquid Glass on iOS 26). The web build uses app-tabs.web.tsx. */
+/**
+ * Native tab bar (Liquid Glass on iOS 26). The selected tab takes `brandText`, the brand green
+ * made for text, in light and dark mode; the badge keeps the system's red. The web build uses
+ * app-tabs.web.tsx.
+ */
 export default function AppTabs() {
   const colors = useTheme();
   const { state } = useApp();
