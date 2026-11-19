@@ -15,6 +15,8 @@ import { t } from '@/i18n';
 const TRACK = 10;
 /** A range narrower than this still shows as a short pill. */
 const MIN_SEGMENT = 16;
+/** Width of the "middel" label under the band. */
+const MIDDLE_LABEL = 80;
 
 /**
  * "Prisniveau" on the business page: the level in neutral words, what it is compared with, and a
@@ -47,8 +49,6 @@ export function PriceInsightView({
   const bubbleLeft = Math.min(Math.max(0, insight.point * width - bubble / 2), width - bubble);
   const pointer = Math.min(Math.max(10, insight.point * width - bubbleLeft), bubble - 10);
   const middle = insight.middle;
-  // "middel" is written under the band unless it would run into the end labels.
-  const middleLabel = middle && middle.at > 0.3 && middle.at < 0.7;
 
   return (
     <View style={styles.wrap}>
@@ -140,6 +140,17 @@ export function PriceInsightView({
                   },
                 ]}
               />
+              {/* "middel" under the band, kept inside the bar so it never runs off the card. */}
+              <AppText
+                variant="footnote"
+                tone="textSecondary"
+                numberOfLines={1}
+                style={[
+                  styles.middleLabel,
+                  { left: Math.min(Math.max(0, middle.at * width - MIDDLE_LABEL / 2), width - MIDDLE_LABEL) },
+                ]}>
+                {t('middel')}
+              </AppText>
             </View>
           ) : null}
           <View style={styles.ends}>
@@ -149,15 +160,6 @@ export function PriceInsightView({
               </AppText>{' '}
               {t('lav')}
             </AppText>
-            {middleLabel ? (
-              <AppText
-                variant="footnote"
-                tone="textSecondary"
-                numberOfLines={1}
-                style={[styles.middleLabel, { left: `${middle.at * 100}%` }]}>
-                {t('middel')}
-              </AppText>
-            ) : null}
             <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
               {t('høj')}{' '}
               <AppText variant="footnote" weight="700">
@@ -213,7 +215,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mid: { width: 5, height: 5, borderRadius: 3 },
-  bracketRow: { height: 7, marginTop: 2 },
+  bracketRow: { height: 28, marginTop: 2 },
   bracket: {
     position: 'absolute',
     top: 0,
@@ -225,5 +227,5 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 3,
   },
   ends: { flexDirection: 'row', justifyContent: 'space-between' },
-  middleLabel: { position: 'absolute', top: 0, width: 80, marginLeft: -40, textAlign: 'center' },
+  middleLabel: { position: 'absolute', top: 9, width: MIDDLE_LABEL, textAlign: 'center' },
 });
