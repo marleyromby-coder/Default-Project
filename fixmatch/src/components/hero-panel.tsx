@@ -1,10 +1,10 @@
 import { useIsFocused } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import type { ReactNode } from 'react';
-import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { Platform, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Radius, Spacing } from '@/constants/theme';
+import { Fonts, type Palette, Radius, Spacing } from '@/constants/theme';
 import { useLayout } from '@/hooks/use-layout';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -77,6 +77,27 @@ export function HeroPanel({
       <View style={[column, contentStyle]}>{children}</View>
     </View>
   );
+}
+
+/**
+ * Navigation bar options for a screen whose HeroPanel starts right under the bar: the bar takes
+ * the panel's top colour, with white title, back chevron and buttons, and no hairline, so bar
+ * and panel read as one. Use with `<HeroPanel safeArea={false} />`, which also turns the status
+ * bar white: `<Stack.Screen options={{ ...panelHeaderOptions(colors), title }} />`.
+ */
+export function panelHeaderOptions(colors: Palette) {
+  return {
+    headerStyle: { backgroundColor: colors.panel },
+    headerTintColor: colors.onPanel,
+    // Same as the root layout's title style, in white.
+    headerTitleStyle: {
+      color: colors.onPanel,
+      fontWeight: '600',
+      fontFamily: Platform.OS === 'web' ? Fonts.sans : undefined,
+    },
+    headerShadowVisible: false,
+    headerLargeTitleEnabled: false,
+  } as const;
 }
 
 const styles = StyleSheet.create({
