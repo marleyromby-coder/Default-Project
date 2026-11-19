@@ -176,28 +176,34 @@ export function bestReviewed(items: ScoredBusiness[]): string | undefined {
 
 export type PriceLevel = 1 | 2 | 3;
 
-export const PRICE_LEVEL_LABELS: Record<PriceLevel, string> = {
-  1: t('Lavt prisniveau'),
-  2: t('Middel prisniveau'),
-  3: t('Højt prisniveau'),
-};
+/** Fewer businesses than this in the trade give no price level (it says "middel"). */
+export const PRICE_LEVEL_MIN_PEERS = 3;
+/** "Middel" is within this fraction of the trade's median hourly rate. */
+export const PRICE_LEVEL_BAND = 0.06;
 
-function median(values: number[]): number {
+export function median(values: number[]): number {
   const sorted = [...values].sort((a, b) => a - b);
   const middle = Math.floor(sorted.length / 2);
   return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
 }
 
-/** Price level compared with the median hourly rate of the trade (±6 %). */
-export function priceLevel(business: Business, all: Business[], category?: CategoryId): PriceLevel {
+/**
+ * The businesses a price level is compared with: the same trade in the same country (their
+ * prices are in the same currency). The business itself is included when it is in `all`.
+ */
+export function pricePeers(business: Business, all: Business[], category?: CategoryId): Business[] {
   const trade = category ?? business.categories[0];
   const country = business.country ?? 'DK';
-  // Peers in the same country only: their prices are in the same currency.
-  const peers = all.filter((b) => (b.country ?? 'DK') === country && b.categories.includes(trade)).map(priceIndex);
-  if (peers.length < 3) return 2;
+  return all.filter((b) => (b.country ?? 'DK') === country && b.categories.includes(trade));
+}
+
+/** Price level compared with the median hourly rate of the trade (±6 %). */
+export function priceLevel(business: Business, all: Business[], category?: CategoryId): PriceLevel {
+  const peers = pricePeers(business, all, category).map(priceIndex);
+  if (peers.length < PRICE_LEVEL_MIN_PEERS) return 2;
   const ratio = priceIndex(business) / median(peers);
-  if (ratio < 0.94) return 1;
-  if (ratio > 1.06) return 3;
+  if (ratio < 1 - PRICE_LEVEL_BAND) return 1;
+  if (ratio > 1 + PRICE_LEVEL_BAND) return 3;
   return 2;
 }
 

@@ -1,30 +1,29 @@
+import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useMemo, useState } from 'react';
-import { Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { useMemo, useRef, useState } from 'react';
+import { Platform, ScrollView, type ScrollViewInstance, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { BusinessMark } from '@/components/business/business-mark';
-import { AvailabilityBadge } from '@/components/business/availability-badge';
-import { VerifiedMark } from '@/components/business/verified-mark';
 import { CustomerCard } from '@/components/business/customer-card';
 import { WorkPhotosCard } from '@/components/business/work-photos';
 import { PhotoStrip } from '@/components/problem-photos';
 import { OpenStatus } from '@/components/business/open-status';
-import { PriceLevel } from '@/components/business/price-level';
-import { ReviewRating } from '@/components/business/review-rating';
+import { PriceInsightView } from '@/components/business/price-insight';
 import { ScoreBars } from '@/components/business/score-bars';
+import { HeroPanel } from '@/components/hero-panel';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Button, IconButton } from '@/components/ui/button';
 import { Card, CardTitle, Divider } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { Notice } from '@/components/ui/notice';
+import { Stars } from '@/components/ui/stars';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
-import { MinTouchSize, Radius, ScreenPadding, Spacing } from '@/constants/theme';
+import { IconWell, MinTouchSize, Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { AUTHORIZATION_LABELS, getCategory } from '@/data/categories';
 import { useScored } from '@/hooks/use-results';
-import { useTheme } from '@/hooks/use-theme';
+import { useIsDark, useTheme, useTradeColor } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import {
   AUTHORIZATION_REGISTER_URL,
@@ -40,30 +39,38 @@ import {
   reportProblem,
   shareBusiness,
 } from '@/lib/contact';
-import { availableWhen } from '@/lib/availability';
 import { showDialog } from '@/lib/dialog';
 import {
+  currencySymbol,
   displayHost,
   formatDate,
   formatDistance,
-  formatHourly,
+  formatNumber,
   formatPhone,
   formatPrice,
   formatPriceRange,
+  formatRating,
   formatRegistryNumber,
 } from '@/lib/format';
 import { formatTime, mondayIndex, WEEKDAYS } from '@/lib/opening-hours';
-import { matchLabel, priceLevel, reviewCount, weightsFromPriorities } from '@/lib/ranking';
+import { priceInsight } from '@/lib/price-insight';
+import { matchLabel, reviewCount, weightsFromPriorities } from '@/lib/ranking';
+import { reviewRatingLabel } from '@/lib/review-label';
+import type { Business, CategoryId } from '@/lib/types';
 import { t } from '@/i18n';
-import { businessText, countryOf, currencyOf } from '@/lib/business-text';
-import { getMarket, taxNote } from '@/lib/markets';
+import { availableWhen } from '@/lib/availability';
+import { businessText, countryOf, currencyOf, initials } from '@/lib/business-text';
+import { type Currency, getMarket, taxNote } from '@/lib/markets';
 import { CHECK_TEXT, isTopRated, isVerified, passedChecks, verificationExpiry } from '@/lib/verification';
 import { MAX_COMPARE, useApp, useBusiness } from '@/state/app-state';
 import { answerRateText, useAnswerRate } from '@/state/answers';
+import { useReviewSummary } from '@/state/community';
 import { hasProblem, useProblem } from '@/state/problem';
 
-/** How far the header scrolls before the compact title bar appears. */
-const HEADER_SCROLL = 150;
+/** How far the page scrolls before the compact title bar appears. */
+const HEADER_SCROLL = 140;
+/** How far the facts card reaches up into the panel. */
+const OVERLAP = 44;
 
 export default function BusinessScreen() {
   const { column, gutter } = useLayout();
@@ -77,6 +84,10 @@ export default function BusinessScreen() {
   const problem = useProblem();
   const answers = answerRateText(useAnswerRate(business));
   const [scrolled, setScrolled] = useState(false);
+  const scroller = useRef<ScrollViewInstance>(null);
+  // Where "Kundernes erfaringer" starts, so "Læs" in the review bar can scroll to it.
+  const bodyY = useRef(0);
+  const reviewsY = useRef(0);
 
   if (!business || !scored) {
     return (
@@ -102,12 +113,11 @@ export default function BusinessScreen() {
   const favorite = state.favorites.includes(business.id);
   const comparing = state.compare.includes(business.id);
   const weights = weightsFromPriorities(state.priorities);
-  const level = priceLevel(business, state.businesses);
+  const insight = priceInsight(business, state.businesses);
 
   const today = mondayIndex(new Date());
   const free = availableWhen(business);
-
-  const tradePlural = (category?.plural ?? t('virksomheder')).toLowerCase();
+  const hourly = splitPrice(business.pricing.hourlyMin, business.pricing.hourlyMax, currency);
 
   const goBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
   const onCompare = () => {
@@ -118,117 +128,150 @@ export default function BusinessScreen() {
       );
     }
   };
+  const showReviews = () =>
+    scroller.current?.scrollTo({ y: Math.max(0, bodyY.current + reviewsY.current - insets.top - 64), animated: true });
 
   return (
     <View style={[styles.flex, { backgroundColor: colors.background }]}>
       <ScrollView
-        contentContainerStyle={[column, { paddingBottom: insets.bottom + 110 }]}
+        ref={scroller}
+        contentContainerStyle={{ paddingBottom: insets.bottom + 110 }}
         contentInsetAdjustmentBehavior="never"
         scrollEventThrottle={32}
         onScroll={(event) => {
           const past = event.nativeEvent.contentOffset.y > HEADER_SCROLL;
           if (past !== scrolled) setScrolled(past);
         }}>
-        <View
-          style={[
-            styles.header,
-            { paddingTop: insets.top + 64, backgroundColor: colors.surface, borderBottomColor: colors.border },
-          ]}>
-          <View style={styles.headerRow}>
-            <BusinessMark business={business} size={72} />
+        <HeroPanel overlap={OVERLAP} contentStyle={styles.hero}>
+          {/* Room for the back, share and save buttons, which stay at the top while the page scrolls. */}
+          <View style={styles.heroButtonsSpace} />
+          <View style={styles.heroRow}>
+            <HeroMark business={business} />
             <View style={styles.flex}>
-              <View style={styles.nameRow}>
-                <AppText variant="title2" numberOfLines={2} style={styles.shrink}>
-                  {business.name}
-                </AppText>
-                <VerifiedMark business={business} size={20} />
-              </View>
-              <AppText variant="subhead" tone="textSecondary" numberOfLines={2}>
-                {text.tagline}
+              <AppText variant="title1" tone="onPanel" numberOfLines={3}>
+                {business.name}
               </AppText>
-              <ReviewRating summary={business.reviewSummary} />
+              <AppText variant="footnote" tone="onPanelSoft" numberOfLines={2} style={styles.heroMeta}>
+                {[text.tagline, business.address.city].filter(Boolean).join(' · ')}
+              </AppText>
             </View>
           </View>
           <View style={styles.heroBadges}>
-            {category ? <Badge label={category.name} tone="neutral" icon={category.id} /> : null}
-            <AvailabilityBadge business={business} />
-            {isTopRated(business) ? <Badge label={t('Topbedømt')} tone="brand" icon="star" /> : null}
-            {business.videoCheck ? <Badge label={t('Videotjek')} tone="brand" icon="video" /> : null}
-          </View>
-          <View style={[styles.stats, { borderTopColor: colors.border }]}>
-            {[
-              { label: t('Match'), value: String(scored.score), detail: matchLabel(scored.score) },
-              {
-                label: t('Timepris'),
-                value: formatPriceRange(business.pricing.hourlyMin, business.pricing.hourlyMax, 'opgave', currency),
-                detail: taxNote(market),
-                wide: true,
-              },
-              { label: t('Afstand'), value: formatDistance(scored.distanceKm), detail: t('i luftlinje') },
-            ].map((stat, index) => (
-              <Stat key={stat.label} {...stat} first={index === 0} />
+            {verified ? (
+              <Badge
+                label={t('Verificeret')}
+                tone="panel"
+                icon="verified"
+                accessibilityLabel={t('Verificeret af FixMatch')}
+              />
+            ) : null}
+            {business.authorizations.map((auth) => (
+              <Badge key={auth.kind} label={AUTHORIZATION_LABELS[auth.kind]} tone="panel" icon="shield" />
             ))}
+            {business.demo ? (
+              <Badge label={t('Demo')} tone="panel" icon="info" accessibilityLabel={t('Eksempelvirksomhed')} />
+            ) : null}
+            {free ? (
+              <Badge
+                label={free === 'today' ? t('Ledig i dag') : t('Ledig i morgen')}
+                tone="panel"
+                icon="calendar"
+                accessibilityLabel={
+                  free === 'today' ? t('Har selv meldt ledig tid i dag') : t('Har selv meldt ledig tid i morgen')
+                }
+              />
+            ) : null}
+            {isTopRated(business) ? <Badge label={t('Topbedømt')} tone="panel" icon="star" /> : null}
+            {business.videoCheck ? <Badge label={t('Videotjek')} tone="panel" icon="video" /> : null}
           </View>
-        </View>
+        </HeroPanel>
 
-        <View style={styles.body}>
+        <View
+          style={[styles.body, column]}
+          onLayout={(event) => {
+            bodyY.current = event.nativeEvent.layout.y;
+          }}>
+          <Card elevation="raised" padded={false} style={[styles.facts, { marginTop: -OVERLAP }]}>
+            <Stat
+              label={t('Match')}
+              value={String(scored.score)}
+              detail={t('af 100')}
+              spoken={t('{score} af 100, {label}', { score: scored.score, label: matchLabel(scored.score) })}
+              first
+            />
+            <Stat
+              label={t('Timepris')}
+              value={hourly.value}
+              detail={[hourly.unit, taxNote(market)].filter(Boolean).join(' ')}
+              spoken={formatPriceRange(business.pricing.hourlyMin, business.pricing.hourlyMax, 'opgave', currency)}
+              brand
+              wide
+            />
+            <Stat
+              label={t('Afstand')}
+              value={formatDistance(scored.distanceKm)}
+              detail={state.location.label ? t('fra {place}', { place: state.location.label }) : t('i luftlinje')}
+            />
+          </Card>
+
+          <ReviewBar business={business} onPress={showReviews} />
+
           {business.demo ? (
             <Notice
               text={t(
                 'Fiktiv eksempelvirksomhed. Navn, telefonnummer, CVR og anmeldelser er opdigtede, og opkald er slået fra.',
               )}
+              style={styles.notice}
             />
           ) : null}
 
-          <View style={styles.quickActions}>
-            {business.contact.website ? (
-              <QuickAction icon="globe" label={t('Hjemmeside')} onPress={() => openWebsite(business)} />
-            ) : null}
-            <QuickAction icon="directions" label={t('Rute')} onPress={() => openDirections(business)} />
-            <QuickAction
-              icon={comparing ? 'check' : 'compare'}
-              label={comparing ? t('Valgt') : t('Sammenlign')}
-              onPress={onCompare}
-              selected={comparing}
-            />
-          </View>
-
           <Card>
-            <CardTitle title={t('Priser')} />
-            <View style={styles.priceHeader}>
-              <AppText variant="title2" rounded>
-                {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currency)}
-              </AppText>
-              <AppText variant="footnote" tone="textSecondary">
-                {[
-                  t('Timepris {tax}', { tax: taxNote(market) }),
-                  business.pricing.calloutFee
-                    ? t('kørsel/opstart {price} pr. besøg', {
-                        price: formatPrice(business.pricing.calloutFee, currency),
-                      })
-                    : t('ingen kørselsgebyr'),
-                ].join(' · ')}
-              </AppText>
-              <PriceLevel level={level} trade={tradePlural} />
-            </View>
+            <PriceInsightView
+              business={business}
+              insight={insight}
+              tradePlural={category?.plural ?? t('virksomheder')}
+              country={t(market.name)}
+              currency={currency}
+            />
             {business.pricing.examples.length > 0 ? (
               <View style={styles.examples}>
-                <AppText variant="subhead" weight="600">
-                  {t('Eksempelpriser')}
-                </AppText>
-                {business.pricing.examples.map((example) => (
-                  <View key={example.label} style={styles.exampleRow}>
-                    <AppText variant="subhead" style={styles.flex}>
-                      {jobName(example.job, example.label)}
-                    </AppText>
-                    <AppText variant="subhead" weight="600" tabular>
-                      {formatPriceRange(example.min, example.max, example.unit, currency)}
-                    </AppText>
+                <Divider />
+                <View style={styles.examplesHead}>
+                  <AppText variant="subhead" weight="700" style={styles.flex}>
+                    {t('Eksempelpriser')}
+                  </AppText>
+                  <AppText variant="caption" tone="textSecondary">
+                    {taxNote(market)}
+                  </AppText>
+                </View>
+                {business.pricing.examples.map((example, index) => (
+                  <View key={example.label}>
+                    {index > 0 ? <Divider /> : null}
+                    <View style={styles.exampleRow}>
+                      <AppText variant="subhead" style={styles.flex}>
+                        {jobName(example.job, example.label)}
+                      </AppText>
+                      <AppText variant="subhead" display weight="700">
+                        {formatPriceRange(example.min, example.max, example.unit, currency)}
+                      </AppText>
+                    </View>
                   </View>
                 ))}
               </View>
-            ) : null}
-            <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
+            ) : (
+              <Divider />
+            )}
+            <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
+              {[
+                t('Timepris {tax}', { tax: taxNote(market) }),
+                business.pricing.calloutFee
+                  ? t('kørsel/opstart {price} pr. besøg', {
+                      price: formatPrice(business.pricing.calloutFee, currency),
+                    })
+                  : t('ingen kørselsgebyr'),
+              ].join(' · ')}
+            </AppText>
+            <AppText variant="caption" tone="textSecondary" style={styles.spacedSmall}>
               {t(
                 'Vejledende priser oplyst af virksomheden {date}. Materialer kan komme oveni. Bed altid om et skriftligt tilbud.',
                 { date: formatDate(business.pricing.updatedAt) },
@@ -319,7 +362,7 @@ export default function BusinessScreen() {
               }
               onPress={() => callBusiness(business)}
             />
-            <Divider inset={30} />
+            <Divider inset={IconWell.row.size + Spacing.md} />
             {business.contact.website ? (
               <>
                 <InfoRow
@@ -328,7 +371,7 @@ export default function BusinessScreen() {
                   value={business.demo ? t('Fiktiv (demo)') : displayHost(business.contact.website)}
                   onPress={() => openWebsite(business)}
                 />
-                <Divider inset={30} />
+                <Divider inset={IconWell.row.size + Spacing.md} />
               </>
             ) : null}
             <InfoRow
@@ -339,13 +382,18 @@ export default function BusinessScreen() {
             />
             {text.responseTime ? (
               <>
-                <Divider inset={30} />
+                <Divider inset={IconWell.row.size + Spacing.md} />
                 <InfoRow icon="chat" label={t('Svartid')} value={text.responseTime} />
               </>
             ) : null}
           </Card>
 
-          <CustomerCard business={business} />
+          <View
+            onLayout={(event) => {
+              reviewsY.current = event.nativeEvent.layout.y;
+            }}>
+            <CustomerCard business={business} />
+          </View>
 
           <Card>
             <CardTitle
@@ -416,7 +464,7 @@ export default function BusinessScreen() {
                 <Badge key={service} label={service} tone="brand" />
               ))}
             </View>
-            <View style={styles.facts}>
+            <View style={styles.facts2}>
               {business.founded ? (
                 <Fact icon="calendar" label={t('Etableret')} value={String(business.founded)} />
               ) : null}
@@ -456,7 +504,7 @@ export default function BusinessScreen() {
                 onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'verificering' } })}
               />
             )}
-            <Divider inset={30} />
+            <Divider inset={IconWell.row.size + Spacing.md} />
             {business.cvr && market.registryLabel ? (
               <InfoRow
                 icon="building"
@@ -467,7 +515,7 @@ export default function BusinessScreen() {
             ) : null}
             {business.authorizations.map((auth) => (
               <View key={auth.kind}>
-                <Divider inset={30} />
+                <Divider inset={IconWell.row.size + Spacing.md} />
                 <InfoRow
                   icon="shield"
                   label={AUTHORIZATION_LABELS[auth.kind]}
@@ -489,11 +537,11 @@ export default function BusinessScreen() {
             ))}
             {business.memberships.map((membership) => (
               <View key={membership}>
-                <Divider inset={30} />
+                <Divider inset={IconWell.row.size + Spacing.md} />
                 <InfoRow icon="handshake" label={t('Medlem af')} value={membership} />
               </View>
             ))}
-            <Divider inset={30} />
+            <Divider inset={IconWell.row.size + Spacing.md} />
             <InfoRow
               icon="check"
               label={t('Samtykke')}
@@ -528,26 +576,24 @@ export default function BusinessScreen() {
       </ScrollView>
 
       {scrolled ? (
-        <View
-          style={[
-            styles.topBar,
-            { height: insets.top + 60, backgroundColor: colors.surface, borderBottomColor: colors.border },
-          ]}
-          pointerEvents="none">
-          <AppText variant="headline" numberOfLines={1} style={styles.topBarTitle}>
+        <View style={[styles.topBar, { height: insets.top + 60, backgroundColor: colors.panel }]} pointerEvents="none">
+          <AppText variant="headline" display tone="onPanel" numberOfLines={1} style={styles.topBarTitle}>
             {business.name}
           </AppText>
         </View>
       ) : null}
-      <View style={[styles.topButtons, { top: insets.top + Spacing.sm }]} pointerEvents="box-none">
-        <FloatingButton icon="back" label={t('Tilbage')} onPress={goBack} />
+      <View
+        style={[styles.topButtons, { top: insets.top + Spacing.sm, left: gutter, right: gutter }]}
+        pointerEvents="box-none">
+        <IconButton icon="back" accessibilityLabel={t('Tilbage')} onPress={goBack} onPanel />
         <View style={styles.topRight}>
-          <FloatingButton icon="share" label={t('Del')} onPress={() => shareBusiness(business)} />
-          <FloatingButton
+          <IconButton icon="share" accessibilityLabel={t('Del')} onPress={() => shareBusiness(business)} onPanel />
+          <IconButton
             icon={favorite ? 'heartFill' : 'heart'}
-            label={favorite ? t('Fjern fra gemte') : t('Gem')}
+            accessibilityLabel={favorite ? t('Fjern fra gemte') : t('Gem')}
             onPress={() => toggleFavorite(business.id)}
-            active={favorite}
+            selected={favorite}
+            onPanel
           />
         </View>
       </View>
@@ -570,41 +616,112 @@ export default function BusinessScreen() {
           style={styles.flex}
           accessibilityLabel={t('Ring til {name}', { name: business.name })}
         />
+        <Tappable
+          onPress={onCompare}
+          accessibilityRole="button"
+          accessibilityLabel={
+            comparing ? t('Fjern fra sammenligning') : t('Sammenlign {name}', { name: business.name })
+          }
+          accessibilityState={{ selected: comparing }}
+          style={[styles.compare, { backgroundColor: comparing ? colors.brandStrong : colors.brandSoft }]}>
+          <Icon
+            name={comparing ? 'check' : 'compare'}
+            size={20}
+            color={comparing ? colors.onBrand : colors.brandText}
+            weight="bold"
+          />
+        </Tappable>
       </View>
     </View>
   );
 }
 
-function QuickAction({
-  icon,
-  label,
-  onPress,
-  selected,
-}: {
-  icon: IconName;
-  label: string;
-  onPress: () => void;
-  selected?: boolean;
-}) {
+/** "560–660" big, with "kr." in the line under it; "£60–90" stays whole. */
+function splitPrice(min: number, max: number, currency: Currency): { value: string; unit: string } {
+  const full = formatPriceRange(min, max, 'opgave', currency);
+  const symbol = currencySymbol(currency);
+  if (symbol.length > 1 && full.endsWith(symbol)) return { value: full.slice(0, -symbol.length).trim(), unit: symbol };
+  if (symbol.length > 1 && full.startsWith(symbol)) return { value: full.slice(symbol.length).trim(), unit: symbol };
+  return { value: full, unit: '' };
+}
+
+/**
+ * The business's own picture, or its initials in the trade's colour on a white tile, as on the
+ * panel in the design.
+ */
+function HeroMark({ business }: { business: Business }) {
   const colors = useTheme();
-  // The call bar at the bottom is the one filled button. A selected toggle is tinted, not filled.
-  const background = selected ? colors.brandSoft : colors.surface;
-  const foreground = selected ? colors.brandText : colors.text;
+  const dark = useIsDark();
+  const trade = useTradeColor(business.categories[0] as CategoryId);
+  if (business.photo.startsWith('https://')) {
+    return (
+      <Image
+        source={{ uri: business.photo }}
+        style={styles.heroMark}
+        contentFit="cover"
+        accessibilityIgnoresInvertColors
+        accessible={false}
+      />
+    );
+  }
+  const letters = initials(business.name);
+  return (
+    <View
+      style={[styles.heroMark, { backgroundColor: dark ? trade.soft : colors.surface }]}
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants">
+      <AppText
+        display
+        weight="800"
+        allowFontScaling={false}
+        style={[styles.heroLetters, { color: trade.onSoft, fontSize: letters.length > 1 ? 24 : 30 }]}>
+        {letters}
+      </AppText>
+    </View>
+  );
+}
+
+/**
+ * FixMatch's own reviews in one bar under the facts: the average, how many and where they come
+ * from. "Læs" scrolls to "Kundernes erfaringer". Without reviews it says so.
+ */
+function ReviewBar({ business, onPress }: { business: Business; onPress: () => void }) {
+  const colors = useTheme();
+  const summary = useReviewSummary(business);
+  const has = !!summary && summary.reviews > 0;
   return (
     <Tappable
       onPress={onPress}
-      accessibilityLabel={label}
-      accessibilityState={selected === undefined ? undefined : { selected }}
-      style={[styles.quickAction, { backgroundColor: background }]}>
-      <Icon name={icon} size={20} color={colors.brandText} weight="semibold" />
-      <AppText
-        variant="caption"
-        weight="600"
-        style={{ color: foreground }}
-        numberOfLines={1}
-        maxFontSizeMultiplier={1.2}>
-        {label}
-      </AppText>
+      accessibilityRole="button"
+      accessibilityLabel={has ? reviewRatingLabel(summary) : t('Ingen anmeldelser endnu')}
+      accessibilityHint={t('Viser kundernes erfaringer')}
+      style={[styles.reviewBar, { backgroundColor: colors.surface }]}>
+      <Stars value={has ? 1 : 0} count={1} size={18} />
+      {has ? (
+        <AppText variant="title3" display weight="800">
+          {formatRating(summary.average)}
+        </AppText>
+      ) : null}
+      <View style={styles.flex}>
+        <AppText variant="subhead" weight="700" numberOfLines={1}>
+          {!has
+            ? t('Ingen anmeldelser endnu')
+            : summary.reviews === 1
+              ? t('1 anmeldelse')
+              : t('{count} anmeldelser', { count: formatNumber(summary.reviews) })}
+        </AppText>
+        <AppText variant="footnote" tone="textSecondary" numberOfLines={2}>
+          {has
+            ? t('fra brugere via FixMatch')
+            : t('Kun brugere, der har kontaktet virksomheden gennem FixMatch, kan anmelde den.')}
+        </AppText>
+      </View>
+      <View style={styles.reviewLink}>
+        <AppText variant="subhead" weight="600" tone="brandText">
+          {t('Læs')}
+        </AppText>
+        <Icon name="chevronRight" size={12} color={colors.brandText} weight="semibold" />
+      </View>
     </Tappable>
   );
 }
@@ -626,7 +743,9 @@ function InfoRow({
   const colors = useTheme();
   const content = (
     <View style={styles.infoRow}>
-      <Icon name={icon} size={17} color={colors.textSecondary} />
+      <View style={[styles.iconWell, { backgroundColor: colors.brandSoft }]}>
+        <Icon name={icon} size={15} color={colors.brandText} weight="semibold" />
+      </View>
       <View style={styles.flex}>
         <AppText variant="caption" tone="textSecondary">
           {label}
@@ -685,42 +804,28 @@ function InfoLink({ label, slug }: { label: string; slug: string }) {
   );
 }
 
-function FloatingButton({
-  icon,
-  label,
-  onPress,
-  active,
-}: {
-  icon: IconName;
-  label: string;
-  onPress: () => void;
-  active?: boolean;
-}) {
-  const colors = useTheme();
-  return (
-    <Tappable onPress={onPress} accessibilityLabel={label} style={[styles.floating, { backgroundColor: colors.fill }]}>
-      <Icon name={icon} size={18} color={active ? colors.brand : colors.text} weight="bold" />
-    </Tappable>
-  );
-}
-
 /**
- * One column of the fact strip under the name, like the App Store's: label, value, detail,
- * with a hairline between the columns.
+ * One column of the facts card that overlaps the panel: label, value, detail, with a hairline
+ * between the columns. The hourly rate is in the brand colour, as the design asks.
  */
 function Stat({
   label,
   value,
   detail,
+  spoken,
   first,
   wide,
+  brand,
 }: {
   label: string;
   value: string;
   detail: string;
-  first: boolean;
+  /** What VoiceOver reads for the value, when it differs from the text. */
+  spoken?: string;
+  first?: boolean;
   /** Gets more of the width, for a price range that is longer than the other values. */
   wide?: boolean;
+  brand?: boolean;
 }) {
   const colors = useTheme();
   return (
@@ -731,18 +836,18 @@ function Stat({
         first ? null : { borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: colors.border },
       ]}
       accessible
-      accessibilityLabel={`${label}: ${value}, ${detail}`}>
-      <AppText variant="caption" tone="textSecondary" numberOfLines={1} maxFontSizeMultiplier={1.3}>
+      accessibilityLabel={`${label}: ${spoken ?? `${value}, ${detail}`}`}>
+      <AppText variant="footnote" tone="textSecondary" numberOfLines={1} maxFontSizeMultiplier={1.3}>
         {label}
       </AppText>
       {/* iOS shrinks a long value, like a price range, to fit; the web cannot, so it starts smaller. */}
       <AppText
-        variant={Platform.OS === 'web' ? 'headline' : 'title3'}
-        weight="600"
-        tabular
+        variant="title1"
+        tone={brand ? 'brandText' : 'text'}
         numberOfLines={1}
         adjustsFontSizeToFit
-        maxFontSizeMultiplier={1.3}>
+        maxFontSizeMultiplier={1.3}
+        style={Platform.OS === 'web' ? styles.statValueWeb : null}>
         {value}
       </AppText>
       <AppText variant="caption" tone="textSecondary" numberOfLines={1} maxFontSizeMultiplier={1.3}>
@@ -754,33 +859,46 @@ function Stat({
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  header: {
-    paddingHorizontal: ScreenPadding,
-    paddingBottom: Spacing.md,
-    gap: Spacing.md,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-  headerRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  heroBadges: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs },
-  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  shrink: { flexShrink: 1 },
-  checks: { gap: 6, paddingLeft: 30, paddingBottom: Spacing.sm },
-  checkRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
-  stats: { flexDirection: 'row', borderTopWidth: StyleSheet.hairlineWidth, paddingTop: Spacing.md },
-  stat: { flex: 1, alignItems: 'center', gap: 1, paddingHorizontal: 2 },
-  statWide: { flex: 1.4 },
-  body: { padding: ScreenPadding, gap: Spacing.lg },
-  quickActions: { flexDirection: 'row', gap: Spacing.sm },
-  quickAction: {
-    flex: 1,
-    minHeight: 64,
+  hero: { gap: Spacing.md },
+  heroButtonsSpace: { height: MinTouchSize },
+  heroRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
+  heroMark: {
+    width: 64,
+    height: 64,
     borderRadius: Radius.lg,
     borderCurve: 'continuous',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 4,
-    paddingHorizontal: 4,
+    overflow: 'hidden',
   },
+  heroLetters: { lineHeight: 64, textAlign: 'center' },
+  heroMeta: { marginTop: Spacing.xs },
+  heroBadges: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs + 2 },
+  checks: { gap: 6, paddingLeft: IconWell.row.size + Spacing.md, paddingBottom: Spacing.sm },
+  checkRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
+  facts: {
+    flexDirection: 'row',
+    paddingVertical: Spacing.md + 2,
+    paddingHorizontal: Spacing.xs,
+    borderRadius: Radius.card,
+  },
+  stat: { flex: 1, alignItems: 'center', gap: 2, paddingHorizontal: 3 },
+  statWide: { flex: 1.3 },
+  statValueWeb: { fontSize: 25, lineHeight: 30 },
+  reviewBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm + 2,
+    minHeight: 64,
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.md,
+    borderRadius: Radius.lg,
+    borderCurve: 'continuous',
+  },
+  reviewLink: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  notice: { paddingHorizontal: Spacing.xs },
+  body: { paddingHorizontal: ScreenPadding, gap: Spacing.md + 2 },
+  quickActions: { flexDirection: 'row', gap: Spacing.sm },
   infoRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -788,14 +906,35 @@ const styles = StyleSheet.create({
     minHeight: MinTouchSize + 8,
     paddingVertical: Spacing.xs,
   },
+  iconWell: {
+    width: IconWell.row.size,
+    height: IconWell.row.size,
+    borderRadius: IconWell.row.radius,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   spaced: { marginTop: Spacing.md },
+  spacedSmall: { marginTop: Spacing.xs },
   buttonRow: { flexDirection: 'row', marginTop: Spacing.md },
-  priceHeader: { gap: Spacing.xs },
-  examples: { marginTop: Spacing.lg, gap: Spacing.sm },
-  exampleRow: { flexDirection: 'row', alignItems: 'baseline', gap: Spacing.md },
+  examples: { marginTop: Spacing.lg },
+  examplesHead: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: Spacing.md,
+    paddingTop: Spacing.md,
+    paddingBottom: Spacing.xs,
+  },
+  exampleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.md,
+    minHeight: 40,
+    paddingVertical: Spacing.xs,
+  },
   hoursRow: { flexDirection: 'row', paddingVertical: 5 },
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs, marginTop: Spacing.md },
-  facts: { flexDirection: 'row', gap: Spacing.sm, marginTop: Spacing.md },
+  facts2: { flexDirection: 'row', gap: Spacing.sm, marginTop: Spacing.md },
   fact: {
     flex: 1,
     flexDirection: 'row',
@@ -803,6 +942,7 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
     padding: Spacing.md,
     borderRadius: Radius.md,
+    borderCurve: 'continuous',
   },
   footer: { gap: Spacing.sm, alignItems: 'center', paddingTop: Spacing.sm },
   topBar: {
@@ -813,33 +953,32 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     paddingBottom: 18,
-    borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  topBarTitle: { maxWidth: '50%' },
+  // Clear of the back button on the left and the two buttons on the right.
+  topBarTitle: { alignSelf: 'stretch', textAlign: 'center', marginHorizontal: MinTouchSize * 2 + Spacing.xxl },
   topButtons: {
     position: 'absolute',
-    left: ScreenPadding,
-    right: ScreenPadding,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   topRight: { flexDirection: 'row', gap: Spacing.sm },
-  floating: {
-    width: MinTouchSize,
-    height: MinTouchSize,
-    borderRadius: MinTouchSize / 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   contactBar: {
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
     flexDirection: 'row',
-    gap: Spacing.sm,
-    paddingHorizontal: ScreenPadding,
+    alignItems: 'center',
+    gap: Spacing.sm + 2,
     paddingTop: Spacing.md,
     borderTopWidth: StyleSheet.hairlineWidth,
+  },
+  compare: {
+    width: 56,
+    height: 54,
+    borderRadius: Radius.lg,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
