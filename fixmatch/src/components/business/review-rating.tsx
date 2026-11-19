@@ -20,7 +20,7 @@ export function ReviewRating({ summary, compact }: { summary?: ReviewSummary; co
       accessible
       accessibilityLabel={reviewRatingLabel(summary)}>
       {compact ? <Stars value={1} count={1} size={13} /> : <Stars value={summary.average} size={13} />}
-      <AppText variant="footnote" weight="600" tabular>
+      <AppText variant="footnote" display weight="700">
         {formatRating(summary.average)}
       </AppText>
       <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>

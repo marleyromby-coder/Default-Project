@@ -46,16 +46,16 @@ export function ScoreBars({ parts, weights, noReviews }: { parts: ScoreParts; we
                 </AppText>
               ) : null}
             </View>
-            <View style={[styles.track, { backgroundColor: colors.surfaceAlt, borderColor: colors.border }]}>
+            <View style={[styles.track, { backgroundColor: colors.fill }]}>
               {neutral ? null : (
                 <View style={[styles.fill, { width: `${Math.max(4, value * 100)}%`, backgroundColor: colors.brand }]} />
               )}
             </View>
             <AppText
               variant="subhead"
-              weight="600"
+              display
+              weight="700"
               tone={neutral ? 'textSecondary' : undefined}
-              tabular
               style={styles.value}>
               {neutral ? '–' : formatDecimal(value * 10)}
             </AppText>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   list: { gap: Spacing.sm },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   label: { width: 96 },
-  track: { flex: 1, height: 8, borderRadius: Radius.pill, overflow: 'hidden', borderWidth: StyleSheet.hairlineWidth },
+  track: { flex: 1, height: 8, borderRadius: Radius.pill, overflow: 'hidden' },
   fill: { height: '100%', borderRadius: Radius.pill },
   value: { width: 40, textAlign: 'right' },
   weight: { width: 38, textAlign: 'right' },

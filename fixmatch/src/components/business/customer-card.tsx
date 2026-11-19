@@ -78,11 +78,9 @@ export function CustomerCard({ business }: { business: Business }) {
       <CardTitle title={t('Kundernes erfaringer')} />
       {summary ? (
         <View style={styles.summary} accessible accessibilityLabel={reviewRatingLabel(summary)}>
-          <AppText variant="title2" rounded>
-            {formatRating(summary.average)}
-          </AppText>
+          <AppText variant="title1">{formatRating(summary.average)}</AppText>
           <View style={styles.flex}>
-            <Stars value={summary.average} size={16} />
+            <Stars value={summary.average} size={17} />
             <AppText variant="footnote" tone="textSecondary">
               {summary.reviews === 1
                 ? t('1 anmeldelse fra en bruger via FixMatch')
@@ -120,7 +118,7 @@ export function CustomerCard({ business }: { business: Business }) {
       {links.length > 0 ? (
         <View style={styles.elsewhere}>
           <Divider />
-          <AppText variant="subhead" weight="600">
+          <AppText variant="subhead" weight="700">
             {t('Se anmeldelser andre steder')}
           </AppText>
           <View style={styles.links}>
@@ -147,7 +145,7 @@ export function CustomerCard({ business }: { business: Business }) {
       {paid.length > 0 ? (
         <View style={styles.paid}>
           <Divider />
-          <AppText variant="subhead" weight="600">
+          <AppText variant="subhead" weight="700">
             {t('Det har kunder betalt')}
           </AppText>
           {paid.map(({ job, perUnit }) => (
@@ -155,7 +153,7 @@ export function CustomerCard({ business }: { business: Business }) {
               <AppText variant="subhead" style={styles.flex}>
                 {job.name}
               </AppText>
-              <AppText variant="subhead" weight="600">
+              <AppText variant="subhead" display weight="700">
                 {formatPriceRange(
                   Math.round(percentile(perUnit, 0.2)),
                   Math.round(percentile(perUnit, 0.8)),

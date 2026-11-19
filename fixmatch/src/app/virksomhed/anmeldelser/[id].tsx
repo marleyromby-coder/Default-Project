@@ -9,7 +9,7 @@ import { Card } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Stars } from '@/components/ui/stars';
 import { AppText } from '@/components/ui/text';
-import { ScreenPadding, Spacing } from '@/constants/theme';
+import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { useLayout } from '@/hooks/use-layout';
 import { useTheme } from '@/hooks/use-theme';
 import { formatRating } from '@/lib/format';
@@ -85,25 +85,25 @@ function AllReviews({ business }: { business: Business }) {
 
   const header = (
     <View style={styles.header}>
-      <AppText variant="title3" numberOfLines={2}>
-        {business.name}
-      </AppText>
-      {summary ? (
-        <View style={styles.summary} accessible accessibilityLabel={reviewRatingLabel(summary)}>
-          <AppText variant="title2" rounded>
-            {formatRating(summary.average)}
-          </AppText>
-          <View style={styles.flex}>
-            <Stars value={summary.average} size={16} />
-            <AppText variant="footnote" tone="textSecondary">
-              {summary.reviews === 1
-                ? t('1 anmeldelse fra en bruger via FixMatch')
-                : t('{count} anmeldelser fra brugere via FixMatch', { count: summary.reviews })}
-            </AppText>
+      <Card elevation="card" style={styles.summaryCard}>
+        <AppText variant="headline" display numberOfLines={2}>
+          {business.name}
+        </AppText>
+        {summary ? (
+          <View style={styles.summary} accessible accessibilityLabel={reviewRatingLabel(summary)}>
+            <AppText variant="largeTitle">{formatRating(summary.average)}</AppText>
+            <View style={styles.flex}>
+              <Stars value={summary.average} size={18} />
+              <AppText variant="footnote" tone="textSecondary">
+                {summary.reviews === 1
+                  ? t('1 anmeldelse fra en bruger via FixMatch')
+                  : t('{count} anmeldelser fra brugere via FixMatch', { count: summary.reviews })}
+              </AppText>
+            </View>
           </View>
-        </View>
-      ) : null}
-      <AppText variant="footnote" tone="textSecondary">
+        ) : null}
+      </Card>
+      <AppText variant="footnote" tone="textSecondary" style={styles.note}>
         {t('Alle anmeldelser, også de dårlige, med de nyeste først.')}
       </AppText>
     </View>
@@ -152,8 +152,10 @@ function AllReviews({ business }: { business: Business }) {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   list: { paddingHorizontal: ScreenPadding, paddingTop: Spacing.md },
-  header: { gap: Spacing.sm, marginBottom: Spacing.lg },
+  header: { gap: Spacing.md, marginBottom: Spacing.lg },
+  summaryCard: { gap: Spacing.md, borderRadius: Radius.card },
   summary: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
+  note: { paddingHorizontal: Spacing.xs },
   footer: { marginTop: Spacing.lg },
   failed: { gap: Spacing.xs, alignItems: 'center' },
 });

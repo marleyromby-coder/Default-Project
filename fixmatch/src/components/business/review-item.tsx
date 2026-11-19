@@ -47,7 +47,7 @@ export function ReviewItem({
     <View style={[styles.review, style]}>
       <View style={styles.head}>
         <View style={[styles.initial, { backgroundColor: colors.brandSoft }]}>
-          <AppText variant="footnote" weight="700" style={{ color: colors.brandText }}>
+          <AppText variant="footnote" display weight="800" style={{ color: colors.brandText }}>
             {review.initial}
           </AppText>
         </View>
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   review: { gap: Spacing.xs },
   head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
-  initial: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
+  initial: { width: 28, height: 28, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
   // A small caption, but a full 44 pt tap target.
   report: { alignSelf: 'flex-start', minHeight: MinTouchSize, justifyContent: 'center' },
 });
