@@ -35,11 +35,11 @@ function SavedWidget(props: SavedProps, env: WidgetEnvironment) {
   'widget';
   const dark = env.colorScheme === 'dark';
   const c = {
-    bg: dark ? '#1A1D18' : '#F7F4ED',
-    text: dark ? '#F2EEE5' : '#1C1A17',
-    muted: dark ? '#B8B1A4' : '#5E574C',
-    brand: dark ? '#8CC5A8' : '#2A6150',
-    open: dark ? '#6FD08F' : '#25733F',
+    bg: dark ? '#131D1A' : '#FFFFFF',
+    text: dark ? '#ECF4F0' : '#0B1A15',
+    muted: dark ? '#A6B8B1' : '#41524C',
+    brand: dark ? '#45DCA8' : '#00704F',
+    open: dark ? '#6FD08F' : '#1E7344',
   };
   // A string, because iOS 27's systemExtraLargePortrait is newer than expo-widgets' types.
   const family: string = env.widgetFamily ?? 'systemSmall';
@@ -54,7 +54,7 @@ function SavedWidget(props: SavedProps, env: WidgetEnvironment) {
           cornerRadius={size * 0.26}
           modifiers={[foregroundStyle(tone.background), frame({ width: size, height: size })]}
         />
-        <Text modifiers={[font({ size: size * 0.42, weight: 'bold', design: 'serif' }), foregroundStyle(tone.letters)]}>
+        <Text modifiers={[font({ size: size * 0.42, weight: 'heavy' }), foregroundStyle(tone.letters)]}>
           {business.initials}
         </Text>
       </ZStack>
@@ -108,11 +108,7 @@ function SavedWidget(props: SavedProps, env: WidgetEnvironment) {
         <Spacer />
         <Image systemName="heart.fill" size={26} color={c.brand} />
         <Text
-          modifiers={[
-            font({ size: 17, weight: 'bold', design: 'serif' }),
-            foregroundStyle(c.text),
-            multilineTextAlignment('center'),
-          ]}>
+          modifiers={[font({ size: 17, weight: 'heavy' }), foregroundStyle(c.text), multilineTextAlignment('center')]}>
           {props.empty}
         </Text>
         <Text
@@ -140,7 +136,7 @@ function SavedWidget(props: SavedProps, env: WidgetEnvironment) {
         <Spacer />
         <Text
           modifiers={[
-            font({ size: 17, weight: 'bold', design: 'serif' }),
+            font({ size: 17, weight: 'heavy' }),
             foregroundStyle(c.text),
             lineLimit(2),
             minimumScaleFactor(0.85),
@@ -160,9 +156,7 @@ function SavedWidget(props: SavedProps, env: WidgetEnvironment) {
     <VStack alignment="leading" spacing={tall ? 10 : 7} modifiers={[containerBackground(c.bg, 'widget')]}>
       <HStack spacing={6}>
         <Image systemName="heart.fill" size={13} color={c.brand} />
-        <Text modifiers={[font({ size: 15, weight: 'bold', design: 'serif' }), foregroundStyle(c.text)]}>
-          {props.title}
-        </Text>
+        <Text modifiers={[font({ size: 15, weight: 'heavy' }), foregroundStyle(c.text)]}>{props.title}</Text>
         <Spacer />
         {props.openSummary ? (
           <Text modifiers={[font({ textStyle: 'caption' }), foregroundStyle(c.open)]}>{props.openSummary}</Text>

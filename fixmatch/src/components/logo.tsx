@@ -7,9 +7,9 @@ import { useTheme } from '@/hooks/use-theme';
 import MARK from '../../assets/brand/mark.json';
 
 /**
- * The FixMatch mark: a serif "f" with the ochre dot of the wordmark, on pine. Fixed colours,
- * like the app icon, so it looks the same in light and dark mode. Same drawing as the icon
- * (scripts/render-brand-assets.js reads the same assets/brand/mark.json).
+ * The FixMatch mark: a white Schibsted Grotesk "f" with the sun-yellow dot of the wordmark, on
+ * emerald. Fixed colours, like the app icon, so it looks the same in light and dark mode. Same
+ * drawing as the icon (scripts/render-brand-assets.js reads the same assets/brand/mark.json).
  */
 export function LogoMark({ size = 32 }: { size?: number }) {
   const { colors, dot } = MARK;
@@ -33,17 +33,32 @@ export function LogoMark({ size = 32 }: { size?: number }) {
   );
 }
 
-/** The wordmark "fixmatch." in Fraunces, with the ochre full stop of the mark. */
-export function Logo({ size = 26, mark = false }: { size?: number; mark?: boolean }) {
+interface LogoProps {
+  /** Font size of the wordmark. */
+  size?: number;
+  /** Show the square mark before the wordmark. */
+  mark?: boolean;
+  /** White letters, for the coloured panel (HeroPanel). Otherwise ink, or light text in dark mode. */
+  onPanel?: boolean;
+}
+
+/** The wordmark "fixmatch." in Schibsted Grotesk Black, with the sun-yellow full stop of the mark. */
+export function Logo({ size = 26, mark = false, onPanel = false }: LogoProps) {
   const colors = useTheme();
   return (
     <View style={styles.row} accessible accessibilityRole="header" accessibilityLabel="FixMatch">
       {mark ? <LogoMark size={size * 1.15} /> : null}
       <AppText
         variant="title2"
-        weight="700"
+        display
+        weight="900"
         allowFontScaling={false}
-        style={{ fontSize: size, lineHeight: size * 1.2, letterSpacing: -size * 0.03 }}>
+        style={{
+          fontSize: size,
+          lineHeight: size * 1.2,
+          letterSpacing: -size * 0.035,
+          color: onPanel ? colors.onPanel : colors.text,
+        }}>
         fixmatch
         <Text style={{ color: colors.accent }}>.</Text>
       </AppText>

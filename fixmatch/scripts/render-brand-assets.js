@@ -5,8 +5,8 @@
  *
  * Usage: node scripts/render-brand-assets.js
  *
- * The mark – a lowercase "f" from Fraunces ExtraBold with the ochre dot beside it at the baseline –
- * lives in assets/brand/mark.json on a 64-unit tile, so the app's LogoMark
+ * The mark – a white lowercase "f" from Schibsted Grotesk Black with the sun-yellow dot beside it
+ * at the baseline, on emerald – lives in assets/brand/mark.json on a 64-unit tile, so the app's LogoMark
  * (src/components/logo.tsx), every icon and the widget images are drawn from the same outline.
  */
 const fs = require('node:fs');
@@ -79,7 +79,7 @@ const SAFE_ZONE = 72 / 108;
 const ASSETS = [
   // iOS App Store icon: full bleed, no transparency (iOS applies the mask).
   { file: 'assets/images/icon.png', size: 1024, svg: (s) => svg(s, placed(s), fullBleed(s)), opaque: true },
-  // iOS 26 Icon Composer layers on a transparent background (the pine fill is in icon.json),
+  // iOS 26 Icon Composer layers on a transparent background (the emerald fill is in icon.json),
   // so Liquid Glass lifts the letter and the dot separately.
   { file: 'assets/fixmatch.icon/Assets/letter.png', size: 1024, svg: (s) => svg(s, placed(s, { parts: ['f'] })) },
   { file: 'assets/fixmatch.icon/Assets/dot.png', size: 1024, svg: (s) => svg(s, placed(s, { parts: ['dot'] })) },
@@ -104,7 +104,7 @@ const ASSETS = [
 
 /**
  * Images for the widget extension's asset catalog (plugins/with-fixmatch-widgets.js): the
- * mark on its tile, the letter and dot for the pine widget, and a one-colour version that
+ * mark on its tile, the letter and dot for the emerald widget, and a one-colour version that
  * iOS tints on the lock screen. Rendered at @2x and @3x of the point size.
  */
 const WIDGET_IMAGES = [

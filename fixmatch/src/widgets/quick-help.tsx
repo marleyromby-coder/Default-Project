@@ -37,42 +37,43 @@ import type { QuickHelpProps } from './types';
  * The layout is serialised by the 'widget' directive and runs inside the widget extension,
  * so it may only use its props, the environment and the SwiftUI components and modifiers.
  * The logo images come from the extension's asset catalog (plugins/with-fixmatch-widgets.js).
- * The app's Fraunces is not in the extension, so titles use the system serif (New York).
+ * The app's Schibsted Grotesk is not in the extension, so titles use SF Pro Heavy.
  */
 function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
   'widget';
   const dark = env.colorScheme === 'dark';
   const c = {
-    bg: dark ? '#1A1D18' : '#F7F4ED',
-    text: dark ? '#F2EEE5' : '#1C1A17',
-    muted: dark ? '#B8B1A4' : '#5E574C',
-    brand: dark ? '#8CC5A8' : '#2A6150',
-    brandSoft: dark ? '#1D2C24' : '#E2EBE4',
-    pine: '#1F4A3A',
-    pineTop: '#2A5E4A',
-    cream: '#F4EFE4',
-    onPineSoft: '#C5D3CA',
-    ochre: '#D09A2E',
-    open: dark ? '#6FD08F' : '#25733F',
-    warning: dark ? '#F0B95B' : '#8F5405',
+    bg: dark ? '#131D1A' : '#FFFFFF',
+    text: dark ? '#ECF4F0' : '#0B1A15',
+    muted: dark ? '#A6B8B1' : '#41524C',
+    brand: dark ? '#45DCA8' : '#00704F',
+    brandSoft: dark ? '#0E2C22' : '#DCF4E9',
+    panel: '#00614A',
+    panelTop: '#007A56',
+    onPanel: '#FFFFFF',
+    onPanelSoft: '#E6F7EF',
+    sun: '#FFB800',
+    open: dark ? '#6FD08F' : '#1E7344',
+    warning: dark ? '#F5B26B' : '#8A4B00',
   };
-  const serif = (size: number) => font({ size, weight: 'bold', design: 'serif' });
+  const display = (size: number) => font({ size, weight: 'heavy' });
+  const wordmarkFont = (size: number) => font({ size, weight: 'black' });
 
-  // The FixMatch mark, and the letter with its dot alone (about 5:6) for pine and the lock screen.
+  // The FixMatch mark, and the letter with its dot alone (about 8:9) for the emerald panel and the lock screen.
   const mark = (size: number) => (
     <Image assetName="FixMatchMark" modifiers={[resizable(), frame({ width: size, height: size })]} />
   );
   const glyph = (height: number, mono = false) => (
     <Image
       assetName={mono ? 'FixMatchGlyphMono' : 'FixMatchGlyph'}
-      modifiers={[resizable(), frame({ width: height * 0.842, height })]}
+      modifiers={[resizable(), frame({ width: height * 0.885, height })]}
     />
   );
 
   const wordmark = (size: number) => (
     <HStack alignment="lastTextBaseline" spacing={0}>
-      <Text modifiers={[serif(size), foregroundStyle(c.text)]}>fixmatch</Text>
-      <Text modifiers={[serif(size), foregroundStyle(c.ochre)]}>.</Text>
+      <Text modifiers={[wordmarkFont(size), foregroundStyle(c.text)]}>fixmatch</Text>
+      <Text modifiers={[wordmarkFont(size), foregroundStyle(c.sun)]}>.</Text>
     </HStack>
   );
 
@@ -87,9 +88,9 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
       <Link destination={props.describeUrl}>
         <HStack
           spacing={5}
-          modifiers={[padding({ horizontal: 11, vertical: 6 }), background(c.pine, shapes.capsule())]}>
-          <Image systemName="wand.and.stars" size={12} color={c.ochre} />
-          <Text modifiers={[font({ size: 13, weight: 'semibold' }), foregroundStyle(c.cream)]}>
+          modifiers={[padding({ horizontal: 11, vertical: 6 }), background(c.panel, shapes.capsule())]}>
+          <Image systemName="wand.and.stars" size={12} color={c.sun} />
+          <Text modifiers={[font({ size: 13, weight: 'semibold' }), foregroundStyle(c.onPanel)]}>
             {props.describeShort}
           </Text>
         </HStack>
@@ -152,7 +153,7 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
       <VStack alignment="leading" spacing={1} modifiers={[widgetURL(first ? first.url : props.describeUrl)]}>
         <HStack spacing={4}>
           {glyph(13, true)}
-          <Text modifiers={[serif(13)]}>FixMatch</Text>
+          <Text modifiers={[display(13)]}>FixMatch</Text>
         </HStack>
         <Text modifiers={[font({ textStyle: 'headline' }), lineLimit(1), minimumScaleFactor(0.8)]}>
           {first ? first.name : props.describe}
@@ -173,7 +174,7 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
           containerBackground(
             {
               type: 'linearGradient',
-              colors: [c.pineTop, c.pine],
+              colors: [c.panelTop, c.panel],
               startPoint: { x: 0, y: 0 },
               endPoint: { x: 0, y: 1 },
             },
@@ -184,13 +185,13 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
         <HStack>
           {glyph(38)}
           <Spacer />
-          <Image systemName="wand.and.stars" size={15} color={c.ochre} />
+          <Image systemName="wand.and.stars" size={15} color={c.sun} />
         </HStack>
         <Spacer />
-        <Text modifiers={[serif(19), foregroundStyle(c.cream), lineLimit(2), minimumScaleFactor(0.85)]}>
+        <Text modifiers={[display(19), foregroundStyle(c.onPanel), lineLimit(2), minimumScaleFactor(0.85)]}>
           {props.describe}
         </Text>
-        <Text modifiers={[font({ textStyle: 'caption' }), foregroundStyle(c.onPineSoft), lineLimit(3)]}>
+        <Text modifiers={[font({ textStyle: 'caption' }), foregroundStyle(c.onPanelSoft), lineLimit(3)]}>
           {props.describeHint}
         </Text>
       </VStack>
@@ -224,23 +225,23 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
             modifiers={[
               padding({ all: 14 }),
               frame({ maxWidth: 1000 }),
-              background(c.pine, shapes.roundedRectangle({ cornerRadius: 18 })),
+              background(c.panel, shapes.roundedRectangle({ cornerRadius: 18 })),
             ]}>
             <ZStack>
-              <Ellipse modifiers={[foregroundStyle(c.ochre), frame({ width: 40, height: 40 })]} />
-              <Image systemName="wand.and.stars" size={17} color={c.pine} />
+              <Ellipse modifiers={[foregroundStyle(c.sun), frame({ width: 40, height: 40 })]} />
+              <Image systemName="wand.and.stars" size={17} color={c.panel} />
             </ZStack>
             <VStack alignment="leading" spacing={2}>
-              <Text modifiers={[serif(19), foregroundStyle(c.cream)]}>{props.describe}</Text>
-              <Text modifiers={[font({ textStyle: 'footnote' }), foregroundStyle(c.onPineSoft), lineLimit(2)]}>
+              <Text modifiers={[display(19), foregroundStyle(c.onPanel)]}>{props.describe}</Text>
+              <Text modifiers={[font({ textStyle: 'footnote' }), foregroundStyle(c.onPanelSoft), lineLimit(2)]}>
                 {props.describeHint}
               </Text>
             </VStack>
             <Spacer />
-            <Image systemName="chevron.right" size={13} color={c.onPineSoft} />
+            <Image systemName="chevron.right" size={13} color={c.onPanelSoft} />
           </HStack>
         </Link>
-        <Text modifiers={[serif(16), foregroundStyle(c.text)]}>{props.tradesTitle}</Text>
+        <Text modifiers={[display(16), foregroundStyle(c.text)]}>{props.tradesTitle}</Text>
         <HStack spacing={6}>
           {tradeTile(0, 50)}
           {tradeTile(1, 50)}
@@ -256,7 +257,7 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
         <Divider />
         {props.saved.length > 0 ? (
           <VStack alignment="leading" spacing={8}>
-            <Text modifiers={[serif(16), foregroundStyle(c.text)]}>{props.savedTitle}</Text>
+            <Text modifiers={[display(16), foregroundStyle(c.text)]}>{props.savedTitle}</Text>
             {props.saved.slice(0, 4).map((business) => {
               const tone = dark ? business.mark.dark : business.mark.light;
               return (
@@ -267,7 +268,7 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
                         cornerRadius={9}
                         modifiers={[foregroundStyle(tone.background), frame({ width: 34, height: 34 })]}
                       />
-                      <Text modifiers={[serif(14), foregroundStyle(tone.letters)]}>{business.initials}</Text>
+                      <Text modifiers={[display(14), foregroundStyle(tone.letters)]}>{business.initials}</Text>
                     </ZStack>
                     <VStack alignment="leading" spacing={0}>
                       <Text modifiers={[font({ size: 15, weight: 'semibold' }), foregroundStyle(c.text), lineLimit(1)]}>
@@ -321,23 +322,23 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
           modifiers={[
             padding({ all: 10 }),
             frame({ maxWidth: 1000 }),
-            background(c.pine, shapes.roundedRectangle({ cornerRadius: 16 })),
+            background(c.panel, shapes.roundedRectangle({ cornerRadius: 16 })),
           ]}>
           <ZStack>
-            <Ellipse modifiers={[foregroundStyle(c.ochre), frame({ width: 34, height: 34 })]} />
-            <Image systemName="wand.and.stars" size={15} color={c.pine} />
+            <Ellipse modifiers={[foregroundStyle(c.sun), frame({ width: 34, height: 34 })]} />
+            <Image systemName="wand.and.stars" size={15} color={c.panel} />
           </ZStack>
           <VStack alignment="leading" spacing={1}>
-            <Text modifiers={[serif(17), foregroundStyle(c.cream)]}>{props.describe}</Text>
-            <Text modifiers={[font({ textStyle: 'caption' }), foregroundStyle(c.onPineSoft), lineLimit(1)]}>
+            <Text modifiers={[display(17), foregroundStyle(c.onPanel)]}>{props.describe}</Text>
+            <Text modifiers={[font({ textStyle: 'caption' }), foregroundStyle(c.onPanelSoft), lineLimit(1)]}>
               {props.describeHint}
             </Text>
           </VStack>
           <Spacer />
-          <Image systemName="chevron.right" size={12} color={c.onPineSoft} />
+          <Image systemName="chevron.right" size={12} color={c.onPanelSoft} />
         </HStack>
       </Link>
-      <Text modifiers={[serif(15), foregroundStyle(c.text)]}>{props.tradesTitle}</Text>
+      <Text modifiers={[display(15), foregroundStyle(c.text)]}>{props.tradesTitle}</Text>
       <HStack spacing={6}>
         {tradeTile(0, 40)}
         {tradeTile(1, 40)}
@@ -363,7 +364,7 @@ function QuickHelpWidget(props: QuickHelpProps, env: WidgetEnvironment) {
                       cornerRadius={8}
                       modifiers={[foregroundStyle(tone.background), frame({ width: 30, height: 30 })]}
                     />
-                    <Text modifiers={[serif(13), foregroundStyle(tone.letters)]}>{business.initials}</Text>
+                    <Text modifiers={[display(13), foregroundStyle(tone.letters)]}>{business.initials}</Text>
                   </ZStack>
                   <VStack alignment="leading" spacing={0}>
                     <Text modifiers={[font({ size: 14, weight: 'semibold' }), foregroundStyle(c.text), lineLimit(1)]}>
