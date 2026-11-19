@@ -1,13 +1,90 @@
 import { router } from 'expo-router';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { TradeArt } from '@/components/trade-art';
 import { Icon } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { Radius, Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { useTheme, useTradeColor } from '@/hooks/use-theme';
+import { formatPrice, speakablePrice } from '@/lib/format';
+import type { TradeFromPrice } from '@/lib/prices';
 import type { Category } from '@/lib/types';
 import { t } from '@/i18n';
+
+function openTrade(category: Category) {
+  router.push({ pathname: '/kategori/[id]', params: { id: category.id } });
+}
+
+function nearbyText(nearby: number) {
+  return nearby === 1 ? t('1 i nærheden') : t('{nearby} i nærheden', { nearby });
+}
+
+interface TradeTileProps {
+  category: Category;
+  /**
+   * The lowest hourly price nearby, from lowestHourlyByTrade (src/lib/prices.ts). Without it
+   * the tile shows no price line.
+   */
+  fromPrice?: TradeFromPrice;
+  /** How many businesses are nearby; read out by VoiceOver only. */
+  nearby?: number;
+  /** Defaults to opening the trade's results. */
+  onPress?: () => void;
+}
+
+/**
+ * A trade on Find, four to a row: a square in the trade's colour with its illustration, the
+ * name below and "fra 560 kr." under that when a business nearby has a price. Give the parent
+ * row `gap` and let each tile flex; the square follows the column width.
+ */
+export function TradeTile({ category, fromPrice, nearby, onPress }: TradeTileProps) {
+  const trade = useTradeColor(category.id);
+  const price = fromPrice ? formatPrice(fromPrice.price, fromPrice.currency) : undefined;
+  const label = [
+    category.plural,
+    nearby === undefined ? undefined : nearbyText(nearby),
+    price ? t('Timepris fra {price}', { price: speakablePrice(price) }) : undefined,
+  ]
+    .filter(Boolean)
+    .join('. ');
+  return (
+    <Tappable
+      onPress={onPress ?? (() => openTrade(category))}
+      accessibilityLabel={label}
+      accessibilityHint={category.description}
+      pressedOpacity={0.75}
+      style={styles.tradeTile}>
+      <View style={[styles.square, { backgroundColor: trade.tile }]}>
+        <TradeArt trade={category.id} size="100%" />
+      </View>
+      <AppText
+        variant="subhead"
+        display
+        weight="700"
+        align="center"
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.75}
+        maxFontSizeMultiplier={1.3}
+        style={styles.name}>
+        {category.name}
+      </AppText>
+      {price ? (
+        <AppText
+          variant="footnote"
+          tone="textSecondary"
+          align="center"
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.8}
+          maxFontSizeMultiplier={1.3}>
+          {t('fra {price}', { price })}
+        </AppText>
+      ) : null}
+    </Tappable>
+  );
+}
 
 interface Props {
   category: Category;
@@ -15,19 +92,18 @@ interface Props {
 }
 
 /**
- * A trade on the home screen, four to a row: the icon in pine and the name. How many
- * businesses are nearby is read out by VoiceOver. One colour for all trades keeps the grid calm.
+ * The previous trade tile: the icon in emerald and the name on a white card. Kept until Find
+ * uses TradeTile.
  */
 export function CategoryTile({ category, nearby }: Props) {
   const colors = useTheme();
-  const count = nearby === 1 ? t('1 i nærheden') : t('{nearby} i nærheden', { nearby });
   return (
     <Tappable
-      onPress={() => router.push({ pathname: '/kategori/[id]', params: { id: category.id } })}
+      onPress={() => openTrade(category)}
       accessibilityLabel={t('{plural}. {description}. {count}', {
         plural: category.plural,
         description: category.description,
-        count,
+        count: nearbyText(nearby),
       })}
       pressedOpacity={0.7}
       style={[styles.tile, { backgroundColor: colors.surface }]}>
@@ -46,6 +122,16 @@ export function CategoryTile({ category, nearby }: Props) {
 }
 
 const styles = StyleSheet.create({
+  tradeTile: { flex: 1, minWidth: 0, alignItems: 'stretch' },
+  square: {
+    width: '100%',
+    aspectRatio: 1,
+    borderRadius: Radius.xl,
+    borderCurve: 'continuous',
+    overflow: 'hidden',
+  },
+  // 14 pt, so "Tagdækker" fits under a 77 pt tile (iPhone mini width) without shrinking.
+  name: { marginTop: Spacing.sm, fontSize: 14, lineHeight: 18 },
   tile: {
     flex: 1,
     minHeight: 76,

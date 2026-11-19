@@ -581,6 +581,7 @@ const en: Record<string, string> = {
   'Priser i {currency} {tax}': 'Prices in {currency} {tax}',
   'Timepris fra': 'Hourly rate from',
   'Timepris til': 'Hourly rate to',
+  'Timepris fra {price}': 'Hourly rate from {price}',
   'Kørselsgebyr (valgfrit)': 'Call-out fee (optional)',
   'Åbningstider (valgfrit)': 'Opening hours (optional)',
   'Fx man-fre 07-16, lør-søn lukket': 'E.g. Mon-Fri 07-16, Sat-Sun closed',

@@ -1,5 +1,6 @@
+import { distanceKm } from './geo';
 import type { Market } from './markets';
-import type { Business, Currency, JobType, PriceUnit } from './types';
+import type { Business, CategoryId, Coords, Currency, JobType, PriceUnit } from './types';
 
 export interface JobPriceSummary {
   min: number;
@@ -79,4 +80,48 @@ export function summarizeJobPrice(
   const min = roundPrice(percentile(mins, 0.2));
   const max = Math.max(min, roundPrice(percentile(maxs, 0.8)));
   return { min, max, unit: job.unit, currency: market.currency, count: examples.length, source: 'listed' };
+}
+
+/** The lowest hourly price of a trade near the user, for "fra 560 kr." on its tile. */
+export interface TradeFromPrice {
+  /** The lowest `hourlyMin` (incl. VAT where the market lists prices with VAT). */
+  price: number;
+  currency: Currency;
+  /** How many businesses with a price the lowest is taken from. */
+  businesses: number;
+}
+
+/** Same radius as the results list's default distance filter (DEFAULT_FILTERS.maxDistanceKm). */
+export const FROM_PRICE_RADIUS_KM = 25;
+
+/**
+ * The lowest hourly price per trade: the lowest starting price (`hourlyMin`, "fra") that any
+ * business within `maxKm` of `origin` lists (null: the whole country). Only `market`'s country
+ * and currency count, since prices are never compared across countries. The radius defaults to
+ * the results list's default distance filter, so the business behind "fra X kr." is in that
+ * list. A trade without a priced business nearby is left out: show no price line for it.
+ */
+export function lowestHourlyByTrade(
+  businesses: Business[],
+  origin: Coords,
+  market: Market,
+  maxKm: number | null = FROM_PRICE_RADIUS_KM,
+): Partial<Record<CategoryId, TradeFromPrice>> {
+  const out: Partial<Record<CategoryId, TradeFromPrice>> = {};
+  for (const business of businesses) {
+    if ((business.country ?? 'DK') !== market.country) continue;
+    if ((business.pricing.currency ?? market.currency) !== market.currency) continue;
+    const price = business.pricing.hourlyMin;
+    if (!Number.isFinite(price) || price <= 0) continue;
+    if (maxKm !== null && distanceKm(origin, business.coords) > maxKm) continue;
+    for (const trade of business.categories) {
+      const current = out[trade];
+      out[trade] = {
+        price: current ? Math.min(current.price, price) : price,
+        currency: market.currency,
+        businesses: (current?.businesses ?? 0) + 1,
+      };
+    }
+  }
+  return out;
 }

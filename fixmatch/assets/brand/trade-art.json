@@ -1,0 +1,92 @@
+{
+  "_about": "The eight trade illustrations of the trade tiles (docs/design/designsystem.md, ref/koncept-b-fagfliser.jpg) on a 64-unit square tile. Each shape is filled with 'white', 'deep' (the trade's deep colour), 'highlight' (the lighter geometric shape) or 'tile' (the tile colour, for holes). Colours are TradeColors in src/constants/theme.ts. Drawn by src/components/trade-art.tsx.",
+  "size": 64,
+  "art": {
+    "vvs": [
+      { "el": "path", "d": "M26 64 L33 44 L64 37 L64 64 Z", "fill": "highlight" },
+      { "el": "circle", "cx": 52, "cy": 46, "r": 2.6, "fill": "white", "opacity": 0.85 },
+      {
+        "el": "path",
+        "d": "M14 20 H33 Q40 20 40 27 V30",
+        "fill": "none",
+        "stroke": "deep",
+        "strokeWidth": 8,
+        "strokeLinecap": "round",
+        "strokeLinejoin": "round"
+      },
+      { "el": "rect", "x": 33.5, "y": 29.5, "width": 13, "height": 5, "rx": 2.5, "fill": "white" },
+      {
+        "el": "path",
+        "d": "M40 38 C40 38 33 46.2 33 50.4 A7 7 0 0 0 47 50.4 C47 46.2 40 38 40 38 Z",
+        "fill": "white"
+      }
+    ],
+    "elektriker": [
+      { "el": "rect", "x": -6, "y": -6, "width": 30, "height": 30, "rx": 6, "fill": "highlight" },
+      { "el": "circle", "cx": 32, "cy": 33, "r": 17, "fill": "white" },
+      { "el": "path", "d": "M35.5 19.5 L23.5 35.5 H31.5 L28.5 47 L40.5 30.5 H32.5 L35.5 19.5 Z", "fill": "deep", "strokeLinejoin": "round" }
+    ],
+    "toemrer": [
+      { "el": "path", "d": "M64 26 L64 64 L18 64 Z", "fill": "highlight" },
+      {
+        "el": "path",
+        "d": "M28 27 L45 48",
+        "fill": "none",
+        "stroke": "deep",
+        "strokeWidth": 6.5,
+        "strokeLinecap": "round"
+      },
+      { "el": "rect", "x": 13, "y": 18, "width": 26, "height": 12, "rx": 2.5, "fill": "white", "transform": "rotate(-39 26 24)" }
+    ],
+    "murer": [
+      { "el": "rect", "x": 40, "y": -6, "width": 30, "height": 28, "rx": 5, "fill": "highlight" },
+      { "el": "rect", "x": 13, "y": 19, "width": 17, "height": 7.5, "rx": 1.6, "fill": "white" },
+      { "el": "rect", "x": 32, "y": 19, "width": 19, "height": 7.5, "rx": 1.6, "fill": "white" },
+      { "el": "rect", "x": 9, "y": 28.5, "width": 10, "height": 7.5, "rx": 1.6, "fill": "white", "opacity": 0.6 },
+      { "el": "rect", "x": 21, "y": 28.5, "width": 17, "height": 7.5, "rx": 1.6, "fill": "white" },
+      { "el": "rect", "x": 40, "y": 28.5, "width": 15, "height": 7.5, "rx": 1.6, "fill": "white" },
+      { "el": "rect", "x": 13, "y": 38, "width": 17, "height": 7.5, "rx": 1.6, "fill": "white" },
+      { "el": "rect", "x": 32, "y": 38, "width": 19, "height": 7.5, "rx": 1.6, "fill": "white", "opacity": 0.6 }
+    ],
+    "mekaniker": [
+      { "el": "rect", "x": -6, "y": 36, "width": 28, "height": 34, "rx": 5, "fill": "highlight" },
+      { "el": "path", "d": "M20 32 L25 22.5 Q26.3 20 29 20 H39 Q41.7 20 43 22.5 L48 32 Z", "fill": "white" },
+      { "el": "rect", "x": 9, "y": 31, "width": 46, "height": 13, "rx": 5.5, "fill": "white" },
+      { "el": "path", "d": "M26.5 30 L29.5 23.5 H33.5 V30 Z", "fill": "deep" },
+      { "el": "path", "d": "M36.5 30 V23.5 H40.5 L43.5 30 Z", "fill": "deep" },
+      { "el": "circle", "cx": 20.5, "cy": 45, "r": 6, "fill": "deep" },
+      { "el": "circle", "cx": 20.5, "cy": 45, "r": 2.2, "fill": "white" },
+      { "el": "circle", "cx": 43.5, "cy": 45, "r": 6, "fill": "deep" },
+      { "el": "circle", "cx": 43.5, "cy": 45, "r": 2.2, "fill": "white" }
+    ],
+    "maler": [
+      { "el": "path", "d": "M-4 51 Q12 43 28 50 T68 47 V68 H-4 Z", "fill": "highlight" },
+      {
+        "el": "path",
+        "d": "M44 20 H49 V31.5 H33 V38",
+        "fill": "none",
+        "stroke": "deep",
+        "strokeWidth": 3.6,
+        "strokeLinecap": "round",
+        "strokeLinejoin": "round"
+      },
+      { "el": "rect", "x": 13, "y": 14, "width": 32, "height": 12, "rx": 6, "fill": "white" },
+      { "el": "rect", "x": 29.5, "y": 37, "width": 7, "height": 17, "rx": 3.5, "fill": "deep" }
+    ],
+    "tagdaekker": [
+      { "el": "rect", "x": 38, "y": 38, "width": 30, "height": 30, "rx": 5, "fill": "highlight" },
+      { "el": "rect", "x": 39, "y": 13, "width": 6.5, "height": 12, "rx": 1, "fill": "deep" },
+      { "el": "rect", "x": 16, "y": 30, "width": 32, "height": 21, "rx": 1.5, "fill": "white" },
+      { "el": "path", "d": "M32 12 L54.5 31 Q56 33 53.5 33 H10.5 Q8 33 9.5 31 Z", "fill": "deep" },
+      { "el": "rect", "x": 28, "y": 38.5, "width": 8, "height": 12.5, "rx": 1.2, "fill": "deep" }
+    ],
+    "laasesmed": [
+      { "el": "circle", "cx": 6, "cy": 6, "r": 24, "fill": "highlight" },
+      { "el": "circle", "cx": 20, "cy": 32, "r": 9.5, "fill": "white", "transform": "rotate(-32 32 32)" },
+      { "el": "circle", "cx": 20, "cy": 32, "r": 4, "fill": "tile", "transform": "rotate(-32 32 32)" },
+      { "el": "rect", "x": 27, "y": 29, "width": 26, "height": 6, "rx": 3, "fill": "white", "transform": "rotate(-32 32 32)" },
+      { "el": "rect", "x": 40, "y": 33, "width": 4.5, "height": 7, "rx": 1.2, "fill": "white", "transform": "rotate(-32 32 32)" },
+      { "el": "rect", "x": 46.5, "y": 33, "width": 4.5, "height": 9, "rx": 1.2, "fill": "white", "transform": "rotate(-32 32 32)" }
+    ]
+  }
+}
