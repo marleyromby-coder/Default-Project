@@ -1,35 +1,39 @@
 import { router } from 'expo-router';
-import { useMemo } from 'react';
+import { type ReactNode, useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { AvailabilityBadge } from '@/components/business/availability-badge';
 import { BusinessMark } from '@/components/business/business-mark';
 import { MatchBadge } from '@/components/business/match-badge';
 import { ReviewRating } from '@/components/business/review-rating';
-import { CategoryTile } from '@/components/category-tile';
-import { LocationPill } from '@/components/location-pill';
+import { TradeTile } from '@/components/category-tile';
+import { HeroPanel } from '@/components/hero-panel';
 import { Logo } from '@/components/logo';
 import { StatusBarScrim } from '@/components/status-bar-scrim';
 import { Badge } from '@/components/ui/badge';
-import { Icon } from '@/components/ui/icon';
+import { Button } from '@/components/ui/button';
+import { Card, Divider } from '@/components/ui/card';
+import { Icon, type IconName } from '@/components/ui/icon';
 import { ListRow, ListSection } from '@/components/ui/list';
 import { Notice } from '@/components/ui/notice';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
-import { IconWell, Radius, ScreenPadding, Spacing } from '@/constants/theme';
+import { IconWell, Radius, ScreenPadding, Spacing, TradeColors } from '@/constants/theme';
 import { CATEGORIES, getCategory } from '@/data/categories';
 import { DEFAULT_LOCATION } from '@/data/places';
-import { useTheme } from '@/hooks/use-theme';
+import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { availableWhen } from '@/lib/availability';
 import { DATA_MODE } from '@/lib/data-source';
+import { showDialog } from '@/lib/dialog';
 import { formatDistance, formatHourly, formatPriceRange } from '@/lib/format';
 import { distanceKm } from '@/lib/geo';
-import { summarizeJobPrice } from '@/lib/prices';
+import { lowestHourlyByTrade, summarizeJobPrice } from '@/lib/prices';
 import { reviewCount, reviewValue, scoreBusinesses } from '@/lib/ranking';
 import { reviewRatingLabel } from '@/lib/review-label';
 import { MIN_REVIEWS_FOR_FILTER } from '@/lib/filters';
-import type { CategoryId } from '@/lib/types';
+import type { Business, CategoryId } from '@/lib/types';
 import { t } from '@/i18n';
 import { countryOf, currencyOf } from '@/lib/business-text';
 import { countryName, taxNote } from '@/lib/markets';
@@ -51,10 +55,12 @@ const NEARBY_KM = 25;
 export default function HomeScreen() {
   const { column } = useLayout();
   const colors = useTheme();
+  const scheme = useIsDark() ? 'dark' : 'light';
   const insets = useSafeAreaInsets();
   const { state, setLocation } = useApp();
   const { country, market, supported, open } = useMarket();
   const origin = state.location.coords;
+  const radius = state.filters.maxDistanceKm;
   // Only this country's businesses: prices are never compared across currencies.
   const local = useMemo(() => state.businesses.filter((b) => countryOf(b) === country), [state.businesses, country]);
 
@@ -66,6 +72,10 @@ export default function HomeScreen() {
     }
     return counts;
   }, [local, origin]);
+
+  // "fra 560 kr." under each trade: the lowest hourly price within the user's distance filter,
+  // so the business behind it is in that trade's results.
+  const fromPrices = useMemo(() => lowestHourlyByTrade(local, origin, market, radius), [local, origin, market, radius]);
 
   const topRated = useMemo(
     () =>
@@ -97,153 +107,175 @@ export default function HomeScreen() {
     });
   }, [local, origin, state.priorities]);
 
+  const demo = supported && DATA_MODE === 'demo';
+  const demoText = t('Demoversion: virksomhederne er fiktive eksempler, indtil de rigtige har givet samtykke.');
+  const where =
+    radius === null
+      ? t('{place} · hele landet', { place: state.location.label })
+      : t('{place} · inden for {distance}', { place: state.location.label, distance: formatDistance(radius) });
+
   return (
     <View style={styles.flex}>
       <ScrollView
         style={{ backgroundColor: colors.background }}
-        contentContainerStyle={[
-          styles.content,
-          column,
-          { paddingTop: insets.top + Spacing.sm, paddingBottom: insets.bottom + 96 },
-        ]}
+        contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + 96 }]}
         contentInsetAdjustmentBehavior="never">
-        <View style={styles.top}>
-          <View style={styles.topBar}>
-            <Logo />
-            <LocationPill />
-          </View>
+        <View>
+          {/* Panel colour above the panel, so pulling the page down shows no gap under the status bar. */}
+          <View pointerEvents="none" style={[styles.overscroll, { backgroundColor: colors.panel }]} />
+          <HeroPanel contentStyle={styles.panel}>
+            <View style={styles.topBar}>
+              <Logo onPanel />
+              {demo ? (
+                <Tappable
+                  onPress={() => showDialog(t('Demoversion'), demoText)}
+                  accessibilityLabel={demoText}
+                  hitSlop={{ top: 10, bottom: 10, left: 6, right: 6 }}>
+                  <Badge label={t('Demoversion')} tone="panel" icon="info" accessibilityLabel={demoText} />
+                </Tappable>
+              ) : null}
+            </View>
 
-          <View style={styles.hero}>
-            <AppText variant="title1">
-              {t('Den rette håndværker.')}
-              {'\n'}
-              <Text style={{ color: colors.brandText }}>{t('Til den rette pris.')}</Text>
+            <AppText variant="largeTitle" tone="onPanel" style={styles.title}>
+              {t('Se prisen, før du ringer')}
+              <Text style={{ color: colors.accent }}>.</Text>
             </AppText>
-            <AppText variant="callout" tone="textSecondary">
-              {t('Se prisen, før du ringer.')}
-            </AppText>
-          </View>
 
-          <Tappable
-            onPress={() => router.push('/soeg')}
-            accessibilityRole="search"
-            accessibilityLabel={t('Søg efter opgave, fag eller virksomhed')}
-            style={[styles.search, { backgroundColor: colors.surface }]}>
-            <Icon name="search" size={18} color={colors.textSecondary} weight="semibold" />
-            <AppText variant="body" tone="textTertiary" numberOfLines={1}>
-              {t('Hvad skal laves? Fx “stoppet afløb”')}
-            </AppText>
-          </Tappable>
+            <Card elevation="raised" padded={false} style={styles.search}>
+              <SearchRow
+                icon="search"
+                label={t('Hvad skal laves?')}
+                value={t('Fx stoppet afløb')}
+                placeholder
+                onPress={() => router.push('/soeg')}
+                accessibilityLabel={t('Søg efter opgave, fag eller virksomhed')}
+              />
+              <Divider inset={Spacing.md + IconWell.card.size + Spacing.md} />
+              <SearchRow
+                icon="pin"
+                label={t('Hvor?')}
+                value={where}
+                onPress={() => router.push('/placering')}
+                accessibilityLabel={t('Placering: {label}. Skift placering', { label: state.location.label })}
+              />
+            </Card>
 
-          {state.location.abroad ? (
-            // The GPS put the user outside FixMatch's countries (e.g. an App Store reviewer in the
-            // US): the app shows the default city instead of an empty list, and says so.
-            <Notice
-              icon="world"
-              text={t('Du er i {country}. FixMatch er kun i {countries} endnu, så vi viser virksomheder i {label}.', {
-                country: countryName(state.location.abroad),
-                countries: open.map(countryName).join(', ') || countryName(state.location.country ?? 'DK'),
-                label: state.location.label,
-              })}
-              action={{
-                label: t('Vælg by'),
-                accessibilityLabel: t('Vælg en by'),
-                onPress: () => router.push('/placering'),
-              }}
-              style={styles.notice}
+            <Button
+              title={t('Sammenlign priser')}
+              variant="sun"
+              size="large"
+              trailingIcon="arrowRight"
+              block
+              onPress={() => router.push('/soeg')}
+              accessibilityHint={t('Søg efter opgave, fag eller virksomhed')}
             />
-          ) : null}
-
-          {!supported ? (
-            <Notice
-              icon="world"
-              text={t('FixMatch er endnu ikke i {country}. Vi er i {countries}.', {
-                country: countryName(state.location.country ?? ''),
-                countries: open.map(countryName).join(', '),
-              })}
-              // One tap back to København, unless that is where the app already is.
-              action={
-                state.location.label !== DEFAULT_LOCATION.label
-                  ? {
-                      label: t('Vis {label}', { label: DEFAULT_LOCATION.label }),
-                      onPress: () => setLocation(DEFAULT_LOCATION),
-                    }
-                  : {
-                      label: t('Vælg by'),
-                      accessibilityLabel: t('Vælg en by'),
-                      onPress: () => router.push('/placering'),
-                    }
-              }
-              style={styles.notice}
-            />
-          ) : DATA_MODE === 'demo' ? (
-            <Notice
-              text={t('Demoversion: virksomhederne er fiktive eksempler, indtil de rigtige har givet samtykke.')}
-              style={styles.notice}
-            />
-          ) : null}
+          </HeroPanel>
         </View>
 
-        <Section title={t('Vælg fag')}>
-          <View style={styles.grid}>
+        {state.location.abroad || !supported ? (
+          <View style={[styles.notices, column]}>
+            {state.location.abroad ? (
+              // The GPS put the user outside FixMatch's countries (e.g. an App Store reviewer in the
+              // US): the app shows the default city instead of an empty list, and says so.
+              <Notice
+                icon="world"
+                text={t('Du er i {country}. FixMatch er kun i {countries} endnu, så vi viser virksomheder i {label}.', {
+                  country: countryName(state.location.abroad),
+                  countries: open.map(countryName).join(', ') || countryName(state.location.country ?? 'DK'),
+                  label: state.location.label,
+                })}
+                action={{
+                  label: t('Vælg by'),
+                  accessibilityLabel: t('Vælg en by'),
+                  onPress: () => router.push('/placering'),
+                }}
+              />
+            ) : null}
+
+            {!supported ? (
+              <Notice
+                icon="world"
+                text={t('FixMatch er endnu ikke i {country}. Vi er i {countries}.', {
+                  country: countryName(state.location.country ?? ''),
+                  countries: open.map(countryName).join(', '),
+                })}
+                // One tap back to København, unless that is where the app already is.
+                action={
+                  state.location.label !== DEFAULT_LOCATION.label
+                    ? {
+                        label: t('Vis {label}', { label: DEFAULT_LOCATION.label }),
+                        onPress: () => setLocation(DEFAULT_LOCATION),
+                      }
+                    : {
+                        label: t('Vælg by'),
+                        accessibilityLabel: t('Vælg en by'),
+                        onPress: () => router.push('/placering'),
+                      }
+                }
+              />
+            ) : null}
+          </View>
+        ) : null}
+
+        <Section
+          title={t('Vælg fag')}
+          trailing={
+            <AppText variant="footnote" tone="textSecondary">
+              {t('Timepris {tax}', { tax: taxNote(market) })}
+            </AppText>
+          }>
+          <View style={[styles.grid, column]}>
             {chunk(CATEGORIES, 4).map((row) => (
               <View key={row[0].id} style={styles.gridRow}>
                 {row.map((category) => (
-                  <CategoryTile key={category.id} category={category} nearby={nearbyCount.get(category.id) ?? 0} />
+                  <TradeTile
+                    key={category.id}
+                    category={category}
+                    fromPrice={fromPrices[category.id]}
+                    nearby={nearbyCount.get(category.id) ?? 0}
+                  />
                 ))}
               </View>
             ))}
           </View>
         </Section>
 
-        <Tappable
-          onPress={() => router.push('/beskriv')}
-          accessibilityLabel={t('Beskriv dit problem og dit budget, så matcher vi dig med virksomheder')}
-          style={[styles.describe, { backgroundColor: colors.ink }]}>
-          <View style={[styles.describeIcon, { backgroundColor: colors.accent }]}>
-            <Icon name="chat" size={20} color={colors.ink} weight="semibold" />
-          </View>
-          <View style={styles.flex}>
-            <AppText variant="headline" style={{ color: colors.onInk }}>
-              {t('Beskriv dit problem')}
-            </AppText>
-            <AppText variant="footnote" style={{ color: colors.onInkSoft }}>
-              {t('Skriv hvad der er galt og dit budget – vi finder dem, der passer.')}
-            </AppText>
-          </View>
-          <Icon name="chevronRight" size={16} color={colors.onInkSoft} weight="semibold" />
-        </Tappable>
+        <View style={column}>
+          <Tappable
+            onPress={() => router.push('/beskriv')}
+            accessibilityLabel={t('Beskriv dit problem og dit budget, så matcher vi dig med virksomheder')}
+            style={[styles.describe, { backgroundColor: colors.accentSoft }]}>
+            <View style={[styles.describeIcon, { backgroundColor: colors.accent }]}>
+              <Icon name="chat" size={20} color={colors.onAccent} weight="semibold" />
+            </View>
+            <View style={styles.flex}>
+              <AppText variant="headline" display>
+                {t('Beskriv dit problem')}
+              </AppText>
+              <AppText variant="footnote" tone="accentText">
+                {t('Skriv hvad der er galt og dit budget – vi finder dem, der passer.')}
+              </AppText>
+            </View>
+            <Icon name="chevronRight" size={16} color={colors.accentText} weight="semibold" />
+          </Tappable>
+        </View>
 
         {freeSoon.length > 0 ? (
           <Section title={t('Hvem har tid i dag?')} subtitle={t('Virksomheder nær dig, der selv har meldt ledig tid')}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
               {freeSoon.map(({ business, km, when }) => (
-                <Tappable
+                <PersonCard
                   key={business.id}
-                  onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
+                  business={business}
+                  km={km}
                   accessibilityLabel={t('{name}, {trade}, {when}, {distance} væk', {
                     name: business.name,
                     trade: getCategory(business.categories[0])?.name ?? '',
                     when: when === 'today' ? t('ledig i dag') : t('ledig i morgen'),
                     distance: formatDistance(km),
-                  })}
-                  style={[styles.topCard, { backgroundColor: colors.surface }]}>
-                  <View style={styles.topBody}>
-                    <BusinessMark business={business} size={40} />
-                    <AppText variant="caption" tone="textSecondary" weight="600">
-                      {getCategory(business.categories[0])?.name}
-                    </AppText>
-                    <AppText variant="subhead" weight="600" numberOfLines={1}>
-                      {business.name}
-                    </AppText>
-                    <AppText variant="caption" weight="600" tone={when === 'today' ? 'success' : 'textSecondary'}>
-                      {when === 'today' ? t('Ledig i dag') : t('Ledig i morgen')}
-                    </AppText>
-                    <AppText variant="caption" tone="textSecondary">
-                      {formatDistance(km)}
-                    </AppText>
-                  </View>
-                </Tappable>
+                  })}>
+                  <AvailabilityBadge business={business} />
+                </PersonCard>
               ))}
             </ScrollView>
           </Section>
@@ -258,6 +290,7 @@ export default function HomeScreen() {
               const job = category?.jobs.find((j) => j.id === jobId);
               if (!category || !job) return null;
               const price = summarizeJobPrice(job, local, market);
+              const trade = TradeColors[scheme][categoryId];
               return (
                 <Tappable
                   key={jobId}
@@ -267,19 +300,21 @@ export default function HomeScreen() {
                     priceRange: formatPriceRange(price.min, price.max, price.unit, price.currency),
                     plural: category.plural,
                   })}
-                  style={[styles.jobCard, { backgroundColor: colors.surface }]}>
-                  <View style={[styles.jobIcon, { backgroundColor: colors.brandSoft }]}>
-                    <Icon name={categoryId} size={16} color={colors.brand} weight="semibold" />
-                  </View>
-                  <AppText variant="subhead" weight="600" numberOfLines={2} style={styles.jobName}>
-                    {job.name}
-                  </AppText>
-                  <AppText variant="subhead" weight="600" tabular numberOfLines={1}>
-                    {formatPriceRange(price.min, price.max, price.unit, price.currency)}
-                  </AppText>
-                  <AppText variant="caption" tone="textSecondary" numberOfLines={1}>
-                    {category.name}
-                  </AppText>
+                  style={styles.cardTap}>
+                  <Card style={styles.jobCard}>
+                    <View style={[styles.jobIcon, { backgroundColor: trade.soft }]}>
+                      <Icon name={categoryId} size={17} color={trade.onSoft} weight="semibold" />
+                    </View>
+                    <AppText variant="subhead" weight="600" numberOfLines={2} style={styles.jobName}>
+                      {job.name}
+                    </AppText>
+                    <AppText variant="headline" display weight="800" numberOfLines={1}>
+                      {formatPriceRange(price.min, price.max, price.unit, price.currency)}
+                    </AppText>
+                    <AppText variant="caption" tone="textSecondary" numberOfLines={1}>
+                      {category.name}
+                    </AppText>
+                  </Card>
                 </Tappable>
               );
             })}
@@ -287,7 +322,7 @@ export default function HomeScreen() {
         </Section>
 
         <Section title={t('Værktøjer')}>
-          <View style={styles.tools}>
+          <View style={[styles.tools, column]}>
             <ListSection>
               <ListRow icon="siren" title={t('Akut hjælp – døgnvagt')} onPress={() => router.push('/akut')} />
               <ListRow icon="receipt" title={t('Tilbudstjek')} onPress={() => router.push('/tilbudstjek')} />
@@ -315,12 +350,12 @@ export default function HomeScreen() {
                   ]
                     .filter(Boolean)
                     .join(', ')}
-                  style={[styles.featured, { backgroundColor: colors.surface }]}>
-                  <View style={styles.featuredBody}>
+                  style={styles.cardTap}>
+                  <Card style={styles.featured}>
                     <View style={styles.rowBetween}>
                       <BusinessMark business={business} size={44} />
                       <View style={styles.flex}>
-                        <AppText variant="headline" numberOfLines={1}>
+                        <AppText variant="headline" display numberOfLines={1}>
                           {business.name}
                         </AppText>
                         <Badge label={t('Annonce')} tone="neutral" />
@@ -332,7 +367,7 @@ export default function HomeScreen() {
                       {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business))} ·{' '}
                       {formatDistance(km)}
                     </AppText>
-                  </View>
+                  </Card>
                 </Tappable>
               ))}
             </ScrollView>
@@ -347,9 +382,10 @@ export default function HomeScreen() {
             })}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
               {topRated.map(({ business, km }) => (
-                <Tappable
+                <PersonCard
                   key={business.id}
-                  onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
+                  business={business}
+                  km={km}
                   accessibilityLabel={[
                     t('{name}, {name2}, {distance} væk', {
                       name: business.name,
@@ -359,59 +395,124 @@ export default function HomeScreen() {
                     reviewRatingLabel(business.reviewSummary),
                   ]
                     .filter(Boolean)
-                    .join(', ')}
-                  style={[styles.topCard, { backgroundColor: colors.surface }]}>
-                  <View style={styles.topBody}>
-                    <BusinessMark business={business} size={40} />
-                    <AppText variant="caption" tone="textSecondary" weight="600">
-                      {getCategory(business.categories[0])?.name}
-                    </AppText>
-                    <AppText variant="subhead" weight="600" numberOfLines={1}>
-                      {business.name}
-                    </AppText>
-                    <ReviewRating summary={business.reviewSummary} />
-                    <AppText variant="caption" tone="textSecondary">
-                      {formatDistance(km)}
-                    </AppText>
-                  </View>
-                </Tappable>
+                    .join(', ')}>
+                  <ReviewRating summary={business.reviewSummary} />
+                </PersonCard>
               ))}
             </ScrollView>
           </Section>
         ) : null}
 
         <Section title={t('Sådan virker FixMatch')}>
-          <View style={[styles.steps, { backgroundColor: colors.surface }]}>
-            <Step
-              number={1}
-              title={t('Vælg fag eller opgave')}
-              text={t('VVS, el, tømrer, murer, mekaniker og flere.')}
-            />
-            <Step
-              number={2}
-              title={t('Sammenlign')}
-              text={t('Pris {tax}, afstand og anmeldelser – side om side.', { tax: taxNote(market) })}
-            />
-            <Step
-              number={3}
-              title={t('Ring direkte')}
-              text={t('Ingen mellemled og ingen gebyrer. Du aftaler prisen direkte.')}
-            />
+          <View style={column}>
+            <Card style={styles.steps}>
+              <Step
+                number={1}
+                title={t('Vælg fag eller opgave')}
+                text={t('VVS, el, tømrer, murer, mekaniker og flere.')}
+              />
+              <Step
+                number={2}
+                title={t('Sammenlign')}
+                text={t('Pris {tax}, afstand og anmeldelser – side om side.', { tax: taxNote(market) })}
+              />
+              <Step
+                number={3}
+                title={t('Ring direkte')}
+                text={t('Ingen mellemled og ingen gebyrer. Du aftaler prisen direkte.')}
+              />
+            </Card>
           </View>
         </Section>
       </ScrollView>
-      <StatusBarScrim />
+      <StatusBarScrim color={colors.panel} />
     </View>
   );
 }
 
-function Section({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
+interface SearchRowProps {
+  icon: IconName;
+  label: string;
+  value: string;
+  /** The value is an example, not something chosen (lighter text). */
+  placeholder?: boolean;
+  onPress: () => void;
+  accessibilityLabel: string;
+}
+
+/** A row in the search card: "Hvad skal laves?" or "Hvor?", with what is chosen below. */
+function SearchRow({ icon, label, value, placeholder, onPress, accessibilityLabel }: SearchRowProps) {
+  const colors = useTheme();
+  return (
+    <Tappable onPress={onPress} accessibilityLabel={accessibilityLabel} pressedOpacity={0.7} style={styles.searchRow}>
+      <View style={[styles.searchIcon, { backgroundColor: colors.brandSoft }]}>
+        <Icon name={icon} size={18} color={colors.brand} weight="semibold" />
+      </View>
+      <View style={styles.flex}>
+        <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
+          {label}
+        </AppText>
+        <AppText variant="body" tone={placeholder ? 'textTertiary' : 'text'} weight="500" numberOfLines={1}>
+          {value}
+        </AppText>
+      </View>
+    </Tappable>
+  );
+}
+
+interface PersonCardProps {
+  business: Business;
+  km: number;
+  accessibilityLabel: string;
+  children?: ReactNode;
+}
+
+/** A business in a carousel on Find: mark, name, trade and distance, and one line of extra. */
+function PersonCard({ business, km, accessibilityLabel, children }: PersonCardProps) {
+  return (
+    <Tappable
+      onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
+      accessibilityLabel={accessibilityLabel}
+      style={styles.cardTap}>
+      <Card style={styles.person}>
+        <View style={styles.rowBetween}>
+          <BusinessMark business={business} size={44} />
+          <View style={styles.flex}>
+            <AppText variant="headline" display numberOfLines={1}>
+              {business.name}
+            </AppText>
+            <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
+              {getCategory(business.categories[0])?.name} · {formatDistance(km)}
+            </AppText>
+          </View>
+        </View>
+        {children}
+      </Card>
+    </Tappable>
+  );
+}
+
+function Section({
+  title,
+  subtitle,
+  trailing,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  trailing?: ReactNode;
+  children: ReactNode;
+}) {
+  const { column } = useLayout();
   return (
     <View style={styles.section}>
-      <View style={styles.sectionHeader}>
-        <AppText variant="title3" accessibilityRole="header">
-          {title}
-        </AppText>
+      <View style={[styles.sectionHeader, column]}>
+        <View style={styles.sectionTitle}>
+          <AppText variant="title2" accessibilityRole="header" style={styles.flexShrink}>
+            {title}
+          </AppText>
+          {trailing}
+        </View>
         {subtitle ? (
           <AppText variant="footnote" tone="textSecondary">
             {subtitle}
@@ -427,9 +528,11 @@ function Step({ number, title, text }: { number: number; title: string; text: st
   const colors = useTheme();
   return (
     <View style={styles.step}>
-      <AppText variant="title1" display style={[styles.stepNumber, { color: colors.brand }]} accessibilityRole="none">
-        {number}
-      </AppText>
+      <View style={[styles.stepNumber, { backgroundColor: colors.brandSoft }]}>
+        <AppText variant="headline" display weight="800" tone="brandText" accessibilityRole="none">
+          {number}
+        </AppText>
+      </View>
       <View style={styles.flex}>
         <AppText variant="headline">{title}</AppText>
         <AppText variant="subhead" tone="textSecondary">
@@ -448,28 +551,40 @@ function chunk<T>(list: T[], size: number): T[][] {
 
 const styles = StyleSheet.create({
   content: { gap: Spacing.xxl },
-  top: { gap: Spacing.md },
+  flex: { flex: 1 },
+  flexShrink: { flexShrink: 1 },
+  overscroll: { position: 'absolute', left: 0, right: 0, top: -600, height: 600 },
+  panel: { gap: Spacing.md },
+  // One line on a 390 pt iPhone, like the reference; it wraps on smaller screens and larger text.
+  title: { fontSize: 30, lineHeight: 34 },
   topBar: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: ScreenPadding,
     gap: Spacing.md,
+    minHeight: 44,
   },
-  hero: { paddingHorizontal: ScreenPadding, gap: Spacing.xs },
-  search: {
-    marginHorizontal: ScreenPadding,
-    minHeight: 48,
-    borderRadius: Radius.md,
-    borderCurve: 'continuous',
+  search: { borderRadius: Radius.card },
+  searchRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.sm,
+    gap: Spacing.md,
     paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.md,
+    minHeight: 64,
   },
+  searchIcon: {
+    width: IconWell.card.size,
+    height: IconWell.card.size,
+    borderRadius: IconWell.card.radius,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  notices: { paddingHorizontal: ScreenPadding, gap: Spacing.md },
   describe: {
     marginHorizontal: ScreenPadding,
-    borderRadius: Radius.lg,
+    borderRadius: Radius.card,
     borderCurve: 'continuous',
     padding: Spacing.lg,
     flexDirection: 'row',
@@ -477,50 +592,48 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
   },
   describeIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  notice: { marginHorizontal: ScreenPadding },
-  flex: { flex: 1 },
   section: { gap: Spacing.md },
   sectionHeader: { paddingHorizontal: ScreenPadding, gap: 2 },
-  grid: { paddingHorizontal: ScreenPadding, gap: Spacing.sm },
-  gridRow: { flexDirection: 'row', gap: Spacing.sm },
-  carousel: { paddingHorizontal: ScreenPadding, gap: Spacing.md },
-  jobCard: {
-    width: 156,
-    borderRadius: Radius.lg,
-    borderCurve: 'continuous',
-    padding: Spacing.md,
-    gap: Spacing.xs,
+  sectionTitle: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    justifyContent: 'space-between',
+    gap: Spacing.md,
   },
+  grid: { paddingHorizontal: ScreenPadding, gap: Spacing.lg },
+  gridRow: { flexDirection: 'row', gap: Spacing.md },
+  // Room for the cards' shadows above and below.
+  carousel: { paddingHorizontal: ScreenPadding, paddingVertical: Spacing.xs, gap: Spacing.md },
+  cardTap: { borderRadius: Radius.card },
+  jobCard: { width: 164, borderRadius: Radius.card, gap: Spacing.xs, padding: Spacing.md },
   jobIcon: {
-    width: IconWell.row.size,
-    height: IconWell.row.size,
-    borderRadius: IconWell.row.radius,
+    width: 32,
+    height: 32,
+    borderRadius: 9,
     borderCurve: 'continuous',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 2,
+    marginBottom: Spacing.xs,
   },
   // Room for two lines, so the prices line up across the cards.
   jobName: { minHeight: 40 },
   tools: { paddingHorizontal: ScreenPadding },
-  featured: { width: 290, borderRadius: Radius.lg, borderCurve: 'continuous', overflow: 'hidden' },
-  featuredBody: { padding: Spacing.md, gap: Spacing.xs },
-  rowBetween: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
-  topCard: { width: 210, borderRadius: Radius.lg, borderCurve: 'continuous', overflow: 'hidden' },
-  topBody: { padding: Spacing.md, gap: Spacing.xs },
-  steps: {
-    marginHorizontal: ScreenPadding,
-    borderRadius: Radius.lg,
-    borderCurve: 'continuous',
-    padding: Spacing.lg,
-    gap: Spacing.lg,
-  },
+  featured: { width: 290, borderRadius: Radius.card, padding: Spacing.md, gap: Spacing.xs },
+  person: { width: 240, borderRadius: Radius.card, padding: Spacing.md, gap: Spacing.sm },
+  rowBetween: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
+  steps: { marginHorizontal: ScreenPadding, borderRadius: Radius.card, padding: Spacing.lg, gap: Spacing.lg },
   step: { flexDirection: 'row', gap: Spacing.md, alignItems: 'flex-start' },
-  stepNumber: { width: 22, textAlign: 'center' },
+  stepNumber: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

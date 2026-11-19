@@ -2,11 +2,10 @@ import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { TradeArt } from '@/components/trade-art';
-import { Icon } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { Radius, Spacing } from '@/constants/theme';
-import { useTheme, useTradeColor } from '@/hooks/use-theme';
+import { useTradeColor } from '@/hooks/use-theme';
 import { formatPrice, speakablePrice } from '@/lib/format';
 import type { TradeFromPrice } from '@/lib/prices';
 import type { Category } from '@/lib/types';
@@ -86,41 +85,6 @@ export function TradeTile({ category, fromPrice, nearby, onPress }: TradeTilePro
   );
 }
 
-interface Props {
-  category: Category;
-  nearby: number;
-}
-
-/**
- * The previous trade tile: the icon in emerald and the name on a white card. Kept until Find
- * uses TradeTile.
- */
-export function CategoryTile({ category, nearby }: Props) {
-  const colors = useTheme();
-  return (
-    <Tappable
-      onPress={() => openTrade(category)}
-      accessibilityLabel={t('{plural}. {description}. {count}', {
-        plural: category.plural,
-        description: category.description,
-        count: nearbyText(nearby),
-      })}
-      pressedOpacity={0.7}
-      style={[styles.tile, { backgroundColor: colors.surface }]}>
-      <Icon name={category.id} size={22} color={colors.brand} weight="semibold" />
-      <AppText
-        variant="caption"
-        weight="600"
-        numberOfLines={1}
-        adjustsFontSizeToFit
-        minimumFontScale={0.8}
-        maxFontSizeMultiplier={1.3}>
-        {category.name}
-      </AppText>
-    </Tappable>
-  );
-}
-
 const styles = StyleSheet.create({
   tradeTile: { flex: 1, minWidth: 0, alignItems: 'stretch' },
   square: {
@@ -132,14 +96,4 @@ const styles = StyleSheet.create({
   },
   // 14 pt, so "Tagdækker" fits under a 77 pt tile (iPhone mini width) without shrinking.
   name: { marginTop: Spacing.sm, fontSize: 14, lineHeight: 18 },
-  tile: {
-    flex: 1,
-    minHeight: 76,
-    borderRadius: Radius.md,
-    borderCurve: 'continuous',
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: Spacing.sm + 2,
-    justifyContent: 'space-between',
-    gap: Spacing.sm,
-  },
 });
