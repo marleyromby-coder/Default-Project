@@ -2,7 +2,8 @@ import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { BusinessMark } from '@/components/business/business-mark';
+import { HeroMark } from '@/components/business/hero-mark';
+import { HeroPanel, panelHeaderOptions } from '@/components/hero-panel';
 import { Button } from '@/components/ui/button';
 import { Card, CardTitle, Divider } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -70,6 +71,9 @@ function explain(item: SafetyItem, business: Business): string {
   }
 }
 
+/** How far the list of points reaches up into the panel. */
+const OVERLAP = 28;
+
 const BEFORE_YES = [
   t('Få et skriftligt tilbud med fast pris eller et overslag, før arbejdet går i gang.'),
   t('Aftal, hvad der sker, hvis opgaven bliver større end ventet.'),
@@ -125,139 +129,158 @@ function Safety({ business }: { business: Business }) {
   return (
     <ScrollView
       style={{ backgroundColor: colors.background }}
-      contentContainerStyle={[styles.content, column, { paddingBottom: insets.bottom + Spacing.xxl }]}
+      contentContainerStyle={{ paddingBottom: insets.bottom + Spacing.xxl }}
       contentInsetAdjustmentBehavior="automatic">
-      <Stack.Screen options={{ title: t('Tryghed') }} />
+      <Stack.Screen options={{ ...panelHeaderOptions(colors), title: t('Tryghed') }} />
 
-      <View style={styles.row}>
-        <BusinessMark business={business} size={52} />
-        <View style={styles.flex}>
-          <AppText variant="title3" numberOfLines={2}>
-            {business.name}
-          </AppText>
-          <AppText variant="footnote" tone="textSecondary">
-            {t('{checked} af {total} punkter er tjekket af FixMatch', { checked, total })}
-          </AppText>
-        </View>
-      </View>
-      <AppText variant="callout" tone="textSecondary">
-        {t(
-          'Her er det, du bør vide, før du siger ja. Vi skriver altid, om FixMatch selv har tjekket det, eller om virksomheden bare har oplyst det.',
-        )}
-      </AppText>
-
-      <Card>
-        {items.map((item, index) => {
-          const action = lookUp(item);
-          return (
-            <View key={item.key}>
-              {index > 0 ? <Divider /> : null}
-              <View
-                style={styles.item}
-                accessible
-                accessibilityLabel={`${t(SAFETY_TITLES[item.key])}. ${STATUS[item.status].label}. ${explain(item, business)}`}>
-                <Icon name={STATUS[item.status].icon} size={20} color={tone[item.status]} weight="semibold" />
-                <View style={styles.flex}>
-                  <AppText variant="headline">{t(SAFETY_TITLES[item.key])}</AppText>
-                  <AppText variant="caption" weight="600" style={{ color: tone[item.status] }}>
-                    {item.status === 'checked' && business.verified
-                      ? t('Tjekket af FixMatch {date}', { date: formatDate(business.verified.date) })
-                      : STATUS[item.status].label}
-                  </AppText>
-                  <AppText variant="subhead" tone="textSecondary">
-                    {explain(item, business)}
-                  </AppText>
-                </View>
-              </View>
-              {action ? (
-                <View style={styles.action}>
-                  <Button
-                    title={item.key === 'cvr' ? t('Slå op i CVR-registret') : t('Tjek hos Sikkerhedsstyrelsen')}
-                    variant="link"
-                    chevron
-                    onPress={action}
-                  />
-                </View>
-              ) : null}
-            </View>
-          );
-        })}
-      </Card>
-
-      <Card>
-        <CardTitle title={t('Før du siger ja')} />
-        {BEFORE_YES.map((line) => (
-          <View key={line} style={styles.bullet}>
-            <Icon name="check" size={13} color={colors.brand} weight="bold" />
-            <AppText variant="subhead" style={styles.flex}>
-              {line}
+      <HeroPanel safeArea={false} overlap={OVERLAP} contentStyle={styles.hero}>
+        <View style={styles.row}>
+          <HeroMark business={business} size={56} />
+          <View style={styles.flex}>
+            <AppText variant="title2" tone="onPanel" numberOfLines={2}>
+              {business.name}
+            </AppText>
+            <AppText variant="footnote" tone="onPanelSoft">
+              {t('{checked} af {total} punkter er tjekket af FixMatch', { checked, total })}
             </AppText>
           </View>
-        ))}
-      </Card>
+        </View>
+        {/* One segment per point, filled for those FixMatch has checked. */}
+        <View style={styles.meter} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+          {items.map((item) => (
+            <View
+              key={item.key}
+              style={[
+                styles.segment,
+                { backgroundColor: item.status === 'checked' ? colors.onPanel : colors.panelRaised },
+              ]}
+            />
+          ))}
+        </View>
+      </HeroPanel>
 
-      <Card>
-        <CardTitle title={t('Hvis noget går galt')} />
-        <Step number={1} text={t('Klag skriftligt til virksomheden, og giv den mulighed for at rette fejlen.')} />
-        {boards.length > 0 ? (
-          <>
-            <Step number={2} text={t('Kan I ikke blive enige, kan du klage til et ankenævn:')} />
-            {boards.map((board) => (
-              <View key={board.name} style={styles.board}>
-                <AppText variant="subhead" weight="600">
-                  {t(board.name)}
-                </AppText>
-                <AppText variant="footnote" tone="textSecondary">
-                  {t(board.detail)}
-                </AppText>
-                {board.url ? (
-                  <Button
-                    title={t('Gå til {name}', { name: board.url.replace(/^https:\/\//, '') })}
-                    variant="link"
-                    chevron
-                    onPress={() => openLink(board.url!)}
-                  />
+      <View style={[styles.content, column]}>
+        <Card elevation="raised" style={styles.raised}>
+          {items.map((item, index) => {
+            const action = lookUp(item);
+            return (
+              <View key={item.key}>
+                {index > 0 ? <Divider /> : null}
+                <View
+                  style={styles.item}
+                  accessible
+                  accessibilityLabel={`${t(SAFETY_TITLES[item.key])}. ${STATUS[item.status].label}. ${explain(item, business)}`}>
+                  <Icon name={STATUS[item.status].icon} size={20} color={tone[item.status]} weight="semibold" />
+                  <View style={styles.flex}>
+                    <AppText variant="headline" display>
+                      {t(SAFETY_TITLES[item.key])}
+                    </AppText>
+                    <AppText variant="caption" weight="600" style={{ color: tone[item.status] }}>
+                      {item.status === 'checked' && business.verified
+                        ? t('Tjekket af FixMatch {date}', { date: formatDate(business.verified.date) })
+                        : STATUS[item.status].label}
+                    </AppText>
+                    <AppText variant="subhead" tone="textSecondary">
+                      {explain(item, business)}
+                    </AppText>
+                  </View>
+                </View>
+                {action ? (
+                  <View style={styles.action}>
+                    <Button
+                      title={item.key === 'cvr' ? t('Slå op i CVR-registret') : t('Tjek hos Sikkerhedsstyrelsen')}
+                      variant="link"
+                      chevron
+                      onPress={action}
+                    />
+                  </View>
                 ) : null}
               </View>
-            ))}
-            <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
-              {t('Hvilket nævn der kan tage sagen, afhænger af opgaven og af virksomhedens medlemskab.')}
-            </AppText>
-          </>
-        ) : null}
-        <Step
-          number={boards.length > 0 ? 3 : 2}
-          text={t('Se dine rettigheder og andre klagemuligheder på forbrug.dk.')}
-        />
-        <Button
-          title={t('Gå til forbrug.dk')}
-          variant="link"
-          chevron
-          onPress={() => openLink('https://forbrug.dk')}
-          style={styles.stepLink}
-        />
-        <Step
-          number={boards.length > 0 ? 4 : 3}
-          text={t('Er oplysningerne her forkerte, så sig det til os. Vi svarer inden for 2 hverdage.')}
-        />
-        <Button
-          title={t('Rapportér fejl eller ulovligt indhold')}
-          variant="link"
-          chevron
-          onPress={() => reportProblem(business)}
-          style={styles.stepLink}
-        />
-      </Card>
+            );
+          })}
+        </Card>
 
-      <AppText variant="caption" tone="textSecondary">
-        {t('FixMatch er ikke part i aftalen mellem dig og virksomheden.')}
-      </AppText>
-      <Button
-        title={t('Sådan verificerer vi')}
-        variant="link"
-        chevron
-        onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'verificering' } })}
-      />
+        <AppText variant="footnote" tone="textSecondary" style={styles.intro}>
+          {t(
+            'Her er det, du bør vide, før du siger ja. Vi skriver altid, om FixMatch selv har tjekket det, eller om virksomheden bare har oplyst det.',
+          )}
+        </AppText>
+
+        <Card>
+          <CardTitle title={t('Før du siger ja')} />
+          {BEFORE_YES.map((line) => (
+            <View key={line} style={styles.bullet}>
+              <Icon name="check" size={13} color={colors.brand} weight="bold" />
+              <AppText variant="subhead" style={styles.flex}>
+                {line}
+              </AppText>
+            </View>
+          ))}
+        </Card>
+
+        <Card>
+          <CardTitle title={t('Hvis noget går galt')} />
+          <Step number={1} text={t('Klag skriftligt til virksomheden, og giv den mulighed for at rette fejlen.')} />
+          {boards.length > 0 ? (
+            <>
+              <Step number={2} text={t('Kan I ikke blive enige, kan du klage til et ankenævn:')} />
+              {boards.map((board) => (
+                <View key={board.name} style={styles.board}>
+                  <AppText variant="subhead" weight="600">
+                    {t(board.name)}
+                  </AppText>
+                  <AppText variant="footnote" tone="textSecondary">
+                    {t(board.detail)}
+                  </AppText>
+                  {board.url ? (
+                    <Button
+                      title={t('Gå til {name}', { name: board.url.replace(/^https:\/\//, '') })}
+                      variant="link"
+                      chevron
+                      onPress={() => openLink(board.url!)}
+                    />
+                  ) : null}
+                </View>
+              ))}
+              <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
+                {t('Hvilket nævn der kan tage sagen, afhænger af opgaven og af virksomhedens medlemskab.')}
+              </AppText>
+            </>
+          ) : null}
+          <Step
+            number={boards.length > 0 ? 3 : 2}
+            text={t('Se dine rettigheder og andre klagemuligheder på forbrug.dk.')}
+          />
+          <Button
+            title={t('Gå til forbrug.dk')}
+            variant="link"
+            chevron
+            onPress={() => openLink('https://forbrug.dk')}
+            style={styles.stepLink}
+          />
+          <Step
+            number={boards.length > 0 ? 4 : 3}
+            text={t('Er oplysningerne her forkerte, så sig det til os. Vi svarer inden for 2 hverdage.')}
+          />
+          <Button
+            title={t('Rapportér fejl eller ulovligt indhold')}
+            variant="link"
+            chevron
+            onPress={() => reportProblem(business)}
+            style={styles.stepLink}
+          />
+        </Card>
+
+        <AppText variant="caption" tone="textSecondary">
+          {t('FixMatch er ikke part i aftalen mellem dig og virksomheden.')}
+        </AppText>
+        <Button
+          title={t('Sådan verificerer vi')}
+          variant="link"
+          chevron
+          onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'verificering' } })}
+        />
+      </View>
     </ScrollView>
   );
 }
@@ -267,7 +290,7 @@ function Step({ number, text }: { number: number; text: string }) {
   return (
     <View style={styles.step}>
       <View style={[styles.number, { backgroundColor: colors.brandSoft }]}>
-        <AppText variant="caption" weight="700" style={{ color: colors.brandText }}>
+        <AppText variant="footnote" display weight="800" style={{ color: colors.brandText }}>
           {number}
         </AppText>
       </View>
@@ -280,15 +303,20 @@ function Step({ number, text }: { number: number; text: string }) {
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  content: { padding: ScreenPadding, gap: Spacing.lg },
+  content: { paddingHorizontal: ScreenPadding, gap: Spacing.lg },
+  hero: { gap: Spacing.lg, paddingTop: Spacing.sm },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
+  meter: { flexDirection: 'row', gap: 4 },
+  segment: { flex: 1, height: 6, borderRadius: 3 },
+  raised: { marginTop: -OVERLAP, paddingVertical: Spacing.xs },
+  intro: { paddingHorizontal: Spacing.xs },
   item: { flexDirection: 'row', gap: Spacing.md, paddingVertical: Spacing.md },
   action: { marginLeft: 32, marginTop: -Spacing.sm, marginBottom: Spacing.xs, alignItems: 'flex-start' },
   bullet: { flexDirection: 'row', gap: Spacing.sm, marginTop: Spacing.sm, alignItems: 'flex-start' },
   step: { flexDirection: 'row', gap: Spacing.md, marginTop: Spacing.md, alignItems: 'flex-start' },
-  number: { width: 22, height: 22, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
-  board: { marginLeft: 34, marginTop: Spacing.sm, gap: 2, alignItems: 'flex-start' },
-  // Links under a numbered step line up with the step's text (22 pt number + 12 pt gap).
-  stepLink: { marginLeft: 34 },
-  spaced: { marginTop: Spacing.sm, marginLeft: 34 },
+  number: { width: 24, height: 24, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  board: { marginLeft: 36, marginTop: Spacing.sm, gap: 2, alignItems: 'flex-start' },
+  // Links under a numbered step line up with the step's text (24 pt number + 12 pt gap).
+  stepLink: { marginLeft: 36 },
+  spaced: { marginTop: Spacing.sm, marginLeft: 36 },
 });

@@ -1,10 +1,10 @@
-import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useMemo, useRef, useState } from 'react';
 import { Platform, ScrollView, type ScrollViewInstance, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CustomerCard } from '@/components/business/customer-card';
+import { HeroMark } from '@/components/business/hero-mark';
 import { WorkPhotosCard } from '@/components/business/work-photos';
 import { PhotoStrip } from '@/components/problem-photos';
 import { OpenStatus } from '@/components/business/open-status';
@@ -23,7 +23,7 @@ import { AppText } from '@/components/ui/text';
 import { IconWell, MinTouchSize, Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { AUTHORIZATION_LABELS, getCategory } from '@/data/categories';
 import { useScored } from '@/hooks/use-results';
-import { useIsDark, useTheme, useTradeColor } from '@/hooks/use-theme';
+import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import {
   AUTHORIZATION_REGISTER_URL,
@@ -56,10 +56,10 @@ import { formatTime, mondayIndex, WEEKDAYS } from '@/lib/opening-hours';
 import { priceInsight } from '@/lib/price-insight';
 import { matchLabel, reviewCount, weightsFromPriorities } from '@/lib/ranking';
 import { reviewRatingLabel } from '@/lib/review-label';
-import type { Business, CategoryId } from '@/lib/types';
+import type { Business } from '@/lib/types';
 import { t } from '@/i18n';
 import { availableWhen } from '@/lib/availability';
-import { businessText, countryOf, currencyOf, initials } from '@/lib/business-text';
+import { businessText, countryOf, currencyOf } from '@/lib/business-text';
 import { type Currency, getMarket, taxNote } from '@/lib/markets';
 import { CHECK_TEXT, isTopRated, isVerified, passedChecks, verificationExpiry } from '@/lib/verification';
 import { MAX_COMPARE, useApp, useBusiness } from '@/state/app-state';
@@ -646,42 +646,6 @@ function splitPrice(min: number, max: number, currency: Currency): { value: stri
 }
 
 /**
- * The business's own picture, or its initials in the trade's colour on a white tile, as on the
- * panel in the design.
- */
-function HeroMark({ business }: { business: Business }) {
-  const colors = useTheme();
-  const dark = useIsDark();
-  const trade = useTradeColor(business.categories[0] as CategoryId);
-  if (business.photo.startsWith('https://')) {
-    return (
-      <Image
-        source={{ uri: business.photo }}
-        style={styles.heroMark}
-        contentFit="cover"
-        accessibilityIgnoresInvertColors
-        accessible={false}
-      />
-    );
-  }
-  const letters = initials(business.name);
-  return (
-    <View
-      style={[styles.heroMark, { backgroundColor: dark ? trade.soft : colors.surface }]}
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants">
-      <AppText
-        display
-        weight="800"
-        allowFontScaling={false}
-        style={[styles.heroLetters, { color: trade.onSoft, fontSize: letters.length > 1 ? 24 : 30 }]}>
-        {letters}
-      </AppText>
-    </View>
-  );
-}
-
-/**
  * FixMatch's own reviews in one bar under the facts: the average, how many and where they come
  * from. "Læs" scrolls to "Kundernes erfaringer". Without reviews it says so.
  */
@@ -862,16 +826,6 @@ const styles = StyleSheet.create({
   hero: { gap: Spacing.md },
   heroButtonsSpace: { height: MinTouchSize },
   heroRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  heroMark: {
-    width: 64,
-    height: 64,
-    borderRadius: Radius.lg,
-    borderCurve: 'continuous',
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-  },
-  heroLetters: { lineHeight: 64, textAlign: 'center' },
   heroMeta: { marginTop: Spacing.xs },
   heroBadges: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs + 2 },
   checks: { gap: 6, paddingLeft: IconWell.row.size + Spacing.md, paddingBottom: Spacing.sm },
