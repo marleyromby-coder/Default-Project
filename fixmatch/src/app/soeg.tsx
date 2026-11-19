@@ -9,9 +9,9 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
-import { MinTouchSize, Radius, ScreenPadding, Spacing } from '@/constants/theme';
-import { CATEGORIES, getCategory } from '@/data/categories';
-import { useTheme } from '@/hooks/use-theme';
+import { IconWell, MinTouchSize, Radius, ScreenPadding, Spacing, TradeColors } from '@/constants/theme';
+import { CATEGORIES, getCategory, isCategoryId } from '@/data/categories';
+import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { formatPriceRange } from '@/lib/format';
 import { summarizeJobPrice } from '@/lib/prices';
@@ -188,14 +188,16 @@ function ResultRow({
   onPress: () => void;
 }) {
   const colors = useTheme();
+  // A trade's icon sits on a tint of its trade's colour, like a small trade tile.
+  const trade = isCategoryId(icon) ? TradeColors[useIsDark() ? 'dark' : 'light'][icon] : undefined;
   return (
     <Tappable
       onPress={onPress}
       accessibilityLabel={t('{title}, {subtitle}', { title, subtitle })}
       pressedOpacity={0.5}
       style={styles.row}>
-      <View style={[styles.rowIcon, { backgroundColor: colors.brandSoft }]}>
-        <Icon name={icon} size={16} color={colors.brand} weight="semibold" />
+      <View style={[styles.rowIcon, { backgroundColor: trade?.soft ?? colors.brandSoft }]}>
+        <Icon name={icon} size={16} color={trade?.onSoft ?? colors.brandText} weight="semibold" />
       </View>
       <View style={styles.flex}>
         <AppText variant="body" numberOfLines={1}>
@@ -238,5 +240,12 @@ const styles = StyleSheet.create({
     minHeight: 56,
     paddingVertical: Spacing.sm,
   },
-  rowIcon: { width: 28, height: 28, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
+  rowIcon: {
+    width: IconWell.row.size,
+    height: IconWell.row.size,
+    borderRadius: IconWell.row.radius,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

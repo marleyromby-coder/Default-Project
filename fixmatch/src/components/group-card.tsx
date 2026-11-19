@@ -5,9 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { Icon } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
-import { IconWell, Radius, Spacing } from '@/constants/theme';
+import { IconWell, Radius, Shadows, Spacing } from '@/constants/theme';
 import { getCategory } from '@/data/categories';
-import { useTheme } from '@/hooks/use-theme';
+import { useIsDark, useTheme, useTradeColor } from '@/hooks/use-theme';
 import { formatDate, formatDateRange } from '@/lib/format';
 import { type GroupJob, MIN_GROUP } from '@/state/groups';
 import { t } from '@/i18n';
@@ -15,6 +15,8 @@ import { t } from '@/i18n';
 /** One group in a list: the job, the street, how many are in, and when. */
 export function GroupCard({ group }: { group: GroupJob }) {
   const colors = useTheme();
+  const trade = useTradeColor(group.category);
+  const shadows = Shadows[useIsDark() ? 'dark' : 'light'];
   const category = getCategory(group.category);
   const job = category?.jobs.find((j) => j.id === group.job);
   const title = job?.name ?? group.job;
@@ -29,12 +31,12 @@ export function GroupCard({ group }: { group: GroupJob }) {
         from: formatDate(group.wantedFrom),
         to: formatDate(group.wantedTo),
       })}
-      style={[styles.card, { backgroundColor: colors.surface }]}>
-      <View style={[styles.icon, { backgroundColor: colors.brandSoft }]}>
-        <Icon name={group.category} size={16} color={colors.brand} weight="semibold" />
+      style={[styles.card, { backgroundColor: colors.surface, boxShadow: shadows.card }]}>
+      <View style={[styles.icon, { backgroundColor: trade.soft }]}>
+        <Icon name={group.category} size={16} color={trade.onSoft} weight="semibold" />
       </View>
       <View style={styles.flex}>
-        <AppText variant="headline" numberOfLines={1}>
+        <AppText variant="headline" display numberOfLines={1}>
           {title}
         </AppText>
         <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
