@@ -43,13 +43,13 @@ _Kilde: rapporten afsnit 1 og 3, kilde [2], [3], [6], [7] og [8]._
 _Kilde: rapporten afsnit 3 (konkurrentanalysen og positioneringskortet), kilde [9] (egen analyse); talepapiret ("Jeg bruger allerede 3byggetilbud")._
 
 **8. Hvad gør I, hvis en stor portal kopierer jer, eller folk bare spørger ChatGPT om prisen?**
-Det er reelle trusler. Ifølge vores Porter-analyse er den største trussel nye konkurrenter som Fikset og chatbots, og at store portaler kopierer idéen, står i vores SWOT. En chatbot giver et estimat. Vi viser, hvad firmaerne i området selv siger, de tager, og man kan ringe til dem med det samme. Vores forsvar bliver data, andre ikke har: firmaernes egne priser, priser, som brugere selv deler, og vores egne anmeldelser. Den data har vi ikke endnu. Den kommer med de første firmaer.
+Det er reelle trusler, og begge står i vores Porter- og SWOT-analyse. En chatbot giver et estimat. Vi viser, hvad firmaerne i området selv siger, de tager, og man kan ringe til dem med det samme. Vores forsvar bliver data, andre ikke har: firmaernes egne priser, priser, som brugere selv har delt, og vores egne anmeldelser. Den data har vi ikke endnu. Den kommer med de første firmaer.
 _Kilde: rapporten afsnit 3 (Porters fem kræfter), afsnit 5 (konkurrencefordele) og afsnit 8 (SWOT)._
 
 ## Salg og markedsføring
 
 **9. Høne og æg: Hvordan får I firmaer uden brugere og brugere uden firmaer?**
-Vi starter med firmaerne i én by, København, fordi en app uden håndværkere er tom. Målet for de første 90 dage er 300 firmaer på listen, 150 samtaler, 60 tilmeldte og 40 live, mindst tre i hvert fag. Vi finder dem i CVR, i Sikkerhedsstyrelsens register og på Google Maps, og vi ringer eller kommer forbi. Det er gratis for firmaerne, så de har intet at tabe. Først derefter går vi efter boligejerne med korte videoer på TikTok og Instagram om, hvad en opgave koster, og "Tjek dit tilbud gratis". Senere kommer mæglere og boligforeninger.
+Vi starter med firmaerne i én by, København, fordi en app uden håndværkere er tom. Målet for de første 90 dage er 300 firmaer på listen, 150 samtaler, 60 tilmeldte og 40 live, mindst tre i hvert fag. Vi finder dem i CVR og på Google Maps og ringer eller kommer forbi. Det er gratis for firmaerne, så de har intet at tabe. Først derefter går vi efter boligejerne med korte videoer på TikTok og Instagram om, hvad en opgave koster.
 _Kilde: rapporten afsnit 4 (salgsstrategi, 90-dagesmål, 4P og AIDA)._
 
 **10. Hvor mange firmaer har I talt med, og hvad sagde de?**
@@ -72,12 +72,12 @@ Brugerne betaler aldrig. Firmaerne kan vælge et frivilligt Pro-abonnement med f
 _Kilde: rapporten afsnit 4–5 og BMC; talepapiret ("Hvordan tjener I penge"); `docs/jura/privatlivspolitik.md` (annoncer mærket "Annonce")._
 
 **14. Hvis Pro ikke giver en bedre plads, hvorfor skulle et firma så betale? Og hvordan har I sat prisen?**
-Pro giver flere billeder og priser på flere opgaver, så kunden ved mere, før hun ringer. Det er ikke en bedre plads. Prisen er et forslag ud fra konkurrenterne: På 3byggetilbud betaler firmaet pr. kunde, og i Storbritannien koster et lead 5 til 40 pund og deles med 3–4 firmaer. Hos os er prisen fast. Giver Pro ét ekstra job om måneden, har det betalt sig. Men om det gør det, ved vi ikke endnu, for vi har ikke testet betalingsviljen. Derfor sælger vi først Pro, når brugerne kommer igen, og firmaerne får opkald. Det er port 3 i vores plan.
+Pro giver flere billeder og priser på flere opgaver, så kunden ved mere, før hun ringer. Ikke en bedre plads. Prisen er et forslag ud fra konkurrenterne. I Storbritannien koster ét lead 5 til 40 pund, og det deles med 3–4 firmaer. Hos os er prisen fast, og ét ekstra job om måneden betaler den. Men vi har ikke testet betalingsviljen endnu. Derfor sælger vi først Pro i port 3, når brugerne kommer igen, og firmaerne får opkald.
 _Kilde: rapporten afsnit 5 (prissætning, kilde [9]) og afsnit 8 (portene); talepapiret._
 
 **15. Hvem betaler de 9.900 kroner det første år, når I ikke har indtægter? Og i rapporten står, at de første 100 firmaer får Pro gratis. Hvordan passer det med break-even ved tre?**
 Det første år tager vi ingen penge, fordi appen er i test, og vi skal stifte et ApS, før vi tager betaling. [Udfyld, kun hvis det er sandt: "Driften det første år betaler vi selv" / "… betaler skolen" / "… dækker vi med …".]
-"De første 100 får Pro gratis" er en idé i rapporten, som vi ikke har besluttet. Gør vi det, flytter break-even sig: Så skal vi have tre betalende ud over de gratis. Men driften koster stadig kun ca. 10.000 kroner om året.
+"De første 100 får Pro gratis" er en idé i rapporten, som vi ikke har besluttet. Gør vi det, flytter break-even sig: Så skal vi have tre betalende ud over de gratis. Men driften koster stadig kun 9.900 kroner om året.
 _Kilde: rapporten afsnit 5 (penetrationsstrategi, omkostninger, regneeksempel: år 1 = 0 kr.); talepapiret ("Det skal I undgå"). Rapporten siger ikke, hvem der betaler år 1._
 
 **16. Hvad tjener I om tre år?**
@@ -99,8 +99,8 @@ Nej. Verificeret betyder, at FixMatch selv har tjekket CVR, ejer og autorisation
 _Kilde: `content.ts` ("Sådan verificerer vi"); README (gælder et år)._
 
 **20. Hvorfor bruger I ikke Trustpilot?**
-Vi ville vise Trustpilot-stjerner i appen. Vi mødtes med Trustpilot den 10. november. En integration kunne godt lade sig gøre, men prisen var for høj for vores antal firmaer, når hele FixMatch koster ca. 10.000 kroner om året at drive. Den 17. november droppede vi det. Nu bygger vi vores egne anmeldelser, og firmaerne kan give et almindeligt link til deres profiler, uden stjerner.
-_Kilde: `docs/jura/anmeldelser.md` (møde 10. nov. 2026, fravalgt 17. nov. 2026); rapporten afsnit 6 og 7._
+Vi ville vise Trustpilot-stjerner i appen. Vi mødtes med Trustpilot den 10. november. En integration kunne godt lade sig gøre, men prisen var for høj for vores antal firmaer, når hele FixMatch koster 9.900 kroner om året at drive. Den 17. november droppede vi det. Nu bygger vi vores egne anmeldelser, og firmaerne kan give et almindeligt link til deres profiler, uden stjerner.
+_Kilde: `docs/jura/anmeldelser.md` (møde 10. nov. 2026, fravalgt 17. nov. 2026, "ca. 10.000 kr. om året"); rapporten afsnit 5 (9.900 kr.), 6 og 7._
 
 **21. Er det ikke prisaftaler, når Tilbudstjek siger, hvad der er "normalt"?**
 Nej. Firmaerne sætter selv deres priser, og vi aftaler aldrig priser med dem eller mellem dem. Det ville være ulovligt. Tilbudstjek viser kunden et normalt prisniveau og fradraget i kroner. Det er information til kunden, ikke en pris til firmaerne.
@@ -113,7 +113,7 @@ _Kilde: `docs/jura/privatlivspolitik.md` (punkt 1, dataansvarlig); README (Supab
 ## Team, bæredygtighed og fremtid
 
 **23. Har I selv bygget appen? Har I brugt AI?**
-Ja. Vi har brugt AI-værktøjer til kode og analyse, ligesom mange udviklere gør i dag. Men beslutningerne om produkt, design og marked har vi selv truffet. Og da Xcode, Apples program til at bygge apps, viste over 800 fejl, rettede vi dem, til appen kom på TestFlight.
+Ja, vi har selv bygget den. Og ja, vi har brugt AI-værktøjer til kode og analyse, ligesom mange udviklere gør i dag. Men beslutningerne om produkt, design og marked har vi selv truffet. Og da Xcode, Apples program til at bygge apps, viste over 800 fejl, rettede vi dem, til appen kom på TestFlight.
 _Kilde: rapporten afsnit 6 (styrker og svagheder, kriser). Sig "AI" her, fordi rapporten selv gør det. I selve pitchen bruger vi ikke ordet._
 
 **24. Hvem gør hvad i teamet, og hvad har I lært?**
@@ -125,7 +125,7 @@ Appen viser afstanden, så man kan vælge lokalt. Med Naborabat kan tre familier
 _Kilde: rapporten afsnit 2 (Triple Bottom Line, verdensmål 8, 11, 12, 13 og 16, kritisk vurdering)._
 
 **26. Hvorfor kun iPhone og kun København? Hvordan vil I vokse?**
-Vi vil gøre én ting godt, før vi gør to. "Kun iPhone" står som en svaghed i vores SWOT. Firmaerne behøver ikke en iPhone, for tilmeldingen og "Ledig i dag" ligger på hjemmesiden. Planen har porte: først 40 verificerede firmaer i København, så App Store i Danmark og Aarhus, så Pro og til sidst Sverige og Norge og derefter Tyskland og Storbritannien. Appen er på dansk og engelsk, og de fire lande er klar i koden.
+Vi vil gøre én ting godt, før vi gør to. "Kun iPhone" står som en svaghed i vores SWOT. Firmaerne behøver ikke en iPhone, for tilmeldingen og "Ledig i dag" ligger på hjemmesiden. Planen har porte: først 40 verificerede firmaer i København, så App Store i Danmark og Aarhus, så Pro og til sidst Sverige og Norge og derefter Tyskland og Storbritannien. De fire lande er allerede klar i koden.
 _Kilde: talepapiret ("Mange af mine kunder har Android"); rapporten afsnit 8 (portene, SWOT); README._
 
 ## Svar vi ikke har endnu
@@ -156,8 +156,8 @@ _Kilde: rapporten afsnit 8 (portene)._
 Det kan vi ikke dokumentere endnu. Hvis appen får folk til at bestille flere småopgaver, kan kørslen også stige. Sådan finder vi ud af det: Efter lanceringen måler vi andelen af opgaver i Naborabat-grupper og den gennemsnitlige afstand til det valgte firma.
 _Kilde: rapporten afsnit 2 (kritisk vurdering)._
 
-**Hvor kommer de 12 % og de 1.156 klager oprindeligt fra?**
-De står i vores egen analyse, "Marked, navn og jura", som er kilde [1] i rapporten. [Udfyld før Vejle: den oprindelige kilde bag hvert tal.] Har I den ikke: "Den oprindelige kilde har jeg ikke med her, men den står i vores analyse, og vi sender den gerne."
+**Hvor kommer de 12 % og de over 1.100 klager oprindeligt fra?**
+Det præcise tal er 1.156 klager i 2022. Tallene står i vores egen analyse, "Marked, navn og jura", som er kilde [1] i rapporten. [Udfyld før Vejle: den oprindelige kilde bag hvert tal.] Har I den ikke: "Den oprindelige kilde har jeg ikke med her, men den står i vores analyse, og vi sender den gerne."
 _Kilde: rapporten, "Kort fortalt" og kildelisten [1]._
 
 **Fortsætter I med FixMatch efter Business Minds og efter gymnasiet? Hvem ejer det?**

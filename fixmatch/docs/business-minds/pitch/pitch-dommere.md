@@ -5,7 +5,7 @@ Business Minds i Vejle. Dommerne kommer forbi standen, hører pitchen og stiller
 | | |
 |---|---|
 | **Mål** | Dommerne skal huske én sætning ("Se prisen, før du ringer"), forstå, hvordan FixMatch tjener penge, og gå fra standen med en flyer. |
-| **Længde** | Højst 4:00. Mål: 3:20–3:30. Talt tekst: **409 ord** skrevet, **ca. 430 ord** udtalt (tal som "1.156" siges med flere ord). Det er ca. 3:15 ved 2,2 ord i sekundet. Med tryk på telefonen, pauser og overleveringer bliver det **ca. 3:27**. Stop senest 3:40. |
+| **Længde** | Højst 4:00. Mål: 3:20–3:30. Talt tekst: **408 ord** skrevet, **ca. 428 ord** udtalt (tal som "9.900" siges med flere ord). Det er ca. 3:15 ved 2,2 ord i sekundet. Demo-øjeblikket (tryk og pauser på telefonen) tager ca. 5 sekunder, højst 20. Med pauser og overleveringer bliver det **ca. 3:28**. Stop senest 3:40. |
 | **Roller** | **[Navn 1]** (idé og produkt) åbner og lukker. **[Navn 2]** (salg og partnere) styrer telefonen, viser demoen og tager målgruppe og salg. **[Navn 3]** (økonomi og jura) tager penge, status og næste skridt. **[Navn 4]** (marketing), hvis I er fire: tager tid, rækker flyers frem og holder backup-telefonen klar. |
 | **I hånden** | [Navn 2]: demo-telefonen, åben på forsiden. [Navn 1]: én flyer, klar til at række frem. [Navn 4]: backup-telefonen og et stopur. Plakaten hænger bag jer, og QR-koden kan ses. Stikordskort i lommen, men læs ikke op. |
 
@@ -39,21 +39,21 @@ Hvad koster det at få renset et stoppet afløb?
 
 Det vidste Sofie heller ikke. Hun har lige købt rækkehus i Valby og kender ingen VVS'er. Hun har fået et tilbud på 3.200 kroner. Er det fair? Kan hun stole på firmaet?
 
-> **Hvis en dommer svarer** ("1.500 kroner?"): "Måske! Men det kan man ikke se nogen steder, før man har ringet. Det vidste Sofie heller ikke." Siger dommeren "Det ved jeg ikke": "Nej. Det vidste Sofie heller ikke." Fortsæt derfra.
+> **Hvis en dommer svarer** ("1.500 kroner?"): "Måske! Men det står sjældent nogen steder, før man har ringet. Det vidste Sofie heller ikke." Siger dommeren "Det ved jeg ikke": "Nej. Det vidste Sofie heller ikke." Fortsæt derfra.
 >
 > Kilde: Sofie er rapportens persona (afsnit 3). Hun er opdigtet, og det siger I lige bagefter.
 
 ### 0:22 · [Navn 1] · Problemet og hvem vi er
 
-Sofie er opdigtet, men hun er vores målgruppe: unge boligejere i storbyen. Tallene er ægte: 12 procent af boligejerne har dårlige erfaringer med håndværkere, og ankenævnene fik 1.156 klager over håndværkere i 2022.
+Sofie er opdigtet, men hun er vores målgruppe: unge boligejere i storbyen. Tallene er ægte. 12 procent af boligejerne har dårlige erfaringer med håndværkere. Og i 2022 fik ankenævnene over 1.100 klager over håndværkere.
 
-Vi er [Navn 1], [Navn 2] og [Navn 3] fra FixMatch: en gratis iPhone-app, hvor man ser prisen, før man ringer.
+Vi er [Navn 1], [Navn 2] og [Navn 3] fra FixMatch. En gratis iPhone-app, hvor man ser prisen, før man ringer.
 
 [Træd et halvt skridt til side. [Navn 2] træder frem med telefonen.]
 
-> Kilde: 12 % og 1.156 klager: rapporten, "Kort fortalt", kilde [1]. Målgruppen 25–40 år: afsnit 3, kilde [5].
+> Kilde: 12 % og 1.156 klager (siges "over 1.100", fordi det er lettere at sige): rapporten, "Kort fortalt", kilde [1]. Målgruppen 25–40 år: afsnit 3, kilde [5].
 
-### 0:48 · [Navn 2] · Demoen
+### 0:47 · [Navn 2] · Demoen
 
 [Hold telefonen i brysthøjde, med skærmen mod dommerne. Tal til dem, ikke til skærmen. Hold en pause på et sekund efter hvert tryk.]
 
@@ -73,27 +73,27 @@ Her er firmaets egne priser. Før hun ringer.
 
 [Peg på mærket Verificeret.]
 
-I den rigtige app betyder Verificeret: Vi har selv tjekket CVR, ejer og autorisation. Det er ikke et kvalitetsstempel.
+I den rigtige app betyder Verificeret, at vi selv har tjekket CVR, ejer og autorisation. Det er ikke et kvalitetsstempel.
 
 [Tryk Ring. Boksen "Eksempelvirksomhed" kommer frem.]
 
-Så ringer hun direkte. Intet gebyr pr. kunde. I demoen er opkald slået fra.
+Så ringer hun direkte. Firmaet betaler ikke pr. kunde. I demoen er opkald slået fra.
 
 [Luk boksen. Sænk telefonen.]
 
 > Kilde: Rangering og "kan ikke købes": `src/data/content.ts` ("Sådan rangerer vi"). Verificeret: `content.ts` ("Sådan verificerer vi") og README. Boksen "Eksempelvirksomhed": `src/lib/contact.ts`. Demoen viser "Bedste match" og ikke "Billigste", fordi rapportens kilde [5] siger, at 67 % vægter kvaliteten højest.
 
-### 1:29 · [Navn 2] · Tilbudstjek og bæredygtighed
+### 1:27 · [Navn 2] · Tilbudstjek og bæredygtighed
 
-Med Tilbudstjek ser hun, om et tilbud er lavt, normalt eller højt. Det gør ingen danske konkurrenter.
+Med Tilbudstjek ser hun, om hendes tilbud er lavt, normalt eller højt. Det kan ingen af konkurrenterne, vi har tjekket.
 
-Det er også bæredygtigt: Man kan vælge lokalt, og Tilbudstjek viser håndværkerfradraget, som kræver faktura i stedet for sort arbejde.
+Det er også bæredygtigt. Man kan vælge lokalt, og Tilbudstjek viser håndværkerfradraget, som kræver faktura. Det taler imod sort arbejde.
 
-> Kilde: Tilbudstjek og "ingen danske konkurrenter": rapporten, "Kort fortalt" og afsnit 3, kilde [9] (vores egen konkurrentanalyse). Bæredygtighed: afsnit 2.
+> Kilde: Tilbudstjek og "ingen af konkurrenterne, vi har tjekket": rapporten, "Kort fortalt" og afsnit 3, kilde [9] (vores egen konkurrentanalyse af 3byggetilbud, Handyhand, Autobutler, Anmeld Håndværker og Fikset). Tilbudstjek viser håndværkerfradraget i kroner, og fradraget kræver faktura: afsnit 2, kilde [4]. Sig ikke, om Sofies tilbud på 3.200 kroner er lavt eller højt. Det står ingen steder.
 
 ### 1:45 · [Navn 2] · Høne og æg
 
-Men en app uden håndværkere er tom. Det er høne og æg. Derfor starter vi med firmaerne i København. Markedslederen 3byggetilbud har cirka 2.100 firmaer, der betaler for kunder. Boligejerne kommer bagefter, via TikTok-videoer om, hvad en opgave koster.
+Men en app uden håndværkere er tom. Det er høne og æg. Derfor starter vi med firmaerne i København. Markedslederen 3byggetilbud har cirka 2.100 firmaer, der betaler for kunder. Bagefter når vi boligejerne med TikTok-videoer om priser.
 
 Og hvordan tjener vi så penge? [Navn 3].
 
@@ -103,15 +103,15 @@ Og hvordan tjener vi så penge? [Navn 3].
 
 ### 2:07 · [Navn 3] · Penge
 
-Brugerne betaler aldrig. Firmaerne kan købe Pro: flere billeder og priser, aldrig en bedre plads. Vi foreslår 299 til 499 kroner om måneden. Driften koster 9.900 kroner om året. Så break-even er tre betalende firmaer. Det første år tager vi ingen penge.
+Brugerne betaler aldrig. Firmaerne kan købe Pro med flere billeder og priser. Men aldrig en bedre plads. Vi foreslår 299 til 499 kroner om måneden. Driften koster 9.900 kroner om året, så break-even er tre betalende firmaer. Det første år tager vi ingen penge.
 
-> **Tidstjek:** Starter [Navn 3] senere end 2:20, så spring "Fire lande mere er klar i koden" over, og [Navn 1] springer sætningen om Xcode over. Det sparer ca. 6 sekunder. Skær aldrig i demoen, i "demo-firmaer", i "ingen rigtige brugere" eller i bønnen.
+> **Tidstjek:** Starter [Navn 3] senere end 2:20, så spring "Fire lande mere er klar i koden" over, og [Navn 1] springer sætningen om Xcode over. Det sparer ca. 7 sekunder. Skær aldrig i demoen, i "demo-firmaer", i "ingen rigtige brugere" eller i bønnen.
 >
 > Kilde: Rapporten afsnit 5: Pro-prisen er et forslag, 9.900 kr. i omkostninger, break-even 3 × 299 × 12 = 10.764 kr., og år 1 er uden indtægt. "Flere billeder og priser": talepapiret.
 
 ### 2:31 · [Navn 3] · Status og næste skridt
 
-Appen er bygget og kører som testversion med demo-firmaer. Vi har ingen rigtige brugere endnu. I denne uge ringede vi til [X] firmaer. [Y] vil gerne være med.
+Appen kører som testversion med demo-firmaer. Vi har ingen rigtige brugere endnu. I denne uge ringede vi til [X] firmaer. [Y] vil gerne være med.
 
 Næste skridt: 40 verificerede firmaer på 90 dage. Så CVR-nummer og App Store. Fire lande mere er klar i koden.
 
@@ -119,7 +119,7 @@ Næste skridt: 40 verificerede firmaer på 90 dage. Så CVR-nummer og App Store.
 >
 > Kilde: Testversion og ingen rigtige brugere: talepapiret og rapportens SWOT. 40 firmaer på 90 dage: rapporten afsnit 4 og 8. Fire lande (Sverige, Norge, Tyskland, Storbritannien): afsnit 8 og README.
 
-### 2:53 · [Navn 1] · Hvorfor os, bønnen og slutningen
+### 2:52 · [Navn 1] · Hvorfor os, bønnen og slutningen
 
 Hvorfor os? Vi har selv bygget appen. Da Xcode viste over 800 fejl, rettede vi dem. Da en konsulent sagde "start i Danmark", droppede vi den globale plan. Og vi tør ringe til firmaerne.
 
@@ -133,7 +133,7 @@ Sofie skal ikke kende en VVS'er. Hun skal bare kunne se prisen, før hun ringer.
 
 FixMatch. Se prisen, før du ringer.
 
-[Ca. 3:27. Stop. Smil. Vent på spørgsmål.]
+[Ca. 3:28. Stop. Smil. Vent på spørgsmål.]
 
 > Kilde: 800 fejl, konsulenten og den globale plan: rapporten afsnit 6 og 7. "Vi tør ringe": afsnit 4. Spørger en dommer, hvad Xcode er: "Apples program til at bygge iPhone-apps."
 
@@ -193,13 +193,13 @@ Til jer, hvis en dommer spørger "Hvor har I det fra?". Siges ikke i pitchen.
 
 | Tal eller påstand | Kilde |
 |---|---|
-| 12 % af boligejerne har dårlige erfaringer; 1.156 klager over håndværkere til ankenævnene i 2022 | Rapporten, "Kort fortalt", kilde [1] (vores egen analyse "Marked, navn og jura") |
+| 12 % af boligejerne har dårlige erfaringer; 1.156 klager over håndværkere til ankenævnene i 2022 (siges "over 1.100") | Rapporten, "Kort fortalt", kilde [1] (vores egen analyse "Marked, navn og jura") |
 | Sofie, 32, rækkehus i Valby, tilbud på 3.200 kr. | Rapporten afsnit 3 (persona, opdigtet) |
 | Unge boligejere i storbyen (25–40 år) er mindre loyale over for "deres" håndværker | Rapporten afsnit 3, kilde [5] (TEKNIQ/Bolius) |
 | 67 % vægter kvaliteten højest, 18 % prisen | Rapporten afsnit 3, kilde [5] (TEKNIQ/YouGov) |
 | Rangering på pris, afstand og anmeldelser; kan ikke købes | `src/data/content.ts` ("Sådan rangerer vi"); `docs/jura/anmeldelser.md` |
 | Verificeret = CVR, ejer og autorisation, ikke en kvalitetsgaranti | `src/data/content.ts`; README |
-| Tilbudstjek: "Det gør ingen danske konkurrenter" | Rapporten "Kort fortalt" og afsnit 3, kilde [9] (egen konkurrentanalyse af 3byggetilbud, Handyhand, Autobutler, Anmeld Håndværker og Fikset) |
+| Tilbudstjek: "Det kan ingen af konkurrenterne, vi har tjekket" | Rapporten "Kort fortalt" og afsnit 3, kilde [9] (egen konkurrentanalyse af 3byggetilbud, Handyhand, Autobutler, Anmeld Håndværker og Fikset) |
 | Håndværkerfradraget kræver faktura | Rapporten afsnit 2, kilde [4] |
 | Ca. 2.100 betalende firmaer hos 3byggetilbud | Rapporten afsnit 3, kilde [2] |
 | Pro 299–499 kr./md. (forslag), aldrig en bedre plads | Rapporten afsnit 4–5 og BMC; talepapiret |
