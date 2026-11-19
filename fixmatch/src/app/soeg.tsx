@@ -188,8 +188,9 @@ function ResultRow({
   onPress: () => void;
 }) {
   const colors = useTheme();
+  const dark = useIsDark();
   // A trade's icon sits on a tint of its trade's colour, like a small trade tile.
-  const trade = isCategoryId(icon) ? TradeColors[useIsDark() ? 'dark' : 'light'][icon] : undefined;
+  const trade = isCategoryId(icon) ? TradeColors[dark ? 'dark' : 'light'][icon] : undefined;
   return (
     <Tappable
       onPress={onPress}
