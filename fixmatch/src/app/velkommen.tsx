@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { LogoMark } from '@/components/logo';
+import { HeroPanel } from '@/components/hero-panel';
+import { Logo } from '@/components/logo';
+import { TradeArt } from '@/components/trade-art';
 import { Button } from '@/components/ui/button';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { AppText } from '@/components/ui/text';
-import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
+import { IconWell, ScreenPadding, Spacing } from '@/constants/theme';
 import { CATEGORIES } from '@/data/categories';
 import { GPS_MESSAGES, useGps } from '@/hooks/use-gps';
 import { useTheme } from '@/hooks/use-theme';
@@ -37,37 +39,22 @@ export default function WelcomeScreen() {
 
   return (
     <View style={[styles.flex, { backgroundColor: colors.background }]}>
-      <ScrollView
-        contentContainerStyle={[styles.scroll, column, { paddingTop: insets.top + Spacing.md }]}
-        bounces={false}>
+      <ScrollView contentContainerStyle={styles.scroll} bounces={false}>
         {step === 0 ? (
           <>
-            <View
-              style={[styles.hero, { backgroundColor: colors.ink }]}
-              importantForAccessibility="no-hide-descendants">
-              {[CATEGORIES.slice(0, 4), CATEGORIES.slice(4)].map((row, index) => (
-                <View key={index} style={[styles.mosaicRow, index === 1 ? styles.mosaicOffset : null]}>
-                  {row.map((category, column) => {
-                    // One ochre tile, like the dot in the logo; the rest in raised pine.
-                    const accent = index === 0 && column === 1;
-                    return (
-                      <View
-                        key={category.id}
-                        style={[styles.mosaicTile, { backgroundColor: accent ? colors.accent : colors.inkRaised }]}>
-                        <Icon
-                          name={category.id}
-                          size={26}
-                          color={accent ? colors.ink : colors.onInk}
-                          weight="semibold"
-                        />
-                      </View>
-                    );
-                  })}
-                </View>
-              ))}
-            </View>
-            <View style={styles.textBlock}>
-              <LogoMark size={44} />
+            <HeroPanel contentStyle={styles.panel}>
+              <Logo size={28} onPanel />
+              <View style={styles.mosaic} importantForAccessibility="no-hide-descendants">
+                {[CATEGORIES.slice(0, 4), CATEGORIES.slice(4)].map((row, index) => (
+                  <View key={index} style={[styles.mosaicRow, index === 1 ? styles.mosaicOffset : null]}>
+                    {row.map((category) => (
+                      <TradeArt key={category.id} trade={category.id} size={64} tile radius={0.3} />
+                    ))}
+                  </View>
+                ))}
+              </View>
+            </HeroPanel>
+            <View style={[styles.textBlock, column]}>
               <AppText variant="largeTitle">{t('Find den rette håndværker – hurtigt')}</AppText>
               <AppText variant="body" tone="textSecondary">
                 {t('VVS’er, elektriker, tømrer, murer, mekaniker og flere. Lokale virksomheder samlet ét sted.')}
@@ -77,42 +64,56 @@ export default function WelcomeScreen() {
         ) : null}
 
         {step === 1 ? (
-          <View style={styles.textBlock}>
-            <AppText variant="largeTitle">{t('Sammenlign på det, der betyder noget')}</AppText>
-            <Feature
-              icon="tag"
-              title={t('Pris')}
-              text={t('Timepris og eksempelpriser {tax} – før du ringer.', { tax: taxNote(market) })}
-            />
-            <Feature icon="pin" title={t('Afstand')} text={t('Se hvem der er tættest på, og hvor langt de kører.')} />
-            <Feature
-              icon="star"
-              title={t('Anmeldelser')}
-              text={t('Kun fra brugere, der har kontaktet virksomheden gennem FixMatch.')}
-            />
-            <Feature
-              icon="phone"
-              title={t('Ring direkte')}
-              text={t('Telefonnummer og hjemmeside lige ved hånden. Ingen mellemled.')}
-            />
-          </View>
+          <>
+            <HeroPanel contentStyle={styles.panel}>
+              <Logo size={28} onPanel />
+              <AppText variant="largeTitle" tone="onPanel">
+                {t('Sammenlign på det, der betyder noget')}
+              </AppText>
+            </HeroPanel>
+            <View style={[styles.textBlock, column]}>
+              <Feature
+                icon="tag"
+                title={t('Pris')}
+                text={t('Timepris og eksempelpriser {tax} – før du ringer.', { tax: taxNote(market) })}
+              />
+              <Feature icon="pin" title={t('Afstand')} text={t('Se hvem der er tættest på, og hvor langt de kører.')} />
+              <Feature
+                icon="star"
+                title={t('Anmeldelser')}
+                text={t('Kun fra brugere, der har kontaktet virksomheden gennem FixMatch.')}
+              />
+              <Feature
+                icon="phone"
+                title={t('Ring direkte')}
+                text={t('Telefonnummer og hjemmeside lige ved hånden. Ingen mellemled.')}
+              />
+            </View>
+          </>
         ) : null}
 
         {step === 2 ? (
-          <View style={styles.textBlock}>
-            <View style={[styles.bigIcon, { backgroundColor: colors.brandSoft }]}>
-              <Icon name="location" size={40} color={colors.brand} weight="semibold" />
+          <>
+            <HeroPanel contentStyle={styles.panel}>
+              <Logo size={28} onPanel />
+              <View style={[styles.bigIcon, { backgroundColor: colors.panelRaised }]}>
+                <Icon name="location" size={36} color={colors.onPanel} weight="semibold" />
+              </View>
+              <AppText variant="largeTitle" tone="onPanel">
+                {t('Find håndværkere nær dig')}
+              </AppText>
+            </HeroPanel>
+            <View style={[styles.textBlock, column]}>
+              <AppText variant="body" tone="textSecondary">
+                {t(
+                  'Del din placering, så vi kan beregne afstanden til hver virksomhed. Placeringen bliver på din telefon og deles ikke med nogen.',
+                )}
+              </AppText>
+              <AppText variant="footnote" tone="textSecondary">
+                {t('Du kan også vælge din by manuelt – nu eller senere.')}
+              </AppText>
             </View>
-            <AppText variant="largeTitle">{t('Find håndværkere nær dig')}</AppText>
-            <AppText variant="body" tone="textSecondary">
-              {t(
-                'Del din placering, så vi kan beregne afstanden til hver virksomhed. Placeringen bliver på din telefon og deles ikke med nogen.',
-              )}
-            </AppText>
-            <AppText variant="footnote" tone="textSecondary">
-              {t('Du kan også vælge din by manuelt – nu eller senere.')}
-            </AppText>
-          </View>
+          </>
         ) : null}
       </ScrollView>
 
@@ -159,10 +160,12 @@ function Feature({ icon, title, text }: { icon: IconName; title: string; text: s
   return (
     <View style={styles.feature}>
       <View style={[styles.featureIcon, { backgroundColor: colors.brandSoft }]}>
-        <Icon name={icon} size={20} color={colors.brand} weight="semibold" />
+        <Icon name={icon} size={20} color={colors.brandText} weight="semibold" />
       </View>
       <View style={styles.flex}>
-        <AppText variant="headline">{title}</AppText>
+        <AppText variant="headline" display>
+          {title}
+        </AppText>
         <AppText variant="subhead" tone="textSecondary">
           {text}
         </AppText>
@@ -173,22 +176,22 @@ function Feature({ icon, title, text }: { icon: IconName; title: string; text: s
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  scroll: { paddingHorizontal: ScreenPadding, gap: Spacing.xl, paddingBottom: Spacing.xl },
-  hero: { height: 280, borderRadius: Radius.xl, alignItems: 'center', justifyContent: 'center', gap: Spacing.md },
+  scroll: { gap: Spacing.xl, paddingBottom: Spacing.xl },
+  panel: { gap: Spacing.xl, paddingTop: Spacing.lg },
+  mosaic: { gap: Spacing.md, alignItems: 'center', paddingVertical: Spacing.sm },
   mosaicRow: { flexDirection: 'row', gap: Spacing.md },
-  mosaicOffset: { transform: [{ translateX: 30 }] },
-  mosaicTile: { width: 60, height: 60, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
-  textBlock: { gap: Spacing.lg },
-  bigIcon: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+  mosaicOffset: { transform: [{ translateX: 28 }] },
+  textBlock: { gap: Spacing.lg, paddingHorizontal: ScreenPadding },
+  bigIcon: { width: 72, height: 72, borderRadius: 36, alignItems: 'center', justifyContent: 'center' },
+  feature: { flexDirection: 'row', gap: Spacing.md, alignItems: 'flex-start' },
+  featureIcon: {
+    width: IconWell.card.size + 4,
+    height: IconWell.card.size + 4,
+    borderRadius: IconWell.card.radius + 1,
+    borderCurve: 'continuous',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: Spacing.xxl,
   },
-  feature: { flexDirection: 'row', gap: Spacing.md, alignItems: 'flex-start' },
-  featureIcon: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
   footer: { paddingHorizontal: ScreenPadding, gap: Spacing.sm, alignItems: 'center' },
   dots: { flexDirection: 'row', gap: 6, marginBottom: Spacing.sm },
   dot: { height: 8, borderRadius: 4 },

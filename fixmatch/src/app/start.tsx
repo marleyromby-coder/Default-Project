@@ -2,6 +2,7 @@ import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } fr
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SignUpFlow } from '@/components/account/sign-up-flow';
+import { HeroPanel } from '@/components/hero-panel';
 import { Logo } from '@/components/logo';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { AppText } from '@/components/ui/text';
@@ -23,12 +24,14 @@ const VALUES: { icon: IconName; text: string }[] = [
  * The first screen: create an account, or skip it ("Spring over", or "Ikke nu" after Sign in
  * with Apple). Everything can be browsed without one; the app asks again the first time you
  * contact a business. The root layout moves on once the account has a name and phone number
- * or the step is skipped.
+ * or the step is skipped. The wordmark, the tagline and the three promises sit on the panel.
  */
 export default function StartScreen() {
   const colors = useTheme();
   const insets = useSafeAreaInsets();
   const { column } = useLayout();
+  // The tagline ends in the sun-yellow full stop of the logo.
+  const price = t('Til den rette pris.').replace(/\.$/, '');
 
   return (
     <KeyboardAvoidingView
@@ -36,30 +39,31 @@ export default function StartScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={[
-          styles.content,
-          column,
-          { paddingTop: insets.top + Spacing.xl, paddingBottom: insets.bottom + Spacing.xl },
-        ]}>
-        <View style={styles.top}>
-          <Logo size={30} mark />
-          <AppText variant="largeTitle">
+        contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + Spacing.xl }]}>
+        <HeroPanel contentStyle={styles.panel}>
+          <Logo size={30} onPanel />
+          <AppText variant="largeTitle" tone="onPanel" style={styles.tagline}>
             {t('Den rette håndværker.')}
             {'\n'}
-            <Text style={{ color: colors.brandText }}>{t('Til den rette pris.')}</Text>
+            {price}
+            <Text style={{ color: colors.accent }}>.</Text>
           </AppText>
           <View style={styles.values}>
             {VALUES.map((value) => (
               <View key={value.icon} style={styles.value}>
-                <Icon name={value.icon} size={22} color={colors.brand} weight="semibold" />
-                <AppText variant="headline" style={styles.flex}>
+                <View style={[styles.valueIcon, { backgroundColor: colors.panelRaised }]}>
+                  <Icon name={value.icon} size={18} color={colors.onPanel} weight="semibold" />
+                </View>
+                <AppText variant="headline" tone="onPanel" style={styles.flex}>
                   {value.text}
                 </AppText>
               </View>
             ))}
           </View>
+        </HeroPanel>
+        <View style={[styles.signUp, column]}>
+          <SignUpFlow reason="start" onDone={() => undefined} onSkip={skipAccount} />
         </View>
-        <SignUpFlow reason="start" onDone={() => undefined} onSkip={skipAccount} />
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -67,9 +71,12 @@ export default function StartScreen() {
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  // The tagline at the top, the sign-up within reach of the thumb at the bottom.
-  content: { flexGrow: 1, justifyContent: 'space-between', paddingHorizontal: ScreenPadding, gap: Spacing.xxl },
-  top: { alignItems: 'flex-start', gap: Spacing.xl },
-  values: { alignSelf: 'stretch', gap: Spacing.lg },
+  // The promises on the panel at the top, the sign-up within reach of the thumb at the bottom.
+  content: { flexGrow: 1, justifyContent: 'space-between', gap: Spacing.xxl },
+  panel: { gap: Spacing.xl, paddingTop: Spacing.lg, paddingBottom: Spacing.sm },
+  tagline: { marginTop: Spacing.sm },
+  values: { gap: Spacing.lg },
   value: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
+  valueIcon: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
+  signUp: { paddingHorizontal: ScreenPadding },
 });
