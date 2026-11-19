@@ -11,10 +11,10 @@ import { Icon } from '@/components/ui/icon';
 import { Notice } from '@/components/ui/notice';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
-import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
+import { IconWell, Radius, ScreenPadding, Shadows, Spacing } from '@/constants/theme';
 import { getCategory } from '@/data/categories';
 import { EMERGENCIES, type Emergency } from '@/data/emergencies';
-import { useTheme } from '@/hooks/use-theme';
+import { useIsDark, useTheme, useTradeColor } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { countryOf, timeZoneOf } from '@/lib/business-text';
 import { callBusiness } from '@/lib/contact';
@@ -31,6 +31,7 @@ import { t } from '@/i18n';
  */
 export default function EmergencyScreen() {
   const colors = useTheme();
+  const shadows = Shadows[useIsDark() ? 'dark' : 'light'];
   const insets = useSafeAreaInsets();
   const { column } = useLayout();
   const { state } = useApp();
@@ -61,26 +62,30 @@ export default function EmergencyScreen() {
 
       <Tappable
         onPress={() => Linking.openURL(`tel:${market.emergencyNumber}`).catch(() => undefined)}
+        accessibilityRole="button"
         accessibilityLabel={t('Ring {number} ved fare for liv eller brand', { number: market.emergencyNumber })}
-        style={[styles.danger, { backgroundColor: colors.dangerSoft }]}>
-        <Icon name="siren" size={18} color={colors.danger} weight="semibold" />
-        <AppText variant="subhead" weight="600" style={[styles.flex, { color: colors.danger }]}>
+        style={[styles.danger, { backgroundColor: colors.coralSoft }]}>
+        <View style={[styles.dangerIcon, { backgroundColor: colors.coral }]}>
+          <Icon name="siren" size={18} color={colors.onCoral} weight="semibold" />
+        </View>
+        <AppText variant="subhead" weight="700" tone="coralText" style={styles.flex}>
           {t('Fare for liv eller brand? Ring {number}.', { number: market.emergencyNumber })}
         </AppText>
+        <Icon name="phone" size={18} color={colors.coralText} weight="semibold" />
       </Tappable>
 
       {!emergency ? (
         <>
-          <AppText variant="title3">{t('Hvad er der sket?')}</AppText>
+          <AppText variant="title2">{t('Hvad er der sket?')}</AppText>
           <View style={styles.grid}>
             {EMERGENCIES.map((item) => (
               <Tappable
                 key={item.id}
                 onPress={() => setPicked(item.id)}
                 accessibilityLabel={t(item.title)}
-                style={[styles.tile, { backgroundColor: colors.surface }]}>
-                <Icon name={item.icon} size={24} color={colors.warning} weight="semibold" />
-                <AppText variant="subhead" weight="600" numberOfLines={2}>
+                style={[styles.tile, { backgroundColor: colors.surface, boxShadow: shadows.card }]}>
+                <EmergencyIcon item={item} />
+                <AppText variant="subhead" display weight="700" numberOfLines={2}>
                   {t(item.title)}
                 </AppText>
               </Tappable>
@@ -90,7 +95,7 @@ export default function EmergencyScreen() {
       ) : (
         <>
           <View style={styles.head}>
-            <Icon name={emergency.icon} size={24} color={colors.warning} weight="semibold" />
+            <EmergencyIcon item={emergency} />
             <AppText variant="title2" style={styles.flex}>
               {t(emergency.title)}
             </AppText>
@@ -98,9 +103,9 @@ export default function EmergencyScreen() {
           </View>
 
           {emergency.danger ? (
-            <View style={[styles.dangerBox, { backgroundColor: colors.dangerSoft, borderColor: colors.danger }]}>
-              <Icon name="warning" size={18} color={colors.danger} weight="semibold" />
-              <AppText variant="subhead" weight="600" style={styles.flex}>
+            <View style={[styles.dangerBox, { backgroundColor: colors.coralSoft, borderColor: colors.coral }]}>
+              <Icon name="warning" size={18} color={colors.coralText} weight="semibold" />
+              <AppText variant="subhead" weight="600" tone="coralText" style={styles.flex}>
                 {t(emergency.danger)}
               </AppText>
             </View>
@@ -111,7 +116,7 @@ export default function EmergencyScreen() {
             {emergency.steps.map((step, index) => (
               <View key={step} style={styles.step}>
                 <View style={[styles.number, { backgroundColor: colors.brandSoft }]}>
-                  <AppText variant="caption" weight="700" style={{ color: colors.brandText }}>
+                  <AppText variant="footnote" display weight="800" style={{ color: colors.brandText }}>
                     {index + 1}
                   </AppText>
                 </View>
@@ -142,7 +147,7 @@ export default function EmergencyScreen() {
                   style={styles.helper}>
                   <BusinessMark business={business} size={40} />
                   <View style={styles.flex}>
-                    <AppText variant="body" numberOfLines={1}>
+                    <AppText variant="headline" display numberOfLines={1}>
                       {business.name}
                     </AppText>
                     <AppText variant="footnote" tone="textSecondary">
@@ -182,27 +187,62 @@ export default function EmergencyScreen() {
   );
 }
 
+/** The emergency's icon on a tint of its trade's colour (water on blue, power on yellow …). */
+function EmergencyIcon({ item }: { item: Emergency }) {
+  const trade = useTradeColor(item.category);
+  return (
+    <View style={[styles.well, { backgroundColor: trade.soft }]}>
+      <Icon name={item.icon} size={20} color={trade.onSoft} weight="semibold" />
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   content: { padding: ScreenPadding, gap: Spacing.lg },
-  danger: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
-  tile: {
-    width: '48%',
-    flexGrow: 1,
-    padding: Spacing.md,
-    gap: Spacing.sm,
+  danger: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.md,
+    minHeight: 60,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
     borderRadius: Radius.lg,
+    borderCurve: 'continuous',
+  },
+  dangerIcon: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md },
+  tile: {
+    width: '46%',
+    flexGrow: 1,
+    padding: Spacing.md + 2,
+    gap: Spacing.md,
+    borderRadius: Radius.card,
     borderCurve: 'continuous',
     // Icon at the top, label at the bottom, like the trade tiles on Find.
     justifyContent: 'space-between',
-    minHeight: 96,
+    minHeight: 112,
+  },
+  well: {
+    width: IconWell.card.size,
+    height: IconWell.card.size,
+    borderRadius: IconWell.card.radius,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  dangerBox: { flexDirection: 'row', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md, borderWidth: 1.5 },
+  dangerBox: {
+    flexDirection: 'row',
+    gap: Spacing.sm,
+    padding: Spacing.md,
+    borderRadius: Radius.md,
+    borderCurve: 'continuous',
+    borderWidth: 1.5,
+  },
   step: { flexDirection: 'row', gap: Spacing.md, marginTop: Spacing.md, alignItems: 'flex-start' },
-  number: { width: 24, height: 24, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  number: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
   spaced: { marginTop: Spacing.sm },
   helper: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingVertical: Spacing.sm, minHeight: 56 },
-  callButton: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
+  callButton: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
 });
