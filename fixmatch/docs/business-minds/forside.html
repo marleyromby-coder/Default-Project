@@ -10,70 +10,96 @@
       }
       html,
       body {
-        background: #f4f1ea;
+        background: #f1f5f3;
       }
       body {
         height: 297mm;
         overflow: hidden;
       }
       .cover {
+        position: relative;
         height: 297mm;
-        padding: 30mm 25mm 25mm;
+        padding: 28mm 25mm 25mm;
         display: flex;
         flex-direction: column;
+      }
+      /* Det smaragdgrønne panel fra appen bag logo, titel og undertitel. */
+      .cover::before {
+        content: '';
+        position: absolute;
+        inset: 0 0 auto;
+        height: 178mm;
+        border-radius: 0 0 10mm 10mm;
+        background:
+          radial-gradient(circle at calc(100% + 10mm) -20mm, rgba(255, 255, 255, 0.07) 0 78mm, transparent 78.3mm),
+          radial-gradient(
+            circle at calc(100% - 4mm) 52mm,
+            transparent 0 26mm,
+            rgba(255, 255, 255, 0.09) 26.1mm 26.6mm,
+            transparent 26.8mm
+          ),
+          linear-gradient(180deg, var(--panel), var(--panel2));
+      }
+      .cover > * {
+        position: relative;
       }
       .mark {
         display: flex;
         align-items: center;
-        gap: 12pt;
       }
+      /* Ordmærket står alene og hvidt på panelet, som i appen. */
       .mark img {
-        width: 22mm;
-        height: 22mm;
-        border-radius: 5mm;
+        display: none;
       }
       .mark span {
-        font-family: Fraunces, serif;
-        font-weight: 700;
-        font-size: 30pt;
-        color: var(--text);
+        font-family: var(--display);
+        font-weight: 900;
+        font-size: 34pt;
+        letter-spacing: -0.035em;
+        color: var(--on-panel);
       }
       .mark .dot {
         color: var(--accent);
       }
       .kicker {
-        margin-top: 30mm;
+        margin-top: 34mm;
         font-size: 12pt;
         font-weight: 600;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: var(--brand);
+        color: var(--on-panel-soft);
       }
       h1 {
-        font-size: 40pt;
-        line-height: 1.05;
-        margin: 6pt 0 10pt;
+        font-size: 44pt;
+        font-weight: 800;
+        line-height: 1.02;
+        letter-spacing: -0.045em;
+        color: var(--on-panel);
+        margin: 6pt 0 12pt;
       }
       h1 em {
         font-style: normal;
-        color: var(--brand);
+        color: var(--on-panel);
       }
       .sub {
         font-size: 14pt;
-        color: var(--muted);
+        color: var(--on-panel-soft);
         max-width: 140mm;
       }
       .facts {
         margin-top: auto;
-        border-top: 1pt solid var(--ink);
-        padding-top: 10pt;
+        padding: 12pt 14pt;
+        border: 0.75pt solid var(--line);
+        border-radius: 5mm;
+        background: #ffffff;
         display: grid;
         grid-template-columns: 42mm 1fr;
         row-gap: 5pt;
         font-size: 12pt;
       }
       .facts dt {
-        font-weight: 600;
+        font-family: var(--display);
+        font-weight: 700;
         color: var(--ink);
       }
       .facts dd {
