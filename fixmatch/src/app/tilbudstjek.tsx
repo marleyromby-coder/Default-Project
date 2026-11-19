@@ -1,16 +1,17 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Switch, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BusinessCard } from '@/components/business/business-card';
+import { HeroPanel, panelHeaderOptions } from '@/components/hero-panel';
 import { Button } from '@/components/ui/button';
 import { Chip } from '@/components/ui/chip';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { AppText } from '@/components/ui/text';
-import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
+import { displayFont, Radius, ScreenPadding, Shadows, Spacing } from '@/constants/theme';
 import { CATEGORIES, getCategory, isCategoryId } from '@/data/categories';
-import { useTheme } from '@/hooks/use-theme';
+import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { countryOf } from '@/lib/business-text';
 import { DATA_MODE } from '@/lib/data-source';
@@ -57,6 +58,7 @@ const VERDICT: Record<
 export default function QuoteCheckScreen() {
   const { column } = useLayout();
   const colors = useTheme();
+  const shadows = Shadows[useIsDark() ? 'dark' : 'light'];
   const insets = useSafeAreaInsets();
   const { state } = useApp();
   const { country, market } = useMarket();
@@ -151,223 +153,231 @@ export default function QuoteCheckScreen() {
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={[styles.content, column, { paddingBottom: insets.bottom + Spacing.xxl }]}>
-        <AppText variant="callout" tone="textSecondary">
-          {t(
-            'Har du fået et tilbud? Tast det ind, så ser du, om prisen er lav, normal eller høj i forhold til virksomhederne i FixMatch – også hvis tilbuddet kommer et andet sted fra.',
-          )}
-        </AppText>
-        <Button
-          title={t('Tjek hele tilbuddet med et billede')}
-          icon="camera"
-          variant="secondary"
-          onPress={() => router.push('/tilbud-foto')}
-        />
-
-        <View style={styles.block}>
-          <AppText variant="subhead" weight="600" tone="textSecondary" accessibilityRole="header">
-            {t('Fag')}
+        contentContainerStyle={{ paddingBottom: insets.bottom + Spacing.xxl }}>
+        <Stack.Screen options={{ ...panelHeaderOptions(colors), title: t('Tilbudstjek') }} />
+        <HeroPanel safeArea={false} contentStyle={styles.panel}>
+          <AppText variant="callout" tone="onPanel">
+            {t(
+              'Har du fået et tilbud? Tast det ind, så ser du, om prisen er lav, normal eller høj i forhold til virksomhederne i FixMatch – også hvis tilbuddet kommer et andet sted fra.',
+            )}
           </AppText>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.chipScroll}
-            contentContainerStyle={styles.chips}>
-            {CATEGORIES.map((c) => (
-              <Chip
-                key={c.id}
-                label={c.name}
-                icon={c.id}
-                selected={c.id === category?.id}
-                onPress={() => pickCategory(c.id)}
-              />
-            ))}
-          </ScrollView>
-        </View>
-
-        {category ? (
+          <Button
+            title={t('Tjek hele tilbuddet med et billede')}
+            icon="camera"
+            variant="secondary"
+            onPress={() => router.push('/tilbud-foto')}
+          />
+        </HeroPanel>
+        <View style={[styles.content, column]}>
           <View style={styles.block}>
             <AppText variant="subhead" weight="600" tone="textSecondary" accessibilityRole="header">
-              {t('Opgave')}
+              {t('Fag')}
             </AppText>
-            <View style={styles.wrap}>
-              {category.jobs.map((j) => (
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.chipScroll}
+              contentContainerStyle={styles.chips}>
+              {CATEGORIES.map((c) => (
                 <Chip
-                  key={j.id}
-                  label={j.name}
-                  selected={j.id === job?.id}
-                  onPress={() => {
-                    setJobId(j.id);
-                    setQuantityText('');
-                    setGreenValue(undefined);
-                  }}
+                  key={c.id}
+                  label={c.name}
+                  icon={c.id}
+                  selected={c.id === category?.id}
+                  onPress={() => pickCategory(c.id)}
                 />
               ))}
+            </ScrollView>
+          </View>
+
+          {category ? (
+            <View style={styles.block}>
+              <AppText variant="subhead" weight="600" tone="textSecondary" accessibilityRole="header">
+                {t('Opgave')}
+              </AppText>
+              <View style={styles.wrap}>
+                {category.jobs.map((j) => (
+                  <Chip
+                    key={j.id}
+                    label={j.name}
+                    selected={j.id === job?.id}
+                    onPress={() => {
+                      setJobId(j.id);
+                      setQuantityText('');
+                      setGreenValue(undefined);
+                    }}
+                  />
+                ))}
+              </View>
             </View>
-          </View>
-        ) : null}
+          ) : null}
 
-        {job ? (
-          <View style={[styles.card, { backgroundColor: colors.surface }]}>
-            {job.unit !== 'opgave' ? (
+          {job ? (
+            <View style={[styles.card, { backgroundColor: colors.surface, boxShadow: shadows.card }]}>
+              {job.unit !== 'opgave' ? (
+                <AmountField
+                  label={job.unit === 'm2' ? t('Antal m²') : t('Antal stk.')}
+                  value={quantityText}
+                  placeholder={String(defaultQuantity(job))}
+                  onChange={setQuantityText}
+                  suffix={job.unit === 'm2' ? 'm²' : t('stk.')}
+                />
+              ) : null}
               <AmountField
-                label={job.unit === 'm2' ? t('Antal m²') : t('Antal stk.')}
-                value={quantityText}
-                placeholder={String(defaultQuantity(job))}
-                onChange={setQuantityText}
-                suffix={job.unit === 'm2' ? 'm²' : t('stk.')}
+                label={t('Pris i tilbuddet, {tax}', { tax: taxNote(market) })}
+                value={priceText}
+                placeholder={formatNumber(Math.round(job.max * market.fromDkk * quoteFactor(job, quantity)))}
+                onChange={setPriceText}
+                suffix={symbol}
+                large
               />
-            ) : null}
-            <AmountField
-              label={t('Pris i tilbuddet, {tax}', { tax: taxNote(market) })}
-              value={priceText}
-              placeholder={formatNumber(Math.round(job.max * market.fromDkk * quoteFactor(job, quantity)))}
-              onChange={setPriceText}
-              suffix={symbol}
-              large
-            />
-          </View>
-        ) : null}
+            </View>
+          ) : null}
 
-        {result && verdict ? (
-          <View
-            accessible
-            accessibilityLiveRegion="polite"
-            accessibilityLabel={`${t(verdict.title)}. ${verdictText} ${t('Normalt: {range}', {
-              range: formatPrice(result.min, market.currency) + '–' + formatPrice(result.max, market.currency),
-            })}`}
-            style={[
-              styles.result,
-              { backgroundColor: colors[`${verdict.tone}Soft`], borderColor: colors[verdict.tone] },
-            ]}>
-            <View style={styles.row}>
-              <Icon name={verdict.icon} size={20} color={colors[verdict.tone]} weight="bold" />
-              <AppText variant="title3" style={{ color: colors[verdict.tone] }}>
-                {t(verdict.title)}
+          {result && verdict ? (
+            <View
+              accessible
+              accessibilityLiveRegion="polite"
+              accessibilityLabel={`${t(verdict.title)}. ${verdictText} ${t('Normalt: {range}', {
+                range: formatPrice(result.min, market.currency) + '–' + formatPrice(result.max, market.currency),
+              })}`}
+              style={[styles.result, { backgroundColor: colors.surface, boxShadow: shadows.raised }]}>
+              <View style={styles.row}>
+                <View style={[styles.verdictIcon, { backgroundColor: colors[`${verdict.tone}Soft`] }]}>
+                  <Icon name={verdict.icon} size={18} color={colors[verdict.tone]} weight="bold" />
+                </View>
+                <AppText variant="title2" style={[styles.flex, { color: colors[verdict.tone] }]}>
+                  {t(verdict.title)}
+                </AppText>
+              </View>
+              <AppText variant="subhead">{verdictText}</AppText>
+              <PriceScale min={result.min} max={result.max} price={price ?? 0} tone={colors[verdict.tone]} />
+              <AppText variant="footnote" tone="textSecondary">
+                {t('Normalt: {range}', {
+                  range: formatPriceRange(result.min, result.max, 'opgave', market.currency),
+                })}
+                {' · '}
+                {sourceText}
               </AppText>
             </View>
-            <AppText variant="subhead">{verdictText}</AppText>
-            <PriceScale min={result.min} max={result.max} price={price ?? 0} tone={colors[verdict.tone]} />
-            <AppText variant="footnote" tone="textSecondary">
-              {t('Normalt: {range}', {
-                range: formatPriceRange(result.min, result.max, 'opgave', market.currency),
-              })}
-              {' · '}
-              {sourceText}
-            </AppText>
-          </View>
-        ) : null}
+          ) : null}
 
-        {job ? (
-          <View style={[styles.card, { backgroundColor: colors.surface }]}>
-            <View style={styles.row}>
-              <View style={styles.flex}>
-                <AppText variant="headline">{t('Grøn energiforbedring')}</AppText>
-                <AppText variant="footnote" tone="textSecondary">
-                  {t('Fx isolering, vinduer, varmepumpe eller solceller. Så kan du få håndværkerfradrag.')}
-                </AppText>
+          {job ? (
+            <View style={[styles.card, { backgroundColor: colors.surface, boxShadow: shadows.card }]}>
+              <View style={styles.row}>
+                <View style={styles.flex}>
+                  <AppText variant="headline" display>
+                    {t('Grøn energiforbedring')}
+                  </AppText>
+                  <AppText variant="footnote" tone="textSecondary">
+                    {t('Fx isolering, vinduer, varmepumpe eller solceller. Så kan du få håndværkerfradrag.')}
+                  </AppText>
+                </View>
+                <Switch
+                  value={green}
+                  onValueChange={setGreenValue}
+                  trackColor={{ true: colors.brandStrong }}
+                  accessibilityLabel={t('Grøn energiforbedring')}
+                />
               </View>
-              <Switch
-                value={green}
-                onValueChange={setGreenValue}
-                trackColor={{ true: colors.brandStrong }}
-                accessibilityLabel={t('Grøn energiforbedring')}
-              />
+              {green ? (
+                <>
+                  <AmountField
+                    label={t('Heraf arbejdsløn')}
+                    value={labourText}
+                    placeholder={t('Står på tilbuddet')}
+                    onChange={setLabourText}
+                    suffix={symbol}
+                  />
+                  <AppText variant="subhead" accessibilityLiveRegion="polite">
+                    {deduction
+                      ? t('Du kan trække {deduction} fra og få ca. {saving} tilbage i skat.', {
+                          deduction: formatPrice(deduction.deduction, market.currency),
+                          saving: formatPrice(deduction.saving, market.currency),
+                        })
+                      : t('Skriv arbejdslønnen, så regner vi fradraget ud. Kun arbejdsløn tæller, ikke materialer.')}
+                  </AppText>
+                  <AppText variant="footnote" tone="textSecondary">
+                    {t(
+                      'Grænsen er {max} pr. voksen i husstanden i 2026. Tjek på skat.dk, om netop din opgave er med.',
+                      {
+                        max: formatPrice(GREEN_DEDUCTION_MAX, market.currency),
+                      },
+                    )}
+                  </AppText>
+                </>
+              ) : null}
             </View>
-            {green ? (
-              <>
-                <AmountField
-                  label={t('Heraf arbejdsløn')}
-                  value={labourText}
-                  placeholder={t('Står på tilbuddet')}
-                  onChange={setLabourText}
-                  suffix={symbol}
-                />
-                <AppText variant="subhead" accessibilityLiveRegion="polite">
-                  {deduction
-                    ? t('Du kan trække {deduction} fra og få ca. {saving} tilbage i skat.', {
-                        deduction: formatPrice(deduction.deduction, market.currency),
-                        saving: formatPrice(deduction.saving, market.currency),
-                      })
-                    : t('Skriv arbejdslønnen, så regner vi fradraget ud. Kun arbejdsløn tæller, ikke materialer.')}
-                </AppText>
-                <AppText variant="footnote" tone="textSecondary">
-                  {t('Grænsen er {max} pr. voksen i husstanden i 2026. Tjek på skat.dk, om netop din opgave er med.', {
-                    max: formatPrice(GREEN_DEDUCTION_MAX, market.currency),
-                  })}
-                </AppText>
-              </>
-            ) : null}
-          </View>
-        ) : null}
+          ) : null}
 
-        {job ? (
-          <View style={[styles.card, { backgroundColor: colors.surface }]}>
-            <AppText variant="headline" accessibilityRole="header">
-              {t('Tjek også tilbuddet for')}
-            </AppText>
-            {[
-              t('CVR-nummer og firmanavn.'),
-              t('Fast pris. Står der overslag, kan det blive dyrere.'),
-              t('Arbejdsløn og materialer hver for sig. Det kræver fradraget.'),
-              ...(category?.authorization ? [t('Autorisation. Den slår du op hos Sikkerhedsstyrelsen.')] : []),
-              t('Garantiordning, fx Byg Garanti.'),
-            ].map((line) => (
-              <View key={line} style={styles.checkRow}>
-                <Icon name="check" size={14} color={colors.brand} weight="bold" />
-                <AppText variant="subhead" style={styles.flex}>
-                  {line}
-                </AppText>
-              </View>
-            ))}
-          </View>
-        ) : null}
+          {job ? (
+            <View style={[styles.card, { backgroundColor: colors.surface, boxShadow: shadows.card }]}>
+              <AppText variant="headline" display accessibilityRole="header">
+                {t('Tjek også tilbuddet for')}
+              </AppText>
+              {[
+                t('CVR-nummer og firmanavn.'),
+                t('Fast pris. Står der overslag, kan det blive dyrere.'),
+                t('Arbejdsløn og materialer hver for sig. Det kræver fradraget.'),
+                ...(category?.authorization ? [t('Autorisation. Den slår du op hos Sikkerhedsstyrelsen.')] : []),
+                t('Garantiordning, fx Byg Garanti.'),
+              ].map((line) => (
+                <View key={line} style={styles.checkRow}>
+                  <Icon name="check" size={14} color={colors.brand} weight="bold" />
+                  <AppText variant="subhead" style={styles.flex}>
+                    {line}
+                  </AppText>
+                </View>
+              ))}
+            </View>
+          ) : null}
 
-        {job && cheaper.length > 0 ? (
-          <View style={styles.block}>
-            <AppText variant="title3" accessibilityRole="header">
-              {t('Tager mindre for opgaven')}
-            </AppText>
-            <AppText variant="footnote" tone="textSecondary">
-              {t('Virksomheder i nærheden, hvis egen pris starter under dit tilbud. Verificerede står først.')}
-            </AppText>
-            {cheaper.map((item) => {
-              const example = item.business.pricing.examples.find((e) => e.job === job.id);
-              const factor = quoteFactor(job, quantity);
-              return (
-                <BusinessCard
-                  key={item.business.id}
-                  item={item}
-                  job={job}
-                  priceOverride={
-                    example
-                      ? `${job.name}: ${formatPriceRange(example.min * factor, example.max * factor, 'opgave', market.currency)}`
-                      : undefined
-                  }
-                />
-              );
-            })}
-          </View>
-        ) : null}
+          {job && cheaper.length > 0 ? (
+            <View style={styles.block}>
+              <AppText variant="title2" accessibilityRole="header">
+                {t('Tager mindre for opgaven')}
+              </AppText>
+              <AppText variant="footnote" tone="textSecondary">
+                {t('Virksomheder i nærheden, hvis egen pris starter under dit tilbud. Verificerede står først.')}
+              </AppText>
+              {cheaper.map((item) => {
+                const example = item.business.pricing.examples.find((e) => e.job === job.id);
+                const factor = quoteFactor(job, quantity);
+                return (
+                  <BusinessCard
+                    key={item.business.id}
+                    item={item}
+                    job={job}
+                    priceOverride={
+                      example
+                        ? `${job.name}: ${formatPriceRange(example.min * factor, example.max * factor, 'opgave', market.currency)}`
+                        : undefined
+                    }
+                  />
+                );
+              })}
+            </View>
+          ) : null}
 
-        <View style={styles.privacy}>
-          <Icon name="privacy" size={15} color={colors.textSecondary} />
-          <AppText variant="caption" tone="textSecondary" style={styles.flex}>
-            {DATA_MODE === 'demo'
-              ? t(
-                  'Vurderingen er vejledende og bygger på eksempelvirksomhedernes priser i demoen. Det, du skriver, bliver på din telefon.',
-                )
-              : t(
-                  'Vurderingen er vejledende og bygger på de priser, virksomhederne selv har oplyst i FixMatch. Det, du skriver, bliver på din telefon.',
-                )}
-          </AppText>
+          <View style={styles.privacy}>
+            <Icon name="privacy" size={15} color={colors.textSecondary} />
+            <AppText variant="caption" tone="textSecondary" style={styles.flex}>
+              {DATA_MODE === 'demo'
+                ? t(
+                    'Vurderingen er vejledende og bygger på eksempelvirksomhedernes priser i demoen. Det, du skriver, bliver på din telefon.',
+                  )
+                : t(
+                    'Vurderingen er vejledende og bygger på de priser, virksomhederne selv har oplyst i FixMatch. Det, du skriver, bliver på din telefon.',
+                  )}
+            </AppText>
+          </View>
+          <Button
+            title={t('Om priserne og fradraget')}
+            variant="link"
+            chevron
+            onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'priser' } })}
+          />
         </View>
-        <Button
-          title={t('Om priserne og fradraget')}
-          variant="link"
-          chevron
-          onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'priser' } })}
-        />
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -403,6 +413,7 @@ function AmountField({
           keyboardType="number-pad"
           accessibilityLabel={label}
           style={[styles.amountInput, large && styles.amountLarge, { color: colors.text }]}
+          // The price is set in Schibsted Grotesk, like every price in the app.
         />
         <AppText variant="body" tone="textSecondary">
           {suffix}
@@ -420,8 +431,8 @@ function PriceScale({ min, max, price, tone }: { min: number; max: number; price
   const at = (value: number) => `${Math.round(((value - lo) / (hi - lo)) * 1000) / 10}%` as const;
   return (
     <View style={styles.scale} importantForAccessibility="no-hide-descendants">
-      <View style={[styles.track, { backgroundColor: colors.border }]} />
-      <View style={[styles.band, { left: at(min), width: at(lo + max - min), backgroundColor: colors.success }]} />
+      <View style={[styles.track, { backgroundColor: colors.fill }]} />
+      <View style={[styles.band, { left: at(min), width: at(lo + max - min), backgroundColor: colors.brand }]} />
       <View style={[styles.dot, { left: at(price), backgroundColor: tone, borderColor: colors.surface }]} />
     </View>
   );
@@ -436,18 +447,20 @@ const styles = StyleSheet.create({
   chips: { gap: Spacing.sm, paddingHorizontal: ScreenPadding },
   wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
+  panel: { gap: Spacing.lg, paddingTop: Spacing.xs },
   card: {
     borderRadius: Radius.lg,
     borderCurve: 'continuous',
-    padding: Spacing.md,
+    padding: Spacing.lg,
     gap: Spacing.md,
   },
   result: {
-    borderRadius: Radius.lg,
-    borderWidth: 1.5,
-    padding: Spacing.md,
-    gap: Spacing.sm,
+    borderRadius: Radius.card,
+    borderCurve: 'continuous',
+    padding: Spacing.lg,
+    gap: Spacing.sm + 2,
   },
+  verdictIcon: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
   amountBlock: { gap: Spacing.xs },
   amountField: {
     flexDirection: 'row',
@@ -465,11 +478,11 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.sm,
     outlineStyle: 'none',
   } as never,
-  amountLarge: { fontSize: 22, fontWeight: '600' },
+  amountLarge: { fontSize: 24, fontFamily: displayFont('800'), fontWeight: 'normal' },
   checkRow: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.sm },
   scale: { height: 22, justifyContent: 'center', marginVertical: Spacing.xs },
   track: { position: 'absolute', left: 0, right: 0, height: 6, borderRadius: 3 },
-  band: { position: 'absolute', height: 6, borderRadius: 3, opacity: 0.55 },
+  band: { position: 'absolute', height: 6, borderRadius: 3, opacity: 0.45 },
   dot: { position: 'absolute', width: 18, height: 18, marginLeft: -9, borderRadius: 9, borderWidth: 3 },
   privacy: { flexDirection: 'row', gap: Spacing.sm, paddingHorizontal: Spacing.xs },
 });
