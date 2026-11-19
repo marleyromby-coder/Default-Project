@@ -12,6 +12,8 @@ interface Props {
   icon?: IconName;
   /** One optional text button at the end of the note, e.g. "Vælg by". */
   action?: { label: string; onPress: () => void; accessibilityLabel?: string; disabled?: boolean };
+  /** On the coloured panel: white text and icon (`onPanelSoft`). */
+  onPanel?: boolean;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -20,12 +22,18 @@ interface Props {
  * for demo disclosures and side notes instead of tinted banners, so colour keeps its meaning
  * (live status, warnings) and every screen says "good to know" the same way.
  */
-export function Notice({ text, icon = 'info', action, style }: Props) {
+export function Notice({ text, icon = 'info', action, onPanel = false, style }: Props) {
   const colors = useTheme();
   return (
     <View style={[styles.row, style]}>
-      <Icon name={icon} size={15} color={colors.textTertiary} weight="semibold" style={styles.icon} />
-      <AppText variant="footnote" tone="textSecondary" style={styles.text}>
+      <Icon
+        name={icon}
+        size={15}
+        color={onPanel ? colors.onPanelSoft : colors.textTertiary}
+        weight="semibold"
+        style={styles.icon}
+      />
+      <AppText variant="footnote" tone={onPanel ? 'onPanelSoft' : 'textSecondary'} style={styles.text}>
         {text}
       </AppText>
       {action ? (
@@ -36,7 +44,7 @@ export function Notice({ text, icon = 'info', action, style }: Props) {
           // The label sits on the first line of the note; the slop gives it a 44 pt target.
           hitSlop={{ top: 13, bottom: 13, left: Spacing.sm, right: Spacing.sm }}
           style={styles.action}>
-          <AppText variant="footnote" weight="600" tone="brandText" maxFontSizeMultiplier={1.3}>
+          <AppText variant="footnote" weight="600" tone={onPanel ? 'onPanel' : 'brandText'} maxFontSizeMultiplier={1.3}>
             {action.label}
           </AppText>
         </Tappable>

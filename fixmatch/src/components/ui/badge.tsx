@@ -6,7 +6,21 @@ import { useTheme } from '@/hooks/use-theme';
 import { Icon, type IconName } from './icon';
 import { AppText } from './text';
 
-export type BadgeTone = 'neutral' | 'brand' | 'success' | 'danger' | 'warning' | 'info';
+/**
+ * `sun` is for "Billigst", `sky` only for "Nærmest", `brand` for "Bedste match" and similar,
+ * `coral` for akut, and `panel` for badges on the coloured panel (Demoversion, Verificeret).
+ */
+export type BadgeTone =
+  | 'neutral'
+  | 'brand'
+  | 'success'
+  | 'danger'
+  | 'warning'
+  | 'info'
+  | 'sun'
+  | 'sky'
+  | 'coral'
+  | 'panel';
 
 interface Props {
   label: string;
@@ -24,6 +38,10 @@ export function Badge({ label, tone = 'neutral', icon, accessibilityLabel }: Pro
     danger: { bg: colors.dangerSoft, fg: colors.danger },
     warning: { bg: colors.warningSoft, fg: colors.warning },
     info: { bg: colors.infoSoft, fg: colors.info },
+    sun: { bg: colors.accentSoft, fg: colors.accentText },
+    sky: { bg: colors.skySoft, fg: colors.skyText },
+    coral: { bg: colors.coralSoft, fg: colors.coralText },
+    panel: { bg: colors.panelRaised, fg: colors.onPanel },
   }[tone];
   return (
     <View
@@ -31,12 +49,7 @@ export function Badge({ label, tone = 'neutral', icon, accessibilityLabel }: Pro
       accessibilityLabel={accessibilityLabel ?? label}
       style={[styles.badge, { backgroundColor: palette.bg }]}>
       {icon ? <Icon name={icon} size={12} color={palette.fg} weight="semibold" /> : null}
-      <AppText
-        variant="caption"
-        weight="600"
-        style={{ color: palette.fg }}
-        numberOfLines={1}
-        maxFontSizeMultiplier={1.3}>
+      <AppText variant="label" style={{ color: palette.fg }} numberOfLines={1} maxFontSizeMultiplier={1.3}>
         {label}
       </AppText>
     </View>
