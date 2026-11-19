@@ -3,9 +3,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { Linking, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { BusinessMark } from '@/components/business/business-mark';
-import { VerifiedMark } from '@/components/business/verified-mark';
+import { HeroMark } from '@/components/business/hero-mark';
 import { ManageWorkPhotos } from '@/components/business/work-photos';
+import { HeroPanel, panelHeaderOptions } from '@/components/hero-panel';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardTitle, Divider } from '@/components/ui/card';
@@ -21,6 +21,7 @@ import { useLayout } from '@/hooks/use-layout';
 import { localDay, nextDay } from '@/lib/availability';
 import { currencyOf, timeZoneOf } from '@/lib/business-text';
 import { showDialog } from '@/lib/dialog';
+import { isVerified } from '@/lib/verification';
 import {
   formatDate,
   formatDateTime,
@@ -174,198 +175,201 @@ function Dashboard({ managed, business }: { managed: ManagedBusiness; business: 
   return (
     <ScrollView
       style={{ backgroundColor: colors.background }}
-      contentContainerStyle={[styles.content, column, { paddingBottom: insets.bottom + Spacing.xxl }]}
+      contentContainerStyle={{ paddingBottom: insets.bottom + Spacing.xxl }}
       contentInsetAdjustmentBehavior="automatic">
-      <Stack.Screen options={{ title: t('Min virksomhed') }} />
+      <Stack.Screen options={{ ...panelHeaderOptions(colors), title: t('Min virksomhed') }} />
 
-      <Card>
+      <HeroPanel safeArea={false} contentStyle={styles.hero}>
         <View style={styles.row}>
-          <BusinessMark business={business} size={52} />
+          <HeroMark business={business} size={56} />
           <View style={styles.flex}>
-            <View style={styles.nameRow}>
-              <AppText variant="title3" numberOfLines={2} style={styles.shrink}>
-                {business.name}
-              </AppText>
-              <VerifiedMark business={business} size={16} />
-            </View>
-            <AppText variant="footnote" tone="textSecondary">
+            <AppText variant="title2" tone="onPanel" numberOfLines={2}>
+              {business.name}
+            </AppText>
+            <AppText variant="footnote" tone="onPanelSoft">
               {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business))}
             </AppText>
           </View>
         </View>
-        {managed.demo ? (
-          <View style={styles.spaced}>
-            <Badge label={t('Eksempel: opkaldene er opdigtede')} tone="warning" />
-          </View>
-        ) : null}
-        <View style={styles.spaced}>
-          <Button
-            title={t('Se jeres side, som kunderne ser den')}
-            variant="plain"
-            size="small"
-            onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
-          />
-        </View>
-      </Card>
-
-      <Card>
-        <CardTitle title={t('Har I tid?')} />
-        <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
-          {t('Kunder, hvor det haster, ser jer først. Det forsvinder af sig selv ved midnat.')}
-        </AppText>
-        <View style={[styles.chips, styles.spaced]}>
-          {FREE_CHOICES.map((choice) => (
-            <Chip
-              key={choice.value}
-              label={saving === choice.value ? t('Gemmer…') : choice.label}
-              selected={current === choice.value}
-              onPress={() => chooseFree(choice.value)}
+        <View style={styles.badges}>
+          {isVerified(business) ? (
+            <Badge
+              label={t('Verificeret')}
+              tone="panel"
+              icon="verified"
+              accessibilityLabel={t('Verificeret af FixMatch')}
             />
-          ))}
+          ) : null}
+          {managed.demo ? <Badge label={t('Eksempel: opkaldene er opdigtede')} tone="panel" icon="info" /> : null}
         </View>
-      </Card>
+        <Button
+          title={t('Se jeres side, som kunderne ser den')}
+          variant="secondary"
+          icon="store"
+          onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
+        />
+      </HeroPanel>
 
-      <Card>
-        <CardTitle title={t('Opgørelse')} />
-        {failed ? (
-          <View style={styles.spaced}>
-            <AppText variant="footnote" tone="textSecondary">
-              {t('Opgørelsen kunne ikke hentes.')}
-            </AppText>
-            <Button title={t('Prøv igen')} variant="plain" size="small" onPress={load} />
+      <View style={[styles.content, column]}>
+        <Card>
+          <CardTitle title={t('Har I tid?')} />
+          <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
+            {t('Kunder, hvor det haster, ser jer først. Det forsvinder af sig selv ved midnat.')}
+          </AppText>
+          <View style={[styles.chips, styles.spaced]}>
+            {FREE_CHOICES.map((choice) => (
+              <Chip
+                key={choice.value}
+                label={saving === choice.value ? t('Gemmer…') : choice.label}
+                selected={current === choice.value}
+                onPress={() => chooseFree(choice.value)}
+              />
+            ))}
           </View>
-        ) : (
-          <>
-            <View style={[styles.stats, styles.spaced]}>
-              <Stat
-                value={thisMonth ? formatNumber(thisMonth.calls) : '–'}
-                label={t('opkald i {month}', { month: thisMonth ? formatMonth(thisMonth.month) : '' })}
-              />
-              <Stat
-                value={reviews ? formatRating(reviews.average) : '–'}
-                label={
-                  !reviews
-                    ? t('ingen anmeldelser endnu')
-                    : reviews.reviews === 1
-                      ? t('stjerner fra 1 bruger')
-                      : t('stjerner fra {count} brugere', { count: reviews.reviews })
-                }
-              />
-              <Stat
-                value={answers ? `${answers.answered}/${answers.outOf}` : '–'}
-                label={answers ? t('gange I tog telefonen, ifølge kunder') : t('for få svar om telefonen endnu')}
-              />
+        </Card>
+
+        <Card>
+          <CardTitle title={t('Opgørelse')} />
+          {failed ? (
+            <View style={styles.spaced}>
+              <AppText variant="footnote" tone="textSecondary">
+                {t('Opgørelsen kunne ikke hentes.')}
+              </AppText>
+              <Button title={t('Prøv igen')} variant="plain" size="small" onPress={load} />
             </View>
-            {(months ?? []).slice(0, 6).map((month) => (
-              <View key={month.month}>
-                <Divider />
-                <View style={styles.monthRow}>
-                  <AppText variant="subhead" style={styles.flex}>
-                    {formatMonth(month.month)}
+          ) : (
+            <>
+              <View style={[styles.stats, styles.spaced]}>
+                <Stat
+                  value={thisMonth ? formatNumber(thisMonth.calls) : '–'}
+                  label={t('opkald i {month}', { month: thisMonth ? formatMonth(thisMonth.month) : '' })}
+                />
+                <Stat
+                  value={reviews ? formatRating(reviews.average) : '–'}
+                  label={
+                    !reviews
+                      ? t('ingen anmeldelser endnu')
+                      : reviews.reviews === 1
+                        ? t('stjerner fra 1 bruger')
+                        : t('stjerner fra {count} brugere', { count: reviews.reviews })
+                  }
+                />
+                <Stat
+                  value={answers ? `${answers.answered}/${answers.outOf}` : '–'}
+                  label={answers ? t('gange I tog telefonen, ifølge kunder') : t('for få svar om telefonen endnu')}
+                />
+              </View>
+              {(months ?? []).slice(0, 6).map((month) => (
+                <View key={month.month}>
+                  <Divider />
+                  <View style={styles.monthRow}>
+                    <AppText variant="subhead" style={styles.flex}>
+                      {formatMonth(month.month)}
+                    </AppText>
+                    <AppText variant="subhead" tabular>
+                      {t('{calls} opkald · {messages} beskeder', { calls: month.calls, messages: month.messages })}
+                    </AppText>
+                  </View>
+                </View>
+              ))}
+              {shared.length > 0 && shared.length < MIN_PAID_PRICES ? (
+                <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
+                  {t('Kundernes priser vises, når mindst {min} har delt for samme opgave.', { min: MIN_PAID_PRICES })}
+                </AppText>
+              ) : null}
+            </>
+          )}
+        </Card>
+
+        <Card>
+          <CardTitle title={t('Hvem har kontaktet jer')} />
+          {!contacts && !failed ? (
+            <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
+              {t('Henter…')}
+            </AppText>
+          ) : null}
+          {contacts && contacts.length === 0 ? (
+            <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
+              {t('Ingen har kontaktet jer gennem FixMatch de sidste 90 dage.')}
+            </AppText>
+          ) : null}
+          {shownContacts?.map((contact, index) => (
+            <View key={`${contact.at}-${index}`}>
+              {index > 0 ? <Divider inset={30} /> : null}
+              <Tappable
+                onPress={() => {
+                  if (!contact.phone || managed.demo) return;
+                  Linking.openURL(phoneHref(contact.phone)).catch(() => undefined);
+                }}
+                disabled={!contact.phone}
+                accessibilityLabel={t('{name}, {when}. Ring tilbage', {
+                  name: contact.name ?? t('Ukendt'),
+                  when: formatDateTime(contact.at),
+                })}
+                style={styles.contactRow}>
+                <Icon
+                  name={contact.channel === 'call' ? 'phone' : 'message'}
+                  size={15}
+                  color={colors.textSecondary}
+                  weight="semibold"
+                />
+                <View style={styles.flex}>
+                  <AppText variant="body" numberOfLines={1}>
+                    {contact.name ?? t('Ukendt')}
                   </AppText>
-                  <AppText variant="subhead" tabular>
-                    {t('{calls} opkald · {messages} beskeder', { calls: month.calls, messages: month.messages })}
+                  <AppText variant="footnote" tone="textSecondary">
+                    {[contact.phone ? formatPhone(contact.phone) : undefined, formatDateTime(contact.at)]
+                      .filter(Boolean)
+                      .join(' · ')}
                   </AppText>
                 </View>
-              </View>
-            ))}
-            {shared.length > 0 && shared.length < MIN_PAID_PRICES ? (
-              <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
-                {t('Kundernes priser vises, når mindst {min} har delt for samme opgave.', { min: MIN_PAID_PRICES })}
-              </AppText>
-            ) : null}
-          </>
-        )}
-      </Card>
+                {contact.phone ? <Icon name="phone" size={15} color={colors.brand} weight="semibold" /> : null}
+              </Tappable>
+            </View>
+          ))}
+          {contacts && contacts.length > SHOWN_CONTACTS && !showAll ? (
+            <Button
+              title={t('Vis alle {count}', { count: contacts.length })}
+              variant="plain"
+              size="small"
+              onPress={() => setShowAll(true)}
+            />
+          ) : null}
+          <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
+            {t(
+              'Kunderne har sagt ja til, at I ser navn og nummer, når de kontakter jer gennem FixMatch. Brug dem kun til at svare på henvendelsen. Listen viser de sidste 90 dage.',
+            )}
+          </AppText>
+        </Card>
 
-      <Card>
-        <CardTitle title={t('Hvem har kontaktet jer')} />
-        {!contacts && !failed ? (
-          <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
-            {t('Henter…')}
-          </AppText>
-        ) : null}
-        {contacts && contacts.length === 0 ? (
-          <AppText variant="footnote" tone="textSecondary" style={styles.spaced}>
-            {t('Ingen har kontaktet jer gennem FixMatch de sidste 90 dage.')}
-          </AppText>
-        ) : null}
-        {shownContacts?.map((contact, index) => (
-          <View key={`${contact.at}-${index}`}>
-            {index > 0 ? <Divider inset={30} /> : null}
-            <Tappable
-              onPress={() => {
-                if (!contact.phone || managed.demo) return;
-                Linking.openURL(phoneHref(contact.phone)).catch(() => undefined);
-              }}
-              disabled={!contact.phone}
-              accessibilityLabel={t('{name}, {when}. Ring tilbage', {
-                name: contact.name ?? t('Ukendt'),
-                when: formatDateTime(contact.at),
-              })}
-              style={styles.contactRow}>
-              <Icon
-                name={contact.channel === 'call' ? 'phone' : 'message'}
-                size={15}
-                color={colors.textSecondary}
-                weight="semibold"
-              />
-              <View style={styles.flex}>
-                <AppText variant="body" numberOfLines={1}>
-                  {contact.name ?? t('Ukendt')}
-                </AppText>
-                <AppText variant="footnote" tone="textSecondary">
-                  {[contact.phone ? formatPhone(contact.phone) : undefined, formatDateTime(contact.at)]
-                    .filter(Boolean)
-                    .join(' · ')}
-                </AppText>
-              </View>
-              {contact.phone ? <Icon name="phone" size={15} color={colors.brand} weight="semibold" /> : null}
-            </Tappable>
-          </View>
-        ))}
-        {contacts && contacts.length > SHOWN_CONTACTS && !showAll ? (
-          <Button
-            title={t('Vis alle {count}', { count: contacts.length })}
-            variant="plain"
-            size="small"
-            onPress={() => setShowAll(true)}
+        <ManageWorkPhotos managed={managed} business={business} />
+
+        <ListSection
+          title={t('Jeres oplysninger')}
+          footer={
+            lastRequest
+              ? t('Sendt {date}. Vi tjekker og lægger det ind inden for 2 hverdage.', {
+                  date: formatDate(lastRequest),
+                })
+              : t('Vi tjekker ændringerne og lægger dem ind inden for 2 hverdage.')
+          }>
+          <ListRow
+            icon="tag"
+            title={t('Ret priser, åbningstider og tekst')}
+            onPress={() => router.push('/min-virksomhed/ret')}
           />
-        ) : null}
-        <AppText variant="caption" tone="textSecondary" style={styles.spaced}>
-          {t(
-            'Kunderne har sagt ja til, at I ser navn og nummer, når de kontakter jer gennem FixMatch. Brug dem kun til at svare på henvendelsen. Listen viser de sidste 90 dage.',
-          )}
-        </AppText>
-      </Card>
+          <ListRow
+            icon="verified"
+            title={t('Bliv verificeret')}
+            value={business.verified ? t('Verificeret') : undefined}
+            onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'verificering' } })}
+          />
+        </ListSection>
 
-      <ManageWorkPhotos managed={managed} business={business} />
-
-      <ListSection
-        title={t('Jeres oplysninger')}
-        footer={
-          lastRequest
-            ? t('Sendt {date}. Vi tjekker og lægger det ind inden for 2 hverdage.', {
-                date: formatDate(lastRequest),
-              })
-            : t('Vi tjekker ændringerne og lægger dem ind inden for 2 hverdage.')
-        }>
-        <ListRow
-          icon="tag"
-          title={t('Ret priser, åbningstider og tekst')}
-          onPress={() => router.push('/min-virksomhed/ret')}
-        />
-        <ListRow
-          icon="verified"
-          title={t('Bliv verificeret')}
-          value={business.verified ? t('Verificeret') : undefined}
-          onPress={() => router.push({ pathname: '/info/[slug]', params: { slug: 'verificering' } })}
-        />
-      </ListSection>
-
-      <ListSection>
-        <ListRow icon="logout" title={t('Log ud af virksomheden')} destructive onPress={confirmLeave} />
-      </ListSection>
+        <ListSection>
+          <ListRow icon="logout" title={t('Log ud af virksomheden')} destructive onPress={confirmLeave} />
+        </ListSection>
+      </View>
     </ScrollView>
   );
 }
@@ -373,9 +377,7 @@ function Dashboard({ managed, business }: { managed: ManagedBusiness; business: 
 function Stat({ value, label }: { value: string; label: string }) {
   return (
     <View style={styles.stat} accessible accessibilityLabel={`${value} ${label}`}>
-      <AppText variant="title2" rounded>
-        {value}
-      </AppText>
+      <AppText variant="title1">{value}</AppText>
       <AppText variant="caption" tone="textSecondary" numberOfLines={3}>
         {label}
       </AppText>
@@ -385,10 +387,10 @@ function Stat({ value, label }: { value: string; label: string }) {
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  shrink: { flexShrink: 1 },
   content: { padding: ScreenPadding, gap: Spacing.lg },
+  hero: { gap: Spacing.md, paddingTop: Spacing.xs },
+  badges: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs + 2 },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   spaced: { marginTop: Spacing.sm },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   stats: { flexDirection: 'row', gap: Spacing.md, marginBottom: Spacing.sm },
