@@ -1,9 +1,9 @@
 import type { PropsWithChildren, ReactNode } from 'react';
 import { Children, Fragment } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { IconWell, MinTouchSize, Radius, Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { IconWell, MinTouchSize, Radius, Shadows, Spacing } from '@/constants/theme';
+import { useIsDark, useTheme } from '@/hooks/use-theme';
 
 import { Divider } from './card';
 import { Icon, type IconName } from './icon';
@@ -13,14 +13,18 @@ import { AppText } from './text';
 interface SectionProps extends PropsWithChildren {
   title?: string;
   footer?: string;
+  /** `raised` gives the group the stronger shadow of a card that overlaps the panel. */
+  elevation?: 'card' | 'raised';
+  style?: StyleProp<ViewStyle>;
 }
 
-/** Grouped list section, like iOS Settings. */
-export function ListSection({ title, footer, children }: SectionProps) {
+/** Grouped list section, like iOS Settings, on a card surface with a soft shadow. */
+export function ListSection({ title, footer, elevation = 'card', style, children }: SectionProps) {
   const colors = useTheme();
+  const shadows = Shadows[useIsDark() ? 'dark' : 'light'];
   const rows = Children.toArray(children).filter(Boolean);
   return (
-    <View style={styles.section}>
+    <View style={[styles.section, style]}>
       {title ? (
         <AppText
           variant="subhead"
@@ -31,7 +35,7 @@ export function ListSection({ title, footer, children }: SectionProps) {
           {title}
         </AppText>
       ) : null}
-      <View style={[styles.group, { backgroundColor: colors.surface }]}>
+      <View style={[styles.group, { backgroundColor: colors.surface, boxShadow: shadows[elevation] }]}>
         {rows.map((row, index) => (
           <Fragment key={index}>
             {index > 0 ? <Divider inset={52} /> : null}
@@ -53,6 +57,8 @@ interface RowProps {
   subtitle?: string;
   icon?: IconName;
   iconColor?: string;
+  /** The icon well's colours, e.g. a trade's `soft`/`onSoft` or coral for akut. Default brand. */
+  tint?: { background: string; color: string };
   value?: string;
   onPress?: () => void;
   destructive?: boolean;
@@ -66,6 +72,7 @@ export function ListRow({
   subtitle,
   icon,
   iconColor,
+  tint,
   value,
   onPress,
   destructive,
@@ -77,11 +84,15 @@ export function ListRow({
   const content = (
     <View style={styles.row}>
       {icon ? (
-        <View style={[styles.iconTile, { backgroundColor: destructive ? colors.dangerSoft : colors.brandSoft }]}>
+        <View
+          style={[
+            styles.iconTile,
+            { backgroundColor: destructive ? colors.dangerSoft : (tint?.background ?? colors.brandSoft) },
+          ]}>
           <Icon
             name={icon}
             size={17}
-            color={destructive ? colors.danger : (iconColor ?? colors.brandText)}
+            color={destructive ? colors.danger : (tint?.color ?? iconColor ?? colors.brandText)}
             weight="semibold"
           />
         </View>

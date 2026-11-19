@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BusinessMark } from '@/components/business/business-mark';
 import { VerifiedMark } from '@/components/business/verified-mark';
-import { ScreenHeader } from '@/components/screen-header';
+import { HeroPanel } from '@/components/hero-panel';
 import { StatusBarScrim } from '@/components/status-bar-scrim';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
@@ -12,8 +12,8 @@ import { ListRow, ListSection } from '@/components/ui/list';
 import { Segmented } from '@/components/ui/segmented';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
-import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { Radius, ScreenPadding, Shadows, Spacing } from '@/constants/theme';
+import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { initials } from '@/lib/business-text';
 import { showDialog } from '@/lib/dialog';
@@ -33,6 +33,9 @@ import { setAppearance, useAppearance } from '@/state/appearance';
 
 import { changeLanguage } from './mere';
 
+/** How far the account card reaches up into the panel. */
+const OVERLAP = 36;
+
 /**
  * Profil: who you are to the businesses (name and phone), the businesses you have contacted,
  * and your own settings. Everything about the app itself stays under Mere.
@@ -40,6 +43,7 @@ import { changeLanguage } from './mere';
 export default function ProfileScreen() {
   const { column } = useLayout();
   const colors = useTheme();
+  const shadows = Shadows[useIsDark() ? 'dark' : 'light'];
   const insets = useSafeAreaInsets();
   const { state } = useApp();
   const account = useAccount();
@@ -120,14 +124,14 @@ export default function ProfileScreen() {
     <View style={styles.flex}>
       <ScrollView
         style={{ backgroundColor: colors.background }}
-        contentContainerStyle={[
-          styles.content,
-          column,
-          { paddingTop: insets.top + Spacing.md, paddingBottom: insets.bottom + 110 },
-        ]}
+        contentContainerStyle={{ paddingBottom: insets.bottom + 110 }}
         contentInsetAdjustmentBehavior="never">
-        <ScreenHeader title={t('Profil')} />
-        <View style={styles.sections}>
+        <HeroPanel overlap={OVERLAP} contentStyle={styles.panel}>
+          <AppText variant="largeTitle" tone="onPanel">
+            {t('Profil')}
+          </AppText>
+        </HeroPanel>
+        <View style={[styles.sections, column]}>
           <Tappable
             onPress={openAccount(signedIn ? 'profile' : 'settings')}
             accessibilityLabel={
@@ -136,10 +140,10 @@ export default function ProfileScreen() {
                 : t('Opret bruger eller log ind')
             }
             pressedOpacity={0.7}
-            style={[styles.card, { backgroundColor: colors.surface }]}>
+            style={[styles.card, { backgroundColor: colors.surface, boxShadow: shadows.raised }]}>
             <View style={[styles.avatar, { backgroundColor: signedIn ? colors.brandSoft : colors.surfaceAlt }]}>
               {name ? (
-                <AppText variant="title3" style={{ color: colors.brandText }}>
+                <AppText variant="title3" weight="800" style={{ color: colors.brandText }}>
                   {initials(name)}
                 </AppText>
               ) : (
@@ -147,7 +151,7 @@ export default function ProfileScreen() {
               )}
             </View>
             <View style={styles.flex}>
-              <AppText variant="headline" numberOfLines={1}>
+              <AppText variant="headline" display numberOfLines={1}>
                 {signedIn ? (name ?? t('Tilføj navn og telefonnummer')) : t('Opret bruger eller log ind')}
               </AppText>
               <AppText variant="footnote" tone="textSecondary" numberOfLines={2}>
@@ -212,7 +216,7 @@ export default function ProfileScreen() {
                   <BusinessMark business={business} size={40} />
                   <View style={styles.flex}>
                     <View style={styles.nameRow}>
-                      <AppText variant="body" numberOfLines={1} style={styles.shrink}>
+                      <AppText variant="headline" display numberOfLines={1} style={styles.shrink}>
                         {business.name}
                       </AppText>
                       <VerifiedMark business={business} size={14} />
@@ -294,7 +298,7 @@ export default function ProfileScreen() {
           ) : null}
         </View>
       </ScrollView>
-      <StatusBarScrim />
+      <StatusBarScrim color={colors.panel} />
     </View>
   );
 }
@@ -302,18 +306,19 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   shrink: { flexShrink: 1 },
-  content: {},
+  panel: { paddingTop: Spacing.md },
   sections: { paddingHorizontal: ScreenPadding, gap: Spacing.xxl },
   card: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.md,
-    padding: Spacing.md,
-    borderRadius: Radius.lg,
+    padding: Spacing.md + 2,
+    marginTop: -OVERLAP,
+    borderRadius: Radius.card,
     borderCurve: 'continuous',
   },
   // 44 pt leaves room for the subtitle on one line beside it.
-  avatar: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
+  avatar: { width: 48, height: 48, borderRadius: 24, alignItems: 'center', justifyContent: 'center' },
   empty: { alignItems: 'center', gap: Spacing.sm, padding: Spacing.lg },
   contactRow: {
     flexDirection: 'row',

@@ -4,13 +4,13 @@ import { Linking, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { LogoMark } from '@/components/logo';
-import { ScreenHeader } from '@/components/screen-header';
+import { HeroPanel } from '@/components/hero-panel';
 import { StatusBarScrim } from '@/components/status-bar-scrim';
 import { ListRow, ListSection } from '@/components/ui/list';
 import { AppText } from '@/components/ui/text';
 import { APP_INFO } from '@/constants/app-info';
 import { ScreenPadding, Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { useTheme, useTradeColor } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { reportProblem } from '@/lib/contact';
 import { DATA_MODE } from '@/lib/data-source';
@@ -44,6 +44,7 @@ export function changeLanguage() {
 export default function MoreScreen() {
   const { column } = useLayout();
   const colors = useTheme();
+  const mechanic = useTradeColor('mekaniker');
   const insets = useSafeAreaInsets();
   const { resetAll } = useApp();
   const info = (slug: string) => () => router.push({ pathname: '/info/[slug]', params: { slug } });
@@ -68,20 +69,27 @@ export default function MoreScreen() {
     <View style={styles.flex}>
       <ScrollView
         style={{ backgroundColor: colors.background }}
-        contentContainerStyle={[
-          styles.content,
-          column,
-          { paddingTop: insets.top + Spacing.md, paddingBottom: insets.bottom + 110 },
-        ]}
+        contentContainerStyle={{ paddingBottom: insets.bottom + 110 }}
         contentInsetAdjustmentBehavior="never">
-        <ScreenHeader title={t('Mere')} />
-        <View style={styles.sections}>
-          <ListSection title={t('Værktøjer')}>
+        <HeroPanel overlap={OVERLAP} contentStyle={styles.panel}>
+          <AppText variant="largeTitle" tone="onPanel">
+            {t('Mere')}
+          </AppText>
+        </HeroPanel>
+        <View style={[styles.sections, column]}>
+          {/* The tools, raised onto the panel; the panel's title says where you are. */}
+          <ListSection elevation="raised" style={styles.raised}>
             <ListRow icon="receipt" title={t('Tilbudstjek')} onPress={() => router.push('/tilbudstjek')} />
-            <ListRow icon="siren" title={t('Akut hjælp')} onPress={() => router.push('/akut')} />
+            <ListRow
+              icon="siren"
+              title={t('Akut hjælp')}
+              tint={{ background: colors.coralSoft, color: colors.coralText }}
+              onPress={() => router.push('/akut')}
+            />
             <ListRow
               icon="warning"
               title={t('Advarselslampe i bilen')}
+              tint={{ background: mechanic.soft, color: mechanic.onSoft }}
               onPress={() => router.push('/advarselslamper')}
             />
             <ListRow icon="leaf" title={t('Grøn guide')} onPress={() => router.push('/groen-guide')} />
@@ -133,14 +141,18 @@ export default function MoreScreen() {
           </View>
         </View>
       </ScrollView>
-      <StatusBarScrim />
+      <StatusBarScrim color={colors.panel} />
     </View>
   );
 }
 
+/** How far the tools reach up into the panel. */
+const OVERLAP = 36;
+
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  content: {},
+  panel: { paddingTop: Spacing.md },
+  raised: { marginTop: -OVERLAP },
   sections: { paddingHorizontal: ScreenPadding, gap: Spacing.xxl },
   about: { alignItems: 'center', gap: Spacing.xs, paddingTop: Spacing.sm },
 });
