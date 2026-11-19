@@ -73,7 +73,7 @@ export function ClusterBubble({ count }: { count: number }) {
         ]}>
         <AppText
           variant="headline"
-          serif
+          display
           weight="700"
           tabular
           style={{ color: colors.onInk }}

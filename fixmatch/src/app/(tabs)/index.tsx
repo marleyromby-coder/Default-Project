@@ -427,7 +427,7 @@ function Step({ number, title, text }: { number: number; title: string; text: st
   const colors = useTheme();
   return (
     <View style={styles.step}>
-      <AppText variant="title1" serif style={[styles.stepNumber, { color: colors.brand }]} accessibilityRole="none">
+      <AppText variant="title1" display style={[styles.stepNumber, { color: colors.brand }]} accessibilityRole="none">
         {number}
       </AppText>
       <View style={styles.flex}>

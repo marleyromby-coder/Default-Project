@@ -8,8 +8,8 @@
     "icon": "./assets/images/icon.png",
     "scheme": "fixmatch",
     "userInterfaceStyle": "automatic",
-    "primaryColor": "#1F4A3A",
-    "backgroundColor": "#F4F1EA",
+    "primaryColor": "#00805C",
+    "backgroundColor": "#F1F5F3",
     "ios": {
       "bundleIdentifier": "dk.fixmatch.app",
       "usesAppleSignIn": true,
@@ -94,7 +94,7 @@
       "package": "dk.fixmatch.app",
       "versionCode": 1,
       "adaptiveIcon": {
-        "backgroundColor": "#1F4A3A",
+        "backgroundColor": "#00614A",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
@@ -107,8 +107,8 @@
       "name": "FixMatch",
       "shortName": "FixMatch",
       "lang": "da",
-      "themeColor": "#F4F1EA",
-      "backgroundColor": "#F4F1EA"
+      "themeColor": "#F1F5F3",
+      "backgroundColor": "#F1F5F3"
     },
     "locales": {
       "da": "./locales/da.json",
@@ -119,11 +119,11 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#F4F1EA",
+          "backgroundColor": "#F1F5F3",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 120,
           "dark": {
-            "backgroundColor": "#11130F",
+            "backgroundColor": "#0A1210",
             "image": "./assets/images/splash-icon.png"
           }
         }

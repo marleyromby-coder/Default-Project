@@ -336,7 +336,7 @@ export function infoPagesEn(): Record<
           heading: 'Data and typeface',
           paragraphs: [
             'City names from GeoNames (geonames.org, CC BY 4.0). Coastlines on the web map from Natural Earth (public domain).',
-            'Headings are set in Fraunces by Undercase Type (SIL Open Font License 1.1).',
+            'Headings and prices are set in Schibsted Grotesk by Schibsted (SIL Open Font License 1.1).',
           ],
         },
       ],

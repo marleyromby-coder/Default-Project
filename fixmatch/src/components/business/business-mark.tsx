@@ -9,7 +9,7 @@ import type { Business } from '@/lib/types';
 
 /**
  * The business's own picture when it has one (an https URL from the import), otherwise
- * its initials in Fraunces on a tint of the trade colour – like a stamp, so a list never
+ * its initials in Schibsted Grotesk on a tint of the trade colour – like a stamp, so a list never
  * repeats the same stock photo.
  */
 export function BusinessMark({ business, size = 56 }: { business: Business; size?: number }) {
@@ -34,7 +34,7 @@ export function BusinessMark({ business, size = 56 }: { business: Business; size
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants">
       <AppText
-        serif
+        display
         weight="700"
         allowFontScaling={false}
         style={{

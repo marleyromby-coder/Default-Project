@@ -149,8 +149,8 @@ export default function EmergencyScreen() {
                       {[business.emergency ? t('Døgnvagt') : t('Åben nu'), formatDistance(km)].join(' · ')}
                     </AppText>
                   </View>
-                  <View style={[styles.callButton, { backgroundColor: colors.brand }]}>
-                    <Icon name="phone" size={16} color={colors.onInk} weight="semibold" />
+                  <View style={[styles.callButton, { backgroundColor: colors.brandStrong }]}>
+                    <Icon name="phone" size={16} color={colors.onBrand} weight="semibold" />
                   </View>
                 </Tappable>
               ))

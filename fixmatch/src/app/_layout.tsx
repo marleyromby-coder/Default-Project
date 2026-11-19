@@ -1,5 +1,9 @@
-import { Fraunces_600SemiBold } from '@expo-google-fonts/fraunces/600SemiBold';
-import { Fraunces_700Bold } from '@expo-google-fonts/fraunces/700Bold';
+import '@/global.css';
+
+import { SchibstedGrotesk_600SemiBold } from '@expo-google-fonts/schibsted-grotesk/600SemiBold';
+import { SchibstedGrotesk_700Bold } from '@expo-google-fonts/schibsted-grotesk/700Bold';
+import { SchibstedGrotesk_800ExtraBold } from '@expo-google-fonts/schibsted-grotesk/800ExtraBold';
+import { SchibstedGrotesk_900Black } from '@expo-google-fonts/schibsted-grotesk/900Black';
 import { useFonts } from 'expo-font';
 import { DarkTheme, DefaultTheme, router, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -8,7 +12,7 @@ import { type PropsWithChildren, useEffect } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 
 import { Button } from '@/components/ui/button';
-import { Fonts, MaxContentWidth, SerifFonts } from '@/constants/theme';
+import { DisplayFonts, Fonts, MaxContentWidth, NavigationFonts } from '@/constants/theme';
 import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { canContact, useAccount, useAccountSkipped } from '@/state/account';
 import { CallFollowUp } from '@/components/call-follow-up';
@@ -55,8 +59,10 @@ function RootNavigator() {
   const colors = useTheme();
   const { state } = useApp();
   const [fontsLoaded, fontError] = useFonts({
-    [SerifFonts.regular]: Fraunces_600SemiBold,
-    [SerifFonts.bold]: Fraunces_700Bold,
+    [DisplayFonts.semiBold]: SchibstedGrotesk_600SemiBold,
+    [DisplayFonts.bold]: SchibstedGrotesk_700Bold,
+    [DisplayFonts.extraBold]: SchibstedGrotesk_800ExtraBold,
+    [DisplayFonts.black]: SchibstedGrotesk_900Black,
   });
   // The saved light/dark choice is read first, so the app never flashes the wrong theme.
   const appearanceLoaded = useAppearanceLoaded();
@@ -79,14 +85,14 @@ function RootNavigator() {
       screenOptions={{
         headerBackButtonDisplayMode: 'minimal',
         headerTintColor: colors.brandText,
-        // Inline titles are SF Pro semibold, like the back chevron beside them; large titles are Fraunces.
+        // Inline titles are SF Pro semibold, like the back chevron beside them; large titles are Schibsted Grotesk.
         // iOS does this itself. The web header falls back to medium and its own font stack unless told.
         headerTitleStyle: {
           color: colors.text,
           fontWeight: '600',
           fontFamily: Platform.OS === 'web' ? Fonts.sans : undefined,
         },
-        headerLargeTitleStyle: { fontFamily: SerifFonts.bold, color: colors.text },
+        headerLargeTitleStyle: { fontFamily: NavigationFonts.largeTitle, color: colors.text },
         headerLargeTitleShadowVisible: false,
         headerLargeStyle: { backgroundColor: colors.background },
         headerShadowVisible: false,

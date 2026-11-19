@@ -359,7 +359,7 @@ export function infoPagesDa() {
           heading: 'Data og skrift',
           paragraphs: [
             'Bynavne fra GeoNames (geonames.org, CC BY 4.0). Kystlinjer på webkortet fra Natural Earth (public domain).',
-            'Overskrifterne er sat i Fraunces af Undercase Type (SIL Open Font License 1.1).',
+            'Overskrifter og priser er sat i Schibsted Grotesk fra Schibsted (SIL Open Font License 1.1).',
           ],
         },
       ],
