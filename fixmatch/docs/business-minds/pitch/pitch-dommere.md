@@ -51,7 +51,7 @@ Vi er [Navn 1], [Navn 2] og [Navn 3] fra FixMatch. En gratis iPhone-app, hvor ma
 
 [Træd et halvt skridt til side. [Navn 2] træder frem med telefonen.]
 
-> Kilde: 12 % og 1.156 klager (siges "over 1.100", fordi det er lettere at sige): rapporten, "Kort fortalt", kilde [1]. Målgruppen 25–40 år: afsnit 3, kilde [5].
+> Kilde: 12 % (Realdania og Bolius, "Danskerne i det byggede miljø" 2024; i Region Hovedstaden 16 %) og 1.156 klager i 2022 (715 + 181 + 260 til de tre ankenævn; siges "over 1.100"): bolius.dk, "Vi stoler på vores håndværkere, men …", rapportens kilde [1]. Målgruppen 25–40 år: afsnit 3, kilde [5].
 
 ### 0:47 · [Navn 2] · Demoen
 
@@ -193,7 +193,7 @@ Til jer, hvis en dommer spørger "Hvor har I det fra?". Siges ikke i pitchen.
 
 | Tal eller påstand | Kilde |
 |---|---|
-| 12 % af boligejerne har dårlige erfaringer; 1.156 klager over håndværkere til ankenævnene i 2022 (siges "over 1.100") | Rapporten, "Kort fortalt", kilde [1] (vores egen analyse "Marked, navn og jura") |
+| 12 % af boligejerne har dårlige erfaringer; 1.156 klager over håndværkere til ankenævnene i 2022 (siges "over 1.100") | Bolius, "Vi stoler på vores håndværkere, men …" (Realdania og Bolius 2024; ankenævnenes tal for 2022), rapportens kilde [1] |
 | Sofie, 32, rækkehus i Valby, tilbud på 3.200 kr. | Rapporten afsnit 3 (persona, opdigtet) |
 | Unge boligejere i storbyen (25–40 år) er mindre loyale over for "deres" håndværker | Rapporten afsnit 3, kilde [5] (TEKNIQ/Bolius) |
 | 67 % vægter kvaliteten højest, 18 % prisen | Rapporten afsnit 3, kilde [5] (TEKNIQ/YouGov) |

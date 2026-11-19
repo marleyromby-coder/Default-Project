@@ -157,8 +157,8 @@ Det kan vi ikke dokumentere endnu. Hvis appen får folk til at bestille flere sm
 _Kilde: rapporten afsnit 2 (kritisk vurdering)._
 
 **Hvor kommer de 12 % og de over 1.100 klager oprindeligt fra?**
-Det præcise tal er 1.156 klager i 2022. Tallene står i vores egen analyse, "Marked, navn og jura", som er kilde [1] i rapporten. [Udfyld før Vejle: den oprindelige kilde bag hvert tal.] Har I den ikke: "Den oprindelige kilde har jeg ikke med her, men den står i vores analyse, og vi sender den gerne."
-_Kilde: rapporten, "Kort fortalt" og kildelisten [1]._
+Begge tal er fra Bolius. 12 % er fra Realdania og Bolius' undersøgelse "Danskerne i det byggede miljø" fra 2024: 12 % af boligejerne har dårlige eller meget dårlige erfaringer med håndværkere, og i Region Hovedstaden er det 16 %. Klagerne er fra 2022: 715 til Byggeriets Ankenævn, 181 til Håndværkets Ankenævn og 260 til Ankenævnet for Tekniske Installationer. Det er 1.156 i alt.
+_Kilde: bolius.dk, "Vi stoler på vores håndværkere, men …" (rapportens kilde [1])._
 
 **Fortsætter I med FixMatch efter Business Minds og efter gymnasiet? Hvem ejer det?**
 [Teamet skal selv svare. Aftal svaret før Vejle, og sig kun det, I har besluttet.] Har I ikke besluttet det: "Det har vi ikke besluttet endnu. Først skal vi se, om de første 40 firmaer vil være med."
