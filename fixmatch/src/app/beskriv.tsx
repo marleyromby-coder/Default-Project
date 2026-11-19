@@ -1,10 +1,13 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Switch, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { HeroPanel, panelHeaderOptions } from '@/components/hero-panel';
 import { ProblemPhotos } from '@/components/problem-photos';
+import { TradeArt } from '@/components/trade-art';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Chip } from '@/components/ui/chip';
 import { Icon } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
@@ -27,6 +30,8 @@ import { getProblem, setProblemText } from '@/state/problem';
 /** Budget suggestions in DKK; scaled to the local currency with Market.fromDkk. */
 const BUDGET_PRESETS_DKK = [1000, 2500, 5000, 10000, 25000];
 const MAX_TEXT = 500;
+/** How far the text field reaches up into the panel. */
+const OVERLAP = 32;
 
 /** Rounds a price to a friendly budget step: 1.250 → 1.300, 12.400 → 12.500. */
 function niceBudget(value: number): number {
@@ -121,250 +126,238 @@ export default function DescribeProblemScreen() {
     <KeyboardAvoidingView
       style={[styles.flex, { backgroundColor: colors.background }]}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <Stack.Screen options={panelHeaderOptions(colors)} />
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={[styles.content, column, { paddingBottom: 120 + insets.bottom }]}>
-        <View style={styles.intro}>
-          <AppText variant="callout" tone="textSecondary">
-            {t(
-              'Skriv med dine egne ord, hvad der er galt, og hvad du vil give. Så finder vi dem, der passer – også dem, der ligger tæt på dit budget.',
-            )}
-          </AppText>
-        </View>
-
-        <View
-          style={[
-            styles.field,
-            { backgroundColor: colors.surface, borderColor: focused === 'text' ? colors.brand : colors.border },
-          ]}>
-          <TextInput
-            value={text}
-            onChangeText={(value) => setText(value.slice(0, MAX_TEXT))}
-            placeholder={t('Fx: Køkkenvasken er stoppet, og vandet løber ikke ud')}
-            placeholderTextColor={colors.textTertiary}
-            multiline
-            autoFocus={!params.tekst}
-            textAlignVertical="top"
-            accessibilityLabel={t('Beskriv dit problem')}
-            onFocus={() => setFocused('text')}
-            onBlur={() => setFocused(undefined)}
-            style={[styles.textArea, { color: colors.text }]}
-          />
-          <AppText variant="caption" tone="textTertiary" style={styles.counter}>
-            {text.length}/{MAX_TEXT}
-          </AppText>
-        </View>
-
-        <ProblemPhotos />
-
-        {text.trim().length === 0 ? (
-          <View style={styles.block}>
-            <AppText variant="subhead" tone="textSecondary" weight="600" accessibilityRole="header">
-              {t('Prøv fx')}
+        contentContainerStyle={{ paddingBottom: 140 + insets.bottom }}>
+        <View>
+          {/* Panel colour above the panel, so pulling the page down shows no gap under the bar. */}
+          <View pointerEvents="none" style={[styles.overscroll, { backgroundColor: colors.panel }]} />
+          <HeroPanel safeArea={false} overlap={OVERLAP} decoration={false}>
+            <AppText variant="callout" tone="onPanelSoft">
+              {t(
+                'Skriv med dine egne ord, hvad der er galt, og hvad du vil give. Så finder vi dem, der passer – også dem, der ligger tæt på dit budget.',
+              )}
             </AppText>
-            <View style={styles.examples}>
-              {PROBLEM_EXAMPLES.map((example) => (
-                <Tappable
-                  key={example}
-                  onPress={() => setText(example)}
-                  accessibilityLabel={t('Brug eksempel: {example}', { example })}
-                  style={[
-                    styles.example,
-                    {
-                      backgroundColor: colors.surface,
-                      borderColor: colors.border,
-                    },
-                  ]}>
-                  <Icon name="chat" size={14} color={colors.textSecondary} />
-                  <AppText variant="subhead" style={styles.flexShrink}>
-                    {example}
-                  </AppText>
-                </Tappable>
-              ))}
-            </View>
-          </View>
-        ) : null}
+          </HeroPanel>
+        </View>
 
-        {text.trim().length > 0 || pickedCategory ? (
-          <View
-            style={[
-              styles.understood,
-              {
-                backgroundColor: colors.surface,
-                borderColor: category ? colors.brand : colors.border,
-              },
-            ]}>
-            <View style={styles.row}>
-              <View
-                style={[
-                  styles.tradeIcon,
-                  {
-                    backgroundColor: category ? colors.brandSoft : colors.surfaceAlt,
-                  },
-                ]}>
-                <Icon
-                  name={category ? category.id : 'help'}
-                  size={18}
-                  color={category ? colors.brand : colors.textSecondary}
-                  weight="semibold"
-                />
-              </View>
-              <View style={styles.flex} accessible accessibilityLiveRegion="polite">
-                <AppText variant="caption" tone="textSecondary" weight="600">
-                  {category ? t('Vi forstår det sådan') : t('Vælg fag')}
-                </AppText>
-                <AppText variant="headline">
-                  {category ? `${category.name}${job ? ` · ${job.name}` : ''}` : t('Vi er ikke sikre på faget endnu')}
-                </AppText>
-                {typical ? (
-                  <AppText variant="footnote" tone="textSecondary">
-                    {t('Typisk pris: {priceRange} {tax}', {
-                      priceRange: formatPriceRange(typical.min, typical.max, typical.unit, typical.currency),
-                      tax: taxNote(market),
-                    })}
-                  </AppText>
-                ) : null}
-              </View>
-            </View>
-
-            {category ? (
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.chipScroll}
-                contentContainerStyle={styles.chips}>
-                {category.jobs.map((j) => (
-                  <Chip
-                    key={j.id}
-                    label={j.name}
-                    selected={job?.id === j.id}
-                    onPress={() => setPickedJob(job?.id === j.id ? null : j.id)}
-                  />
-                ))}
-                <Chip label={t('Ved ikke')} selected={!job} onPress={() => setPickedJob(null)} />
-              </ScrollView>
-            ) : null}
-
-            <View style={styles.block}>
-              <AppText variant="caption" tone="textSecondary" weight="600">
-                {category ? t('Andet fag?') : t('Hvilket fag?')}
-              </AppText>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.chipScroll}
-                contentContainerStyle={styles.chips}>
-                {otherCategories.map((c) => (
-                  <Chip key={c.id} label={c.name} icon={c.id} onPress={() => pickCategory(c.id)} />
-                ))}
-              </ScrollView>
-            </View>
-          </View>
-        ) : null}
-
-        {job && quantity !== undefined ? (
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-            <View style={styles.row}>
-              <View style={styles.flex}>
-                <AppText variant="headline">{job.unit === 'm2' ? t('Hvor mange m²?') : t('Hvor mange?')}</AppText>
-                <AppText variant="footnote" tone="textSecondary">
-                  {t('Prisen ganges med antallet')}
-                </AppText>
-              </View>
-              <Tappable
-                onPress={() => setQuantityValue(Math.max(1, quantity - (job.unit === 'm2' ? 5 : 1)))}
-                accessibilityLabel={t('Færre')}
-                style={[styles.stepper, { backgroundColor: colors.surfaceAlt }]}>
-                <Icon name="minus" size={16} color={colors.text} weight="bold" />
-              </Tappable>
-              <AppText
-                variant="headline"
-                style={styles.quantity}
-                accessibilityLabel={t('{quantity} {value}', {
-                  quantity,
-                  value: job.unit === 'm2' ? t('kvadratmeter') : t('stk.'),
-                })}>
-                {quantity} {job.unit === 'm2' ? 'm²' : t('stk.')}
-              </AppText>
-              <Tappable
-                onPress={() => setQuantityValue(quantity + (job.unit === 'm2' ? 5 : 1))}
-                accessibilityLabel={t('Flere')}
-                style={[styles.stepper, { backgroundColor: colors.surfaceAlt }]}>
-                <Icon name="plus" size={16} color={colors.text} weight="bold" />
-              </Tappable>
-            </View>
-          </View>
-        ) : null}
-
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <AppText variant="headline">{t('Dit budget')}</AppText>
-          <View
-            style={[
-              styles.budgetField,
-              {
-                backgroundColor: colors.surfaceAlt,
-                borderColor: focused === 'budget' ? colors.brand : colors.border,
-              },
-            ]}>
-            <Icon name="money" size={18} color={colors.textSecondary} />
+        <View style={[styles.content, column]}>
+          <Card
+            elevation="raised"
+            padded={false}
+            style={[styles.field, { borderColor: focused === 'text' ? colors.brand : colors.surface }]}>
             <TextInput
-              value={budgetDigits ? formatNumber(Number(budgetDigits)) : ''}
-              onChangeText={(value) => setBudgetText(value.replace(/\D/g, '').slice(0, 7))}
-              placeholder={t('Ved ikke')}
+              value={text}
+              onChangeText={(value) => setText(value.slice(0, MAX_TEXT))}
+              placeholder={t('Fx: Køkkenvasken er stoppet, og vandet løber ikke ud')}
               placeholderTextColor={colors.textTertiary}
-              keyboardType="number-pad"
-              returnKeyType="done"
-              accessibilityLabel={t('Budget i {currency} {tax}', { currency: market.currency, tax: taxNote(market) })}
-              onFocus={() => setFocused('budget')}
+              multiline
+              autoFocus={!params.tekst}
+              textAlignVertical="top"
+              accessibilityLabel={t('Beskriv dit problem')}
+              onFocus={() => setFocused('text')}
               onBlur={() => setFocused(undefined)}
-              style={[styles.budgetInput, { color: colors.text }]}
+              style={[styles.textArea, { color: colors.text }]}
             />
-            <AppText variant="body" tone="textSecondary">
-              {`${currencySymbol(market.currency)} ${taxNote(market)}`}
+            <AppText variant="caption" tone="textTertiary" style={styles.counter}>
+              {text.length}/{MAX_TEXT}
             </AppText>
-          </View>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.chipScroll}
-            contentContainerStyle={styles.chips}>
-            {presets.map((value) => (
-              <Chip
-                key={value}
-                label={formatPrice(value, market.currency)}
-                selected={budget === value}
-                onPress={() => setBudgetText(budget === value ? '' : String(value))}
+          </Card>
+
+          <ProblemPhotos />
+
+          {text.trim().length === 0 ? (
+            <View style={styles.block}>
+              <AppText variant="subhead" tone="textSecondary" weight="600" accessibilityRole="header">
+                {t('Prøv fx')}
+              </AppText>
+              <View style={styles.examples}>
+                {PROBLEM_EXAMPLES.map((example) => (
+                  <Tappable
+                    key={example}
+                    onPress={() => setText(example)}
+                    accessibilityLabel={t('Brug eksempel: {example}', { example })}
+                    style={[styles.example, { backgroundColor: colors.surface }]}>
+                    <Icon name="chat" size={14} color={colors.brand} />
+                    <AppText variant="subhead" style={styles.flexShrink}>
+                      {example}
+                    </AppText>
+                  </Tappable>
+                ))}
+              </View>
+            </View>
+          ) : null}
+
+          {text.trim().length > 0 || pickedCategory ? (
+            <Card padded={false} style={[styles.understood, { borderColor: category ? colors.brand : colors.surface }]}>
+              <View style={styles.row}>
+                {category ? (
+                  <TradeArt trade={category.id} size={40} tile />
+                ) : (
+                  <View style={[styles.tradeIcon, { backgroundColor: colors.fill }]}>
+                    <Icon name="help" size={18} color={colors.textSecondary} weight="semibold" />
+                  </View>
+                )}
+                <View style={styles.flex} accessible accessibilityLiveRegion="polite">
+                  <AppText variant="caption" tone="textSecondary" weight="600">
+                    {category ? t('Vi forstår det sådan') : t('Vælg fag')}
+                  </AppText>
+                  <AppText variant="headline" display>
+                    {category ? `${category.name}${job ? ` · ${job.name}` : ''}` : t('Vi er ikke sikre på faget endnu')}
+                  </AppText>
+                  {typical ? (
+                    <AppText variant="footnote" tone="textSecondary">
+                      {t('Typisk pris: {priceRange} {tax}', {
+                        priceRange: formatPriceRange(typical.min, typical.max, typical.unit, typical.currency),
+                        tax: taxNote(market),
+                      })}
+                    </AppText>
+                  ) : null}
+                </View>
+              </View>
+
+              {category ? (
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  style={styles.chipScroll}
+                  contentContainerStyle={styles.chips}>
+                  {category.jobs.map((j) => (
+                    <Chip
+                      key={j.id}
+                      label={j.name}
+                      selected={job?.id === j.id}
+                      onPress={() => setPickedJob(job?.id === j.id ? null : j.id)}
+                    />
+                  ))}
+                  <Chip label={t('Ved ikke')} selected={!job} onPress={() => setPickedJob(null)} />
+                </ScrollView>
+              ) : null}
+
+              <View style={styles.block}>
+                <AppText variant="caption" tone="textSecondary" weight="600">
+                  {category ? t('Andet fag?') : t('Hvilket fag?')}
+                </AppText>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  style={styles.chipScroll}
+                  contentContainerStyle={styles.chips}>
+                  {otherCategories.map((c) => (
+                    <Chip key={c.id} label={c.name} icon={c.id} onPress={() => pickCategory(c.id)} />
+                  ))}
+                </ScrollView>
+              </View>
+            </Card>
+          ) : null}
+
+          {job && quantity !== undefined ? (
+            <Card style={styles.card}>
+              <View style={styles.row}>
+                <View style={styles.flex}>
+                  <AppText variant="headline">{job.unit === 'm2' ? t('Hvor mange m²?') : t('Hvor mange?')}</AppText>
+                  <AppText variant="footnote" tone="textSecondary">
+                    {t('Prisen ganges med antallet')}
+                  </AppText>
+                </View>
+                <Tappable
+                  onPress={() => setQuantityValue(Math.max(1, quantity - (job.unit === 'm2' ? 5 : 1)))}
+                  accessibilityLabel={t('Færre')}
+                  style={[styles.stepper, { backgroundColor: colors.surfaceAlt }]}>
+                  <Icon name="minus" size={16} color={colors.text} weight="bold" />
+                </Tappable>
+                <AppText
+                  variant="headline"
+                  style={styles.quantity}
+                  accessibilityLabel={t('{quantity} {value}', {
+                    quantity,
+                    value: job.unit === 'm2' ? t('kvadratmeter') : t('stk.'),
+                  })}>
+                  {quantity} {job.unit === 'm2' ? 'm²' : t('stk.')}
+                </AppText>
+                <Tappable
+                  onPress={() => setQuantityValue(quantity + (job.unit === 'm2' ? 5 : 1))}
+                  accessibilityLabel={t('Flere')}
+                  style={[styles.stepper, { backgroundColor: colors.surfaceAlt }]}>
+                  <Icon name="plus" size={16} color={colors.text} weight="bold" />
+                </Tappable>
+              </View>
+            </Card>
+          ) : null}
+
+          <Card style={styles.card}>
+            <AppText variant="headline" display>
+              {t('Dit budget')}
+            </AppText>
+            <View
+              style={[
+                styles.budgetField,
+                {
+                  backgroundColor: colors.surfaceAlt,
+                  borderColor: focused === 'budget' ? colors.brand : colors.border,
+                },
+              ]}>
+              <Icon name="money" size={18} color={colors.textSecondary} />
+              <TextInput
+                value={budgetDigits ? formatNumber(Number(budgetDigits)) : ''}
+                onChangeText={(value) => setBudgetText(value.replace(/\D/g, '').slice(0, 7))}
+                placeholder={t('Ved ikke')}
+                placeholderTextColor={colors.textTertiary}
+                keyboardType="number-pad"
+                returnKeyType="done"
+                accessibilityLabel={t('Budget i {currency} {tax}', { currency: market.currency, tax: taxNote(market) })}
+                onFocus={() => setFocused('budget')}
+                onBlur={() => setFocused(undefined)}
+                style={[styles.budgetInput, { color: colors.text }]}
               />
-            ))}
-          </ScrollView>
-        </View>
+              <AppText variant="body" tone="textSecondary">
+                {`${currencySymbol(market.currency)} ${taxNote(market)}`}
+              </AppText>
+            </View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.chipScroll}
+              contentContainerStyle={styles.chips}>
+              {presets.map((value) => (
+                <Chip
+                  key={value}
+                  label={formatPrice(value, market.currency)}
+                  selected={budget === value}
+                  onPress={() => setBudgetText(budget === value ? '' : String(value))}
+                />
+              ))}
+            </ScrollView>
+          </Card>
 
-        <View style={[styles.card, styles.row, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <View style={[styles.tradeIcon, { backgroundColor: colors.warningSoft }]}>
-            <Icon name="bolt" size={18} color={colors.warning} weight="semibold" />
-          </View>
-          <View style={styles.flex}>
-            <AppText variant="headline">{t('Det haster')}</AppText>
-            <AppText variant="footnote" tone="textSecondary">
-              {t('Døgnvagt og dem, der er ledige i dag, vises først')}
+          <Card style={[styles.card, styles.row]}>
+            <View style={[styles.tradeIcon, { backgroundColor: colors.coralSoft }]}>
+              <Icon name="bolt" size={18} color={colors.coralText} weight="semibold" />
+            </View>
+            <View style={styles.flex}>
+              <AppText variant="headline">{t('Det haster')}</AppText>
+              <AppText variant="footnote" tone="textSecondary">
+                {t('Døgnvagt og dem, der er ledige i dag, vises først')}
+              </AppText>
+            </View>
+            <Switch
+              value={urgent}
+              onValueChange={setUrgentValue}
+              trackColor={{ true: colors.brandStrong }}
+              accessibilityLabel={t('Det haster')}
+            />
+          </Card>
+
+          <View style={styles.privacy}>
+            <Icon name="privacy" size={14} color={colors.textSecondary} />
+            <AppText variant="caption" tone="textSecondary" style={styles.flexShrink}>
+              {t(
+                'Din beskrivelse og dine billeder bliver på telefonen. De sendes ikke til FixMatch – du bestemmer selv, om du vil sende dem til en virksomhed, når du kontakter den.',
+              )}
             </AppText>
           </View>
-          <Switch
-            value={urgent}
-            onValueChange={setUrgentValue}
-            trackColor={{ true: colors.brandStrong }}
-            accessibilityLabel={t('Det haster')}
-          />
-        </View>
-
-        <View style={styles.privacy}>
-          <Icon name="privacy" size={14} color={colors.textSecondary} />
-          <AppText variant="caption" tone="textSecondary" style={styles.flexShrink}>
-            {t(
-              'Din beskrivelse og dine billeder bliver på telefonen. De sendes ikke til FixMatch – du bestemmer selv, om du vil sende dem til en virksomhed, når du kontakter den.',
-            )}
-          </AppText>
         </View>
       </ScrollView>
 
@@ -374,7 +367,7 @@ export default function DescribeProblemScreen() {
           {
             paddingHorizontal: gutter,
             paddingBottom: insets.bottom + Spacing.md,
-            backgroundColor: colors.background,
+            backgroundColor: colors.surface,
             borderTopColor: colors.border,
           },
         ]}>
@@ -390,7 +383,14 @@ export default function DescribeProblemScreen() {
                 })}
           </AppText>
         ) : null}
-        <Button title={t('Find match')} size="large" disabled={!category} onPress={submit} />
+        <Button
+          title={t('Find match')}
+          variant="sun"
+          size="large"
+          trailingIcon="arrowRight"
+          disabled={!category}
+          onPress={submit}
+        />
         {category ? null : (
           <AppText variant="footnote" tone="textSecondary" style={styles.center}>
             {t('Skriv, hvad der er galt, eller vælg et fag.')}
@@ -405,11 +405,11 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   flexShrink: { flexShrink: 1 },
   center: { textAlign: 'center' },
-  content: { padding: ScreenPadding, gap: Spacing.lg },
-  intro: { gap: Spacing.xs },
+  overscroll: { position: 'absolute', left: 0, right: 0, top: -600, height: 600 },
+  content: { marginTop: -OVERLAP, paddingHorizontal: ScreenPadding, gap: Spacing.lg },
   field: {
-    borderRadius: Radius.lg,
-    borderWidth: 1,
+    borderRadius: Radius.card,
+    borderWidth: 1.5,
     padding: Spacing.md,
   },
   // The field's border shows focus, so the browser's own ring is hidden (as in soeg.tsx).
@@ -421,13 +421,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.sm,
-    borderRadius: Radius.md,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: Radius.lg,
+    borderCurve: 'continuous',
     paddingHorizontal: Spacing.md,
-    minHeight: MinTouchSize,
+    paddingVertical: Spacing.sm,
+    minHeight: MinTouchSize + 4,
   },
   understood: {
-    borderRadius: Radius.lg,
+    borderRadius: Radius.card,
     borderWidth: 1.5,
     padding: Spacing.md,
     gap: Spacing.md,
@@ -444,8 +445,7 @@ const styles = StyleSheet.create({
   chipScroll: { marginHorizontal: -Spacing.md },
   chips: { gap: Spacing.sm, paddingHorizontal: Spacing.md },
   card: {
-    borderRadius: Radius.lg,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: Radius.card,
     padding: Spacing.md,
     gap: Spacing.md,
   },
