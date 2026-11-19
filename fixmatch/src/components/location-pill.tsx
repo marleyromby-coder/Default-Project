@@ -4,17 +4,18 @@ import { StyleSheet } from 'react-native';
 import { Icon } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
-import { MinTouchSize, Radius, Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { MinTouchSize, Radius, Shadows, Spacing } from '@/constants/theme';
+import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { useApp } from '@/state/app-state';
 import { t } from '@/i18n';
 
 /**
- * Shows where results are measured from; tap to change. On the map it keeps a hairline
- * outline like the map's other overlays; elsewhere it is a borderless surface.
+ * Shows where results are measured from; tap to change. On the map it floats like the map's
+ * other overlays, with a hairline and a soft shadow; elsewhere it is a borderless surface.
  */
 export function LocationPill({ onMap = false }: { onMap?: boolean }) {
   const colors = useTheme();
+  const dark = useIsDark();
   const { state } = useApp();
   const { location } = state;
   return (
@@ -24,9 +25,11 @@ export function LocationPill({ onMap = false }: { onMap?: boolean }) {
       style={[
         styles.pill,
         { backgroundColor: colors.surface },
-        onMap ? [styles.onMap, { borderColor: colors.border }] : null,
+        onMap
+          ? [styles.onMap, { borderColor: colors.border, boxShadow: Shadows[dark ? 'dark' : 'light'].raised }]
+          : null,
       ]}>
-      <Icon name={location.source === 'gps' ? 'location' : 'pin'} size={14} color={colors.brand} weight="semibold" />
+      <Icon name={location.source === 'gps' ? 'location' : 'pin'} size={15} color={colors.brand} weight="semibold" />
       <AppText variant="subhead" weight="600" numberOfLines={1} style={styles.label} maxFontSizeMultiplier={1.3}>
         {location.label}
       </AppText>

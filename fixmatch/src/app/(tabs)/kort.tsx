@@ -4,6 +4,7 @@ import { FlatList, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BusinessMark } from '@/components/business/business-mark';
+import { PriceText } from '@/components/business/price-text';
 import { OpenStatus } from '@/components/business/open-status';
 import { ReviewRating } from '@/components/business/review-rating';
 import { LocationPill } from '@/components/location-pill';
@@ -13,11 +14,11 @@ import { Chip } from '@/components/ui/chip';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
-import { MinTouchSize, Radius, ScreenPadding, Spacing } from '@/constants/theme';
+import { MinTouchSize, Radius, ScreenPadding, Shadows, Spacing } from '@/constants/theme';
 import { CATEGORIES, getCategory, isCategoryId } from '@/data/categories';
 import { useLayout } from '@/hooks/use-layout';
 import { useResults } from '@/hooks/use-results';
-import { useTheme } from '@/hooks/use-theme';
+import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { countryOf, currencyOf } from '@/lib/business-text';
 import { inRegion, regionAround, type Region } from '@/lib/cluster';
 import { callBusiness } from '@/lib/contact';
@@ -47,6 +48,7 @@ const SIDEBAR = 380;
  */
 export default function MapScreen() {
   const colors = useTheme();
+  const floating = useFloating();
   const insets = useSafeAreaInsets();
   const { width: pageWidth, wide } = useLayout();
   const params = useLocalSearchParams<{ kategori?: string }>();
@@ -155,13 +157,11 @@ export default function MapScreen() {
     <Tappable
       onPress={() => router.push('/beskriv')}
       accessibilityLabel={t('Beskriv dit problem og dit budget')}
-      style={[
-        styles.describe,
-        styles.floating,
-        { backgroundColor: colors.surface, borderColor: colors.border, shadowColor: colors.shadow },
-      ]}>
-      <Icon name="chat" size={17} color={colors.brand} weight="semibold" />
-      <AppText variant="subhead" tone="textSecondary" numberOfLines={1} style={styles.flexShrink}>
+      style={[styles.describe, { backgroundColor: colors.surface, borderColor: colors.border, boxShadow: floating }]}>
+      <View style={[styles.describeIcon, { backgroundColor: colors.accent }]}>
+        <Icon name="chat" size={13} color={colors.onAccent} weight="semibold" />
+      </View>
+      <AppText variant="subhead" numberOfLines={1} style={styles.flexShrink}>
         {t('Beskriv problemet')}
       </AppText>
     </Tappable>
@@ -218,7 +218,7 @@ export default function MapScreen() {
       style={[
         styles.emptyCard,
         { width, backgroundColor: colors.surface, borderColor: colors.border },
-        wide ? null : [styles.floating, { shadowColor: colors.shadow }],
+        wide ? null : { boxShadow: floating },
       ]}>
       <AppText variant="headline">{t('Ingen virksomheder i kortudsnittet')}</AppText>
       <AppText variant="footnote" tone="textSecondary">
@@ -295,8 +295,7 @@ export default function MapScreen() {
         <View
           style={[
             styles.countPill,
-            styles.floating,
-            { backgroundColor: colors.surface, borderColor: colors.border, shadowColor: colors.shadow },
+            { backgroundColor: colors.surface, borderColor: colors.border, boxShadow: floating },
           ]}>
           {summaryLine}
         </View>
@@ -331,13 +330,10 @@ export default function MapScreen() {
 /** Apple Maps-style stack of round controls in one floating capsule. */
 function MapControls({ buttons }: { buttons: { icon: IconName; label: string; onPress: () => void }[] }) {
   const colors = useTheme();
+  const floating = useFloating();
   return (
     <View
-      style={[
-        styles.controls,
-        styles.floating,
-        { backgroundColor: colors.surface, borderColor: colors.border, shadowColor: colors.shadow },
-      ]}>
+      style={[styles.controls, { backgroundColor: colors.surface, borderColor: colors.border, boxShadow: floating }]}>
       {buttons.map((button, index) => (
         <View key={button.icon}>
           {index > 0 ? <View style={[styles.controlDivider, { backgroundColor: colors.border }]} /> : null}
@@ -368,26 +364,48 @@ function cardLabel({ business, distanceKm }: ScoredBusiness) {
     : t('{name}, {name2}, {distance} væk, {hourly}. Åbn', params);
 }
 
+/** The map's floating shadow: soft in light mode, deeper in dark mode. */
+function useFloating() {
+  return Shadows[useIsDark() ? 'dark' : 'light'].raised;
+}
+
+/** "fra 560 kr. pr. time", with the price large, as on the result cards. */
+function HourlyFrom({ item, variant }: { item: ScoredBusiness; variant: 'title2' | 'headline' }) {
+  const { business } = item;
+  return (
+    <View style={styles.hourly}>
+      <AppText variant="footnote" tone="textSecondary">
+        {t('fra')}
+      </AppText>
+      <PriceText value={business.pricing.hourlyMin} currency={currencyOf(business)} variant={variant} />
+      <AppText variant="footnote" tone="textSecondary">
+        {t('pr. time')}
+      </AppText>
+    </View>
+  );
+}
+
 /** A business under the map: who, how far, open now, and the price – with Ring one tap away. */
 function MapCard({ item, width, selected }: { item: ScoredBusiness; width: number; selected: boolean }) {
   const colors = useTheme();
+  const floating = useFloating();
   const { business, distanceKm } = item;
   const trade = getCategory(business.categories[0]);
   return (
-    <View style={[styles.cardShadow, styles.floating, { width, shadowColor: colors.shadow }]}>
+    <View style={[styles.cardShadow, { width, boxShadow: floating }]}>
       <View
         style={[
           styles.card,
-          { backgroundColor: colors.surface, borderColor: selected ? colors.brand : colors.border },
+          { backgroundColor: colors.surface, borderColor: selected ? colors.brand : colors.surface },
         ]}>
         <Tappable
           onPress={() => openPage(business.id)}
           accessibilityLabel={cardLabel(item)}
           pressedOpacity={0.8}
           style={styles.cardMain}>
-          <BusinessMark business={business} size={52} />
+          <BusinessMark business={business} size={48} />
           <View style={styles.cardBody}>
-            <AppText variant="headline" numberOfLines={1}>
+            <AppText variant="headline" display numberOfLines={1}>
               {business.name}
             </AppText>
             {/* The rating shares the short trade line, so the card keeps its fixed height. */}
@@ -402,10 +420,16 @@ function MapCard({ item, width, selected }: { item: ScoredBusiness; width: numbe
           <Icon name="chevronRight" size={14} color={colors.textTertiary} weight="semibold" />
         </Tappable>
         <View style={[styles.cardFooter, { borderTopColor: colors.border }]}>
-          <AppText variant="title3" tabular numberOfLines={1} style={styles.flexShrink}>
-            {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business))}
-          </AppText>
-          <Button title={t('Ring')} icon="phone" size="small" onPress={() => callBusiness(business)} />
+          <View style={styles.flexShrink} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+            <HourlyFrom item={item} variant="title2" />
+          </View>
+          <Button
+            title={t('Ring')}
+            icon="phone"
+            size="small"
+            onPress={() => callBusiness(business)}
+            accessibilityLabel={t('Ring til {name}', { name: business.name })}
+          />
         </View>
       </View>
     </View>
@@ -421,7 +445,7 @@ function MapRow({ item, selected, onPress }: { item: ScoredBusiness; selected: b
     <View
       style={[
         styles.rowCard,
-        { backgroundColor: colors.surface, borderColor: selected ? colors.brand : colors.border },
+        { backgroundColor: colors.surface, borderColor: selected ? colors.brand : colors.surface },
       ]}>
       <Tappable
         onPress={onPress}
@@ -431,16 +455,16 @@ function MapRow({ item, selected, onPress }: { item: ScoredBusiness; selected: b
         style={styles.rowMain}>
         <BusinessMark business={business} size={44} />
         <View style={styles.cardBody}>
-          <AppText variant="headline" numberOfLines={1}>
+          <AppText variant="headline" display numberOfLines={1}>
             {business.name}
-          </AppText>
-          <AppText variant="subhead" weight="700" tabular numberOfLines={1}>
-            {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business))}
           </AppText>
           <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
             {trade?.name} · {formatDistance(distanceKm)}
           </AppText>
           <OpenStatus business={business} />
+        </View>
+        <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+          <HourlyFrom item={item} variant="headline" />
         </View>
       </Tappable>
       {selected ? (
@@ -450,6 +474,7 @@ function MapRow({ item, selected, onPress }: { item: ScoredBusiness; selected: b
             icon="phone"
             size="small"
             onPress={() => callBusiness(business)}
+            accessibilityLabel={t('Ring til {name}', { name: business.name })}
             style={styles.flex}
           />
           <Button
@@ -469,12 +494,6 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   row: { flex: 1, flexDirection: 'row' },
   flexShrink: { flexShrink: 1 },
-  floating: {
-    shadowOpacity: 0.14,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 5,
-  },
   top: { position: 'absolute', left: 0, right: 0, top: 0, gap: Spacing.sm },
   topRow: {
     flexDirection: 'row',
@@ -486,12 +505,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.sm,
+    gap: 6,
     minHeight: MinTouchSize,
-    paddingHorizontal: Spacing.md,
+    paddingLeft: 9,
+    paddingRight: Spacing.md,
     borderRadius: Radius.pill,
     borderWidth: StyleSheet.hairlineWidth,
   },
+  describeIcon: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
   chips: { paddingHorizontal: ScreenPadding, gap: Spacing.sm, alignItems: 'center' },
   chipDivider: { width: StyleSheet.hairlineWidth, height: 22, marginHorizontal: 2 },
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, alignItems: 'center' },
@@ -510,8 +531,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cards: { paddingHorizontal: ScreenPadding, paddingBottom: 6 },
-  cardShadow: { height: CARD_HEIGHT, borderRadius: Radius.lg },
-  card: { flex: 1, borderRadius: Radius.lg, borderWidth: 1.5, overflow: 'hidden' },
+  cardShadow: { height: CARD_HEIGHT, borderRadius: Radius.card, borderCurve: 'continuous' },
+  card: { flex: 1, borderRadius: Radius.card, borderCurve: 'continuous', borderWidth: 2, overflow: 'hidden' },
   cardMain: {
     flex: 1,
     flexDirection: 'row',
@@ -531,8 +552,9 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.sm,
     borderTopWidth: StyleSheet.hairlineWidth,
   },
+  hourly: { flexDirection: 'row', alignItems: 'baseline', gap: 4 },
   emptyCard: {
-    borderRadius: Radius.lg,
+    borderRadius: Radius.card,
     borderWidth: StyleSheet.hairlineWidth,
     padding: Spacing.md,
     gap: Spacing.sm,
@@ -541,7 +563,7 @@ const styles = StyleSheet.create({
   sidebarHeader: { paddingHorizontal: ScreenPadding, gap: Spacing.md, paddingBottom: Spacing.md },
   titleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: Spacing.sm },
   list: { paddingHorizontal: ScreenPadding },
-  rowCard: { borderRadius: Radius.lg, borderWidth: 1.5, overflow: 'hidden' },
-  rowMain: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.md, padding: Spacing.md },
+  rowCard: { borderRadius: Radius.card, borderCurve: 'continuous', borderWidth: 2, overflow: 'hidden' },
+  rowMain: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, padding: Spacing.md },
   rowActions: { flexDirection: 'row', gap: Spacing.sm, paddingHorizontal: Spacing.md, paddingBottom: Spacing.md },
 });
