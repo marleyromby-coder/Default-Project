@@ -1,21 +1,23 @@
 import { router, Stack } from 'expo-router';
 import { Fragment, type ReactNode } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Button } from '@/components/ui/button';
-import { EmptyState } from '@/components/ui/empty-state';
-import { Icon } from '@/components/ui/icon';
 import { BusinessMark } from '@/components/business/business-mark';
-import { Stars } from '@/components/ui/stars';
+import { HeroPanel, panelHeaderOptions } from '@/components/hero-panel';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { EmptyState } from '@/components/ui/empty-state';
+import { Icon, type IconName } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
-import { AppText } from '@/components/ui/text';
-import { Radius, ScreenPadding, Spacing } from '@/constants/theme';
+import { AppText, type Tone } from '@/components/ui/text';
+import { MinTouchSize, Radius, ScreenPadding, Spacing } from '@/constants/theme';
 import { getCategory } from '@/data/categories';
+import { useLayout } from '@/hooks/use-layout';
 import { useScored } from '@/hooks/use-results';
 import { useTheme } from '@/hooks/use-theme';
 import { callBusiness } from '@/lib/contact';
-import { formatDistance, formatNumber, formatPrice, formatPriceRange, formatRating } from '@/lib/format';
+import { currencySymbol, formatDistance, formatNumber, formatPrice, formatRating } from '@/lib/format';
 import { getOpenStatus } from '@/lib/opening-hours';
 import { bestBy, bestReviewed, priceIndex, type ScoredBusiness } from '@/lib/ranking';
 import { t } from '@/i18n';
@@ -29,16 +31,56 @@ const bestMatch: Best = (items) => bestBy(items, (s) => s.score, false);
 const bestPrice: Best = (items) => bestBy(items, (s) => priceIndex(s.business), true);
 const bestDistance: Best = (items) => bestBy(items, (s) => Math.round(s.distanceKm * 10), true);
 
+/** How a winning cell is coloured: sun for price, sky for distance, brand for match and reviews. */
+type WinTone = 'sun' | 'sky' | 'brand';
+
+/** How far the table reaches up into the panel. */
+const OVERLAP = 28;
+
+/** "560–660", or one number when both ends are the same. The currency is in the row's label. */
+function numberRange(min: number, max: number): string {
+  return min === max ? formatNumber(min) : `${formatNumber(min)}–${formatNumber(max)}`;
+}
+
+/** "Elektrikere" → "elektrikere", but "VVS'ere" keeps its capitals. */
+const lowerTrade = (word: string) => (word.startsWith('VVS') ? word : word.toLowerCase());
+
 export default function CompareScreen() {
   const colors = useTheme();
+  const { column, gutter } = useLayout();
   const insets = useSafeAreaInsets();
   const { state, toggleCompare, clearCompare } = useApp();
   const { market } = useMarket();
   const items = useScored(state.compare);
 
+  const header = (
+    <Stack.Screen
+      options={{
+        ...panelHeaderOptions(colors),
+        headerLeft: () => (
+          <HeaderText
+            title={t('Luk')}
+            onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
+            align="flex-start"
+          />
+        ),
+        headerRight: () =>
+          items.length > 0 ? (
+            <HeaderText
+              title={t('Ryd')}
+              accessibilityLabel={t('Ryd sammenligning')}
+              onPress={clearCompare}
+              align="flex-end"
+            />
+          ) : null,
+      }}
+    />
+  );
+
   if (items.length === 0) {
     return (
       <View style={[styles.flex, { backgroundColor: colors.background }]}>
+        {header}
         <EmptyState
           icon="compare"
           title={t('Intet at sammenligne endnu')}
@@ -49,251 +91,336 @@ export default function CompareScreen() {
     );
   }
 
+  const currency = currencyOf(items[0].business);
+  const symbol = currencySymbol(currency);
   // A job every compared business has priced, so prices can be compared like for like.
   const sharedJob = items[0].business.pricing.examples.find((example) =>
     items.every((s) => s.business.pricing.examples.some((e) => e.job && e.job === example.job)),
   );
+  const jobExample = (s: ScoredBusiness) =>
+    sharedJob?.job ? s.business.pricing.examples.find((e) => e.job === sharedJob.job) : undefined;
   const winners = {
     match: bestMatch(items),
     price: bestPrice(items),
+    job: sharedJob?.job ? bestBy(items, (s) => jobExample(s)?.min ?? Infinity, true) : undefined,
     distance: bestDistance(items),
     rating: bestReviewed(items),
   };
+  const trades = new Set(items.map((s) => s.business.categories[0]));
+  const trade = trades.size === 1 ? getCategory(items[0].business.categories[0]) : undefined;
+  const jobName = sharedJob?.job
+    ? (getCategory(items[0].business.categories[0])?.jobs.find((j) => j.id === sharedJob.job)?.name ?? sharedJob.label)
+    : undefined;
 
   return (
     <View style={[styles.flex, { backgroundColor: colors.background }]}>
-      <Stack.Screen
-        options={{
-          headerRight: () => (
-            <Tappable onPress={clearCompare} accessibilityLabel={t('Ryd sammenligning')} style={styles.headerButton}>
-              <AppText variant="body" tone="brandText">
-                {t('Ryd')}
-              </AppText>
-            </Tappable>
-          ),
-        }}
-      />
-      <ScrollView contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + Spacing.xxl }]}>
-        <View style={styles.columns}>
-          {items.map(({ business }) => (
-            <View
-              key={business.id}
-              style={[styles.headerCell, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-              <View style={styles.photo}>
-                <BusinessMark business={business} size={52} />
-              </View>
-              <Tappable
-                onPress={() => toggleCompare(business.id)}
-                accessibilityLabel={t('Fjern {name} fra sammenligning', { name: business.name })}
-                style={[styles.remove, { backgroundColor: colors.surfaceAlt }]}>
-                <Icon name="close" size={12} color={colors.textSecondary} weight="bold" />
-              </Tappable>
-              <View style={styles.headerText}>
-                <AppText variant="footnote" weight="700" numberOfLines={2}>
-                  {business.name}
-                </AppText>
-                <AppText variant="caption" tone="textSecondary" numberOfLines={1}>
-                  {getCategory(business.categories[0])?.name}
-                </AppText>
-              </View>
-            </View>
-          ))}
+      {header}
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: insets.bottom + 96 }}
+        contentInsetAdjustmentBehavior="automatic">
+        <View>
+          <View pointerEvents="none" style={[styles.overscroll, { backgroundColor: colors.panel }]} />
+          <HeroPanel safeArea={false} overlap={OVERLAP} contentStyle={styles.hero}>
+            <AppText variant="title1" tone="onPanel">
+              {trade
+                ? t('{count} {trade} side om side', { count: items.length, trade: lowerTrade(trade.plural) })
+                : t('{count} virksomheder side om side', { count: items.length })}
+              <Text style={{ color: colors.accent }}>.</Text>
+            </AppText>
+            <AppText variant="footnote" tone="onPanelSoft">
+              {t('Nær {place} · priser {tax}', { place: state.location.label, tax: taxNote(market) })}
+            </AppText>
+          </HeroPanel>
         </View>
 
-        <Row label={t('Match-score')}>
-          {items.map((s) => (
-            <Value key={s.business.id} best={winners.match === s.business.id} bestLabel={t('Bedste match')}>
-              <AppText variant="title3" rounded tabular>
-                {s.score}
-              </AppText>
-            </Value>
-          ))}
-        </Row>
-        <Row label={t('Timepris {tax}', { tax: taxNote(market) })}>
-          {items.map((s) => (
-            <Value key={s.business.id} best={winners.price === s.business.id} bestLabel={t('Billigst')}>
-              <AppText variant="subhead" weight="600">
-                {formatPriceRange(
-                  s.business.pricing.hourlyMin,
-                  s.business.pricing.hourlyMax,
-                  'opgave',
-                  currencyOf(s.business),
-                )}
-              </AppText>
-              <AppText variant="caption" tone="textSecondary">
-                {t('pr. time')}
-              </AppText>
-            </Value>
-          ))}
-        </Row>
-        {sharedJob?.job ? (
-          <Row
-            label={
-              getCategory(items[0].business.categories[0])?.jobs.find((j) => j.id === sharedJob.job)?.name ??
-              sharedJob.label
-            }>
-            {items.map((s) => {
-              const example = s.business.pricing.examples.find((e) => e.job === sharedJob.job);
-              return (
-                <Value key={s.business.id}>
-                  <AppText variant="subhead" weight="600">
-                    {example ? formatPriceRange(example.min, example.max, example.unit, currencyOf(s.business)) : '–'}
-                  </AppText>
+        <View style={[styles.body, column]}>
+          <Card elevation="raised" padded={false} style={styles.table}>
+            <View style={styles.columns}>
+              {items.map(({ business }) => (
+                <View key={business.id} style={styles.headerCell}>
+                  <Tappable
+                    onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
+                    accessibilityLabel={t('Se {name}', { name: business.name })}
+                    pressedOpacity={0.7}
+                    style={styles.headerTap}>
+                    <BusinessMark business={business} size={44} />
+                    <AppText variant="footnote" display weight="700" align="center" numberOfLines={2}>
+                      {business.name}
+                    </AppText>
+                  </Tappable>
+                  <Tappable
+                    onPress={() => toggleCompare(business.id)}
+                    accessibilityLabel={t('Fjern {name} fra sammenligning', { name: business.name })}
+                    hitSlop={8}
+                    style={[styles.remove, { backgroundColor: colors.fill }]}>
+                    <Icon name="close" size={11} color={colors.textSecondary} weight="bold" />
+                  </Tappable>
+                </View>
+              ))}
+            </View>
+
+            <Row icon="sparkles" label={t('Match-score')}>
+              {items.map((s) => (
+                <Value
+                  key={s.business.id}
+                  win={winners.match === s.business.id ? 'brand' : undefined}
+                  winLabel={t('Bedste match')}>
+                  {(tone) => <Big tone={tone}>{s.score}</Big>}
                 </Value>
-              );
-            })}
-          </Row>
-        ) : null}
-        <Row label={t('Kørsel/opstart')}>
-          {items.map((s) => (
-            <Value key={s.business.id}>
-              <AppText variant="subhead">
-                {s.business.pricing.calloutFee
-                  ? formatPrice(s.business.pricing.calloutFee, currencyOf(s.business))
-                  : t('Ingen')}
-              </AppText>
-            </Value>
-          ))}
-        </Row>
-        <Row label={t('Afstand')}>
-          {items.map((s) => (
-            <Value key={s.business.id} best={winners.distance === s.business.id} bestLabel={t('Nærmest')}>
-              <AppText variant="subhead" weight="600">
-                {formatDistance(s.distanceKm)}
-              </AppText>
-            </Value>
-          ))}
-        </Row>
-        <Row label={t('Anmeldelser')}>
-          {items.map((s) => {
-            const summary = s.business.reviewSummary;
-            return (
-              <Value key={s.business.id} best={winners.rating === s.business.id} bestLabel={t('Bedst anmeldt')}>
-                {summary ? (
-                  <>
+              ))}
+            </Row>
+            <Row icon="clock" label={`${t('Timepris')}, ${symbol}`}>
+              {items.map((s) => (
+                <Value
+                  key={s.business.id}
+                  win={winners.price === s.business.id ? 'sun' : undefined}
+                  winLabel={t('Billigst')}>
+                  {(tone) => (
+                    <Big tone={tone}>{numberRange(s.business.pricing.hourlyMin, s.business.pricing.hourlyMax)}</Big>
+                  )}
+                </Value>
+              ))}
+            </Row>
+            {sharedJob?.job && jobName ? (
+              <Row icon="tag" label={`${jobName}, ${symbol}`}>
+                {items.map((s) => {
+                  const example = jobExample(s);
+                  return (
+                    <Value
+                      key={s.business.id}
+                      win={winners.job === s.business.id ? 'sun' : undefined}
+                      winLabel={t('Lavest fra')}>
+                      {(tone) => <Big tone={tone}>{example ? numberRange(example.min, example.max) : '–'}</Big>}
+                    </Value>
+                  );
+                })}
+              </Row>
+            ) : null}
+            <Row icon="car" label={t('Kørsel/opstart')}>
+              {items.map((s) => (
+                <Value key={s.business.id}>
+                  {() => (
                     <AppText variant="subhead" weight="600">
-                      {formatRating(summary.average)}
+                      {s.business.pricing.calloutFee
+                        ? formatPrice(s.business.pricing.calloutFee, currencyOf(s.business))
+                        : t('Ingen')}
                     </AppText>
-                    <Stars value={summary.average} size={11} />
-                    <AppText variant="caption" tone="textSecondary">
-                      {t('{number} anm.', { number: formatNumber(summary.reviews) })}
+                  )}
+                </Value>
+              ))}
+            </Row>
+            <Row icon="pin" label={t('Afstand')}>
+              {items.map((s) => (
+                <Value
+                  key={s.business.id}
+                  win={winners.distance === s.business.id ? 'sky' : undefined}
+                  winLabel={t('Nærmest')}>
+                  {(tone) => <Big tone={tone}>{formatDistance(s.distanceKm)}</Big>}
+                </Value>
+              ))}
+            </Row>
+            <Row icon="star" label={t('Anmeldelser')}>
+              {items.map((s) => {
+                const summary = s.business.reviewSummary;
+                return (
+                  <Value
+                    key={s.business.id}
+                    win={winners.rating === s.business.id ? 'brand' : undefined}
+                    winLabel={t('Bedst anmeldt')}>
+                    {(tone) =>
+                      summary && summary.reviews > 0 ? (
+                        <View style={styles.rating}>
+                          <Icon name="star" size={13} color={colors.star} />
+                          <Big tone={tone}>{formatRating(summary.average)}</Big>
+                          <AppText variant="caption" tone="textSecondary">
+                            ({formatNumber(summary.reviews)})
+                          </AppText>
+                        </View>
+                      ) : (
+                        <AppText variant="footnote" tone="textSecondary">
+                          {t('Ingen endnu')}
+                        </AppText>
+                      )
+                    }
+                  </Value>
+                );
+              })}
+            </Row>
+            <Row icon="clock" label={t('Åben nu')}>
+              {items.map((s) => {
+                const status = getOpenStatus(s.business.hours, undefined, timeZoneOf(s.business));
+                return (
+                  <Value key={s.business.id}>
+                    {() => (
+                      <>
+                        <AppText variant="subhead" weight="600" tone={status.open ? 'success' : 'textSecondary'}>
+                          {status.open ? t('Ja') : t('Nej')}
+                        </AppText>
+                        <AppText variant="caption" tone="textSecondary" align="center">
+                          {status.label}
+                        </AppText>
+                      </>
+                    )}
+                  </Value>
+                );
+              })}
+            </Row>
+            <Row icon="phone" label={t('Svartid')}>
+              {items.map((s) => (
+                <Value key={s.business.id}>
+                  {() => (
+                    <AppText variant="footnote" weight="600" align="center">
+                      {businessText(s.business).responseTime?.replace(t('Svarer typisk '), '') ?? '–'}
                     </AppText>
-                  </>
-                ) : (
-                  <AppText variant="footnote" tone="textSecondary">
-                    {t('Ingen endnu')}
-                  </AppText>
-                )}
-              </Value>
-            );
-          })}
-        </Row>
-        <Row label={t('Åben nu')}>
-          {items.map((s) => {
-            const status = getOpenStatus(s.business.hours, undefined, timeZoneOf(s.business));
-            return (
-              <Value key={s.business.id}>
-                <AppText variant="footnote" tone={status.open ? 'success' : 'textSecondary'} weight="600">
-                  {status.open ? t('Ja') : t('Nej')}
-                </AppText>
-                <AppText variant="caption" tone="textSecondary">
-                  {status.label}
-                </AppText>
-              </Value>
-            );
-          })}
-        </Row>
-        <Row label={t('Døgnvagt')}>
-          {items.map((s) => (
-            <Value key={s.business.id}>
-              <YesNo value={s.business.emergency} />
-            </Value>
-          ))}
-        </Row>
-        <Row label={t('Autorisation')}>
-          {items.map((s) => (
-            <Value key={s.business.id}>
-              <YesNo value={s.business.authorizations.length > 0} />
-            </Value>
-          ))}
-        </Row>
-        <Row label={t('Svartid')}>
-          {items.map((s) => (
-            <Value key={s.business.id}>
-              <AppText variant="caption">
-                {businessText(s.business).responseTime?.replace(t('Svarer typisk '), '') ?? '–'}
-              </AppText>
-            </Value>
-          ))}
-        </Row>
+                  )}
+                </Value>
+              ))}
+            </Row>
+            <Row icon="bolt" label={t('Døgnvagt')}>
+              {items.map((s) => (
+                <Value key={s.business.id}>{() => <YesNo value={s.business.emergency} />}</Value>
+              ))}
+            </Row>
+            <Row icon="shield" label={t('Autorisation')} last>
+              {items.map((s) => (
+                <Value key={s.business.id}>{() => <YesNo value={s.business.authorizations.length > 0} />}</Value>
+              ))}
+            </Row>
+          </Card>
 
-        <View style={styles.columns}>
+          <AppText variant="caption" tone="textSecondary" align="center" style={styles.note}>
+            {t('Priserne er vejledende og oplyst af virksomhederne. Afstand er i luftlinje fra {label}.', {
+              label: state.location.label,
+            })}
+          </AppText>
+        </View>
+      </ScrollView>
+
+      <View
+        style={[
+          styles.callBar,
+          {
+            backgroundColor: colors.surface,
+            borderTopColor: colors.border,
+            paddingBottom: Math.max(insets.bottom, Spacing.md),
+            paddingHorizontal: gutter,
+          },
+        ]}>
+        <View style={[styles.columns, styles.callRow, column]}>
           {items.map(({ business }) => (
-            <View key={business.id} style={styles.actionCell}>
-              <Button
-                title={t('Ring')}
-                icon="phone"
-                size="small"
-                onPress={() => callBusiness(business)}
-                block
-                accessibilityLabel={t('Ring til {name}', { name: business.name })}
-              />
-              <Button
-                title={t('Se side')}
-                variant="secondary"
-                size="small"
-                block
-                onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
-                accessibilityLabel={t('Se {name}', { name: business.name })}
-              />
-            </View>
+            <Button
+              key={business.id}
+              title={t('Ring')}
+              icon="phone"
+              onPress={() => callBusiness(business)}
+              accessibilityLabel={t('Ring til {name}', { name: business.name })}
+              style={styles.flex}
+            />
           ))}
         </View>
-
-        <AppText variant="caption" tone="textSecondary" align="center" style={styles.note}>
-          {t('Priserne er vejledende og oplyst af virksomhederne. Afstand er i luftlinje fra {label}.', {
-            label: state.location.label,
-          })}
-        </AppText>
-      </ScrollView>
-    </View>
-  );
-}
-
-function Row({ label, children }: { label: string; children: ReactNode }) {
-  const colors = useTheme();
-  return (
-    <View style={styles.row}>
-      <AppText variant="caption" tone="textSecondary" weight="600" style={styles.rowLabel} accessibilityRole="header">
-        {label}
-      </AppText>
-      <View style={[styles.columns, styles.rowCells, { borderColor: colors.border, backgroundColor: colors.surface }]}>
-        {Array.isArray(children)
-          ? children.map((child, index) => (
-              <Fragment key={index}>
-                {index > 0 ? <View style={[styles.cellDivider, { backgroundColor: colors.border }]} /> : null}
-                {child}
-              </Fragment>
-            ))
-          : children}
       </View>
     </View>
   );
 }
 
-function Value({ children, best, bestLabel }: { children: ReactNode; best?: boolean; bestLabel?: string }) {
+/** "Luk" and "Ryd" in the panel-coloured navigation bar. */
+function HeaderText({
+  title,
+  onPress,
+  accessibilityLabel,
+  align,
+}: {
+  title: string;
+  onPress: () => void;
+  accessibilityLabel?: string;
+  align: 'flex-start' | 'flex-end';
+}) {
+  return (
+    <Tappable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel ?? title}
+      style={[styles.headerButton, { alignItems: align }]}>
+      <AppText variant="body" weight="600" tone="onPanel" maxFontSizeMultiplier={1.3}>
+        {title}
+      </AppText>
+    </Tappable>
+  );
+}
+
+function Row({ icon, label, last, children }: { icon: IconName; label: string; last?: boolean; children: ReactNode }) {
   const colors = useTheme();
   return (
-    <View style={styles.cell} accessible accessibilityLabel={best && bestLabel ? bestLabel : undefined}>
+    <View
+      style={[
+        styles.row,
+        last ? null : { borderBottomColor: colors.border, borderBottomWidth: StyleSheet.hairlineWidth },
+      ]}>
+      <View style={styles.rowLabel}>
+        <Icon name={icon} size={13} color={colors.textSecondary} weight="semibold" />
+        <AppText variant="footnote" tone="textSecondary" accessibilityRole="header" style={styles.flexShrink}>
+          {label}
+        </AppText>
+      </View>
+      <View style={styles.columns}>
+        {Array.isArray(children) ? children.map((child, index) => <Fragment key={index}>{child}</Fragment>) : children}
+      </View>
+    </View>
+  );
+}
+
+/** A value in the display font; winners take their colour's text tone. */
+function Big({ tone, children }: { tone?: Tone; children: ReactNode }) {
+  return (
+    <AppText
+      variant="headline"
+      display
+      weight="800"
+      tone={tone}
+      align="center"
+      numberOfLines={1}
+      adjustsFontSizeToFit
+      minimumFontScale={0.75}
+      maxFontSizeMultiplier={1.3}>
       {children}
-      {best && bestLabel ? (
-        <View style={[styles.best, { backgroundColor: colors.successSoft }]}>
-          <Icon name="trophy" size={10} color={colors.success} weight="bold" />
-          <AppText variant="caption2" tone="success" numberOfLines={1}>
-            {bestLabel}
-          </AppText>
-        </View>
-      ) : null}
+    </AppText>
+  );
+}
+
+const WIN_TONES: Record<WinTone, { bg: 'accentSoft' | 'skySoft' | 'brandSoft'; fg: Tone }> = {
+  sun: { bg: 'accentSoft', fg: 'accentText' },
+  sky: { bg: 'skySoft', fg: 'skyText' },
+  brand: { bg: 'brandSoft', fg: 'brandText' },
+};
+
+/**
+ * One cell. The winner of a row gets its colour (sun for the lowest price, sky for the nearest,
+ * brand for the best match and the best reviews) and says why, so colour is never the only cue.
+ */
+function Value({
+  children,
+  win,
+  winLabel,
+}: {
+  children: (tone?: Tone) => ReactNode;
+  win?: WinTone;
+  winLabel?: string;
+}) {
+  const colors = useTheme();
+  const palette = win ? WIN_TONES[win] : undefined;
+  return (
+    <View style={styles.cell}>
+      <View style={[styles.cellInner, palette ? { backgroundColor: colors[palette.bg] } : null]}>
+        {children(palette?.fg)}
+        {palette && winLabel ? (
+          <View style={styles.winLabel}>
+            <Icon name="check" size={10} color={colors[palette.fg]} weight="bold" />
+            <AppText variant="caption2" weight="700" tone={palette.fg} numberOfLines={1}>
+              {winLabel}
+            </AppText>
+          </View>
+        ) : null}
+      </View>
     </View>
   );
 }
@@ -305,10 +432,10 @@ function YesNo({ value }: { value: boolean }) {
       <Icon
         name={value ? 'check' : 'close'}
         size={14}
-        color={value ? colors.success : colors.textTertiary}
+        color={value ? colors.brand : colors.textTertiary}
         weight="bold"
       />
-      <AppText variant="footnote" tone={value ? 'success' : 'textSecondary'}>
+      <AppText variant="footnote" weight="600" tone={value ? 'brandText' : 'textSecondary'}>
         {value ? t('Ja') : t('Nej')}
       </AppText>
     </View>
@@ -317,49 +444,54 @@ function YesNo({ value }: { value: boolean }) {
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  content: { padding: ScreenPadding, gap: Spacing.md },
+  flexShrink: { flexShrink: 1 },
+  overscroll: { position: 'absolute', left: 0, right: 0, top: -600, height: 600 },
+  hero: { gap: Spacing.xs },
+  body: { marginTop: -OVERLAP, paddingHorizontal: ScreenPadding, gap: Spacing.md },
+  table: { borderRadius: Radius.card },
   headerButton: {
-    minHeight: 44,
-    minWidth: 44,
+    minHeight: MinTouchSize,
+    minWidth: MinTouchSize,
     justifyContent: 'center',
-    alignItems: 'flex-end',
-    paddingHorizontal: Spacing.sm,
+    paddingHorizontal: Spacing.xs,
   },
-  columns: { flexDirection: 'row', gap: Spacing.sm },
-  headerCell: { flex: 1, borderRadius: Radius.lg, borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden' },
-  photo: { paddingTop: Spacing.md, paddingHorizontal: Spacing.sm },
+  columns: { flexDirection: 'row' },
+  headerCell: { flex: 1, paddingTop: Spacing.lg, paddingBottom: Spacing.md },
+  headerTap: { alignItems: 'center', gap: Spacing.sm, paddingHorizontal: Spacing.xs },
   remove: {
     position: 'absolute',
-    top: 4,
-    right: 4,
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    top: Spacing.sm,
+    right: Spacing.sm,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  headerText: { padding: Spacing.sm, gap: 1 },
-  row: { gap: 6 },
-  rowLabel: { paddingHorizontal: Spacing.xs },
-  rowCells: { borderWidth: StyleSheet.hairlineWidth, borderRadius: Radius.md, gap: 0, overflow: 'hidden' },
-  cell: {
-    flex: 1,
+  row: { paddingVertical: Spacing.sm, paddingHorizontal: Spacing.xs, gap: Spacing.xs },
+  rowLabel: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: Spacing.sm },
+  cell: { flex: 1, paddingHorizontal: 3 },
+  cellInner: {
+    minHeight: 48,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: Spacing.md,
+    paddingVertical: Spacing.sm,
     paddingHorizontal: Spacing.xs,
-    gap: 3,
+    borderRadius: Radius.md,
+    borderCurve: 'continuous',
+    gap: 2,
   },
-  cellDivider: { width: StyleSheet.hairlineWidth },
-  best: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 3,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: Radius.pill,
-  },
+  winLabel: { flexDirection: 'row', alignItems: 'center', gap: 3 },
+  rating: { flexDirection: 'row', alignItems: 'center', gap: 3 },
   yesNo: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  actionCell: { flex: 1, gap: Spacing.sm },
-  note: { marginTop: Spacing.sm },
+  note: { marginTop: Spacing.xs, paddingHorizontal: Spacing.lg },
+  callBar: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    paddingTop: Spacing.md,
+  },
+  callRow: { gap: Spacing.sm },
 });

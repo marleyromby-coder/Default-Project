@@ -505,7 +505,6 @@ const en: Record<string, string> = {
     '{name}, {name2}, {distance} away, {hourly}, {rating}. Open',
   '{name}: pris på forespørgsel': '{name}: price on request',
   '{nearby} i nærheden': '{nearby} nearby',
-  '{number} anm.': '{number} reviews',
   '{plural}, {tradeCount} på kortet': '{plural}, {tradeCount} on the map',
   '{price} for {quantity} {unit}': '{price} for {quantity} {unit}',
   '{quantity} {value}': '{quantity} {value}',
@@ -521,6 +520,10 @@ const en: Record<string, string> = {
   'åbner virksomhedens egen hjemmeside her.': "the business's own website opens here.",
   'åbner linket virksomhedens profil på {site}.': "the link opens the business's profile on {site}.",
   // Browsing screens: Find, results and compare
+  '{count} {trade} side om side': '{count} {trade} side by side',
+  '{count} virksomheder side om side': '{count} businesses side by side',
+  'Nær {place} · priser {tax}': 'Near {place} · prices {tax}',
+  'Lavest fra': 'Lowest from',
   Demoversion: 'Demo version',
   'Hvad skal laves?': 'What needs doing?',
   'Fx stoppet afløb': 'E.g. blocked drain',
