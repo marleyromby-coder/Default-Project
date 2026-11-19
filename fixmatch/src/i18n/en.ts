@@ -309,7 +309,6 @@ const en: Record<string, string> = {
     'Price {price} % · Distance {distance} % · Reviews {reviews} %',
   'Pris {tax}, afstand og anmeldelser – side om side.': 'Price {tax}, distance and reviews – side by side.',
   'Pris, afstand og anmeldelser i procent': 'Price, distance and reviews in percent',
-  'Pris, afstand og anmeldelser side om side': 'Price, distance and reviews side by side',
   'Prisen ganges med antallet': 'The price is multiplied by the amount',
   'Priserne er vejledende og oplyst af virksomhederne. Afstand er i luftlinje fra {label}.':
     'Prices are a guide and come from the businesses. Distance is in a straight line from {label}.',
@@ -415,7 +414,6 @@ const en: Record<string, string> = {
   'VVS-installatør monterer rørfittings': 'Plumber fitting pipe fittings',
   'VVS’er, elektriker, tømrer, murer, mekaniker og flere. Lokale virksomheder samlet ét sted.':
     'Plumbers, electricians, carpenters, bricklayers, mechanics and more. Local businesses in one place.',
-  Valgt: 'Selected',
   'Ved ikke': "Don't know",
   'Vejledende priser oplyst af virksomheden {date}. Materialer kan komme oveni. Bed altid om et skriftligt tilbud.':
     'Guide prices given by the business {date}. Materials may come on top. Always ask for a written quote.',
@@ -484,7 +482,6 @@ const en: Record<string, string> = {
   virksomhed: 'business',
   virksomheder: 'businesses',
   '{countText} kører ud til dig': '{countText} cover your area',
-  '{count} af {MAX_COMPARE} valgt': '{count} of {MAX_COMPARE} selected',
   '{count} her': '{count} here',
   'fra {price}': 'from {price}',
   '{count} virksomheder. Zoom ind': '{count} businesses. Zoom in',
@@ -527,6 +524,12 @@ const en: Record<string, string> = {
   Åbningstider: 'Opening hours',
   'åbner virksomhedens egen hjemmeside her.': "the business's own website opens here.",
   'åbner linket virksomhedens profil på {site}.': "the link opens the business's profile on {site}.",
+  // Browsing screens: Find, results and compare
+  fra: 'from',
+  'Se priser': 'See prices',
+  'Se priser hos {name}': 'See prices at {name}',
+  '{count} valgt': '{count} selected',
+  'til sammenligning': 'to compare',
   // Accounts and business sign-up
   'Log ud?': 'Sign out?',
   'Du skal logge ind igen, før du kan kontakte en virksomhed.':

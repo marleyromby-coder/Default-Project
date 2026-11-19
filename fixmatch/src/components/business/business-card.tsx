@@ -1,8 +1,9 @@
 import { router } from 'expo-router';
-import { type ReactElement, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Badge, type BadgeTone } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
@@ -14,43 +15,57 @@ import { availableWhen } from '@/lib/availability';
 import { getOpenStatus } from '@/lib/opening-hours';
 import type { ScoredBusiness } from '@/lib/ranking';
 import { reviewRatingLabel } from '@/lib/review-label';
+import { MAX_RIBBONS, type Ribbon } from '@/lib/sort-tabs';
 import type { JobType } from '@/lib/types';
 import { isTopRated, isVerified } from '@/lib/verification';
 import { answerRateText, useAnswerRate } from '@/state/answers';
 import { useApp } from '@/state/app-state';
 
-import { AvailabilityBadge } from './availability-badge';
 import { BusinessMark } from './business-mark';
-import { MatchBadge } from './match-badge';
 import { OpenStatus } from './open-status';
+import { PriceText } from './price-text';
 import { ReviewRating } from './review-rating';
 import { VerifiedMark } from './verified-mark';
 import { t } from '@/i18n';
 
 interface Props {
   item: ScoredBusiness;
-  /** When the user searched for a job, show that job's price instead of the hourly rate. */
+  /** When the user searched for a job, show that job's price too. */
   job?: JobType;
   rank?: number;
   onCompareLimit?: () => void;
-  /** Replaces the price line, e.g. a job price for 25 m². */
+  /** A price line of its own, e.g. a job price for 25 m². */
   priceOverride?: string;
-  /** Extra badge shown first in the footer, e.g. "Inden for budget". */
+  /** Extra badge shown first, e.g. "Inden for budget". */
   highlight?: { label: string; tone: BadgeTone; icon?: IconName };
+  /**
+   * What this card won in the list shown ("Bedste match", "Billigst", "Nærmest"), from
+   * resultRibbons in src/lib/sort-tabs.ts. Only the winner gets each one.
+   */
+  ribbons?: Ribbon[];
 }
 
-export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, highlight }: Props) {
+/** Width of the price column on the right. */
+const PRICE_COLUMN = 116;
+
+/**
+ * A business in a result list, in two columns: who it is on the left (initials, name,
+ * Verificeret, tagline, reviews when there are any, distance, opening hours and "Sammenlign"),
+ * and the hourly price "fra 560 kr." large on the right with "Se priser". At most two small
+ * ribbons sit on top.
+ */
+export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, highlight, ribbons = [] }: Props) {
   const colors = useTheme();
   const { state, toggleFavorite, toggleCompare } = useApp();
   const { business, distanceKm, score } = item;
   const favorite = state.favorites.includes(business.id);
   const comparing = state.compare.includes(business.id);
+  const currency = currencyOf(business);
   const jobPrice = job ? business.pricing.examples.find((e) => e.job === job.id) : undefined;
-  const priceText =
+  const jobLine =
     priceOverride ??
-    (jobPrice
-      ? `${job?.name}: ${formatPriceRange(jobPrice.min, jobPrice.max, jobPrice.unit, currencyOf(business))}`
-      : formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business)));
+    (jobPrice && job ? `${job.name}: ${formatPriceRange(jobPrice.min, jobPrice.max, jobPrice.unit, currency)}` : null);
+  const hourly = formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currency);
   const authorized = business.authorizations.length > 0;
   const verified = isVerified(business);
   const topRated = isTopRated(business);
@@ -58,6 +73,14 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
   const free = availableWhen(business);
   const answers = answerRateText(useAnswerRate(business));
 
+  const ribbonBadges = [
+    highlight ? { key: 'highlight', ...highlight } : null,
+    ...ribbons.map((ribbon) => ({ key: ribbon, ...RIBBONS[ribbon]() })),
+  ]
+    .filter((badge) => badge !== null)
+    .slice(0, MAX_RIBBONS);
+
+  const openPage = () => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } });
   const onCompare = () => {
     if (!toggleCompare(business.id)) onCompareLimit?.();
   };
@@ -67,10 +90,11 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
     business.name,
     verified ? t('verificeret af FixMatch') : undefined,
     topRated ? t('topbedømt') : undefined,
-    highlight?.label,
+    ...ribbonBadges.map((badge) => badge.label),
     t('match {score} ud af 100', { score }),
     reviewRatingLabel(business.reviewSummary),
-    speakablePrice(priceText),
+    jobLine ? speakablePrice(jobLine) : undefined,
+    speakablePrice(hourly),
     t('{distance} væk', { distance: formatDistance(distanceKm) }),
     open.label,
     free === 'today' ? t('ledig i dag') : free === 'tomorrow' ? t('ledig i morgen') : undefined,
@@ -84,171 +108,209 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
     .filter(Boolean)
     .join(', ');
 
-  // At most two badges, so the footer stays one row; the rest is in the summary and on the page.
-  const badges = [
-    highlight ? <Badge key="highlight" label={highlight.label} tone={highlight.tone} icon={highlight.icon} /> : null,
-    free ? <AvailabilityBadge key="free" business={business} /> : null,
-    business.emergency ? <Badge key="emergency" label={t('Døgnvagt')} tone="warning" icon="bolt" /> : null,
-    authorized ? <Badge key="authorized" label={t('Autoriseret')} tone="brand" icon="shield" /> : null,
-  ]
-    .filter((badge) => badge !== null)
-    .slice(0, 2);
-
   return (
-    <View style={[styles.card, { backgroundColor: colors.surface }]}>
-      <Tappable
-        onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
-        accessibilityLabel={summary}
-        accessibilityHint={t('Åbner virksomhedens side med telefonnummer og hjemmeside')}
-        accessibilityActions={[
-          { name: 'favorite', label: favorite ? t('Fjern fra gemte') : t('Gem') },
-          { name: 'compare', label: comparing ? t('Fjern fra sammenligning') : t('Sammenlign') },
-        ]}
-        onAccessibilityAction={(event) => {
-          if (event.nativeEvent.actionName === 'favorite') toggleFavorite(business.id);
-          if (event.nativeEvent.actionName === 'compare') onCompare();
-        }}
-        pressedOpacity={0.75}
-        style={styles.top}>
-        <BusinessMark business={business} size={56} />
-        <View style={styles.body}>
-          <View style={styles.titleRow}>
-            <View style={styles.titleText}>
-              <View style={styles.nameRow}>
-                <AppText variant="headline" numberOfLines={2} style={styles.flexShrink}>
-                  {business.name}
-                </AppText>
-                {verified ? (
-                  <View style={styles.seal}>
-                    <VerifiedMark business={business} />
-                  </View>
-                ) : null}
+    <Card padded={false} style={styles.card}>
+      <View style={styles.columns}>
+        <View style={styles.left}>
+          <Tappable
+            onPress={openPage}
+            accessibilityLabel={summary}
+            accessibilityHint={t('Åbner virksomhedens side med telefonnummer og hjemmeside')}
+            accessibilityActions={[
+              { name: 'favorite', label: favorite ? t('Fjern fra gemte') : t('Gem') },
+              { name: 'compare', label: comparing ? t('Fjern fra sammenligning') : t('Sammenlign') },
+            ]}
+            onAccessibilityAction={(event) => {
+              if (event.nativeEvent.actionName === 'favorite') toggleFavorite(business.id);
+              if (event.nativeEvent.actionName === 'compare') onCompare();
+            }}
+            pressedOpacity={0.75}
+            style={styles.main}>
+            {ribbonBadges.length > 0 ? (
+              <View style={styles.ribbons}>
+                {ribbonBadges.map((badge) => (
+                  <Badge key={badge.key} label={badge.label} tone={badge.tone} icon={badge.icon} />
+                ))}
               </View>
-              <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
-                {businessText(business).tagline}
-              </AppText>
+            ) : null}
+            <View style={styles.identity}>
+              <BusinessMark business={business} size={44} />
+              <View style={styles.titleText}>
+                <View style={styles.nameRow}>
+                  <AppText variant="headline" display numberOfLines={2} style={styles.flexShrink}>
+                    {business.name}
+                  </AppText>
+                  {verified ? (
+                    <View style={styles.seal}>
+                      <VerifiedMark business={business} />
+                    </View>
+                  ) : null}
+                </View>
+                <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
+                  {businessText(business).tagline}
+                </AppText>
+              </View>
             </View>
-            <MatchBadge score={score} />
-          </View>
-          <ReviewRating summary={business.reviewSummary} />
-          <AppText variant="subhead" weight="600" tabular numberOfLines={1}>
-            {priceText}
-          </AppText>
-          <View style={styles.metaRow}>
-            <AppText variant="footnote" tone="textSecondary" numberOfLines={1} style={styles.noShrink}>
-              {formatDistance(distanceKm)}
-            </AppText>
-            <AppText variant="footnote" tone="textTertiary">
-              ·
-            </AppText>
-            <OpenStatus business={business} />
+            {jobLine ? (
+              <AppText variant="subhead" weight="600" numberOfLines={2}>
+                {jobLine}
+              </AppText>
+            ) : null}
+            <View style={styles.meta}>
+              <ReviewRating summary={business.reviewSummary} compact />
+              {business.reviewSummary && business.reviewSummary.reviews > 0 ? <Dot /> : null}
+              <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
+                {formatDistance(distanceKm)}
+              </AppText>
+              <OpenStatus business={business} />
+            </View>
+            {free ? (
+              <View style={styles.free}>
+                <Icon
+                  name="calendar"
+                  size={13}
+                  color={free === 'today' ? colors.success : colors.textSecondary}
+                  weight="semibold"
+                />
+                <AppText variant="footnote" weight="600" tone={free === 'today' ? 'success' : 'textSecondary'}>
+                  {free === 'today' ? t('Ledig i dag') : t('Ledig i morgen')}
+                </AppText>
+              </View>
+            ) : null}
+          </Tappable>
+          <View style={styles.footer}>
+            <Tappable
+              onPress={onCompare}
+              accessibilityRole="checkbox"
+              accessibilityLabel={t('Sammenlign {name}', { name: business.name })}
+              accessibilityState={{ checked: comparing }}
+              aria-checked={comparing}
+              style={styles.compare}>
+              <View
+                style={[
+                  styles.checkbox,
+                  comparing
+                    ? { backgroundColor: colors.brandStrong, borderColor: colors.brandStrong }
+                    : { borderColor: colors.textTertiary },
+                ]}>
+                {comparing ? <Icon name="check" size={13} color={colors.onBrand} weight="bold" /> : null}
+              </View>
+              <AppText variant="subhead" weight="600" tone="brandText" maxFontSizeMultiplier={1.3}>
+                {t('Sammenlign')}
+              </AppText>
+            </Tappable>
+            <Tappable
+              onPress={() => toggleFavorite(business.id)}
+              accessibilityLabel={
+                favorite
+                  ? t('Fjern {name} fra gemte', { name: business.name })
+                  : t('Gem {name}', { name: business.name })
+              }
+              accessibilityState={{ selected: favorite }}
+              style={styles.heart}>
+              <Icon
+                name={favorite ? 'heartFill' : 'heart'}
+                size={19}
+                color={favorite ? colors.brand : colors.textSecondary}
+                weight="semibold"
+              />
+            </Tappable>
           </View>
         </View>
-      </Tappable>
-      <View style={[styles.footer, { borderTopColor: colors.border }]}>
-        <FittingBadges badges={badges} />
-        <Tappable
-          onPress={() => toggleFavorite(business.id)}
-          accessibilityLabel={
-            favorite ? t('Fjern {name} fra gemte', { name: business.name }) : t('Gem {name}', { name: business.name })
-          }
-          accessibilityState={{ selected: favorite }}
-          style={styles.footerButton}>
-          <Icon
-            name={favorite ? 'heartFill' : 'heart'}
-            size={19}
-            color={favorite ? colors.brand : colors.textSecondary}
-            weight="semibold"
+
+        <View style={[styles.divider, { backgroundColor: colors.border }]} />
+
+        <View style={styles.right}>
+          {/* The price is in the summary on the left, so VoiceOver skips this copy. */}
+          <Tappable
+            onPress={openPage}
+            accessible={false}
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
+            pressedOpacity={0.75}
+            style={styles.price}>
+            <AppText variant="footnote" tone="textSecondary" align="right" maxFontSizeMultiplier={1.3}>
+              {t('fra')}
+            </AppText>
+            <PriceText value={business.pricing.hourlyMin} currency={currency} align="right" />
+            <AppText variant="footnote" tone="textSecondary" align="right" maxFontSizeMultiplier={1.3}>
+              {t('pr. time')}
+            </AppText>
+          </Tappable>
+          <Button
+            title={t('Se priser')}
+            size="small"
+            block
+            onPress={openPage}
+            accessibilityLabel={t('Se priser hos {name}', { name: business.name })}
           />
-        </Tappable>
-        <Tappable
-          onPress={onCompare}
-          accessibilityLabel={
-            comparing
-              ? t('Fjern {name} fra sammenligning', { name: business.name })
-              : t('Sammenlign {name}', { name: business.name })
-          }
-          accessibilityState={{ selected: comparing }}
-          style={styles.compareButton}>
-          <Icon name={comparing ? 'check' : 'plus'} size={13} color={colors.brandText} weight="bold" />
-          <AppText variant="footnote" weight="600" tone="brandText" maxFontSizeMultiplier={1.3}>
-            {comparing ? t('Valgt') : t('Sammenlign')}
-          </AppText>
-        </Tappable>
+        </View>
       </View>
       {/* The selected outline is drawn on top and takes no space, so choosing a card never moves the layout. */}
       {comparing ? (
         <View pointerEvents="none" style={[StyleSheet.absoluteFill, styles.outline, { borderColor: colors.brand }]} />
       ) : null}
-    </View>
+    </Card>
   );
 }
 
-/**
- * The footer badges on one row. A badge that does not fit whole on a narrow screen is hidden,
- * also from screen readers, instead of being cut off; the first one always shows.
- */
-function FittingBadges({ badges }: { badges: ReactElement[] }) {
-  const [width, setWidth] = useState(0);
-  const [ends, setEnds] = useState<number[]>([]);
+const RIBBONS: Record<Ribbon, () => { label: string; tone: BadgeTone; icon?: IconName }> = {
+  match: () => ({ label: t('Bedste match'), tone: 'brand' }),
+  price: () => ({ label: t('Billigst'), tone: 'sun' }),
+  distance: () => ({ label: t('Nærmest'), tone: 'sky' }),
+};
+
+function Dot() {
   return (
-    <View style={styles.badges} onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
-      {badges.map((badge, index) => {
-        const end = ends[index];
-        const fits = index === 0 || (width > 0 && end !== undefined && end <= width + 0.5);
-        return (
-          <View
-            key={badge.key}
-            onLayout={(event) => {
-              const { x, width: badgeWidth } = event.nativeEvent.layout;
-              setEnds((current) => {
-                if (current[index] === x + badgeWidth) return current;
-                const next = [...current];
-                next[index] = x + badgeWidth;
-                return next;
-              });
-            }}
-            style={fits ? null : styles.hidden}
-            accessibilityElementsHidden={!fits}
-            importantForAccessibility={fits ? 'auto' : 'no-hide-descendants'}>
-            {badge}
-          </View>
-        );
-      })}
-    </View>
+    <AppText variant="footnote" tone="textTertiary" accessible={false}>
+      ·
+    </AppText>
   );
 }
 
 const styles = StyleSheet.create({
-  card: { borderRadius: Radius.lg, borderCurve: 'continuous', overflow: 'hidden' },
-  outline: { borderRadius: Radius.lg, borderCurve: 'continuous', borderWidth: 2 },
-  top: { flexDirection: 'row', gap: Spacing.md, padding: Spacing.md },
-  body: { flex: 1, gap: Spacing.xs },
-  titleRow: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.sm },
-  titleText: { flex: 1, gap: Spacing.xxs },
+  card: { borderRadius: Radius.card },
+  outline: { borderRadius: Radius.card, borderCurve: 'continuous', borderWidth: 2 },
+  columns: { flexDirection: 'row' },
+  left: { flex: 1, minWidth: 0 },
+  main: { paddingHorizontal: Spacing.md, paddingTop: Spacing.md, gap: Spacing.sm },
+  ribbons: { flexDirection: 'row', gap: Spacing.xs, flexWrap: 'wrap' },
+  identity: { flexDirection: 'row', gap: Spacing.md, alignItems: 'flex-start' },
+  titleText: { flex: 1, gap: 1 },
   nameRow: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.xs },
   // Puts the seal beside the first line of a two-line name.
   seal: { paddingTop: 3 },
-  metaRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs },
   flexShrink: { flexShrink: 1 },
-  noShrink: { flexShrink: 0 },
+  meta: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: Spacing.xs + 1, rowGap: 2 },
+  // The open status starts with its own coloured dot, so it needs no "·" and can start a line.
+  free: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.xs,
+    justifyContent: 'space-between',
     paddingLeft: Spacing.md,
-    paddingRight: Spacing.sm,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    minHeight: MinTouchSize + 4,
+    paddingRight: Spacing.xs,
+    paddingBottom: Spacing.xs,
+    minHeight: MinTouchSize + Spacing.xs,
   },
-  badges: { flex: 1, flexDirection: 'row', flexWrap: 'nowrap', overflow: 'hidden', gap: Spacing.xs },
-  hidden: { opacity: 0 },
-  footerButton: { width: MinTouchSize, height: MinTouchSize, alignItems: 'center', justifyContent: 'center' },
-  compareButton: {
-    flexDirection: 'row',
+  compare: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, minHeight: MinTouchSize, paddingRight: 6 },
+  checkbox: {
+    width: 22,
+    height: 22,
+    borderRadius: 6,
+    borderCurve: 'continuous',
+    borderWidth: 1.5,
     alignItems: 'center',
-    gap: Spacing.xs,
-    paddingHorizontal: Spacing.sm,
-    minHeight: MinTouchSize,
+    justifyContent: 'center',
   },
+  heart: { width: MinTouchSize, height: MinTouchSize, alignItems: 'center', justifyContent: 'center' },
+  divider: { width: StyleSheet.hairlineWidth, marginVertical: Spacing.md },
+  right: {
+    width: PRICE_COLUMN,
+    padding: Spacing.md,
+    paddingLeft: Spacing.sm,
+    justifyContent: 'space-between',
+    gap: Spacing.sm,
+  },
+  price: { alignItems: 'flex-end' },
 });

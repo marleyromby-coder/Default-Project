@@ -2,20 +2,30 @@ import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { MinTouchSize, Radius, Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
-import { MAX_COMPARE, useApp } from '@/state/app-state';
+import { useIsDark, useTheme } from '@/hooks/use-theme';
+import { useApp } from '@/state/app-state';
 import { t } from '@/i18n';
 
-/** Floating bar that appears when businesses are picked for comparison. */
+import { BusinessMark } from './business-mark';
+
+/**
+ * The dark bar in ink that appears when businesses are picked for comparison: their marks,
+ * "3 valgt" and the sun-yellow "Sammenlign" button.
+ */
 export function CompareTray({ bottomOffset = 0 }: { bottomOffset?: number }) {
   const colors = useTheme();
+  const dark = useIsDark();
   const insets = useSafeAreaInsets();
   const { state, clearCompare } = useApp();
   const count = state.compare.length;
+  const chosen = state.compare
+    .map((id) => state.businesses.find((b) => b.id === id))
+    .filter((b): b is NonNullable<typeof b> => b !== undefined);
   if (count === 0) return null;
 
   return (
@@ -25,29 +35,44 @@ export function CompareTray({ bottomOffset = 0 }: { bottomOffset?: number }) {
       <View
         style={[
           styles.tray,
-          { backgroundColor: colors.ink, borderColor: colors.inkRaised, shadowColor: colors.shadow },
+          {
+            backgroundColor: colors.ink,
+            borderColor: colors.inkRaised,
+            boxShadow: dark ? '0px 8px 24px rgba(0, 0, 0, 0.5)' : '0px 10px 28px rgba(11, 26, 21, 0.28)',
+          },
         ]}>
-        <Tappable onPress={clearCompare} accessibilityLabel={t('Ryd sammenligning')} style={styles.clear}>
-          <Icon name="close" size={16} color={colors.onInkSoft} weight="bold" />
+        <Tappable
+          onPress={clearCompare}
+          accessibilityLabel={t('Ryd sammenligning')}
+          hitSlop={{ left: 7, right: 7 }}
+          style={styles.clear}>
+          <Icon name="close" size={15} color={colors.onInkSoft} weight="bold" />
         </Tappable>
+        <View style={styles.marks} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+          {chosen.map((business, index) => (
+            <View
+              key={business.id}
+              style={[styles.mark, { borderColor: colors.ink, marginLeft: index === 0 ? 0 : -12 }]}>
+              <BusinessMark business={business} size={26} />
+            </View>
+          ))}
+        </View>
         <View style={styles.text}>
-          <AppText variant="subhead" weight="600" style={{ color: colors.onInk }}>
-            {t('{count} af {MAX_COMPARE} valgt', { count, MAX_COMPARE })}
+          <AppText variant="headline" display tone="onInk" numberOfLines={1} maxFontSizeMultiplier={1.3}>
+            {t('{count} valgt', { count })}
           </AppText>
-          <AppText variant="caption" style={{ color: colors.onInkSoft }}>
-            {count < 2 ? t('Vælg mindst én mere') : t('Pris, afstand og anmeldelser side om side')}
+          <AppText variant="caption" tone="onInkSoft" numberOfLines={1} maxFontSizeMultiplier={1.3}>
+            {count < 2 ? t('Vælg mindst én mere') : t('til sammenligning')}
           </AppText>
         </View>
-        <Tappable
+        <Button
+          title={t('Sammenlign')}
+          variant="sun"
           onPress={() => router.push('/sammenlign')}
           disabled={count < 2}
           accessibilityLabel={t('Sammenlign {count} virksomheder', { count })}
-          style={[styles.go, { backgroundColor: colors.brandStrong }]}>
-          <Icon name="compare" size={16} color={colors.onBrand} weight="semibold" />
-          <AppText variant="subhead" weight="700" style={{ color: colors.onBrand }} maxFontSizeMultiplier={1.3}>
-            {t('Sammenlign')}
-          </AppText>
-        </Tappable>
+          style={styles.go}
+        />
       </View>
     </View>
   );
@@ -61,22 +86,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.sm,
-    padding: Spacing.sm,
+    paddingVertical: Spacing.sm,
+    paddingLeft: Spacing.xs,
+    paddingRight: Spacing.sm,
     borderRadius: Radius.xl,
+    borderCurve: 'continuous',
     borderWidth: StyleSheet.hairlineWidth,
-    shadowOpacity: 0.25,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 8,
   },
-  clear: { width: MinTouchSize - 6, height: MinTouchSize - 6, alignItems: 'center', justifyContent: 'center' },
-  text: { flex: 1 },
-  go: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: Spacing.lg,
-    minHeight: MinTouchSize,
-    borderRadius: Radius.lg,
-  },
+  clear: { width: 30, height: MinTouchSize, alignItems: 'center', justifyContent: 'center' },
+  marks: { flexDirection: 'row' },
+  mark: { borderWidth: 2, borderRadius: 9, borderCurve: 'continuous', overflow: 'hidden' },
+  go: { paddingHorizontal: Spacing.md },
+  text: { flex: 1, minWidth: 0 },
 });
