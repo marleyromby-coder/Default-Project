@@ -32,99 +32,107 @@ _Kilde: rapporten afsnit 8 (SWOT); talepapiret ("Jeg kan ikke give en pris …")
 Vores brugere er boligejere, lejere og bilister, og problemet er det samme: Man ved ikke, hvad det bør koste. Mekaniker er ét af vores otte fag. Men vi starter med de unge boligejere i København, og det er dem, vi markedsfører til først.
 _Kilde: rapporten "Kort fortalt" og afsnit 3 (segmentering, 8 fag)._
 
+**6. I demoen er det samme firma både "Bedste match" og "Billigst". Er bedste match bare det billigste?**
+Nej. "Bedste match" er den højeste FixMatch-score. Den vægter pris, afstand og anmeldelser, som standard med 40, 30 og 30 procent, og brugeren kan selv ændre vægtningen. "Billigst" er kun den laveste fra-pris pr. time. Demo-firmaet Hjertevarme er tilfældigvis både billigst og nærmest. Står to firmaer lige, får ingen mærket.
+_Kilde: `src/data/content.ts` ("Sådan rangerer vi": "De tre parametre", "Din vægtning" og "Mærkerne på listen"); `src/lib/ranking.ts` (`DEFAULT_PRIORITIES`); `src/lib/sort-tabs.ts` (`resultRibbons`, højst to mærker)._
+
+**7. Firmasiden siger "Prisniveau: Middel. Blandt 13 VVS'ere på FixMatch i Danmark", men listen viser kun 6. Hvordan hænger det sammen?**
+Listen viser kun firmaer inden for 25 km. Prisniveauet sammenligner med den typiske timepris, altså medianen, for alle virksomheder på FixMatch i samme fag og land. "Middel" er inden for 6 % af den, "Lav pris" er under, og "Høj pris" er over. Med færre end tre i faget får ingen et prisniveau. De 13 VVS'ere i demoen er demo-firmaer.
+_Kilde: `content.ts` ("Sådan rangerer vi" → "Filtre"); `src/lib/ranking.ts` (`PRICE_LEVEL_BAND` = 6 %, `PRICE_LEVEL_MIN_PEERS` = 3); firmasiden for Hjertevarme VVS & Blik i demoen._
+
 ## Marked og konkurrenter
 
-**6. Hvor stort er markedet?**
+**8. Hvor stort er markedet?**
 Danmark har ca. 2,8 millioner husstande, og bygge og anlæg beskæftiger ca. 197.000 personer. Markedslederen 3byggetilbud formidler over 70.000 opgaver om året til ca. 2.100 betalende firmaer, og porteføljen bag blev solgt for 550 millioner norske kroner i 2025. Samtidig steg håndværkerpriserne 4,3 % i 2025, og firmaerne får færre opgaver. Så kunderne mangler overblik, og firmaerne mangler kunder.
 _Kilde: rapporten afsnit 1 og 3, kilde [2], [3], [6], [7] og [8]._
 
-**7. Hvem er jeres konkurrenter, og hvorfor vinder I? Hvordan ved I, at ingen andre har Tilbudstjek?**
+**9. Hvem er jeres konkurrenter, og hvorfor vinder I? Hvordan ved I, at ingen andre har Tilbudstjek?**
 3byggetilbud, Handyhand, Autobutler, Anmeld Håndværker og nye Fikset. Ifølge vores egen konkurrentanalyse viser ingen af dem prisen før kontakt, og ingen vurderer et tilbud, man allerede har fået. 3byggetilbuds model virker. De 2.100 betalende firmaer viser, at firmaerne betaler for kunder. Vi er et andet valg: Kunden ser prisen først, og firmaet betaler ikke pr. kunde. Man kan sagtens bruge begge.
 _Kilde: rapporten afsnit 3 (konkurrentanalysen og positioneringskortet), kilde [9] (egen analyse); talepapiret ("Jeg bruger allerede 3byggetilbud")._
 
-**8. Hvad gør I, hvis en stor portal kopierer jer, eller folk bare spørger ChatGPT om prisen?**
+**10. Hvad gør I, hvis en stor portal kopierer jer, eller folk bare spørger ChatGPT om prisen?**
 Det er reelle trusler, og begge står i vores Porter- og SWOT-analyse. En chatbot giver et estimat. Vi viser, hvad firmaerne i området selv siger, de tager, og man kan ringe til dem med det samme. Vores forsvar bliver data, andre ikke har: firmaernes egne priser, priser, som brugere selv har delt, og vores egne anmeldelser. Den data har vi ikke endnu. Den kommer med de første firmaer.
 _Kilde: rapporten afsnit 3 (Porters fem kræfter), afsnit 5 (konkurrencefordele) og afsnit 8 (SWOT)._
 
 ## Salg og markedsføring
 
-**9. Høne og æg: Hvordan får I firmaer uden brugere og brugere uden firmaer?**
+**11. Høne og æg: Hvordan får I firmaer uden brugere og brugere uden firmaer?**
 Vi starter med firmaerne i én by, København, fordi en app uden håndværkere er tom. Målet for de første 90 dage er 300 firmaer på listen, 150 samtaler, 60 tilmeldte og 40 live, mindst tre i hvert fag. Vi finder dem i CVR og på Google Maps og ringer eller kommer forbi. Det er gratis for firmaerne, så de har intet at tabe. Først derefter går vi efter boligejerne med korte videoer på TikTok og Instagram om, hvad en opgave koster.
 _Kilde: rapporten afsnit 4 (salgsstrategi, 90-dagesmål, 4P og AIDA)._
 
-**10. Hvor mange firmaer har I talt med, og hvad sagde de?**
-[Udfyld efter jeres opkald: "I denne uge ringede vi til [X] firmaer i København. [Y] vil gerne være med, når vi går live. En [fag] sagde: '[citat]'. Dem, der sagde nej, sagde typisk: '[grund]'."]
+**12. Hvor mange firmaer har I talt med, og hvad sagde de?**
+[Udfyld efter jeres opkald: "De sidste dage har vi ringet til [X] firmaer i København. [Y] vil gerne være med, når vi går live. En [fag] sagde: '[citat]'. Dem, der sagde nej, sagde typisk: '[grund]'."]
 Har I ikke ringet, eller har ingen sagt ja, så sig ærligt: "Vi har ingen rigtige firmaer i appen endnu. Det er præcis det, vi gør nu, og målet er 40 på 90 dage."
 _Kilde: rapporten afsnit 3 og 7 (pladsholderne for reaktioner og antal skal udfyldes); afsnit 4 (90-dagesmål)._
 
-**11. Hvor mange brugere eller downloads har I?**
+**13. Hvor mange brugere eller downloads har I?**
 Ingen rigtige brugere endnu. Appen kører som testversion i TestFlight med demo-firmaer og er ikke i App Store. Vi starter bevidst med firmaerne, og vi lover dem ikke et bestemt antal opkald.
 _Kilde: talepapiret ("Hvor mange brugere har I?"); rapporten SWOT (afsnit 8); `docs/lancering/global-lancering.md`._
 
-**12. Må I overhovedet ringe til firmaerne?**
+**14. Må I overhovedet ringe til firmaerne?**
 Ja, men med regler. Vi ringer kun til firmaets almindelige nummer. Vi tjekker Robinsonlisten for enkeltmandsfirmaer, og er et firma reklamebeskyttet i CVR, bruger vi ikke de kontaktoplysninger. Siger de nej, ringer vi ikke igen. SMS eller mail sender vi først efter et ja.
 _Kilde: talepapiret ("Før I ringer"); `docs/jura/kontakt-af-virksomheder.md`._
 
 ## Økonomi
 
-**13. Hvordan tjener I penge?**
+**15. Hvordan tjener I penge?**
 Brugerne betaler aldrig. Firmaerne kan vælge et frivilligt Pro-abonnement med flere billeder og priser på flere opgaver. Vi foreslår 299 til 499 kroner om måneden. Senere kan der komme en annonceplads, men den er altid mærket "Annonce" og ændrer ikke rækkefølgen. Hverken Pro eller annoncer kan købe en bedre plads.
 _Kilde: rapporten afsnit 4–5 og BMC; talepapiret ("Hvordan tjener I penge"); `docs/jura/privatlivspolitik.md` (annoncer mærket "Annonce")._
 
-**14. Hvis Pro ikke giver en bedre plads, hvorfor skulle et firma så betale? Og hvordan har I sat prisen?**
+**16. Hvis Pro ikke giver en bedre plads, hvorfor skulle et firma så betale? Og hvordan har I sat prisen?**
 Pro giver flere billeder og priser på flere opgaver, så kunden ved mere, før hun ringer. Ikke en bedre plads. Prisen er et forslag ud fra konkurrenterne. I Storbritannien koster ét lead 5 til 40 pund, og det deles med 3–4 firmaer. Hos os er prisen fast, og ét ekstra job om måneden betaler den. Men vi har ikke testet betalingsviljen endnu. Derfor sælger vi først Pro i port 3, når brugerne kommer igen, og firmaerne får opkald.
 _Kilde: rapporten afsnit 5 (prissætning, kilde [9]) og afsnit 8 (portene); talepapiret._
 
-**15. Hvem betaler de 9.900 kroner det første år, når I ikke har indtægter? Og i rapporten står, at de første 100 firmaer får Pro gratis. Hvordan passer det med break-even ved tre?**
+**17. Hvem betaler de 9.900 kroner det første år, når I ikke har indtægter? Og i rapporten står, at de første 100 firmaer får Pro gratis. Hvordan passer det med break-even ved tre?**
 Det første år tager vi ingen penge, fordi appen er i test, og vi skal stifte et ApS, før vi tager betaling. [Udfyld, kun hvis det er sandt: "Driften det første år betaler vi selv" / "… betaler skolen" / "… dækker vi med …".]
 "De første 100 får Pro gratis" er en idé i rapporten, som vi ikke har besluttet. Gør vi det, flytter break-even sig: Så skal vi have tre betalende ud over de gratis. Men driften koster stadig kun 9.900 kroner om året.
 _Kilde: rapporten afsnit 5 (penetrationsstrategi, omkostninger, regneeksempel: år 1 = 0 kr.); talepapiret ("Det skal I undgå"). Rapporten siger ikke, hvem der betaler år 1._
 
-**16. Hvad tjener I om tre år?**
+**18. Hvad tjener I om tre år?**
 Vi har lavet et regneeksempel, ikke en prognose. År 1 er test og lancering i København uden indtægt. År 2: 50 betalende firmaer à 299 kroner giver 179.400 kroner. År 3: 200 à 399 kroner giver 957.600 kroner. Når vi vokser, kommer der nye udgifter til løn, jura og moms.
 _Kilde: rapporten afsnit 5 (tabellen "Regneeksempel, ikke prognose")._
 
-**17. Hvad vil I bruge præmiepenge på?**
+**19. Hvad vil I bruge præmiepenge på?**
 [Tilpas til holdets beslutning.] På det, der står mellem os og App Store: at stifte et ApS med CVR-nummer, juridisk rådgivning og databehandleraftaler. Derudover varemærket og lanceringen i København. Hele første års drift koster 9.900 kroner, så pengene går til at vokse, ikke til at overleve.
 _Kilde: rapporten afsnit 5 (omkostninger) og afsnit 8 (næste skridt). Rapporten nævner ikke præmiepenge, så svaret er et forslag._
 
 ## Tryghed, anmeldelser og jura
 
-**18. Kan man stole på anmeldelserne? Kan et firma snyde?**
+**20. Kan man stole på anmeldelserne? Kan et firma snyde?**
 Kun brugere, der har trykket Ring eller skrevet til firmaet i FixMatch, kan anmelde det, og kun én gang hver. Vi siger åbent, at vi ikke kan se, om opkaldet blev besvaret, eller om opgaven blev udført. Vi viser alle anmeldelser, også de dårlige, og ingen kan betale for at fjerne en. Anmeldelser, der bryder reglerne, bliver skjult.
 _Kilde: `docs/jura/anmeldelser.md` (markedsføringsloven § 6 b); `content.ts` ("Om anmeldelser")._
 
-**19. Hvad betyder Verificeret? Tjekker I kvaliteten?**
+**21. Hvad betyder Verificeret? Tjekker I kvaliteten?**
 Nej. Verificeret betyder, at FixMatch selv har tjekket CVR, ejer og autorisation. Mærket er gratis, kriterierne er de samme for alle, og det gælder et år. Det giver ikke en bedre placering, og det er ingen garanti for kvaliteten af arbejdet. Det skriver vi også i appen.
 _Kilde: `content.ts` ("Sådan verificerer vi"); README (gælder et år)._
 
-**20. Hvorfor bruger I ikke Trustpilot?**
+**22. Hvorfor bruger I ikke Trustpilot?**
 Vi ville vise Trustpilot-stjerner i appen. Vi mødtes med Trustpilot den 10. november. En integration kunne godt lade sig gøre, men prisen var for høj for vores antal firmaer, når hele FixMatch koster 9.900 kroner om året at drive. Den 17. november droppede vi det. Nu bygger vi vores egne anmeldelser, og firmaerne kan give et almindeligt link til deres profiler, uden stjerner.
 _Kilde: `docs/jura/anmeldelser.md` (møde 10. nov. 2026, fravalgt 17. nov. 2026, "ca. 10.000 kr. om året"); rapporten afsnit 5 (9.900 kr.), 6 og 7._
 
-**21. Er det ikke prisaftaler, når Tilbudstjek siger, hvad der er "normalt"?**
+**23. Er det ikke prisaftaler, når Tilbudstjek siger, hvad der er "normalt"?**
 Nej. Firmaerne sætter selv deres priser, og vi aftaler aldrig priser med dem eller mellem dem. Det ville være ulovligt. Tilbudstjek viser kunden et normalt prisniveau og fradraget i kroner. Det er information til kunden, ikke en pris til firmaerne.
 _Kilde: talepapiret ("Bestemmer I mine priser?"); `docs/jura/samtykke-virksomhed.md` ("FixMatch fastsætter eller koordinerer aldrig priser")._
 
-**22. Hvad med GDPR? Hvem er dataansvarlig, når I ikke har et CVR-nummer?**
+**24. Hvad med GDPR? Hvem er dataansvarlig, når I ikke har et CVR-nummer?**
 Indtil vi har et ApS, er det personen bag vores Apple-udviklerkonto. Data ligger i EU, hos Supabase i Frankfurt. Firmaernes samtykke gemmes med ordlyd, version og tidspunkt, og en advokat har gennemgået GDPR, samtykke og dataansvar. Før vi tager penge, stifter vi et ApS og skriver databehandleraftaler.
 _Kilde: `docs/jura/privatlivspolitik.md` (punkt 1, dataansvarlig); README (Supabase, samtykke); rapporten afsnit 5, 7 og 8._
 
 ## Team, bæredygtighed og fremtid
 
-**23. Har I selv bygget appen? Har I brugt AI?**
+**25. Har I selv bygget appen? Har I brugt AI?**
 Ja, vi har selv bygget den. Og ja, vi har brugt AI-værktøjer til kode og analyse, ligesom mange udviklere gør i dag. Men beslutningerne om produkt, design og marked har vi selv truffet. Og da Xcode, Apples program til at bygge apps, viste over 800 fejl, rettede vi dem, til appen kom på TestFlight.
 _Kilde: rapporten afsnit 6 (styrker og svagheder, kriser). Sig "AI" her, fordi rapporten selv gør det. I selve pitchen bruger vi ikke ordet._
 
-**24. Hvem gør hvad i teamet, og hvad har I lært?**
+**26. Hvem gør hvad i teamet, og hvad har I lært?**
 [Navn 1] står for idé og produkt, [Navn 2] for salg og partnere, [Navn 3] for økonomi og jura og [Navn 4] for marketing. Vi har lært, at en god idé ikke er nok. Den skal overleve mødet med kunder, jura og teknik. Derfor droppede vi både den globale plan og Trustpilot.
 _Kilde: rapporten afsnit 6 (roller) og afsnit 8 (læringsudbytte); `team.json` (navnene er pladsholdere)._
 
-**25. Hvordan er FixMatch bæredygtigt?**
+**27. Hvordan er FixMatch bæredygtigt?**
 Appen viser afstanden, så man kan vælge lokalt. Med Naborabat kan tre familier få renset tagrender samme dag, og så sparer håndværkeren to ture. Tilbudstjek viser håndværkerfradraget i kroner, og det kræver faktura. Men vi kan endnu ikke dokumentere effekten. Efter lanceringen måler vi afstanden til det valgte firma og andelen af Naborabat-opgaver.
 _Kilde: rapporten afsnit 2 (Triple Bottom Line, verdensmål 8, 11, 12, 13 og 16, kritisk vurdering)._
 
-**26. Hvorfor kun iPhone og kun København? Hvordan vil I vokse?**
+**28. Hvorfor kun iPhone og kun København? Hvordan vil I vokse?**
 Vi vil gøre én ting godt, før vi gør to. "Kun iPhone" står som en svaghed i vores SWOT. Firmaerne behøver ikke en iPhone, for tilmeldingen og "Ledig i dag" ligger på hjemmesiden. Planen har porte: først 40 verificerede firmaer i København, så App Store i Danmark og Aarhus, så Pro og til sidst Sverige og Norge og derefter Tyskland og Storbritannien. De fire lande er allerede klar i koden.
 _Kilde: talepapiret ("Mange af mine kunder har Android"); rapporten afsnit 8 (portene, SWOT); README._
 
@@ -175,7 +183,7 @@ _Kilde: ingen. Rapporten nævner det ikke._
 - **"Tre betalende dækker det første år".** Sig "break-even er tre betalende firmaer", og sig, at vi ikke tager penge i år 1.
 - **"Vi har firmaernes egne priser" i nutid.** Sig "vores forsvar bliver data …". Der er ingen rigtige firmaer i appen endnu.
 - **At tale grimt om 3byggetilbud eller andre**, fx "deres model er dårlig". Hold jer til fakta: De tager betaling pr. lead, og kunden ser først prisen, når tilbuddene kommer.
-- **Hypeord i pitchen:** AI, algoritme, platform, disrupt, "Uber for håndværkere", MVP. Bliver I spurgt direkte om AI-værktøjer, så svar ærligt (spørgsmål 23).
+- **Hypeord i pitchen:** AI, algoritme, platform, disrupt, "Uber for håndværkere", MVP. Bliver I spurgt direkte om AI-værktøjer, så svar ærligt (spørgsmål 25).
 - **At gætte et tal.** Står tallet ikke i rapporten eller her, så sig: "Det tal har jeg ikke med. Det finder jeg til jer."
 - **At love en dato for App Store.** Sig "når de første firmaer er med".
 - **At undskylde for, at I er unge.** Vær direkte og ærlig om, hvor langt I er.
