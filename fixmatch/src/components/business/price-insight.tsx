@@ -140,11 +140,13 @@ export function PriceInsightView({
                   },
                 ]}
               />
-              {/* "middel" under the band, kept inside the bar so it never runs off the card. */}
+              {/* "middel" under the band, kept inside the bar so it never runs off the card. Capped at
+                  1.3×, so at large text sizes it stays clear of the end labels below the row. */}
               <AppText
                 variant="footnote"
                 tone="textSecondary"
                 numberOfLines={1}
+                maxFontSizeMultiplier={1.3}
                 style={[
                   styles.middleLabel,
                   { left: Math.min(Math.max(0, middle.at * width - MIDDLE_LABEL / 2), width - MIDDLE_LABEL) },
