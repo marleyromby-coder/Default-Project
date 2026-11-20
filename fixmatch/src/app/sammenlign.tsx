@@ -453,11 +453,12 @@ const styles = StyleSheet.create({
   hero: { gap: Spacing.xs },
   body: { marginTop: -OVERLAP, paddingHorizontal: ScreenPadding, gap: Spacing.md },
   table: { borderRadius: Radius.card },
+  // The same inset as the other modals' "Luk" (CloseButton, a small plain Button).
   headerButton: {
     minHeight: MinTouchSize,
     minWidth: MinTouchSize,
     justifyContent: 'center',
-    paddingHorizontal: Spacing.xs,
+    paddingHorizontal: Spacing.md,
   },
   columns: { flexDirection: 'row' },
   headerCell: { flex: 1, paddingTop: Spacing.lg, paddingBottom: Spacing.md },
