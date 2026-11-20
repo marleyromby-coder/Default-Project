@@ -120,7 +120,7 @@ export default function CategoryScreen() {
     <View>
       {/* Panel colour above the band, so pulling the list down shows no gap under the bar. */}
       <View pointerEvents="none" style={[styles.overscroll, { backgroundColor: colors.panel }]} />
-      <HeroPanel safeArea={false} overlap={OVERLAP} decoration={false}>
+      <HeroPanel safeArea={false} overlap={OVERLAP}>
         <Tappable
           onPress={() => router.push('/placering')}
           accessibilityLabel={t('Placering: {label}. Skift placering', { label: state.location.label })}

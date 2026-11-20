@@ -134,7 +134,7 @@ export default function DescribeProblemScreen() {
         <View>
           {/* Panel colour above the panel, so pulling the page down shows no gap under the bar. */}
           <View pointerEvents="none" style={[styles.overscroll, { backgroundColor: colors.panel }]} />
-          <HeroPanel safeArea={false} overlap={OVERLAP} decoration={false}>
+          <HeroPanel safeArea={false} overlap={OVERLAP}>
             <AppText variant="callout" tone="onPanelSoft">
               {t(
                 'Skriv med dine egne ord, hvad der er galt, og hvad du vil give. Så finder vi dem, der passer – også dem, der ligger tæt på dit budget.',

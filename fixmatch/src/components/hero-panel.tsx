@@ -20,7 +20,10 @@ interface HeroPanelProps {
    * same value as a negative `marginTop` (e.g. `overlap={56}` and `marginTop: -56`).
    */
   overlap?: number;
-  /** The faint circles in the top right corner (default true). */
+  /**
+   * The faint circles in the top right corner (default: same as `safeArea`, so no circles under a
+   * navigation bar, where the panel's top edge would cut the large disc into a visible seam).
+   */
   decoration?: boolean;
   /** Radius of the bottom corners (default Radius.panel). 0 gives a straight band. */
   radius?: number;
@@ -42,7 +45,7 @@ export function HeroPanel({
   children,
   safeArea = true,
   overlap = 0,
-  decoration = true,
+  decoration = safeArea,
   radius = Radius.panel,
   lightStatusBar = true,
   style,
