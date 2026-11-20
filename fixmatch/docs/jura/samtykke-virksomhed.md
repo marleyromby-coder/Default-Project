@@ -35,7 +35,7 @@ Virksomheden giver FixMatch lov til gratis at vise følgende i FixMatch-appen og
 ## 3. Rangering, anmeldelser og annoncer
 
 - Rækkefølgen i søgeresultaterne bestemmes af FixMatch-scoren (pris, afstand og anmeldelser fra brugere via FixMatch – brugeren vælger selv, hvad der vejer mest), som er beskrevet på siden "Sådan rangerer vi". Har Virksomheden ingen anmeldelser, tæller den som 5 neutrale anmeldelser på 4,0. Rækkefølgen kan ikke købes.
-- Brugere, der har kontaktet Virksomheden gennem FixMatch, kan anmelde den én gang. FixMatch tjekker, at brugeren har trykket Ring eller Skriv til Virksomheden i FixMatch, men kan ikke se, om opkaldet blev besvaret, eller om opgaven blev udført. Anmeldelserne vises i appen og tæller med i FixMatch-scoren. Virksomheden kan ikke fjerne eller ændre anmeldelser, men kan rapportere en anmeldelse, der bryder reglerne, til FixMatch.
+- Brugere, der har kontaktet Virksomheden gennem FixMatch, kan anmelde den én gang. FixMatch tjekker, at brugeren har trykket Ring eller skrevet til Virksomheden i FixMatch, men kan ikke se, om opkaldet blev besvaret, eller om opgaven blev udført. Anmeldelserne vises i appen og tæller med i FixMatch-scoren. Virksomheden kan ikke fjerne eller ændre anmeldelser, men kan rapportere en anmeldelse, der bryder reglerne, til FixMatch.
 - Anmeldelser på andre sider tæller ikke med i scoren.
 - Køber Virksomheden en annonce, vises den adskilt fra resultaterne og altid mærket "Annonce". Den ændrer ikke rækkefølgen.
 

@@ -26,7 +26,7 @@ Efter pris, afstand og anmeldelser fra brugere via FixMatch – du vælger selv,
 
 ### Hvem kan skrive anmeldelser?
 
-Brugere, der har kontaktet virksomheden gennem FixMatch – én gang hver. Vi tjekker, at du har trykket Ring eller Skriv til virksomheden i FixMatch. Vi kan ikke se, om opkaldet blev besvaret, eller om opgaven blev udført.
+Brugere, der har kontaktet virksomheden gennem FixMatch – én gang hver. Vi tjekker, at du har trykket Ring eller skrevet til virksomheden i FixMatch. Vi kan ikke se, om opkaldet blev besvaret, eller om opgaven blev udført.
 
 ### Hvorfor er der ingen virksomheder, hvor jeg bor?
 

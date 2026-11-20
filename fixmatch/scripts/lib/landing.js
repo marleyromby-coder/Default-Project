@@ -177,7 +177,7 @@ function text(lang, { minGroup, discount }) {
       ],
       [
         'Hvem kan skrive anmeldelser?',
-        'Brugere, der har kontaktet virksomheden gennem FixMatch – én gang hver. Vi tjekker, at du har trykket Ring eller Skriv til virksomheden i FixMatch. Vi kan ikke se, om opkaldet blev besvaret, eller om opgaven blev udført.',
+        'Brugere, der har kontaktet virksomheden gennem FixMatch – én gang hver. Vi tjekker, at du har trykket Ring eller skrevet til virksomheden i FixMatch. Vi kan ikke se, om opkaldet blev besvaret, eller om opgaven blev udført.',
       ],
       [
         'Hvad sker der med mine oplysninger?',
@@ -329,7 +329,7 @@ function text(lang, { minGroup, discount }) {
       ],
       [
         'Who can write reviews?',
-        'Users who contacted the business through FixMatch – once each. We check that you tapped Call or Message for the business in FixMatch. We cannot see whether the call was answered or whether the job was done.',
+        'Users who contacted the business through FixMatch – once each. We check that you tapped Call or sent the business a message in FixMatch. We cannot see whether the call was answered or whether the job was done.',
       ],
       [
         'What happens to my details?',

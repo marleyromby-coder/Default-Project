@@ -26,7 +26,7 @@ By price, distance and reviews from FixMatch users – you choose what matters m
 
 ### Who can write reviews?
 
-Users who contacted the business through FixMatch – once each. We check that you tapped Call or Message for the business in FixMatch. We cannot see whether the call was answered or whether the job was done.
+Users who contacted the business through FixMatch – once each. We check that you tapped Call or sent the business a message in FixMatch. We cannot see whether the call was answered or whether the job was done.
 
 ### Why are there no businesses where I live?
 

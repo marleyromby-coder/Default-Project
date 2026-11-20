@@ -29,7 +29,7 @@ Markedsføringsloven § 6 b kræver, at vi siger, om og hvordan vi tjekker anmel
 
 - Kun brugere, der har kontaktet virksomheden gennem FixMatch, kan anmelde den. Når brugeren trykker Ring, starter FaceTime eller sender en besked til virksomheden fra appen ("Send beskrivelsen"), gemmer appen en række i `contacts`, og databasen tjekker, at rækken findes, før anmeldelsen gemmes. Ved opkald gemmes rækken, når der trykkes, før telefonen ringer op, så et opkald, der bliver afbrudt eller ikke besvaret, tæller også. En besked tæller kun, hvis den ikke blev annulleret.
 - Hver bruger kan anmelde en virksomhed én gang og kan rette sin anmeldelse senere.
-- Derfor skriver vi i vilkårene og på "Om anmeldelser": "Vi tjekker, at du har trykket Ring eller Skriv til virksomheden i FixMatch. Vi kan ikke se, om opkaldet blev besvaret, eller om opgaven blev udført." Lov aldrig mere end det.
+- Derfor skriver vi i vilkårene og på "Om anmeldelser": "Vi tjekker, at du har trykket Ring eller skrevet til virksomheden i FixMatch. Vi kan ikke se, om opkaldet blev besvaret, eller om opgaven blev udført." Lov aldrig mere end det.
 - Vi viser alle anmeldelser, også de dårlige, med de nyeste først. Vi ændrer aldrig i teksten.
 - Ingen kan betale for at fjerne eller flytte en anmeldelse, og vi belønner ikke brugere for at anmelde.
 - Vi skjuler anmeldelser, der bryder reglerne, og skriver kort til anmelderen hvorfor (DSA art. 16 og 17). Fremgangsmåden står i `docs/lancering/supabase.md`.
