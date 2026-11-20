@@ -44,7 +44,7 @@ export function CompareTray({ bottomOffset = 0 }: { bottomOffset?: number }) {
         <Tappable
           onPress={clearCompare}
           accessibilityLabel={t('Ryd sammenligning')}
-          hitSlop={{ left: 7, right: 7 }}
+          hitSlop={{ left: 9, right: 9 }}
           style={styles.clear}>
           <Icon name="close" size={15} color={colors.onInkSoft} weight="bold" />
         </Tappable>
@@ -52,7 +52,7 @@ export function CompareTray({ bottomOffset = 0 }: { bottomOffset?: number }) {
           {chosen.map((business, index) => (
             <View
               key={business.id}
-              style={[styles.mark, { borderColor: colors.ink, marginLeft: index === 0 ? 0 : -12 }]}>
+              style={[styles.mark, { borderColor: colors.ink, marginLeft: index === 0 ? 0 : -6 }]}>
               <BusinessMark business={business} size={26} />
             </View>
           ))}
@@ -93,9 +93,9 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     borderWidth: StyleSheet.hairlineWidth,
   },
-  clear: { width: 30, height: MinTouchSize, alignItems: 'center', justifyContent: 'center' },
+  clear: { width: 26, height: MinTouchSize, alignItems: 'center', justifyContent: 'center' },
   marks: { flexDirection: 'row' },
   mark: { borderWidth: 2, borderRadius: 9, borderCurve: 'continuous', overflow: 'hidden' },
-  go: { paddingHorizontal: Spacing.md },
+  go: { paddingHorizontal: Spacing.sm },
   text: { flex: 1, minWidth: 0 },
 });
