@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FixMatch flyer A5</title>
 <!--
-  FixMatch-flyeren til Business Minds (A5, to sider). Byg PDF'erne med `node build-flyer.js`.
+  FixMatch-flyeren til Business Minds (A5, to sider). Byg PDF'erne med `node build.js` (se README.md).
   Åbn filen i en browser for at se begge sider med beskæring (3 mm) og hjælpelinjer.
   ?mode=bleed  154 × 216 mm (A5 + 3 mm beskæring)   ?mode=trim  148 × 210 mm (uden beskæring)
-  ?mode=a4     to flyers pr. A4 (liggende) med skæremærker, side 1 forsider, side 2 bagsider
-  Navnene i bunden af bagsiden kommer fra ../team.json (build-flyer.js sætter dem ind).
+  ?mode=marks  kun skæremærker og tekst til A4-arkene; build.js sætter de færdige A5-sider ind.
+  Navnene i bunden af bagsiden kommer fra ../team.json (build.js lægger dem i window.PRINT_DATA).
 -->
 <style>
 @font-face { font-family: 'Schibsted Grotesk'; font-weight: 700; src: url('assets/fonts/schibsted-grotesk-latin-700-normal.woff2') format('woff2'); }
@@ -40,6 +40,8 @@
   --sun-soft-text: #7F5300;
   --ink: #0B1A15;
   --bleed: 3mm;
+  /* Panelet går så langt ud over skærekanten, at det runde hjørne skærer kanten på skrå. */
+  --panel-over: 6mm;
   --display: 'Schibsted Grotesk', sans-serif;
   --body: 'Inter', sans-serif;
 }
@@ -61,10 +63,8 @@ img { display: block; }
 html[data-mode="bleed"] .page { width: 154mm; height: 216mm; }
 html[data-mode="trim"] .page { width: 148mm; height: 210mm; }
 html[data-mode="trim"] .sheet { left: calc(-1 * var(--bleed)); top: calc(-1 * var(--bleed)); }
-html[data-mode="a4"] .page { width: 297mm; height: 210mm; background: #FFFFFF; }
-.a4-slot { position: absolute; width: 154mm; height: 216mm; transform-origin: 0 0; }
-.a4-slot .sheet { position: absolute; }
-.marks { position: absolute; left: 0; top: 0; width: 297mm; height: 210mm; }
+html[data-mode="marks"] .page { background: #FFFFFF; }
+.marks { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
 
 /* Skærm: siderne under hinanden med skærelinje (stiplet) og 5 mm sikkerhedsafstand (prikket). */
 @media screen {
@@ -81,16 +81,17 @@ html[data-mode="a4"] .page { width: 297mm; height: 210mm; background: #FFFFFF; }
 @media print { body { background: none; } }
 
 /* ---------- Fælles byggeklodser ---------- */
-/* Panelet går ud i beskæringen foroven og i siderne; de runde bundhjørner sidder ved skærekanten.
-   To ens kasser med samme gradient: den ene klippes over hjørnerne, den anden rundes ved skærekanten. */
+/* Panelet går ud i beskæringen foroven og i siderne og --panel-over forbi skærekanten, som på
+   plakaten. Det runde bundhjørne krydser derfor skærekanten på skrå, så et skær lidt ved siden af
+   ikke giver et hak. --panel-h er panelets højde målt fra skærekanten foroven. (Panelet må ikke
+   starte over arkets top: så tegner Chromium gradienten forskudt i PDF'en.) */
 .panel {
-  position: absolute; left: 0; top: 0; width: 154mm;
-  height: calc(var(--panel-h) + var(--bleed));
+  position: absolute;
+  left: calc(var(--bleed) - var(--panel-over)); width: calc(148mm + 2 * var(--panel-over));
+  top: 0; height: calc(var(--panel-h) + var(--bleed));
+  border-radius: 0 0 var(--panel-r) var(--panel-r);
   background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
 }
-.panel-a { clip-path: inset(0 0 var(--panel-r) 0); }
-.panel-b { clip-path: inset(0 var(--bleed) 0 var(--bleed) round 0 0 var(--panel-r) var(--panel-r)); }
-.panel-deco { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.06); }
 
 .wordmark {
   font-family: var(--display); font-weight: 900; color: var(--on-panel);
@@ -103,18 +104,18 @@ html[data-mode="a4"] .page { width: 297mm; height: 210mm; background: #FFFFFF; }
   outline: 0.25mm dashed #B88600; outline-offset: -0.1mm; padding: 0 0.6mm; font-weight: 600;
 }
 
-/* QR-kode: hvid flade med mindst 4 felters stilleområde, URL'en under koden, solgul ramme. */
-.qr-frame { position: absolute; background: var(--sun); border-radius: 5mm; padding: 2.2mm; }
-.qr-card { background: #FFFFFF; border-radius: 3mm; padding: var(--qz); padding-bottom: 0; text-align: center; }
+/* QR-kode: hvid flade med 4 felters stilleområde og URL'en under koden. --qr er kodens bredde;
+   --modules (antal felter i koden) sætter scriptet ud fra SVG'en. Solgul ramme kun om hovedkoden. */
+.qr-card {
+  --qz: calc(var(--qr) * 4 / var(--modules, 29));
+  background: #FFFFFF; border-radius: 3mm; padding: var(--qz) var(--qz) 0; text-align: center;
+}
 .qr-card img { width: var(--qr); height: var(--qr); }
 .qr-card .url {
-  display: block; padding: var(--qz) 0 2.6mm; margin-top: 0; font: 600 8pt/1 var(--body); color: var(--text);
+  display: block; padding: calc(var(--qz) + 0.8mm) 0 2.6mm; font: 600 8pt/1 var(--body); color: var(--text);
   letter-spacing: -0.005em; white-space: nowrap;
 }
-.qr-frame .say {
-  font: 800 11pt/1.12 var(--display); color: var(--on-sun); letter-spacing: -0.015em;
-  text-align: center; padding: 2.4mm 1mm 0.6mm;
-}
+.qr-frame { position: absolute; background: var(--sun); border-radius: 5mm; padding: 2.2mm; }
 
 /* ---------- iPhone i CSS: tynd mørk ramme, Dynamic Island, statuslinje, hjemmeindikator ---------- */
 .phone {
@@ -140,7 +141,16 @@ html[data-mode="a4"] .page { width: 297mm; height: 210mm; background: #FFFFFF; }
   position: absolute; left: 50%; top: calc(var(--u) * 11); width: calc(var(--u) * 122); height: calc(var(--u) * 36);
   margin-left: calc(var(--u) * -61); border-radius: calc(var(--u) * 18); background: #000000;
 }
-.phone .shot { width: calc(var(--u) * 390); }
+.phone .shot {
+  /* Skærmbillederne har en 1 punkt grå kant i siderne (webudgaven). Den skjules med 2 punkter
+     på hver side, for Chromium runder billedets placering til hele pixels (1 punkt er ikke nok). */
+  width: calc(var(--u) * 394); margin-left: calc(var(--u) * -2);
+}
+/* Listen fortsætter under kanten: den toner ud mod appens baggrund, som når man scroller på iPhone. */
+.phone .fade {
+  position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--u) * 58);
+  background: linear-gradient(180deg, rgba(241, 245, 243, 0) 0%, rgba(241, 245, 243, 0.94) 70%, #F1F5F3 100%);
+}
 .phone .home {
   position: absolute; left: 50%; bottom: calc(var(--u) * 8); width: calc(var(--u) * 134); height: calc(var(--u) * 5);
   margin-left: calc(var(--u) * -67); border-radius: calc(var(--u) * 3); background: rgba(11, 26, 21, 0.9);
@@ -157,7 +167,7 @@ html[data-mode="a4"] .page { width: 297mm; height: 210mm; background: #FFFFFF; }
 .demo-badge svg { width: 3.4mm; height: 3.4mm; }
 
 /* ---------- Forside ---------- */
-.front { --panel-h: 100mm; --panel-r: 9mm; }
+.front { --panel-h: 100mm; --panel-r: 18mm; }
 .front .top { position: absolute; left: 10mm; right: 10mm; top: 10mm; display: flex; justify-content: space-between; align-items: center; }
 .front .wordmark { font-size: 25pt; }
 .chip {
@@ -195,17 +205,17 @@ html[data-mode="a4"] .page { width: 297mm; height: 210mm; background: #FFFFFF; }
 .front .scan h2 { font: 800 20pt/1.02 var(--display); letter-spacing: -0.03em; color: var(--text); }
 .front .scan p { margin-top: 2.6mm; font: 500 8.5pt/1.3 var(--body); color: var(--text2); }
 .front .scan .arrow { margin-top: 3mm; width: 16mm; height: 6mm; }
-.front .qr-frame { --qr: 34mm; --qz: calc(var(--qr) * 4 / 29); right: 10mm; bottom: 9mm; }
+.front .qr-frame { --qr: 34mm; right: 10mm; bottom: 9mm; }
 
 /* ---------- Bagside ---------- */
-.back { --panel-h: 29mm; --panel-r: 8mm; }
+.back { --panel-h: 29mm; --panel-r: 16mm; }
 .back .top { position: absolute; left: 10mm; right: 10mm; top: 10mm; display: flex; justify-content: space-between; align-items: center; }
 .back .wordmark { font-size: 21pt; }
-.back .flow { position: absolute; left: 10mm; right: 10mm; top: 35mm; bottom: 8.5mm; display: flex; flex-direction: column; gap: 3.6mm; }
-.card { background: var(--card); border-radius: 4.5mm; padding: 4.6mm 5mm; box-shadow: 0 0 0 0.25mm var(--border); }
+.back .flow { position: absolute; left: 10mm; right: 10mm; top: 34mm; bottom: 8.5mm; display: flex; flex-direction: column; gap: 3mm; }
+.card { background: var(--card); border-radius: 4.5mm; padding: 4.2mm 5mm; box-shadow: 0 0 0 0.25mm var(--border); }
 .card h2, .money h2 { display: flex; align-items: center; gap: 2.4mm; font: 800 13pt/1.1 var(--display); letter-spacing: -0.02em; color: var(--text); }
 .card h2 .ico { width: 7mm; height: 7mm; }
-.checks { list-style: none; display: grid; gap: 1.7mm; margin-top: 3.2mm; }
+.checks { list-style: none; display: grid; gap: 1.6mm; margin-top: 2.8mm; }
 .checks li { position: relative; padding-left: 5mm; font: 400 9pt/1.32 var(--body); color: var(--text); }
 .checks li::before {
   content: ''; position: absolute; left: 0; top: 0.9mm; width: 3.2mm; height: 3.2mm; border-radius: 50%;
@@ -217,12 +227,21 @@ html[data-mode="a4"] .page { width: 297mm; height: 210mm; background: #FFFFFF; }
 .trades { display: grid; grid-template-columns: 1fr auto; column-gap: 5mm; align-items: start; }
 .tiles { display: flex; gap: 1.3mm; margin-top: 2.8mm; }
 .tiles img { width: 6.2mm; height: 6.2mm; border-radius: 1.6mm; }
-.back .qr-frame { --qr: 33.4mm; --qz: calc(var(--qr) * 4 / 29); position: relative; }
-.money { background: var(--ink); color: #FFFFFF; border-radius: 4.5mm; padding: 4.4mm 5mm; }
+.back .qr-box { --qr: 33.4mm; display: flex; flex-direction: column; align-items: center; }
+.back .qr-box .say {
+  font: 800 12.5pt/1.1 var(--display); color: var(--brand-text); letter-spacing: -0.015em;
+  text-align: center; margin-bottom: 2.4mm;
+}
+/* Hvid flade i et hvidt kort: en tynd kant viser, hvor koden er. */
+.back .qr-box .qr-card { box-shadow: 0 0 0 0.35mm #C9D6D0; }
+.money { background: var(--ink); color: #FFFFFF; border-radius: 4.5mm; padding: 4mm 5mm; }
 .money h2 { color: #FFFFFF; }
 .money p { margin-top: 1.8mm; font: 400 9pt/1.34 var(--body); color: #DCE7E2; text-wrap: wrap; }
 .money p b { color: #FFFFFF; font-weight: 700; }
+.now { background: var(--brand-soft); border-radius: 4.5mm; padding: 2.7mm 5mm; font: 400 9pt/1.32 var(--body); color: var(--text); }
+.now b { font-weight: 700; }
 .back-foot { margin-top: auto; display: grid; gap: 1.3mm; font: 400 7.5pt/1.35 var(--body); color: var(--text2); }
+.back-foot .seg, .back-foot .name { white-space: nowrap; }
 .back-foot b { color: var(--text); font-weight: 700; }
 .back-foot .contact { font-size: 8.5pt; color: var(--text); }
 </style>
@@ -232,12 +251,8 @@ html[data-mode="a4"] .page { width: 297mm; height: 210mm; background: #FFFFFF; }
 <!-- ======================= FORSIDE ======================= -->
 <section class="page front" aria-label="Forside">
   <div class="sheet">
-    <div class="panel panel-a">
-      <div class="panel-deco" style="left: 92mm; top: -42mm; width: 100mm; height: 100mm;"></div>
-      <div class="panel-deco" style="left: 120mm; top: -18mm; width: 52mm; height: 52mm;"></div>
-    </div>
-    <div class="panel panel-b"></div>
-    <div class="trim">
+    <div class="panel"></div>
+    <div class="trim" data-trim>
       <div class="top">
         <div class="wordmark" aria-label="FixMatch">fixmatch<span class="dot">.</span></div>
         <div class="chip">
@@ -273,6 +288,7 @@ html[data-mode="a4"] .page { width: 297mm; height: 210mm; background: #FFFFFF; }
             </svg>
           </div>
           <img class="shot" src="assets/app-kategori-vvs-3x.png" alt="">
+          <span class="fade"></span>
           <span class="island"></span>
           <span class="home"></span>
         </div>
@@ -304,8 +320,8 @@ html[data-mode="a4"] .page { width: 297mm; height: 210mm; background: #FFFFFF; }
       </div>
       <figure class="qr-frame">
         <div class="qr-card">
-          <img src="assets/qr-fixmatchh.svg" alt="QR-kode til fixmatchh.netlify.app">
-          <figcaption class="url">fixmatchh.netlify.app</figcaption>
+          <img class="qr" src="assets/qr-fixmatchh.svg" alt="QR-kode til fixmatchh.netlify.app">
+          <p class="url">fixmatchh.netlify.app</p>
         </div>
       </figure>
     </div>
@@ -315,11 +331,8 @@ html[data-mode="a4"] .page { width: 297mm; height: 210mm; background: #FFFFFF; }
 <!-- ======================= BAGSIDE ======================= -->
 <section class="page back" aria-label="Bagside">
   <div class="sheet">
-    <div class="panel panel-a">
-      <div class="panel-deco" style="left: 104mm; top: -34mm; width: 64mm; height: 64mm;"></div>
-    </div>
-    <div class="panel panel-b"></div>
-    <div class="trim">
+    <div class="panel"></div>
+    <div class="trim" data-trim>
       <div class="top">
         <div class="wordmark" aria-label="FixMatch">fixmatch<span class="dot">.</span></div>
         <div class="chip">
@@ -347,18 +360,18 @@ html[data-mode="a4"] .page { width: 297mm; height: 210mm; background: #FFFFFF; }
               <img src="assets/fag/mekaniker.svg" alt=""><img src="assets/fag/maler.svg" alt=""><img src="assets/fag/tagdaekker.svg" alt=""><img src="assets/fag/laasesmed.svg" alt="">
             </div>
             <ul class="checks">
-              <li><b>Gratis profil og Verificeret-mærke:</b> Vi tjekker CVR, ejer og autorisation.</li>
+              <li><b>Gratis profil og Verificeret-mærke:</b><br>Vi tjekker CVR, ejer og autorisation.</li>
               <li>Aldrig betaling pr. kunde.</li>
               <li>I godkender alt, der står om jer, og kan komme ud når som helst.</li>
-              <li>Tre minutter at komme med.</li>
+              <li>Det tager tre minutter at komme med.</li>
             </ul>
           </div>
-          <figure class="qr-frame">
-            <div class="qr-card">
-              <img src="assets/qr-tilmeld.svg" alt="QR-kode til fixmatchh.netlify.app/tilmeld/">
-              <figcaption class="url">fixmatchh.netlify.app/tilmeld/</figcaption>
-            </div>
+          <figure class="qr-box">
             <p class="say">Tilmeld jer gratis.</p>
+            <div class="qr-card">
+              <img class="qr" src="assets/qr-tilmeld.svg" alt="QR-kode til fixmatchh.netlify.app/tilmeld/">
+              <p class="url">fixmatchh.netlify.app/tilmeld/</p>
+            </div>
           </figure>
         </section>
 
@@ -367,9 +380,13 @@ html[data-mode="a4"] .page { width: 297mm; height: 210mm; background: #FFFFFF; }
           <p><b>Brugerne betaler aldrig.</b> Firmaer kan vælge et Pro-abonnement med flere billeder og priser (forslag: 299–499&nbsp;kr./md.). <b>Pro giver aldrig en bedre plads.</b></p>
         </section>
 
+        <p class="now"><b>Lige nu:</b> Vi samler de første 40 firmaer i København.<br>Kender du en håndværker? Så giv flyeren videre.</p>
+
         <footer class="back-foot">
           <p class="contact"><b>Kontakt:</b> <span data-team="kontakt"><span class="ph">[Navn · telefon · e-mail]</span></span></p>
-          <p><span data-team="deltagere"><span class="ph">[Navn 1]</span>, <span class="ph">[Navn 2]</span>, <span class="ph">[Navn 3]</span>, <span class="ph">[Navn 4]</span></span> · Underviser: <span data-team="underviser"><span class="ph">[Underviserens navn]</span></span> · <span data-team="skole"><span class="ph">[Skolens navn]</span></span> · Business Minds <span data-team="aarstal">2026/2027</span></p>
+          <p><span data-team="deltagere"><span class="ph">[Navn 1]</span>, <span class="ph">[Navn 2]</span>, <span class="ph">[Navn 3]</span>, <span class="ph">[Navn 4]</span></span></p>
+          <!-- Hvert led holdes samlet, og "·" står foran sit led, så en linje aldrig slutter med "·". -->
+          <p><span class="seg">Underviser: <span data-team="underviser"><span class="ph">[Underviserens navn]</span></span></span> <span class="seg">·&nbsp;<span data-team="skole"><span class="ph">[Skolens navn]</span></span></span> <span class="seg">·&nbsp;Business Minds <span data-team="aarstal">2026/2027</span></span></p>
           <p>Verificeret er ikke en kvalitetsgaranti.</p>
         </footer>
       </div>
@@ -381,66 +398,98 @@ html[data-mode="a4"] .page { width: 297mm; height: 210mm; background: #FFFFFF; }
 (function () {
   var params = new URLSearchParams(location.search);
   var mode = params.get('mode') || 'screen';
+  var data = window.PRINT_DATA || {};
   document.documentElement.dataset.mode = mode;
 
-  // Navne fra team.json (build-flyer.js lægger dem i window.FLYER_TEAM, før siden indlæses).
-  var team = window.FLYER_TEAM || {};
+  // Navne fra team.json (build.js lægger dem i window.PRINT_DATA, før siden indlæses).
+  var team = data.team || {};
   document.querySelectorAll('[data-team]').forEach(function (el) {
     var value = team[el.dataset.team];
-    if (typeof value === 'string' && value.trim()) el.innerHTML = value;
+    if (typeof value !== 'string' || !value.trim()) return;
+    // Et navn deles aldrig over to linjer; linjen brydes kun mellem navnene.
+    if (el.dataset.team === 'deltagere') {
+      value = value.split(/\s*,\s*/).map(function (name) { return '<span class="name">' + name + '</span>'; }).join(', ');
+    }
+    el.innerHTML = value;
   });
 
+  // Antal felter i hver QR-kode (fra SVG'ens viewBox), så stilleområdet altid er 4 felter.
+  document.querySelectorAll('img.qr').forEach(function (img) {
+    var modules = (data.qr || {})[img.getAttribute('src')];
+    if (modules) img.parentElement.style.setProperty('--modules', String(modules));
+  });
+
+  if (mode === 'marks') buildMarks(data.marks);
+
   // Chromium runder PDF-sidens størrelse af (op til 0,5 pt). Siden tegnes derfor 2 mm for stor,
-  // og build-flyer.js beskærer PDF'en til den præcise størrelse fra øverste venstre hjørne.
-  var size = { bleed: [154, 216], trim: [148, 210], a4: [297, 210], screen: [154, 216] }[mode];
+  // og build.js beskærer PDF'en til den præcise størrelse fra øverste venstre hjørne.
+  var size = mode === 'marks' ? data.marks.sheet : { bleed: [154, 216], trim: [148, 210], screen: [154, 216] }[mode];
   var style = document.createElement('style');
   style.textContent = '@page { size: ' + (size[0] + 2) + 'mm ' + (size[1] + 2) + 'mm; margin: 0; }';
   document.head.appendChild(style);
 
-  if (mode === 'a4') buildA4();
+  // Klar til tryk, når billederne er hentet og alle skrifterne er indlæst.
+  var images = Array.prototype.map.call(document.images, function (img) {
+    return img.complete ? null : new Promise(function (resolve) { img.onload = img.onerror = resolve; });
+  });
+  window.printReady = Promise.all(images)
+    .then(function () { return Promise.all(Array.from(document.fonts).map(function (font) { return font.load(); })); })
+    .then(function () { return document.fonts.ready; });
 
-  // To flyers pr. liggende A4: side 1 to forsider, side 2 to bagsider. Flyerne skaleres til 90 %
-  // (133,2 × 189 mm), så skæremærkerne ligger inden for det, en almindelig printer kan trykke.
-  // Placeringen er spejlsymmetrisk om sidens midte, så bagsiderne rammer forsiderne ved dobbeltsidet tryk.
-  function buildA4() {
-    var S = 0.9, B = 3 * S, W = 148 * S, H = 210 * S;
-    var top = (210 - H) / 2, x1 = top, x2 = 297 - top - W;
+  // Ark til udskydning (build.js): kun skæremærker og en tekst i margenen. build.js lægger
+  // bagefter de færdige A5-sider fra PDF'en med beskæring ind på pladserne, som vektorer.
+  // spec.slots: A5-sidernes øverste venstre hjørne (skærekanten) i mm og deres skala.
+  function buildMarks(spec) {
     var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
-    pages.forEach(function (page, index) {
-      var a4 = document.createElement('section');
-      a4.className = 'page a4';
-      [x1, x2].forEach(function (x) {
-        var slot = document.createElement('div');
-        // Keep the side's class (front/back): the panel height and the layout rules hang on it.
-        slot.className = 'a4-slot ' + (page.classList.contains('front') ? 'front' : 'back');
-        slot.style.left = (x - B) + 'mm';
-        slot.style.top = (top - B) + 'mm';
-        slot.style.transform = 'scale(' + S + ')';
-        slot.appendChild(page.querySelector('.sheet').cloneNode(true));
-        a4.appendChild(slot);
+    var parent = pages[0].parentNode;
+    var W = spec.sheet[0], H = spec.sheet[1], m = spec.mark;
+    var flyers = spec.slots.map(function (s) {
+      return { x: s.x, y: s.y, w: spec.size[0] * s.scale, h: spec.size[1] * s.scale, b: spec.bleed * s.scale };
+    });
+    // Mærkerne må ikke gå ind i nogen flyers beskæring og skal holde sig fra papirkanten.
+    var keepOut = flyers.map(function (f) {
+      return { x0: f.x - f.b - m.gap, y0: f.y - f.b - m.gap, x1: f.x + f.w + f.b + m.gap, y1: f.y + f.h + f.b + m.gap };
+    });
+    var lines = [];
+    function mark(horizontal, at, start, dir) {
+      var end = start + dir * m.length;
+      end = dir > 0 ? Math.min(end, (horizontal ? W : H) - m.margin) : Math.max(end, m.margin);
+      keepOut.forEach(function (k) {
+        var lo = horizontal ? k.y0 : k.x0, hi = horizontal ? k.y1 : k.x1;
+        if (at <= lo || at >= hi) return;
+        var near = horizontal ? (dir > 0 ? k.x0 : k.x1) : (dir > 0 ? k.y0 : k.y1);
+        if (dir > 0 && near >= start) end = Math.min(end, near);
+        if (dir < 0 && near <= start) end = Math.max(end, near);
       });
-      var gap = 0.5, len = 4.3, lines = [];
-      [x1, x1 + W, x2, x2 + W].forEach(function (x) {
-        lines.push([x, top - B - gap - len, x, top - B - gap]);
-        lines.push([x, top + H + B + gap, x, top + H + B + gap + len]);
+      if (Math.abs(end - start) < 1) return;
+      lines.push(horizontal ? [start, at, end, at] : [at, start, at, end]);
+    }
+    flyers.forEach(function (f) {
+      [f.x, f.x + f.w].forEach(function (x) {
+        mark(false, x, f.y - f.b - m.gap, -1);
+        mark(false, x, f.y + f.h + f.b + m.gap, 1);
       });
-      [top, top + H].forEach(function (y) {
-        lines.push([x1 - B - gap - len, y, x1 - B - gap, y]);
-        lines.push([x2 + W + B + gap, y, x2 + W + B + gap + len, y]);
-        lines.push([x1 + W + B + gap, y, x2 - B - gap, y]);
+      [f.y, f.y + f.h].forEach(function (y) {
+        mark(true, y, f.x - f.b - m.gap, -1);
+        mark(true, y, f.x + f.w + f.b + m.gap, 1);
       });
-      var note = (index === 0 ? 'Forsider' : 'Bagsider') +
-        ' · Tryk i 100 %, dobbeltsidet: vend på den korte kant · Skær ved mærkerne · Hver flyer: 133 × 189 mm';
-      a4.insertAdjacentHTML('beforeend',
-        '<svg class="marks" viewBox="0 0 297 210" aria-hidden="true">' +
+    });
+    spec.notes.forEach(function (note) {
+      var sheet = document.createElement('section');
+      sheet.className = 'page';
+      sheet.style.width = W + 'mm';
+      sheet.style.height = H + 'mm';
+      var at = spec.noteAt;
+      sheet.innerHTML =
+        '<svg class="marks" viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true">' +
         lines.map(function (l) {
           return '<line x1="' + l[0] + '" y1="' + l[1] + '" x2="' + l[2] + '" y2="' + l[3] + '" stroke="#000" stroke-width="0.15"/>';
         }).join('') +
-        '<text x="0" y="0" transform="translate(' + (148.5 + 0.7) + ' 105) rotate(-90)" text-anchor="middle" ' +
-        'font-family="Inter" font-weight="500" font-size="1.9" fill="#5C6D66">' + note + '</text></svg>');
-      page.parentNode.insertBefore(a4, page);
-      page.remove();
+        '<text x="0" y="0" transform="translate(' + at.x + ' ' + at.y + ') rotate(' + at.rotate + ')" text-anchor="middle" ' +
+        'font-family="Inter" font-weight="500" font-size="' + at.size + '" fill="#5C6D66">' + note + '</text></svg>';
+      parent.insertBefore(sheet, pages[0]);
     });
+    pages.forEach(function (page) { page.remove(); });
   }
 })();
 </script>

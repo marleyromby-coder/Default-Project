@@ -10,7 +10,7 @@
     ?format=A1&bleed=0   594 × 841 mm (uden beskæring)
     ?format=A2&bleed=1   426 × 600 mm (A2 + 3 mm beskæring, skaleret ned)
     ?format=A2&bleed=0   420 × 594 mm
-  Navnene i bunden kommer fra ../team.json (build.js lægger dem i window.POSTER_TEAM).
+  Navnene i bunden kommer fra ../team.json (build.js lægger dem i window.PRINT_DATA).
   Billederne ligger i assets/. Tekst: ../pitch/plakat-og-flyer-tekst.md.
 -->
 <style>
@@ -62,6 +62,7 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   overflow: hidden;
   background: var(--bg);
 }
+.trim-box { position: absolute; inset: var(--bleed); pointer-events: none; }
 .art {
   position: absolute;
   left: calc(var(--bleed) + var(--shift-x));
@@ -142,11 +143,12 @@ h1 {
   position: absolute;
   left: 28mm; top: 227mm;
   width: 540mm;
-  font-weight: 500;
+  font-family: var(--display);
+  font-weight: 700;
   font-size: 72pt;
   line-height: 1.16;
   letter-spacing: -0.02em;
-  color: var(--on-panel-soft);
+  color: var(--on-panel);
 }
 
 /* ---------- Telefonerne ---------- */
@@ -190,10 +192,11 @@ h1 {
   width: 100%; height: calc(52 * var(--u));
 }
 .phone .screen img.shot {
-  /* Skærmbillederne har en 1 punkt grå kant i siderne (webudgaven); den skjules. */
+  /* Skærmbillederne har en 1 punkt grå kant i siderne (webudgaven). Den skjules med 2 punkter
+     på hver side, for Chromium runder billedets placering til hele pixels (1 punkt er ikke nok). */
   position: absolute;
-  left: calc(-1 * var(--u)); top: calc(50 * var(--u));
-  width: calc(392 * var(--u)); height: auto;
+  left: calc(-2 * var(--u)); top: calc(50 * var(--u));
+  width: calc(394 * var(--u)); height: auto;
 }
 .phone .status {
   position: absolute; left: 0; top: 0; right: 0;
@@ -228,10 +231,11 @@ h1 {
   pointer-events: none;
 }
 
-/* Placering: trin 1 bag til venstre, trin 2 forrest, trin 3 bag til højre. */
-.p1 { --w: 118mm; left: 40mm;  top: 340mm; }
-.p3 { --w: 118mm; left: 232mm; top: 340mm; }
-.p2 { --w: 135.3mm; left: 127.35mm; top: 311mm; }
+/* Placering: trin 1 til venstre, trin 2 forrest og lidt højere, trin 3 til højre. Telefonerne
+   overlapper kun 4 mm (rammen), så intet på skærmene bliver dækket. */
+.p1 { --w: 106mm; left: 26mm;  top: 360mm; }
+.p2 { --w: 130mm; left: 128mm; top: 311mm; }
+.p3 { --w: 106mm; left: 254mm; top: 360mm; }
 
 /* Små mærker på telefonerne: trinnummer og "Demo". */
 .tag-step {
@@ -267,29 +271,31 @@ h1 {
 .tag-demo svg { width: 5.5mm; height: 5.5mm; }
 
 /* ---------- Stor QR-kode med solgul ramme ---------- */
-.qr-main { position: absolute; left: 368mm; top: 318mm; width: 198mm; }
+.qr-main { position: absolute; left: 374mm; top: 318mm; width: 192mm; }
 .qr-main .label {
   font-family: var(--display);
   font-weight: 800;
-  font-size: 60pt;
+  font-size: 57pt;
+  white-space: nowrap;
   line-height: 1.04;
   letter-spacing: -0.02em;
   color: var(--on-panel);
 }
 .qr-frame {
   margin-top: 9mm;
-  width: 198mm; height: 198mm;
+  width: 192mm; height: 192mm;
   padding: 10mm;
   border-radius: 18mm;
   background: var(--sun);
   box-shadow: 0 9mm 22mm rgba(0, 32, 22, 0.28), 0 2mm 5mm rgba(0, 32, 22, 0.18);
 }
 .qr-quiet {
-  /* Hvid stille zone: 4 moduler på hver side af koden (29 moduler + 8 = 37). */
+  /* Hvidt stilleområde: 4 felter på hver side af koden. --modules (antal felter i koden) sætter
+     scriptet ud fra SVG'en, så det passer, også hvis koden bliver større. */
   width: 100%; height: 100%;
   border-radius: 9mm;
   background: #FFFFFF;
-  padding: calc(100% * 4 / 37);
+  padding: calc(100% * 4 / (var(--modules, 29) + 8));
 }
 .qr-quiet img { display: block; width: 100%; height: 100%; }
 .url {
@@ -359,8 +365,8 @@ h1 {
   border-radius: 8mm;
   background: #FFFFFF;
   box-shadow: 0 0 0 0.5mm var(--border), 0 3mm 8mm rgba(0, 32, 22, 0.10);
-  /* 33 moduler + 4 på hver side = 41. */
-  padding: calc(120mm * 4 / 41);
+  /* 4 felters stilleområde på hver side (fx 29 felter + 8 = 37). Procent er af kortets bredde. */
+  padding: calc(100% * 4 / (var(--modules, 29) + 8));
 }
 .qr-biz .card img { display: block; width: 100%; height: 100%; }
 .qr-biz .url { margin-top: 3.5mm; font-size: 21pt; text-align: center; }
@@ -377,6 +383,7 @@ h1 {
   color: var(--text2);
 }
 .foot b { font-weight: 700; color: var(--text); }
+.name { white-space: nowrap; }
 .ph {
   background: var(--ph-bg);
   color: var(--ph-text);
@@ -394,6 +401,7 @@ h1 {
 </head>
 <body>
 <div class="page">
+  <div class="trim-box" data-trim></div>
   <div class="art">
     <div class="panel"><div class="orb"></div><div class="ring"></div></div>
 
@@ -403,8 +411,8 @@ h1 {
       Demoversion
     </div>
 
-    <h1>Se prisen,<br>før du ringer<span class="dot">.</span></h1>
-    <p class="sub">Find og sammenlign håndværkere og<br>mekanikere i København. Gratis iPhone-app.</p>
+    <h1 data-block>Se prisen,<br>før du ringer<span class="dot">.</span></h1>
+    <p class="sub" data-block>Find og sammenlign håndværkere og<br>mekanikere i København. Gratis iPhone-app.</p>
 
     <div class="phones">
       <figure class="phone p1" data-step="1">
@@ -452,34 +460,34 @@ h1 {
     </div>
 
     <!-- Trinnumrene på telefonerne (midtpunkt i mm). -->
-    <span class="tag-step" style="left:99mm; top:332mm"><span>1</span></span>
-    <span class="tag-step" style="left:195mm; top:303mm"><span>2</span></span>
-    <span class="tag-step" style="left:291mm; top:332mm"><span>3</span></span>
+    <span class="tag-step" style="left:79mm; top:352mm"><span>1</span></span>
+    <span class="tag-step" style="left:193mm; top:303mm"><span>2</span></span>
+    <span class="tag-step" style="left:307mm; top:352mm"><span>3</span></span>
 
-    <div class="qr-main">
+    <div class="qr-main" data-block>
       <p class="label">Scan og se,<br>hvordan den virker.</p>
-      <div class="qr-frame"><div class="qr-quiet"><img src="assets/qr-fixmatchh.svg" alt="QR-kode til fixmatchh.netlify.app"></div></div>
+      <div class="qr-frame"><div class="qr-quiet"><img class="qr" src="assets/qr-fixmatchh.svg" alt="QR-kode til fixmatchh.netlify.app"></div></div>
       <p class="url">fixmatchh.netlify.app</p>
     </div>
 
-    <ol class="steps">
+    <ol class="steps" data-block>
       <li><span class="num"><span>1</span></span>Vælg et fag, eller beskriv problemet.</li>
       <li><span class="num"><span>2</span></span>Se priserne, og sammenlign op til tre.</li>
       <li><span class="num"><span>3</span></span>Ring direkte til firmaet.</li>
     </ol>
 
-    <div class="promise">
+    <div class="promise" data-block>
       <svg viewBox="0 0 24 24" fill="none" stroke="#00805C" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2.8 4.5 5.6v5.6c0 4.6 3.1 8.4 7.5 9.9 4.4-1.5 7.5-5.3 7.5-9.9V5.6L12 2.8Z"/><path d="m8.6 12.1 2.4 2.4 4.5-4.7"/></svg>
       <p><b>Rækkefølgen kan ikke købes.</b><span>Intet gebyr pr. kunde.</span></p>
     </div>
 
-    <div class="qr-biz">
-      <p class="label">Håndværker i<br>København?<span>Tilmeld jer gratis.</span></p>
-      <div class="card"><img src="assets/qr-tilmeld.svg" alt="QR-kode til fixmatchh.netlify.app/tilmeld/"></div>
+    <div class="qr-biz" data-block>
+      <p class="label">Håndværker<br>i København?<span>Tilmeld jer gratis.</span></p>
+      <div class="card"><img class="qr" src="assets/qr-tilmeld.svg" alt="QR-kode til fixmatchh.netlify.app/tilmeld/"></div>
       <p class="url">fixmatchh.netlify.app/tilmeld/</p>
     </div>
 
-    <div class="foot">
+    <div class="foot" data-block>
       <p><b>Testversion med demo-firmaer.</b> Skærmbillederne er fra demoen.</p>
       <p><span data-team="deltagere"><span class="ph">[Navn 1]</span>, <span class="ph">[Navn 2]</span>, <span class="ph">[Navn 3]</span>, <span class="ph">[Navn 4]</span></span></p>
       <p><span data-team="skole"><span class="ph">[Skolens navn]</span></span> · Business Minds <span data-team="aarstal">2026/2027</span></p>
@@ -521,15 +529,29 @@ h1 {
   root.style.setProperty('--shift-x', (trim[0] - 594 * scale) / 2 + 'mm');
   root.style.setProperty('--shift-y', (trim[1] - 841 * scale) / 2 + 'mm');
   document.title = 'FixMatch – plakat ' + format + (bleed ? ' med 3 mm beskæring' : ' uden beskæring');
+  // Chromium runder PDF-sidens størrelse af (op til 0,5 pt). Siden tegnes derfor 2 mm for stor,
+  // og build.js beskærer PDF'en til den præcise størrelse fra øverste venstre hjørne.
   var page = document.createElement('style');
-  page.textContent = '@page { size: ' + (trim[0] + 2 * bleed) + 'mm ' + (trim[1] + 2 * bleed) + 'mm; margin: 0; }';
+  page.textContent = '@page { size: ' + (trim[0] + 2 * bleed + 2) + 'mm ' + (trim[1] + 2 * bleed + 2) + 'mm; margin: 0; }';
   document.head.appendChild(page);
 
-  // Navne fra team.json (build.js lægger dem i window.POSTER_TEAM, før siden indlæses).
-  var team = window.POSTER_TEAM || {};
+  // Navne fra team.json (build.js lægger dem i window.PRINT_DATA, før siden indlæses).
+  var data = window.PRINT_DATA || {};
+  var team = data.team || {};
   document.querySelectorAll('[data-team]').forEach(function (el) {
     var value = team[el.dataset.team];
-    if (typeof value === 'string' && value.trim()) el.innerHTML = value;
+    if (typeof value !== 'string' || !value.trim()) return;
+    // Et navn deles aldrig over to linjer; linjen brydes kun mellem navnene.
+    if (el.dataset.team === 'deltagere') {
+      value = value.split(/\s*,\s*/).map(function (name) { return '<span class="name">' + name + '</span>'; }).join(', ');
+    }
+    el.innerHTML = value;
+  });
+
+  // Antal felter i hver QR-kode (fra SVG'ens viewBox), så stilleområdet altid er 4 felter.
+  document.querySelectorAll('img.qr').forEach(function (img) {
+    var modules = (data.qr || {})[img.getAttribute('src')];
+    if (modules) img.parentElement.style.setProperty('--modules', String(modules));
   });
 
   // Statuslinjen: skærmbillederne har ingen, så toppen af panelet forlænges opad
@@ -551,7 +573,9 @@ h1 {
       else { img.addEventListener('load', draw); img.addEventListener('error', resolve); }
     }));
   });
-  window.posterReady = Promise.all(pending).then(function () { return document.fonts.ready; });
+  window.printReady = Promise.all(pending)
+    .then(function () { return Promise.all(Array.from(document.fonts).map(function (font) { return font.load(); })); })
+    .then(function () { return document.fonts.ready; });
 })();
 </script>
 </body>
