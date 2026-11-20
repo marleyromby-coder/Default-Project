@@ -284,7 +284,7 @@ export function infoPagesEn(): Record<
         {
           heading: 'When you report something',
           paragraphs: [
-            'If you report a review or a group, we store what you reported and why, and your account if you are signed in, with Supabase in the EU. We only use it to handle the report. Others cannot see who reported it.',
+            'If you report a review or a group, we store what you reported and why, and your account if you are signed in, with Supabase in the EU. We only use it to handle the report. Others cannot see who reported it. We delete the report no later than 12 months after the matter is closed. If you delete your account before then, the link to you is removed at once.',
           ],
         },
         {

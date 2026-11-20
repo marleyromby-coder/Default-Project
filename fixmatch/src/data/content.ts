@@ -307,7 +307,7 @@ export function infoPagesDa() {
         {
           heading: 'Når du rapporterer',
           paragraphs: [
-            'Rapporterer du en anmeldelse eller en gruppe, gemmer vi, hvad du rapporterede og hvorfor, og din bruger, hvis du er logget ind, hos Supabase i EU. Vi bruger det kun til at behandle rapporten. Andre kan ikke se, hvem der rapporterede.',
+            'Rapporterer du en anmeldelse eller en gruppe, gemmer vi, hvad du rapporterede og hvorfor, og din bruger, hvis du er logget ind, hos Supabase i EU. Vi bruger det kun til at behandle rapporten. Andre kan ikke se, hvem der rapporterede. Vi sletter rapporten senest 12 måneder efter, sagen er afsluttet. Sletter du din bruger før da, fjernes koblingen til dig med det samme.',
           ],
         },
         {
