@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FixMatch flyer A5</title>
+<!--
+  FixMatch-flyeren til Business Minds (A5, to sider). Byg PDF'erne med `node build-flyer.js`.
+  Åbn filen i en browser for at se begge sider med beskæring (3 mm) og hjælpelinjer.
+  ?mode=bleed  154 × 216 mm (A5 + 3 mm beskæring)   ?mode=trim  148 × 210 mm (uden beskæring)
+  ?mode=a4     to flyers pr. A4 (liggende) med skæremærker, side 1 forsider, side 2 bagsider
+  Navnene i bunden af bagsiden kommer fra ../team.json (build-flyer.js sætter dem ind).
+-->
+<style>
+@font-face { font-family: 'Schibsted Grotesk'; font-weight: 700; src: url('assets/fonts/schibsted-grotesk-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Schibsted Grotesk'; font-weight: 800; src: url('assets/fonts/schibsted-grotesk-latin-800-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Schibsted Grotesk'; font-weight: 900; src: url('assets/fonts/schibsted-grotesk-latin-900-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-weight: 400; src: url('assets/fonts/inter-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-weight: 500; src: url('assets/fonts/inter-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-weight: 600; src: url('assets/fonts/inter-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-weight: 700; src: url('assets/fonts/inter-latin-700-normal.woff2') format('woff2'); }
+
+/* Farver fra docs/design/designsystem.md (lys tilstand). */
+:root {
+  --bg: #F1F5F3;
+  --card: #FFFFFF;
+  --border: #DFE7E3;
+  --text: #0B1A15;
+  --text2: #41524C;
+  --panel: #007A56;
+  --panel2: #00614A;
+  --on-panel: #FFFFFF;
+  --on-panel-soft: #E6F7EF;
+  --brand: #00805C;
+  --brand-text: #00704F;
+  --brand-soft: #DCF4E9;
+  --sun: #FFB800;
+  --on-sun: #1A1400;
+  --sun-soft: #FFF3CC;
+  --sun-soft-text: #7F5300;
+  --ink: #0B1A15;
+  --bleed: 3mm;
+  --display: 'Schibsted Grotesk', sans-serif;
+  --body: 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: var(--body); color: var(--text); background: #C9D2CE; }
+p, li { text-wrap: pretty; }
+h1, h2 { text-wrap: balance; }
+img { display: block; }
+
+/* ---------- Sider og tilstande ---------- */
+.page { position: relative; overflow: hidden; break-after: page; background: var(--bg); }
+.page:last-child { break-after: auto; }
+/* Arket er altid A5 + 3 mm beskæring; .trim er selve A5-siden. */
+.sheet { position: absolute; left: 0; top: 0; width: 154mm; height: 216mm; overflow: hidden; background: var(--bg); }
+.trim { position: absolute; left: var(--bleed); top: var(--bleed); width: 148mm; height: 210mm; }
+
+html[data-mode="bleed"] .page { width: 154mm; height: 216mm; }
+html[data-mode="trim"] .page { width: 148mm; height: 210mm; }
+html[data-mode="trim"] .sheet { left: calc(-1 * var(--bleed)); top: calc(-1 * var(--bleed)); }
+html[data-mode="a4"] .page { width: 297mm; height: 210mm; background: #FFFFFF; }
+.a4-slot { position: absolute; width: 154mm; height: 216mm; transform-origin: 0 0; }
+.a4-slot .sheet { position: absolute; }
+.marks { position: absolute; left: 0; top: 0; width: 297mm; height: 210mm; }
+
+/* Skærm: siderne under hinanden med skærelinje (stiplet) og 5 mm sikkerhedsafstand (prikket). */
+@media screen {
+  body { padding: 24px; }
+  .page { margin: 0 auto 24px; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18); }
+  html[data-mode="screen"] .page { width: 154mm; height: 216mm; }
+  html[data-mode="screen"] .trim::after {
+    content: ''; position: absolute; inset: 0; outline: 0.3mm dashed #E8553D; pointer-events: none; z-index: 50;
+  }
+  html[data-mode="screen"] .trim::before {
+    content: ''; position: absolute; inset: 5mm; outline: 0.25mm dotted #2E77F0; pointer-events: none; z-index: 50;
+  }
+}
+@media print { body { background: none; } }
+
+/* ---------- Fælles byggeklodser ---------- */
+/* Panelet går ud i beskæringen foroven og i siderne; de runde bundhjørner sidder ved skærekanten.
+   To ens kasser med samme gradient: den ene klippes over hjørnerne, den anden rundes ved skærekanten. */
+.panel {
+  position: absolute; left: 0; top: 0; width: 154mm;
+  height: calc(var(--panel-h) + var(--bleed));
+  background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
+}
+.panel-a { clip-path: inset(0 0 var(--panel-r) 0); }
+.panel-b { clip-path: inset(0 var(--bleed) 0 var(--bleed) round 0 0 var(--panel-r) var(--panel-r)); }
+.panel-deco { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.06); }
+
+.wordmark {
+  font-family: var(--display); font-weight: 900; color: var(--on-panel);
+  letter-spacing: -0.035em; line-height: 1; white-space: nowrap;
+}
+.dot { color: var(--sun); }
+
+.ph {
+  white-space: nowrap; background: var(--sun-soft); color: var(--sun-soft-text); border-radius: 0.8mm;
+  outline: 0.25mm dashed #B88600; outline-offset: -0.1mm; padding: 0 0.6mm; font-weight: 600;
+}
+
+/* QR-kode: hvid flade med mindst 4 felters stilleområde, URL'en under koden, solgul ramme. */
+.qr-frame { position: absolute; background: var(--sun); border-radius: 5mm; padding: 2.2mm; }
+.qr-card { background: #FFFFFF; border-radius: 3mm; padding: var(--qz); padding-bottom: 0; text-align: center; }
+.qr-card img { width: var(--qr); height: var(--qr); }
+.qr-card .url {
+  display: block; padding: var(--qz) 0 2.6mm; margin-top: 0; font: 600 8pt/1 var(--body); color: var(--text);
+  letter-spacing: -0.005em; white-space: nowrap;
+}
+.qr-frame .say {
+  font: 800 11pt/1.12 var(--display); color: var(--on-sun); letter-spacing: -0.015em;
+  text-align: center; padding: 2.4mm 1mm 0.6mm;
+}
+
+/* ---------- iPhone i CSS: tynd mørk ramme, Dynamic Island, statuslinje, hjemmeindikator ---------- */
+.phone {
+  --u: calc(var(--pw) / 408);
+  position: absolute; width: var(--pw); height: calc(var(--u) * 862);
+  border-radius: calc(var(--u) * 66); background: #0E1211;
+  box-shadow: 0 0 0 calc(var(--u) * 2.2) #59625E, 0 0 0 calc(var(--u) * 3) #2C3331;
+}
+.phone .btn { position: absolute; width: calc(var(--u) * 4); background: #3A423F; border-radius: calc(var(--u) * 2); }
+.phone .btn.l { left: calc(var(--u) * -6.5); }
+.phone .btn.r { right: calc(var(--u) * -6.5); }
+.phone .screen {
+  position: absolute; inset: calc(var(--u) * 9); border-radius: calc(var(--u) * 57);
+  overflow: hidden; background: #FFFFFF;
+}
+.phone .status { position: relative; height: calc(var(--u) * 54); background: var(--status, #007A56); }
+.phone .time {
+  position: absolute; left: calc(var(--u) * 46); top: calc(var(--u) * 17);
+  font: 600 calc(var(--u) * 17) / 1 var(--body); color: #FFFFFF; letter-spacing: -0.01em;
+}
+.phone .icons { position: absolute; right: calc(var(--u) * 26); top: calc(var(--u) * 19); width: calc(var(--u) * 72); height: calc(var(--u) * 13); }
+.phone .island {
+  position: absolute; left: 50%; top: calc(var(--u) * 11); width: calc(var(--u) * 122); height: calc(var(--u) * 36);
+  margin-left: calc(var(--u) * -61); border-radius: calc(var(--u) * 18); background: #000000;
+}
+.phone .shot { width: calc(var(--u) * 390); }
+.phone .home {
+  position: absolute; left: 50%; bottom: calc(var(--u) * 8); width: calc(var(--u) * 134); height: calc(var(--u) * 5);
+  margin-left: calc(var(--u) * -67); border-radius: calc(var(--u) * 3); background: rgba(11, 26, 21, 0.9);
+}
+.phone-shadow {
+  position: absolute; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(0, 60, 42, 0.22), rgba(0, 60, 42, 0));
+}
+.demo-badge {
+  position: absolute; display: flex; align-items: center; gap: 1.1mm;
+  background: var(--ink); color: #FFFFFF; border-radius: 99mm; padding: 1.2mm 2.6mm 1.2mm 2mm;
+  font: 700 8.5pt/1 var(--body); letter-spacing: 0.01em; box-shadow: 0 0 0 0.6mm var(--bg);
+}
+.demo-badge svg { width: 3.4mm; height: 3.4mm; }
+
+/* ---------- Forside ---------- */
+.front { --panel-h: 100mm; --panel-r: 9mm; }
+.front .top { position: absolute; left: 10mm; right: 10mm; top: 10mm; display: flex; justify-content: space-between; align-items: center; }
+.front .wordmark { font-size: 25pt; }
+.chip {
+  display: inline-flex; align-items: center; gap: 1.2mm; padding: 1.5mm 2.8mm;
+  border-radius: 99mm; color: var(--on-panel);
+  /* 8 % hvid holder hvid tekst over 4,5:1 på panelet (16 % gav 4,0:1); kanten gør chippen tydelig. */
+  background: rgba(255, 255, 255, 0.08); box-shadow: inset 0 0 0 0.25mm rgba(255, 255, 255, 0.32);
+  font: 600 8.5pt/1 var(--body);
+}
+.chip svg { width: 3.3mm; height: 3.3mm; }
+.kicker {
+  position: absolute; left: 10mm; top: 29.5mm; display: flex; align-items: center; gap: 2.4mm;
+  font: 800 13.5pt/1.1 var(--display); color: var(--on-panel-soft); letter-spacing: -0.015em;
+}
+.kicker img { width: 8.5mm; height: 8.5mm; border-radius: 2.1mm; }
+.front h1 {
+  position: absolute; left: 10mm; top: 41mm;
+  font: 900 44pt/0.93 var(--display); letter-spacing: -0.045em; color: var(--on-panel);
+}
+.front .phone { --pw: 53mm; right: 11mm; top: 26mm; }
+.front .phone-shadow { right: 8mm; top: 133mm; width: 59mm; height: 9mm; }
+.front .demo-badge { right: 8.6mm; top: 27.4mm; }
+.front .demo-note {
+  position: absolute; right: 11mm; width: 53mm; top: 141.5mm; text-align: center;
+  font: 500 7.5pt/1.2 var(--body); color: var(--text2);
+}
+.benefits { position: absolute; left: 10mm; width: 67mm; top: 106mm; list-style: none; display: grid; gap: 3.6mm; }
+.benefits li { display: grid; grid-template-columns: 7.6mm 1fr; gap: 2.8mm; align-items: center; font: 500 9.5pt/1.28 var(--body); color: var(--text); }
+.benefits b { font-weight: 700; }
+.ico { width: 7.6mm; height: 7.6mm; border-radius: 2.2mm; background: var(--brand-soft); display: grid; place-items: center; }
+.ico svg { width: 4.6mm; height: 4.6mm; }
+.front .scan {
+  position: absolute; left: 10mm; width: 76mm; top: 162.5mm;
+}
+.front .scan h2 { font: 800 20pt/1.02 var(--display); letter-spacing: -0.03em; color: var(--text); }
+.front .scan p { margin-top: 2.6mm; font: 500 8.5pt/1.3 var(--body); color: var(--text2); }
+.front .scan .arrow { margin-top: 3mm; width: 16mm; height: 6mm; }
+.front .qr-frame { --qr: 34mm; --qz: calc(var(--qr) * 4 / 29); right: 10mm; bottom: 9mm; }
+
+/* ---------- Bagside ---------- */
+.back { --panel-h: 29mm; --panel-r: 8mm; }
+.back .top { position: absolute; left: 10mm; right: 10mm; top: 10mm; display: flex; justify-content: space-between; align-items: center; }
+.back .wordmark { font-size: 21pt; }
+.back .flow { position: absolute; left: 10mm; right: 10mm; top: 35mm; bottom: 8.5mm; display: flex; flex-direction: column; gap: 3.6mm; }
+.card { background: var(--card); border-radius: 4.5mm; padding: 4.6mm 5mm; box-shadow: 0 0 0 0.25mm var(--border); }
+.card h2, .money h2 { display: flex; align-items: center; gap: 2.4mm; font: 800 13pt/1.1 var(--display); letter-spacing: -0.02em; color: var(--text); }
+.card h2 .ico { width: 7mm; height: 7mm; }
+.checks { list-style: none; display: grid; gap: 1.7mm; margin-top: 3.2mm; }
+.checks li { position: relative; padding-left: 5mm; font: 400 9pt/1.32 var(--body); color: var(--text); }
+.checks li::before {
+  content: ''; position: absolute; left: 0; top: 0.9mm; width: 3.2mm; height: 3.2mm; border-radius: 50%;
+  background: var(--brand) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.3l2.3 2.3 4.7-4.9' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat;
+}
+.checks b { font-weight: 700; }
+.owners .checks { grid-template-columns: 1fr 1fr; column-gap: 5mm; align-content: start; }
+.owners .checks li:nth-child(4) { grid-column: 2; grid-row: 1 / span 3; align-self: start; }
+.trades { display: grid; grid-template-columns: 1fr auto; column-gap: 5mm; align-items: start; }
+.tiles { display: flex; gap: 1.3mm; margin-top: 2.8mm; }
+.tiles img { width: 6.2mm; height: 6.2mm; border-radius: 1.6mm; }
+.back .qr-frame { --qr: 33.4mm; --qz: calc(var(--qr) * 4 / 29); position: relative; }
+.money { background: var(--ink); color: #FFFFFF; border-radius: 4.5mm; padding: 4.4mm 5mm; }
+.money h2 { color: #FFFFFF; }
+.money p { margin-top: 1.8mm; font: 400 9pt/1.34 var(--body); color: #DCE7E2; text-wrap: wrap; }
+.money p b { color: #FFFFFF; font-weight: 700; }
+.back-foot { margin-top: auto; display: grid; gap: 1.3mm; font: 400 7.5pt/1.35 var(--body); color: var(--text2); }
+.back-foot b { color: var(--text); font-weight: 700; }
+.back-foot .contact { font-size: 8.5pt; color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- ======================= FORSIDE ======================= -->
+<section class="page front" aria-label="Forside">
+  <div class="sheet">
+    <div class="panel panel-a">
+      <div class="panel-deco" style="left: 92mm; top: -42mm; width: 100mm; height: 100mm;"></div>
+      <div class="panel-deco" style="left: 120mm; top: -18mm; width: 52mm; height: 52mm;"></div>
+    </div>
+    <div class="panel panel-b"></div>
+    <div class="trim">
+      <div class="top">
+        <div class="wordmark" aria-label="FixMatch">fixmatch<span class="dot">.</span></div>
+        <div class="chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.6"/><path d="M10.5 18.2h3"/></svg>
+          Gratis iPhone-app
+        </div>
+      </div>
+
+      <p class="kicker"><img src="assets/fag/vvs.svg" alt="">Hvad koster en VVS'er?</p>
+      <h1>Se det,<br>før du<br>ringer<span class="dot">.</span></h1>
+
+      <div class="phone-shadow"></div>
+      <div class="phone" role="img" aria-label="FixMatch på en iPhone: VVS'ere nær København K med timepriser (demo)">
+        <span class="btn l" style="top: calc(var(--u) * 150); height: calc(var(--u) * 32);"></span>
+        <span class="btn l" style="top: calc(var(--u) * 205); height: calc(var(--u) * 62);"></span>
+        <span class="btn l" style="top: calc(var(--u) * 282); height: calc(var(--u) * 62);"></span>
+        <span class="btn r" style="top: calc(var(--u) * 232); height: calc(var(--u) * 98);"></span>
+        <div class="screen">
+          <div class="status">
+            <span class="time">9:41</span>
+            <svg class="icons" viewBox="0 0 72 13" aria-hidden="true">
+              <g fill="#FFFFFF">
+                <rect x="0" y="8.4" width="3" height="4.1" rx="0.8"/><rect x="4.5" y="6.1" width="3" height="6.4" rx="0.8"/>
+                <rect x="9" y="3.6" width="3" height="8.9" rx="0.8"/><rect x="13.5" y="1" width="3" height="11.5" rx="0.8"/>
+              </g>
+              <g fill="none" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round">
+                <path d="M22.4 4.9a9.8 9.8 0 0 1 13.2 0"/><path d="M25.2 7.9a5.6 5.6 0 0 1 7.6 0"/>
+              </g>
+              <circle cx="29" cy="11" r="1.6" fill="#FFFFFF"/>
+              <rect x="42.5" y="0.7" width="25" height="11.6" rx="3.6" fill="none" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="1.1"/>
+              <rect x="44.6" y="2.8" width="20.8" height="7.4" rx="2" fill="#FFFFFF"/>
+              <rect x="68.8" y="4.4" width="1.8" height="4.2" rx="0.9" fill="#FFFFFF" fill-opacity="0.5"/>
+            </svg>
+          </div>
+          <img class="shot" src="assets/app-kategori-vvs-3x.png" alt="">
+          <span class="island"></span>
+          <span class="home"></span>
+        </div>
+      </div>
+      <div class="demo-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.2"/></svg>
+        Demo
+      </div>
+      <p class="demo-note">Testversion med demo-firmaer</p>
+
+      <ul class="benefits">
+        <li>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#00805C" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.6V4.5a1 1 0 0 1 1-1h8.1l8.4 8.4a1 1 0 0 1 0 1.4l-7.7 7.7a1 1 0 0 1-1.4 0z"/><circle cx="8.3" cy="8.3" r="1.5"/></svg></span>
+          <span><b>Firmaernes egne priser</b></span>
+        </li>
+        <li>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#00805C" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 4 3.5 8l4 4M3.5 8h13M16.5 12l4 4-4 4M20.5 16h-13"/></svg></span>
+          <span><b>Sammenlign op til tre</b> på pris, afstand og anmeldelser fra brugere via FixMatch</span>
+        </li>
+        <li>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#00805C" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6.5a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V7.5z"/><path d="M14 3v4.5h4.5M9 14.2l2.2 2.2 4-4.2"/></svg></span>
+          <span><b>Tilbudstjek:</b> Er dit tilbud lavt, normalt eller højt?</span>
+        </li>
+      </ul>
+
+      <div class="scan">
+        <h2>Scan og se,<br>hvordan den virker.</h2>
+        <svg class="arrow" viewBox="0 0 64 24" fill="none" stroke="#0B1A15" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h55M48 3.5l9.5 8.5-9.5 8.5"/></svg>
+      </div>
+      <figure class="qr-frame">
+        <div class="qr-card">
+          <img src="assets/qr-fixmatchh.svg" alt="QR-kode til fixmatchh.netlify.app">
+          <figcaption class="url">fixmatchh.netlify.app</figcaption>
+        </div>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= BAGSIDE ======================= -->
+<section class="page back" aria-label="Bagside">
+  <div class="sheet">
+    <div class="panel panel-a">
+      <div class="panel-deco" style="left: 104mm; top: -34mm; width: 64mm; height: 64mm;"></div>
+    </div>
+    <div class="panel panel-b"></div>
+    <div class="trim">
+      <div class="top">
+        <div class="wordmark" aria-label="FixMatch">fixmatch<span class="dot">.</span></div>
+        <div class="chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.2"/></svg>
+          Testversion med demo-firmaer
+        </div>
+      </div>
+
+      <div class="flow">
+        <section class="card owners">
+          <h2><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#00805C" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7"/><path d="M5.8 9.5V20h12.4V9.5M10 20v-5.5h4V20"/></svg></span>Til boligejere</h2>
+          <ul class="checks">
+            <li>Altid gratis.</li>
+            <li>Du ringer direkte til firmaet.</li>
+            <li><b>Rækkefølgen kan ikke købes.</b></li>
+            <li>Anmeldelser kun fra brugere, der har kontaktet firmaet gennem FixMatch.</li>
+          </ul>
+        </section>
+
+        <section class="card trades">
+          <div>
+            <h2><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#00805C" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="8.5" width="17" height="11" rx="1.6"/><path d="M9 8.5V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2.5M3.5 13h17M10.5 13v2h3v-2"/></svg></span>Til håndværkere og værksteder</h2>
+            <div class="tiles" aria-hidden="true">
+              <img src="assets/fag/vvs.svg" alt=""><img src="assets/fag/elektriker.svg" alt=""><img src="assets/fag/toemrer.svg" alt=""><img src="assets/fag/murer.svg" alt="">
+              <img src="assets/fag/mekaniker.svg" alt=""><img src="assets/fag/maler.svg" alt=""><img src="assets/fag/tagdaekker.svg" alt=""><img src="assets/fag/laasesmed.svg" alt="">
+            </div>
+            <ul class="checks">
+              <li><b>Gratis profil og Verificeret-mærke:</b> Vi tjekker CVR, ejer og autorisation.</li>
+              <li>Aldrig betaling pr. kunde.</li>
+              <li>I godkender alt, der står om jer, og kan komme ud når som helst.</li>
+              <li>Tre minutter at komme med.</li>
+            </ul>
+          </div>
+          <figure class="qr-frame">
+            <div class="qr-card">
+              <img src="assets/qr-tilmeld.svg" alt="QR-kode til fixmatchh.netlify.app/tilmeld/">
+              <figcaption class="url">fixmatchh.netlify.app/tilmeld/</figcaption>
+            </div>
+            <p class="say">Tilmeld jer gratis.</p>
+          </figure>
+        </section>
+
+        <section class="money">
+          <h2>Sådan tjener vi penge</h2>
+          <p><b>Brugerne betaler aldrig.</b> Firmaer kan vælge et Pro-abonnement med flere billeder og priser (forslag: 299–499&nbsp;kr./md.). <b>Pro giver aldrig en bedre plads.</b></p>
+        </section>
+
+        <footer class="back-foot">
+          <p class="contact"><b>Kontakt:</b> <span data-team="kontakt"><span class="ph">[Navn · telefon · e-mail]</span></span></p>
+          <p><span data-team="deltagere"><span class="ph">[Navn 1]</span>, <span class="ph">[Navn 2]</span>, <span class="ph">[Navn 3]</span>, <span class="ph">[Navn 4]</span></span> · Underviser: <span data-team="underviser"><span class="ph">[Underviserens navn]</span></span> · <span data-team="skole"><span class="ph">[Skolens navn]</span></span> · Business Minds <span data-team="aarstal">2026/2027</span></p>
+          <p>Verificeret er ikke en kvalitetsgaranti.</p>
+        </footer>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+  var mode = params.get('mode') || 'screen';
+  document.documentElement.dataset.mode = mode;
+
+  // Navne fra team.json (build-flyer.js lægger dem i window.FLYER_TEAM, før siden indlæses).
+  var team = window.FLYER_TEAM || {};
+  document.querySelectorAll('[data-team]').forEach(function (el) {
+    var value = team[el.dataset.team];
+    if (typeof value === 'string' && value.trim()) el.innerHTML = value;
+  });
+
+  // Chromium runder PDF-sidens størrelse af (op til 0,5 pt). Siden tegnes derfor 2 mm for stor,
+  // og build-flyer.js beskærer PDF'en til den præcise størrelse fra øverste venstre hjørne.
+  var size = { bleed: [154, 216], trim: [148, 210], a4: [297, 210], screen: [154, 216] }[mode];
+  var style = document.createElement('style');
+  style.textContent = '@page { size: ' + (size[0] + 2) + 'mm ' + (size[1] + 2) + 'mm; margin: 0; }';
+  document.head.appendChild(style);
+
+  if (mode === 'a4') buildA4();
+
+  // To flyers pr. liggende A4: side 1 to forsider, side 2 to bagsider. Flyerne skaleres til 90 %
+  // (133,2 × 189 mm), så skæremærkerne ligger inden for det, en almindelig printer kan trykke.
+  // Placeringen er spejlsymmetrisk om sidens midte, så bagsiderne rammer forsiderne ved dobbeltsidet tryk.
+  function buildA4() {
+    var S = 0.9, B = 3 * S, W = 148 * S, H = 210 * S;
+    var top = (210 - H) / 2, x1 = top, x2 = 297 - top - W;
+    var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+    pages.forEach(function (page, index) {
+      var a4 = document.createElement('section');
+      a4.className = 'page a4';
+      [x1, x2].forEach(function (x) {
+        var slot = document.createElement('div');
+        // Keep the side's class (front/back): the panel height and the layout rules hang on it.
+        slot.className = 'a4-slot ' + (page.classList.contains('front') ? 'front' : 'back');
+        slot.style.left = (x - B) + 'mm';
+        slot.style.top = (top - B) + 'mm';
+        slot.style.transform = 'scale(' + S + ')';
+        slot.appendChild(page.querySelector('.sheet').cloneNode(true));
+        a4.appendChild(slot);
+      });
+      var gap = 0.5, len = 4.3, lines = [];
+      [x1, x1 + W, x2, x2 + W].forEach(function (x) {
+        lines.push([x, top - B - gap - len, x, top - B - gap]);
+        lines.push([x, top + H + B + gap, x, top + H + B + gap + len]);
+      });
+      [top, top + H].forEach(function (y) {
+        lines.push([x1 - B - gap - len, y, x1 - B - gap, y]);
+        lines.push([x2 + W + B + gap, y, x2 + W + B + gap + len, y]);
+        lines.push([x1 + W + B + gap, y, x2 - B - gap, y]);
+      });
+      var note = (index === 0 ? 'Forsider' : 'Bagsider') +
+        ' · Tryk i 100 %, dobbeltsidet: vend på den korte kant · Skær ved mærkerne · Hver flyer: 133 × 189 mm';
+      a4.insertAdjacentHTML('beforeend',
+        '<svg class="marks" viewBox="0 0 297 210" aria-hidden="true">' +
+        lines.map(function (l) {
+          return '<line x1="' + l[0] + '" y1="' + l[1] + '" x2="' + l[2] + '" y2="' + l[3] + '" stroke="#000" stroke-width="0.15"/>';
+        }).join('') +
+        '<text x="0" y="0" transform="translate(' + (148.5 + 0.7) + ' 105) rotate(-90)" text-anchor="middle" ' +
+        'font-family="Inter" font-weight="500" font-size="1.9" fill="#5C6D66">' + note + '</text></svg>');
+      page.parentNode.insertBefore(a4, page);
+      page.remove();
+    });
+  }
+})();
+</script>
+</body>
+</html>
