@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AvailabilityBadge } from '@/components/business/availability-badge';
 import { BusinessMark } from '@/components/business/business-mark';
 import { MatchBadge } from '@/components/business/match-badge';
+import { PriceText } from '@/components/business/price-text';
 import { ReviewRating } from '@/components/business/review-rating';
 import { TradeTile } from '@/components/category-tile';
 import { HeroPanel } from '@/components/hero-panel';
@@ -27,7 +28,7 @@ import { useLayout } from '@/hooks/use-layout';
 import { availableWhen } from '@/lib/availability';
 import { DATA_MODE } from '@/lib/data-source';
 import { showDialog } from '@/lib/dialog';
-import { formatDistance, formatHourly, formatPriceRange } from '@/lib/format';
+import { formatDistance, formatPrice, formatPriceRange, speakablePrice } from '@/lib/format';
 import { distanceKm } from '@/lib/geo';
 import { lowestHourlyByTrade, summarizeJobPrice } from '@/lib/prices';
 import { reviewCount, reviewValue, scoreBusinesses } from '@/lib/ranking';
@@ -347,6 +348,9 @@ export default function HomeScreen() {
                   onPress={() => router.push({ pathname: '/virksomhed/[id]', params: { id: business.id } })}
                   accessibilityLabel={[
                     t('Annonce: {name}, {distance} væk', { name: business.name, distance: formatDistance(km) }),
+                    t('fra {price} i timen', {
+                      price: speakablePrice(formatPrice(business.pricing.hourlyMin, currencyOf(business))),
+                    }),
                     reviewRatingLabel(business.reviewSummary),
                   ]
                     .filter(Boolean)
@@ -364,10 +368,20 @@ export default function HomeScreen() {
                       <MatchBadge score={score} />
                     </View>
                     <ReviewRating summary={business.reviewSummary} />
-                    <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
-                      {formatHourly(business.pricing.hourlyMin, business.pricing.hourlyMax, currencyOf(business))} ·{' '}
-                      {formatDistance(km)}
-                    </AppText>
+                    <View style={styles.hourly}>
+                      <AppText variant="footnote" tone="textSecondary" maxFontSizeMultiplier={1.3}>
+                        {t('fra')}
+                      </AppText>
+                      <PriceText
+                        value={business.pricing.hourlyMin}
+                        currency={currencyOf(business)}
+                        variant="headline"
+                        style={styles.flexShrink}
+                      />
+                      <AppText variant="footnote" tone="textSecondary" numberOfLines={1} maxFontSizeMultiplier={1.3}>
+                        {t('pr. time')} · {formatDistance(km)}
+                      </AppText>
+                    </View>
                   </Card>
                 </Tappable>
               ))}
@@ -628,6 +642,7 @@ const styles = StyleSheet.create({
   featured: { width: 290, borderRadius: Radius.card, padding: Spacing.md, gap: Spacing.xs },
   person: { width: 240, borderRadius: Radius.card, padding: Spacing.md, gap: Spacing.sm },
   rowBetween: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
+  hourly: { flexDirection: 'row', alignItems: 'baseline', gap: 4 },
   steps: { marginHorizontal: ScreenPadding, borderRadius: Radius.card, padding: Spacing.lg, gap: Spacing.lg },
   step: { flexDirection: 'row', gap: Spacing.md, alignItems: 'flex-start' },
   stepNumber: {
