@@ -1,3 +1,4 @@
+import { applyFilters, DEFAULT_FILTERS } from '@/lib/filters';
 import { distanceKm, isInDenmark } from '@/lib/geo';
 import {
   bestReviewed,
@@ -195,6 +196,19 @@ describe('priceLevel', () => {
     expect(priceLevel(peers[0], peers)).toBe(1);
     expect(priceLevel(peers[2], peers)).toBe(2);
     expect(priceLevel(peers[4], peers)).toBe(3);
+  });
+
+  it('gives no level with too few businesses in the trade, so no price filter shows them', () => {
+    const two = [500, 700].map((p, i) =>
+      makeBusiness({ id: `p${i}`, pricing: { hourlyMin: p, hourlyMax: p, examples: [], updatedAt: '2026-10-01' } }),
+    );
+    expect(priceLevel(two[0], two)).toBeNull();
+    const scored = scoreBusinesses(two, ORIGIN, DEFAULT_PRIORITIES);
+    for (const level of [1, 2, 3] as const) {
+      expect(
+        applyFilters(scored, { ...DEFAULT_FILTERS, maxDistanceKm: null, priceLevel: level }, { all: two }),
+      ).toEqual([]);
+    }
   });
 });
 

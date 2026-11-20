@@ -63,6 +63,7 @@ export function applyFilters(
     if (filters.availableSoon && !availableWhen(business, now)) return false;
     if (filters.videoCheckOnly && !business.videoCheck) return false;
     if (filters.openNow && !isOpenNow(business.hours, now, timeZoneOf(business)) && !business.emergency) return false;
+    // A business with too few others in its trade has no level (null), so no price filter shows it.
     if (filters.priceLevel !== null && priceLevel(business, context.all, context.category) !== filters.priceLevel) {
       return false;
     }

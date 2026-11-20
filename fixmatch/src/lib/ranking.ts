@@ -182,7 +182,7 @@ export function bestReviewed(items: ScoredBusiness[]): string | undefined {
 
 export type PriceLevel = 1 | 2 | 3;
 
-/** Fewer businesses than this in the trade give no price level (it says "middel"). */
+/** Fewer businesses than this in the trade give no price level, and the price filter leaves them out. */
 export const PRICE_LEVEL_MIN_PEERS = 3;
 /** "Middel" is within this fraction of the trade's median hourly rate. */
 export const PRICE_LEVEL_BAND = 0.06;
@@ -203,10 +203,13 @@ export function pricePeers(business: Business, all: Business[], category?: Categ
   return all.filter((b) => (b.country ?? 'DK') === country && b.categories.includes(trade));
 }
 
-/** Price level compared with the median hourly rate of the trade (±6 %). */
-export function priceLevel(business: Business, all: Business[], category?: CategoryId): PriceLevel {
+/**
+ * Price level compared with the median hourly rate of the trade (±6 %), or null when there are
+ * too few businesses in the trade to compare with.
+ */
+export function priceLevel(business: Business, all: Business[], category?: CategoryId): PriceLevel | null {
   const peers = pricePeers(business, all, category).map(priceIndex);
-  if (peers.length < PRICE_LEVEL_MIN_PEERS) return 2;
+  if (peers.length < PRICE_LEVEL_MIN_PEERS) return null;
   const ratio = priceIndex(business) / median(peers);
   if (ratio < 1 - PRICE_LEVEL_BAND) return 1;
   if (ratio > 1 + PRICE_LEVEL_BAND) return 3;

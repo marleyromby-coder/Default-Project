@@ -46,7 +46,7 @@ export function priceInsight(business: Business, all: Business[], category?: Cat
   const typical = enough ? median(peers.map(priceIndex)) : undefined;
   return {
     count: peers.length,
-    level: enough ? priceLevel(business, all, category) : null,
+    level: priceLevel(business, all, category),
     low,
     high,
     from: at(business.pricing.hourlyMin),
