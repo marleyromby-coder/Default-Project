@@ -270,6 +270,9 @@ function signupForm(lang, { root, email }) {
     },
   };
 
+  // The phone pattern escapes ( ) and -: browsers compile pattern="" with the v flag, which rejects
+  // them bare and then ignores the pattern. The website is a text field with the URL keyboard, so
+  // "firma.dk" is accepted as in the app (https:// is added when it is sent).
   return `<form id="signup" class="signup" novalidate>
 <fieldset><legend>${escape(text.business)}</legend>
 ${countryField}
@@ -280,9 +283,9 @@ ${field(text.street, '<input name="street" required maxlength="120" autocomplete
 <div class="row">${field(text.postal, '<input name="postal_code" required minlength="3" maxlength="10" autocomplete="postal-code">')}${field(text.city, '<input name="city" required maxlength="80" autocomplete="address-level2">')}</div>
 </fieldset>
 <fieldset><legend>${escape(text.contact)}</legend>
-${field(text.phone, '<input name="phone" type="tel" required pattern="\\+?[0-9 ()\\-]{6,20}" autocomplete="tel">')}
+${field(text.phone, '<input name="phone" type="tel" required pattern="\\+?[0-9 \\(\\)\\-]{6,20}" autocomplete="tel">')}
 ${field(text.email, '<input name="email" type="email" required autocomplete="email">', text.emailHint)}
-${field(text.website, '<input name="website" type="url" inputmode="url" maxlength="200" placeholder="https://">')}
+${field(text.website, '<input name="website" inputmode="url" maxlength="200" autocomplete="url" autocapitalize="off" spellcheck="false" placeholder="https://">')}
 ${field(text.reviewLinks, '<input name="review_links" inputmode="url" maxlength="1000" autocapitalize="off" spellcheck="false" placeholder="https://">', text.reviewLinksHint(siteNames, MAX_REVIEW_LINKS))}
 </fieldset>
 <fieldset><legend>${escape(text.prices)}</legend>
