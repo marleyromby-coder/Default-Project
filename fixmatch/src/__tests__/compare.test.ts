@@ -87,8 +87,13 @@ describe('toggleCompared', () => {
 
   it('starts over with a business in another trade', () => {
     expect(tick(['vvs-a', 'vvs-b', 'painter'])).toEqual(['painter']);
-    expect(tick(['roof-a', 'lund', 'carpenter'])).toEqual(['carpenter']);
     expect(tick(['vvs-a', 'vvs-b', 'vvs-c', 'painter'])).toEqual(['painter']);
+  });
+
+  it('keeps the picks that share a trade with the new business', () => {
+    expect(tick(['roof-a', 'lund', 'carpenter'])).toEqual(['lund', 'carpenter']);
+    expect(tick(['roof-a', 'roof-b', 'lund', 'carpenter'])).toEqual(['lund', 'carpenter']);
+    expect(toggleCompared(['vvs-a', 'roof-a'], 'roof-b', all, max)).toEqual(['roof-a', 'roof-b']);
   });
 
   it('holds at most three and leaves a full list as it is', () => {

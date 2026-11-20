@@ -13,8 +13,10 @@ export function sharedTrade(businesses: Business[]): CategoryId | undefined {
 
 /**
  * The compare list after ticking or unticking `id`, or undefined when it is full (`max`) and
- * nothing changes. The picks stay when they and the new business share a trade, so a business in
- * two trades (tømrer and tagdækker) joins two roofers; a business in another trade starts over.
+ * nothing changes. The picks that share a trade with the new business stay, so a business in two
+ * trades (tømrer and tagdækker) joins two roofers, and a roofer ticked after a tømrer-and-roofer
+ * keeps that one. When several of the new business's trades fit, the one that keeps the most picks
+ * wins. A business that shares no trade with any pick starts over.
  */
 export function toggleCompared(
   compare: string[],
@@ -24,10 +26,13 @@ export function toggleCompared(
 ): string[] | undefined {
   if (compare.includes(id)) return compare.filter((x) => x !== id);
   const business = businesses.find((b) => b.id === id);
+  if (!business) return [id];
   const picked = compare.map((x) => businesses.find((b) => b.id === x)).filter((b): b is Business => b !== undefined);
-  if (!business || !sharedTrade([...picked, business])) return [id];
-  if (picked.length >= max) return undefined;
-  return [...picked.map((b) => b.id), id];
+  const kept = business.categories
+    .map((trade) => picked.filter((b) => b.categories.includes(trade)))
+    .reduce<Business[]>((best, list) => (list.length > best.length ? list : best), []);
+  if (kept.length === picked.length && picked.length >= max) return undefined;
+  return [...kept.slice(0, max - 1).map((b) => b.id), id];
 }
 
 /**
