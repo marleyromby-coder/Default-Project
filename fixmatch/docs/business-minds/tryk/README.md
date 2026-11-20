@@ -127,7 +127,11 @@ så ret det, før I trykker. Bliver navnene for lange, er det typisk afstanden t
 - `pdf/` og `preview/`: laves af `build.js`.
 
 **Nye skærmbilleder:** tag dem fra webudgaven i 390 × 844 punkter med `deviceScaleFactor: 3`, i
-lys tilstand og på dansk. Gem dem under de samme navne i `assets/`, og byg igen.
+lys tilstand og på dansk. Gem dem under de samme navne i `assets/`, og byg igen. Skærmene er Find
+(`/`), VVS-listen (`/kategori/vvs`) og `/virksomhed/hjertevarme-vvs-og-blik`, med "Opret en bruger" og
+Velkommen sprunget over og placeringen København K. Browserens ur står på en hverdag kl. 10.12
+(tirsdag 24. november 2026), så åbningstiderne siger "Åben til …". De nuværende billeder er fra
+20. november 2026.
 
 **Ny adresse til en QR-kode:** lav en ny SVG med npm-pakken `qrcode`
 (`errorCorrectionLevel: 'M'`, `margin: 0`), gem den under samme navn, og ret adressen i
