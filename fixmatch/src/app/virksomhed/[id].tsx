@@ -198,6 +198,7 @@ export default function BusinessScreen() {
               detail={t('af 100')}
               spoken={t('{score} af 100, {label}', { score: scored.score, label: matchLabel(scored.score) })}
               first
+              flex={0.85}
             />
             <Stat
               label={t('Timepris')}
@@ -205,12 +206,13 @@ export default function BusinessScreen() {
               detail={[hourly.unit, taxNote(market)].filter(Boolean).join(' ')}
               spoken={formatPriceRange(business.pricing.hourlyMin, business.pricing.hourlyMax, 'opgave', currency)}
               brand
-              wide
+              flex={1.3}
             />
             <Stat
               label={t('Afstand')}
               value={formatDistance(scored.distanceKm)}
               detail={state.location.label ? t('fra {place}', { place: state.location.label }) : t('i luftlinje')}
+              flex={1.15}
             />
           </Card>
 
@@ -778,7 +780,7 @@ function Stat({
   detail,
   spoken,
   first,
-  wide,
+  flex = 1,
   brand,
 }: {
   label: string;
@@ -787,8 +789,11 @@ function Stat({
   /** What VoiceOver reads for the value, when it differs from the text. */
   spoken?: string;
   first?: boolean;
-  /** Gets more of the width, for a price range that is longer than the other values. */
-  wide?: boolean;
+  /**
+   * Its share of the width, sized to its content: the hourly range is the longest value, the
+   * distance has the longest detail ("fra København K"), and the score is short.
+   */
+  flex?: number;
   brand?: boolean;
 }) {
   const colors = useTheme();
@@ -796,7 +801,7 @@ function Stat({
     <View
       style={[
         styles.stat,
-        wide ? styles.statWide : null,
+        { flex },
         first ? null : { borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: colors.border },
       ]}
       accessible
@@ -836,8 +841,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.xs,
     borderRadius: Radius.card,
   },
-  stat: { flex: 1, alignItems: 'center', gap: 2, paddingHorizontal: 3 },
-  statWide: { flex: 1.3 },
+  stat: { alignItems: 'center', gap: 2, paddingHorizontal: 3 },
   statValueWeb: { fontSize: 25, lineHeight: 30 },
   reviewBar: {
     flexDirection: 'row',
