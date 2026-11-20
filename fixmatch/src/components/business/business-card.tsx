@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, Text, View, type TextStyle } from 'react-native';
 
 import { Badge, type BadgeTone } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -48,6 +48,9 @@ interface Props {
 /** Width of the price column on the right. */
 const PRICE_COLUMN = 116;
 
+/** Keeps a run of text on one line on the web (not a React Native style, so it is cast). */
+const NO_WRAP = { whiteSpace: 'nowrap' } as TextStyle;
+
 /**
  * A business in a result list, in two columns: who it is on the left (initials, name,
  * Verificeret, tagline, reviews when there are any, distance, opening hours and "Sammenlign"),
@@ -72,6 +75,16 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
   const open = getOpenStatus(business.hours, undefined, timeZoneOf(business));
   const free = availableWhen(business);
   const answers = answerRateText(useAnswerRate(business));
+  const seal = verified ? (
+    <View style={styles.seal}>
+      <VerifiedMark business={business} />
+    </View>
+  ) : null;
+  // On iOS the no-break space keeps the seal with the last word. Chrome still breaks before the
+  // inline seal, so on the web the name's last letter and the seal share a span that does not wrap:
+  // there is no break inside a word, so the seal moves with the whole last word, and a word too long
+  // for the line can still break before that letter.
+  const lastLetter = Array.from(business.name).pop() ?? '';
 
   const ribbonBadges = [
     highlight ? { key: 'highlight', ...highlight } : null,
@@ -138,15 +151,24 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
               <View style={styles.titleText}>
                 {/* The seal sits in the text, so it follows the last word of a two-line name. */}
                 <AppText variant="headline" display numberOfLines={2}>
-                  {business.name}
-                  {verified ? (
+                  {!seal ? (
+                    business.name
+                  ) : Platform.OS === 'web' ? (
                     <>
-                      {'\u00a0'}
-                      <View style={styles.seal}>
-                        <VerifiedMark business={business} />
-                      </View>
+                      {business.name.slice(0, business.name.length - lastLetter.length)}
+                      <Text style={NO_WRAP}>
+                        {lastLetter}
+                        {'\u00a0'}
+                        {seal}
+                      </Text>
                     </>
-                  ) : null}
+                  ) : (
+                    <>
+                      {business.name}
+                      {'\u00a0'}
+                      {seal}
+                    </>
+                  )}
                 </AppText>
                 <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
                   {businessText(business).tagline}
