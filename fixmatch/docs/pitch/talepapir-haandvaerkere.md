@@ -11,7 +11,7 @@ Til præsentationen af FixMatch for håndværkere og værksteder. Talepapiret h�
 
 ## Pitch på 30 sekunder (telefon)
 
-> Hej, det er [navn] fra FixMatch. Jeg sælger ikke leads, og jeg skal bare bruge et halvt minut. Er det okay? … Vi har bygget en gratis app, hvor folk i København ser jeres priser og ringer direkte til jer. I betaler aldrig pr. kunde, og ingen kan købe sig foran jer. Vi tjekker jeres CVR og autorisation og giver jer et Verificeret-mærke, og I godkender selv alt, hvad der står om jer. Lige nu samler vi de første 40 firmaer i København. Det tager tre minutter at komme med, og I kan blive fjernet når som helst. Må jeg sende jer linket på SMS?
+> Hej, det er [navn] fra FixMatch. Jeg sælger ikke leads, og jeg skal bare bruge et halvt minut. Er det okay? … Vi har bygget en gratis app, hvor folk i København ser jeres priser og ringer direkte til jer. I betaler aldrig pr. kunde, og ingen kan købe sig foran jer. Vi tjekker CVR, ejer og autorisation og giver jer et gratis Verificeret-mærke, og I godkender selv alt, hvad der står om jer. Lige nu samler vi de første 40 firmaer i København. Det tager tre minutter at komme med, og I kan blive fjernet når som helst. Må jeg sende jer linket på SMS?
 
 Hvis svaret er nej: "Helt i orden. Tak for snakken." Notér "ønsker ikke kontakt", og ring ikke igen.
 
@@ -27,7 +27,7 @@ Før I ringer:
 Det koster ingenting. Profilen og Verificeret-mærket er gratis, og vi tager aldrig penge pr. kunde eller pr. opkald. Senere kommer et frivilligt Pro-abonnement med flere billeder og priser på flere opgaver. Vores forslag er 299–499 kr./md. Pro giver aldrig en bedre placering.
 
 **Hvordan tjener I penge – og findes I om et år?**
-På Pro og senere en annonceplads, der står adskilt og er mærket "Annonce". Driften koster ca. 10.000 kr. om året, så cirka tre Pro-kunder dækker det. Lukker vi, har I mistet tre minutter.
+På Pro og senere en annonceplads, der står adskilt og er mærket "Annonce". Driften koster 9.900 kr. om året, så break-even er tre Pro-kunder. Lukker vi, har I mistet tre minutter.
 
 **I er jo bare nogle unge mennesker?**
 Ja, og vi har selv bygget appen. Den virker – se her. Vi tager ingen penge, og I kan komme ud når som helst.
@@ -48,10 +48,10 @@ Kun brugere, der har kontaktet jer gennem FixMatch, kan anmelde – én gang hve
 I vælger selv, hvilke priser I viser, fx timepris, kørsel og et par typiske opgaver. Det er et udgangspunkt, ikke et fast tilbud. Kunden kan sende et foto på SMS eller tage et kort videotjek først.
 
 **Bestemmer I mine priser? Kalder Tilbudstjek mig dyr?**
-I sætter selv jeres priser. Vi aftaler aldrig priser med jer eller mellem firmaer – det er ulovligt. Tilbudstjek viser kunden et normalt prisniveau og fradraget i kroner. Kunden ser også verificering og anmeldelser, og 67 % vælger efter kvalitet.
+I sætter selv jeres priser. Vi aftaler aldrig priser med jer eller mellem firmaer – det er ulovligt. Tilbudstjek viser kunden et normalt prisniveau og fradraget i kroner. På jeres side står der "Lav pris", "Middel" eller "Høj pris": Det sammenligner midten af jeres timepris med den typiske timepris for alle firmaer i jeres fag på FixMatch i Danmark. "Billigst" på listen er bare den laveste fra-pris pr. time. Kunden ser også verificering og anmeldelser, og 67 % vælger efter kvalitet.
 
 **Hvordan kommer jeg øverst?**
-Rækkefølgen afgøres af pris, afstand og anmeldelser fra brugere, der har kontaktet virksomheden gennem FixMatch. Kunden vælger selv, hvad der vejer tungest, og rækkefølgen kan ikke købes.
+Rækkefølgen afgøres af pris, afstand og anmeldelser fra brugere, der har kontaktet virksomheden gennem FixMatch. Kunden vælger selv, hvad der vejer tungest, og rækkefølgen kan ikke købes. Verificeret-mærket og Pro giver heller ikke en bedre plads.
 
 **Svarprocenten er ikke fair – jeg står på et tag.**
 Den viser fx "tager telefonen 8 ud af 10 gange" og skal give kunderne tryghed. Ring tilbage, når I kan. Fortæl os gerne, hvordan den bliver mest fair.
@@ -60,7 +60,7 @@ Den viser fx "tager telefonen 8 ud af 10 gange" og skal give kunderne tryghed. R
 Så behold det. FixMatch koster ingenting, så det er ikke et enten-eller.
 
 **Jeg har gode stjerner på Trustpilot og Google. Kan I vise dem?**
-Vi må ikke kopiere stjerner fra andre sider uden en aftale. Vi har talt med Trustpilot, og en integration er mulig, men for dyr for os nu. Et link til jeres profil dér er tilladt, og det viser vi gerne. I FixMatch tæller anmeldelser fra brugere, der har kontaktet jer gennem appen.
+Vi må ikke kopiere stjerner fra andre sider uden en aftale. Vi har talt med Trustpilot, og en integration er mulig, men for dyr for os nu. Et link til jeres profil dér er tilladt, og det viser vi gerne, men det tæller ikke med i rækkefølgen. I FixMatch tæller kun anmeldelser fra brugere, der har kontaktet jer gennem appen.
 
 **Mange af mine kunder har Android.**
 Vi starter på iPhone for at gøre én ting godt. Tilmeldingen og "Ledig i dag" ligger på hjemmesiden, så I ikke selv behøver en iPhone.
@@ -83,7 +83,7 @@ Vi viser kun det, I godkender, og samtykket gemmes med tidspunkt. Data ligger i 
 
 ## Praktisk før dagen
 
-- [ ] Print et A5-kort med QR-koden (fixmatchh.netlify.app/tilmeld) og en kontaktperson.
+- [ ] Print et A5-kort med QR-koden (fixmatchh.netlify.app/tilmeld) og en kontaktperson. Bagsiden af flyeren fra Business Minds kan bruges (`docs/business-minds/tryk/`).
 - [ ] Læg den nye hjemmeside online, så tilmeldingen virker.
 - [ ] Hav en telefon klar med den nyeste testversion til demoen.
 - [ ] Øv demoen: beskriv et problem → sammenlign → åbn en profil → tryk Ring.

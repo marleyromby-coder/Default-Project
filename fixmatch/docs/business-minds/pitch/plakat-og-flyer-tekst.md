@@ -1,6 +1,6 @@
 # FixMatch – tekst til plakat og flyer
 
-Teksten til plakaten (A1 eller A2, stående) og flyeren (A5, to sider) til standen i Vejle. Layoutet laves senere. Her står teksten, QR-koderne, hvilke skærme fra appen der skal med, og noter til layoutet.
+Teksten til plakaten (A1 eller A2, stående) og flyeren (A5, to sider) til standen i Vejle. Layoutet er lavet i `../tryk/` (`plakat.html`, `flyer.html`), og PDF'erne og billederne af dem ligger i `../tryk/pdf/` og `../tryk/preview/`. Her står teksten, QR-koderne, hvilke skærme fra appen der er med, og noter til layoutet. Teksten her og på PDF'erne er tjekket mod hinanden den 20. november 2026.
 
 Alt her følger rapporten og talepapiret. Skærmbillederne viser demo-firmaer, så de skal mærkes "Demo".
 
@@ -18,11 +18,13 @@ Alt her følger rapporten og talepapiret. Skærmbillederne viser demo-firmaer, s
 
 ## Plakat (A1 eller A2, stående)
 
-**Ord på plakaten:** 53 ord i stor tekst (logo, overskrift, underlinje, trin, løfte og teksten ved QR-koderne), der skal kunne læses på 2 meters afstand, plus 16 ord i den lille fodlinje. I alt 69 ord.
+**Ord på plakaten:** 54 ord i stor tekst (logo, mærket "Demoversion", overskrift, underlinje, trin, løfte og teksten ved QR-koderne), der skal kunne læses på 2 meters afstand, plus 16 ord i den lille fodlinje. I alt 70 ord.
 
 ### Tekst
 
 **LOGO:** FixMatch
+
+**MÆRKE** (øverst til højre): Demoversion
 
 **OVERSKRIFT:**
 Se prisen, før du ringer.
@@ -54,17 +56,17 @@ Tre telefoner på række, én for hvert trin. Hver skærm får et lille mærke: 
 
 | Trin | Skærm i appen | Det skal kunne ses |
 |---|---|---|
-| 1 | **Find** (forsiden) | De farvede fag-fliser og knappen "Sammenlign priser" |
-| 2 | **Resultater** (VVS'er) | Listen med timepriser, afstand og anmeldelser. Fanen "Bedste match" er valgt. Mærkerne "Billigst" og "Nærmest" ses på kortene |
-| 3 | **Virksomhed** (det VVS-demo-firma, I bruger i demoen) | Priserne, mærket Verificeret og knappen Ring |
+| 1 | **Find** (forsiden) | De farvede fag-fliser med "fra"-priser, knappen "Sammenlign priser" og appens mærke "Demoversion" |
+| 2 | **Resultater** (VVS'er) | Listen med "fra"-priser pr. time, afstand og anmeldelser. Fanen "Bedste match" er valgt, og fanerne viser 82/100, 560 kr./t, 2,6 km og ★ 4,5 (19). Det første kort, Hjertevarme VVS & Blik, har mærkerne "Bedste match" og "Billigst" og Verificeret-tegnet efter navnet. Over listen: "Rækkefølgen kan ikke købes" |
+| 3 | **Virksomhed** (Hjertevarme VVS & Blik, det samme demo-firma som i demoen) | Mærkerne Verificeret, Autoriseret VVS-installatør og Demo, "Timepris 560–660 kr. inkl. moms", "2 anmeldelser fra brugere via FixMatch", "Fiktiv eksempelvirksomhed …" og knappen Ring |
 
-- Brug rigtige skærmbilleder fra testversionen, ikke konceptbillederne i `docs/design/ref/`. Så viser plakaten det samme som telefonen. Tag dem med placeringen sat til København og i lys tilstand.
+- Skærmbillederne er rigtige skærmbilleder fra appens webudgave, ikke konceptbillederne i `docs/design/ref/`. De er taget den 20. november 2026 i lys tilstand, på dansk og med placeringen København K, og de er de samme som på demo-telefonen. Ændres appen, så tag nye efter `../tryk/README.md`.
 - Det er de samme tre skærme, som demoen viser. Fejler telefonen, peger I på plakaten (se `pitch-dommere.md`).
 - Skærmbilledet fra trin 2 skal være stort nok til, at en dommer kan se priserne på 1 meters afstand.
 
 ### Noter til layoutet
 
-- **Farver** fra `docs/design/designsystem.md`: Overskriften står i hvidt på det smaragdgrønne panel (`#007A56` → `#00614A`). Baggrunden er lys (`#F1F5F3`). Solgul (`#FFB800`) bruges kun ét sted: rammen om den store QR-kode, og så prikken i logoet. Brug aldrig solgul som tekst på hvid.
+- **Farver** fra `docs/design/designsystem.md`: Overskriften står i hvidt på det smaragdgrønne panel (`#007A56` → `#00614A`). Baggrunden er lys (`#F1F5F3`). Solgul (`#FFB800`) bruges kun til rammen om den store QR-kode og til prikken efter logoet og efter overskriften. Brug aldrig solgul som tekst på hvid.
 - **Skrift:** Schibsted Grotesk til al tekst (gratis på Google Fonts). Overskriften i vægt 900 med stram spatiering, underlinje og trin i 700.
 - **Størrelser på A1** (594 × 841 mm): overskrift mindst 200 pt, underlinje mindst 72 pt, trin mindst 60 pt, fodlinje mindst 24 pt. Stor QR-kode mindst 12 × 12 cm, lille mindst 8 × 8 cm.
 - **Størrelser på A2** (420 × 594 mm): overskrift mindst 140 pt, underlinje mindst 50 pt, trin mindst 42 pt, fodlinje mindst 18 pt. Stor QR-kode mindst 9 × 9 cm, lille mindst 6 × 6 cm.
@@ -73,7 +75,7 @@ Tre telefoner på række, én for hvert trin. Hver skærm får et lille mærke: 
 
 ## Flyer (A5, to sider)
 
-**Ord på flyeren:** forsiden 51 ord, bagsiden 134 ord. I alt 185 ord.
+**Ord på flyeren:** forsiden 44 ord, bagsiden 133 ord. I alt 177 ord.
 
 ### Forside
 
@@ -81,44 +83,48 @@ Tre telefoner på række, én for hvert trin. Hver skærm får et lille mærke: 
 Hvad koster en VVS'er? Se det, før du ringer.
 
 **TRE PUNKTER:**
-- Firmaernes egne priser, før du ringer
+- Firmaernes egne priser
 - Sammenlign op til tre på pris, afstand og anmeldelser fra brugere via FixMatch
 - Tilbudstjek: Er dit tilbud lavt, normalt eller højt?
 
 **QR-KODE** → https://fixmatchh.netlify.app
 Scan og se, hvordan den virker.
 
-**BUNDLINJE:**
-FixMatch · Gratis iPhone-app · Lige nu i test med demo-firmaer
+**MÆRKE** (øverst til højre): Gratis iPhone-app
+
+**UNDER TELEFONEN:** Testversion med demo-firmaer
 
 ### Bagside
 
+**MÆRKE** (øverst til højre): Testversion med demo-firmaer
+
 **Til boligejere**
-Altid gratis. Du ringer direkte til firmaet. Anmeldelserne kommer kun fra brugere, der har kontaktet firmaet gennem FixMatch. Rækkefølgen kan ikke købes.
+Altid gratis. Du ringer direkte til firmaet. Rækkefølgen kan ikke købes. Anmeldelser kun fra brugere, der har kontaktet firmaet gennem FixMatch.
 
 **Til håndværkere og værksteder**
-Gratis profil og gratis Verificeret-mærke: Vi tjekker CVR, ejer og autorisation. Aldrig betaling pr. kunde. I godkender alt, der står om jer, og kan komme ud når som helst. Det tager tre minutter at komme med.
+Gratis profil og Verificeret-mærke: Vi tjekker CVR, ejer og autorisation. Aldrig betaling pr. kunde. I godkender alt, der står om jer, og kan komme ud når som helst. Det tager tre minutter at komme med.
 
 **QR-KODE** → https://fixmatchh.netlify.app/tilmeld/
 Tilmeld jer gratis.
 
 **Sådan tjener vi penge**
-Brugerne betaler aldrig. Firmaer kan vælge et frivilligt Pro-abonnement med flere billeder og priser (forslag: 299–499 kr./md.). Pro giver aldrig en bedre plads.
+Brugerne betaler aldrig. Firmaer kan vælge et Pro-abonnement med flere billeder og priser (forslag: 299–499 kr./md.). Pro giver aldrig en bedre plads.
 
 **Lige nu**
 Vi samler de første 40 firmaer i København. Kender du en håndværker? Så giv flyeren videre.
 
-**Kontakt:** [Navn] · [telefon] · [e-mail]
-[Navn 1] · [Navn 2] · [Navn 3] · [Navn 4] · [Skolens navn] · Business Minds 2026/2027
+**Kontakt:** [Navn · telefon · e-mail]
+[Navn 1], [Navn 2], [Navn 3], [Navn 4]
+Underviser: [Underviserens navn] · [Skolens navn] · Business Minds 2026/2027
 
-_Lille tekst nederst:_ Verificeret er ikke en garanti for kvaliteten af arbejdet.
+_Lille tekst nederst:_ Verificeret er ikke en kvalitetsgaranti.
 
 ### Skærme på flyeren
 
 | Side | Skærm i appen | Hvorfor |
 |---|---|---|
-| Forside | **Resultater** (VVS-listen med priser), mærket "Demo" | Viser løftet "Se det, før du ringer" |
-| Forside, lille (valgfri) | **Tilbudstjek** med resultatet "normal pris", mærket "Demo" | Viser det tredje punkt |
+| Forside | **Resultater** (VVS-listen med priser, samme skærm som plakatens trin 2), mærket "Demo". Listen toner ud ved Rørfalken | Viser løftet "Se det, før du ringer" |
+| Forside, lille | Ikke med i det trykte layout. Tilbudstjek står kun som tekst (det tredje punkt) | – |
 | Bagside | Ingen skærme | Teksten skal have plads, og QR-koden til tilmelding skal stå tydeligt |
 
 ### Noter til layoutet
