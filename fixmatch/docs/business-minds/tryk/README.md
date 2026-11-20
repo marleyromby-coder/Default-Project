@@ -29,17 +29,17 @@ QR-koderne er mindst 3 cm brede i alle flyer-filer. Bruger I `Tilpas til side`, 
 
 1. Åbn `../team.json` og skriv navnene ind i stedet for pladsholderne. Alt, der stadig står i
    `<span class="ph">[…]</span>`, bliver trykt som en gul boks, så I kan se, hvad der mangler.
-2. Tilføj linjen `kontakt`. Den mangler i filen i dag og bruges på flyerens bagside. Skriv et
-   nummer eller en adresse, som nogen faktisk tjekker efter Vejle.
+2. Udfyld også linjen `kontakt`. Den står i filen som en pladsholder og bruges på flyerens
+   bagside. Skriv et nummer eller en adresse, som nogen faktisk tjekker efter Vejle.
 
    ```json
    {
      "deltagere": "Marley Romby Sangill, Navn Navnesen, Navn Navnesen, Navn Navnesen",
+     "kontakt": "Navn · 12 34 56 78 · navn@skole.dk",
      "underviser": "Underviserens navn",
      "partnere": "…",
      "skole": "Skolens navn",
-     "aarstal": "2026/2027",
-     "kontakt": "Navn · 12 34 56 78 · navn@skole.dk"
+     "aarstal": "2026/2027"
    }
    ```
 
@@ -106,7 +106,7 @@ så ret det, før I trykker. Bliver navnene for lange, er det typisk afstanden t
 
 ## Tjekliste før I trykker
 
-- [ ] Navnene, skolen og underviseren er udfyldt i `../team.json`, og `kontakt` er tilføjet.
+- [ ] Navnene, skolen, underviseren og `kontakt` er udfyldt i `../team.json`.
 - [ ] `build.js` kører uden ✗, og der står ingen pladsholdere til sidst.
 - [ ] Billederne i `preview/` er læst igennem (stavning, navne, telefonnummer).
 - [ ] Begge QR-koder er testet med en telefon på et prøvetryk, på 1 og 2 meters afstand. De
