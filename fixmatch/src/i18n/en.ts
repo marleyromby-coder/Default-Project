@@ -545,7 +545,6 @@ const en: Record<string, string> = {
   '{score} ud af 100': '{score} out of 100',
   'fra {price} i timen': 'from {price} an hour',
   '/t': '/h',
-  '{rating} stjerner': '{rating} stars',
   fra: 'from',
   'Se priser': 'See prices',
   'Se priser hos {name}': 'See prices at {name}',
@@ -1581,9 +1580,11 @@ const en: Record<string, string> = {
   'Hvad er der sket?': 'What happened?',
   'Høj pris': 'High price',
   'Blandt {count} {trade} på FixMatch i {country}': 'Among {count} {trade} on FixMatch in {country}',
-  'Ingen andre {trade} på FixMatch i {country} at sammenligne med endnu.': 'No other {trade} on FixMatch in {country} to compare with yet.',
-  'For få at sammenligne med: kun {count} {trade} på FixMatch i {country}.': 'Too few to compare with: only {count} {trade} on FixMatch in {country}.',
-  'Demo': 'Demo',
+  'Ingen andre {trade} på FixMatch i {country} at sammenligne med endnu.':
+    'No other {trade} on FixMatch in {country} to compare with yet.',
+  'For få at sammenligne med: kun {count} {trade} på FixMatch i {country}.':
+    'Too few to compare with: only {count} {trade} on FixMatch in {country}.',
+  Demo: 'Demo',
   'af 100': 'out of 100',
   '{score} af 100, {label}': '{score} out of 100, {label}',
   'fra {place}': 'from {place}',
@@ -1592,12 +1593,14 @@ const en: Record<string, string> = {
   '1 anmeldelse': '1 review',
   '{count} anmeldelser': '{count} reviews',
   'fra brugere via FixMatch': 'from users via FixMatch',
-  'Læs': 'Read',
-  '{level}. Timepris {price}. Laveste i gruppen {low}, højeste {high}.': '{level}. Hourly rate {price}. Lowest in the group {low}, highest {high}.',
-  'lav': 'low',
-  'middel': 'medium',
-  'høj': 'high',
-  'Ud fra midten af timeprisen. Middel er inden for {band} % af den typiske timepris i gruppen.': 'Based on the middle of the hourly rate. Medium is within {band}% of the typical hourly rate in the group.',
+  Læs: 'Read',
+  '{level}. Timepris {price}. Laveste i gruppen {low}, højeste {high}.':
+    '{level}. Hourly rate {price}. Lowest in the group {low}, highest {high}.',
+  lav: 'low',
+  middel: 'medium',
+  høj: 'high',
+  'Ud fra midten af timeprisen. Middel er inden for {band} % af den typiske timepris i gruppen.':
+    'Based on the middle of the hourly rate. Medium is within {band}% of the typical hourly rate in the group.',
 };
 
 export default en;

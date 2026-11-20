@@ -8,9 +8,10 @@ import { AppText } from '@/components/ui/text';
 import { Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { currencyOf } from '@/lib/business-text';
-import { formatDistance, formatPrice, formatRating, speakablePrice } from '@/lib/format';
+import { formatDistance, formatNumber, formatPrice, formatRating, speakablePrice } from '@/lib/format';
 import { select } from '@/lib/haptics';
 import type { ScoredBusiness } from '@/lib/ranking';
+import { reviewRatingLabel } from '@/lib/review-label';
 import { sortTabWinners } from '@/lib/sort-tabs';
 import type { SortMode } from '@/lib/types';
 import { t } from '@/i18n';
@@ -35,7 +36,7 @@ interface Tab {
 
 /**
  * The sort tabs at the top of the results, each with the value that wins it in the list shown:
- * Bedste match 82/100 · Billigste 560 kr./t · Nærmeste 2,6 km · Bedst anmeldt ★ 4,5. The values
+ * Bedste match 82/100 · Billigste 560 kr./t · Nærmeste 2,6 km · Bedst anmeldt ★ 4,5 (19). The values
  * follow the same rules as the sort (sortTabWinners), and "Bedst anmeldt" shows no number when no
  * business in the list has reviews. A white card meant to overlap the panel above it.
  */
@@ -44,6 +45,8 @@ export function SortTabs({ items, value, onChange }: Props) {
   const winners = useMemo(() => sortTabWinners(items), [items]);
   const { match, price, distance, rating } = winners;
   const small = { color: colors.textSecondary };
+  // The values shrink on iOS before they are cut, e.g. at large text sizes on 375 pt phones.
+  const fit = { numberOfLines: 1, adjustsFontSizeToFit: true, minimumFontScale: 0.75, maxFontSizeMultiplier: 1.2 };
 
   const tabs: Tab[] = [
     {
@@ -52,7 +55,7 @@ export function SortTabs({ items, value, onChange }: Props) {
       hint: t('Sortér efter bedste match'),
       spoken: match ? t('{score} ud af 100', { score: match.score }) : undefined,
       shown: match ? (
-        <AppText variant="headline" display weight="800" numberOfLines={1} maxFontSizeMultiplier={1.2}>
+        <AppText variant="headline" display weight="800" {...fit}>
           {match.score}
           <AppText variant="caption" display weight="700" style={small}>
             /100
@@ -84,7 +87,7 @@ export function SortTabs({ items, value, onChange }: Props) {
       hint: t('Sortér efter korteste afstand'),
       spoken: distance ? formatDistance(distance.distanceKm) : undefined,
       shown: distance ? (
-        <AppText variant="headline" display weight="800" numberOfLines={1} maxFontSizeMultiplier={1.2}>
+        <AppText variant="headline" display weight="800" {...fit}>
           {formatDistance(distance.distanceKm)}
         </AppText>
       ) : undefined,
@@ -93,14 +96,15 @@ export function SortTabs({ items, value, onChange }: Props) {
       mode: 'rating',
       label: t('Bedst anmeldt'),
       hint: t('Sortér efter bedste anmeldelser'),
-      spoken: rating?.business.reviewSummary
-        ? t('{rating} stjerner', { rating: formatRating(rating.business.reviewSummary.average) })
-        : undefined,
+      spoken: reviewRatingLabel(rating?.business.reviewSummary),
       shown: rating?.business.reviewSummary ? (
         <View style={styles.rating}>
           <Icon name="star" size={14} color={colors.star} />
-          <AppText variant="headline" display weight="800" numberOfLines={1} maxFontSizeMultiplier={1.2}>
+          <AppText variant="headline" display weight="800" style={styles.flexShrink} {...fit}>
             {formatRating(rating.business.reviewSummary.average)}
+            <AppText variant="caption" display weight="700" style={small}>
+              {` (${formatNumber(rating.business.reviewSummary.reviews)})`}
+            </AppText>
           </AppText>
         </View>
       ) : undefined,
@@ -131,7 +135,7 @@ export function SortTabs({ items, value, onChange }: Props) {
                 variant="label"
                 numberOfLines={1}
                 adjustsFontSizeToFit
-                minimumFontScale={0.85}
+                minimumFontScale={0.75}
                 maxFontSizeMultiplier={1.2}
                 style={{ color: selected ? colors.brandText : colors.textSecondary }}>
                 {tab.label}
@@ -169,4 +173,5 @@ const styles = StyleSheet.create({
   },
   underline: { position: 'absolute', left: Spacing.sm, right: Spacing.sm, bottom: 0, height: 3, borderRadius: 2 },
   rating: { flexDirection: 'row', alignItems: 'center', gap: 3 },
+  flexShrink: { flexShrink: 1 },
 });
