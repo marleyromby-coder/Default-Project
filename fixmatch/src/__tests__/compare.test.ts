@@ -1,4 +1,4 @@
-import { scoringTrade, sharedTrade } from '@/lib/compare';
+import { scoringTrade, sharedTrade, toggleCompared } from '@/lib/compare';
 import { scoreBusinesses } from '@/lib/ranking';
 import type { Business, CategoryId } from '@/lib/types';
 
@@ -57,5 +57,58 @@ describe('scoringTrade', () => {
     const carpenters = businesses.filter((b) => b.categories.includes('toemrer') && (b.country ?? 'DK') === 'DK');
     const asCarpenter = scoreBusinesses(carpenters, origin, priorities).find((s) => s.business.id === lund.id)!;
     expect(asCarpenter.score).not.toBe(onList.score);
+  });
+});
+
+describe('toggleCompared', () => {
+  const max = 3;
+  const lund = trade('lund', 'toemrer', 'tagdaekker');
+  const roofA = trade('roof-a', 'tagdaekker');
+  const roofB = trade('roof-b', 'tagdaekker');
+  const roofC = trade('roof-c', 'tagdaekker');
+  const carpenter = trade('carpenter', 'toemrer');
+  const vvs = [trade('vvs-a', 'vvs'), trade('vvs-b', 'vvs'), trade('vvs-c', 'vvs'), trade('vvs-d', 'vvs')];
+  const painter = trade('painter', 'maler');
+  const all = [lund, roofA, roofB, roofC, carpenter, ...vvs, painter];
+  const tick = (ids: string[]) => ids.reduce<string[]>((list, id) => toggleCompared(list, id, all, max) ?? list, []);
+
+  it('keeps the picks when a two-trade business shares their trade', () => {
+    expect(tick(['roof-a', 'roof-b', 'lund'])).toEqual(['roof-a', 'roof-b', 'lund']);
+    expect(tick(['lund', 'roof-a', 'roof-b'])).toEqual(['lund', 'roof-a', 'roof-b']);
+    expect(tick(['lund', 'carpenter'])).toEqual(['lund', 'carpenter']);
+  });
+
+  it('keeps the demo’s roofers when Træværket Lund is ticked on the Tagdækker list', () => {
+    const businesses = demo as unknown as Business[];
+    const ids = ['tagpapfalken', 'rygningen-tagservice', 'traevaerket-lund'];
+    const list = ids.reduce<string[]>((acc, id) => toggleCompared(acc, id, businesses, max) ?? acc, []);
+    expect(list).toEqual(ids);
+  });
+
+  it('starts over with a business in another trade', () => {
+    expect(tick(['vvs-a', 'vvs-b', 'painter'])).toEqual(['painter']);
+    expect(tick(['roof-a', 'lund', 'carpenter'])).toEqual(['carpenter']);
+    expect(tick(['vvs-a', 'vvs-b', 'vvs-c', 'painter'])).toEqual(['painter']);
+  });
+
+  it('holds at most three and leaves a full list as it is', () => {
+    const full = ['roof-a', 'roof-b', 'lund'];
+    expect(toggleCompared(full, 'roof-c', all, max)).toBeUndefined();
+    expect(toggleCompared(['vvs-a', 'vvs-b', 'vvs-c'], 'vvs-d', all, max)).toBeUndefined();
+  });
+
+  it('removes a ticked business, also from a full list', () => {
+    expect(toggleCompared(['roof-a', 'roof-b', 'lund'], 'lund', all, max)).toEqual(['roof-a', 'roof-b']);
+    expect(toggleCompared(['vvs-a', 'vvs-b', 'vvs-c'], 'vvs-b', all, max)).toEqual(['vvs-a', 'vvs-c']);
+    expect(toggleCompared(['vvs-a'], 'vvs-a', all, max)).toEqual([]);
+  });
+
+  it('adds plain VVS businesses in the order they are ticked', () => {
+    expect(tick(['vvs-c', 'vvs-a'])).toEqual(['vvs-c', 'vvs-a']);
+    expect(tick(['vvs-a', 'vvs-b', 'vvs-c', 'vvs-d'])).toEqual(['vvs-a', 'vvs-b', 'vvs-c']);
+  });
+
+  it('drops saved picks that are no longer listed', () => {
+    expect(toggleCompared(['gone', 'vvs-a'], 'vvs-b', all, max)).toEqual(['vvs-a', 'vvs-b']);
   });
 });

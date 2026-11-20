@@ -5,6 +5,7 @@ import { createContext, type PropsWithChildren, useContext, useEffect, useMemo, 
 import { DEFAULT_LOCATION } from '@/data/places';
 import { type AvailabilityMap, demoAvailability, parseAvailability, withAvailability } from '@/lib/availability';
 import { openCountries } from '@/lib/business-text';
+import { toggleCompared } from '@/lib/compare';
 import { bundledBusinesses, parseBusinesses, REMOTE_DATA_URL } from '@/lib/data-source';
 import { DEFAULT_FILTERS } from '@/lib/filters';
 import { setDistanceUnit } from '@/lib/format';
@@ -120,14 +121,9 @@ function reducer(state: State, action: Action): State {
     case 'favorite':
       return { ...state, favorites: toggle(state.favorites, action.id) };
     case 'compare': {
-      if (state.compare.includes(action.id)) return { ...state, compare: state.compare.filter((x) => x !== action.id) };
-      // Only businesses in the same trade are compared; picking another trade starts over.
-      const trade = state.businesses.find((b) => b.id === action.id)?.categories[0];
-      const sameTrade = state.compare.filter(
-        (id) => state.businesses.find((b) => b.id === id)?.categories[0] === trade,
-      );
-      if (sameTrade.length >= MAX_COMPARE) return state;
-      return { ...state, compare: [...sameTrade, action.id] };
+      // Only businesses that share a trade are compared; picking another trade starts over.
+      const compare = toggleCompared(state.compare, action.id, state.businesses, MAX_COMPARE);
+      return compare ? { ...state, compare } : state;
     }
     case 'compare-clear':
       return { ...state, compare: [] };
@@ -307,11 +303,7 @@ export function AppStateProvider({ children }: PropsWithChildren) {
         dispatch({ type: 'favorite', id });
       },
       toggleCompare: (id) => {
-        const trade = state.businesses.find((b) => b.id === id)?.categories[0];
-        const sameTrade = state.compare.filter(
-          (x) => state.businesses.find((b) => b.id === x)?.categories[0] === trade,
-        );
-        if (!state.compare.includes(id) && sameTrade.length >= MAX_COMPARE) {
+        if (!toggleCompared(state.compare, id, state.businesses, MAX_COMPARE)) {
           haptics.warning();
           return false;
         }
