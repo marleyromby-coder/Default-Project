@@ -79,7 +79,7 @@ export default function CategoryScreen() {
   }, [akut, ledig]);
 
   const results = useResults(category?.id, sort);
-  const ribbons = useMemo(() => resultRibbons(results.items, sort, job), [results.items, sort, job]);
+  const ribbons = useMemo(() => resultRibbons(results.items, sort), [results.items, sort]);
   const filterCount = activeFilterCount(filters);
   const weights = weightsFromPriorities(state.priorities);
   const jobPrice = useMemo(

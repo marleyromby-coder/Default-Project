@@ -1,6 +1,6 @@
 import { scoreBusinesses, sortScored } from '@/lib/ranking';
 import { cheapestId, MAX_RIBBONS, resultRibbons, sortTabWinners } from '@/lib/sort-tabs';
-import type { Business, JobType } from '@/lib/types';
+import type { Business } from '@/lib/types';
 
 import { makeBusiness } from '@/__fixtures__/business';
 
@@ -110,8 +110,8 @@ describe('resultRibbons', () => {
     expect([...ribbons.values()].flat()).not.toContain('distance');
   });
 
-  it('gives "Billigst" for a job by the job price, and never to a business without one', () => {
-    const job: JobType = { id: 'ladestander', name: 'Ladestander', unit: 'opgave', min: 3000, max: 9000, keywords: [] };
+  it('puts "Billigst" on the first card of the price sort and the "Billigste" tab, job prices or not', () => {
+    // "cheap-hour" has the lowest hourly rate but no price for the job; "job-b" the lowest job price.
     const priced = (id: string, km: number, hourlyMin: number, jobMin?: number) =>
       makeBusiness({
         id,
@@ -125,14 +125,12 @@ describe('resultRibbons', () => {
           updatedAt: '2026-10-01',
         },
       });
-    // "cheap-hour" has the lowest hourly rate but no price for the job.
     const items = score([priced('cheap-hour', 1, 400), priced('job-a', 2, 500, 3800), priced('job-b', 3, 520, 3600)]);
-    const ribbons = resultRibbons(items, 'match', job);
-    expect(ribbons.get('job-b')).toContain('price');
-    expect(ribbons.get('cheap-hour') ?? []).not.toContain('price');
-    // Nobody has a price for the job: nobody is "Billigst".
-    const none = score([priced('a', 1, 400), priced('b', 2, 500)]);
-    expect([...resultRibbons(none, 'price', job).values()].flat()).not.toContain('price');
+    const first = sortScored(items, 'price')[0].business.id;
+    expect(first).toBe('cheap-hour');
+    expect(sortTabWinners(items).price?.business.id).toBe(first);
+    expect(resultRibbons(items, 'price').get(first)).toContain('price');
+    expect([...resultRibbons(items, 'price').entries()].filter(([, r]) => r.includes('price'))).toHaveLength(1);
   });
 
   it('gives no ribbons to a list of one', () => {

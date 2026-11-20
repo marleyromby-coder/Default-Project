@@ -1,5 +1,5 @@
 import { bestBy, reviewCount, sortScored, type ScoredBusiness } from './ranking';
-import type { JobType, SortMode } from './types';
+import type { SortMode } from './types';
 
 /**
  * The business each sort tab puts first in the list that is shown, so the tab can show its
@@ -45,21 +45,16 @@ export const MAX_RIBBONS = 2;
 
 /**
  * Which cards get "Bedste match", "Billigst" and "Nærmest": only the one business that wins
- * outright (highest score, lowest "fra" price, shortest distance to 0.1 km). With a job chosen,
- * "Billigst" goes to the lowest "fra" price for that job, and a business without a price for it
- * cannot get it. A tie or a list of one gives no ribbon, since nothing was beaten. A card that
- * wins all three keeps two: the current sort's first, then match, price and distance.
+ * outright (highest score, lowest "fra" price per hour, shortest distance to 0.1 km), by the same
+ * rules as the sort tabs, so under "Billigste" the "Billigst" card is the first one. A chosen job
+ * does not change "Billigst": it is the hourly "fra" price the card shows large. A tie or a list
+ * of one gives no ribbon, since nothing was beaten. A card that wins all three keeps two: the
+ * current sort's first, then match, price and distance.
  */
-export function resultRibbons(items: ScoredBusiness[], sort: SortMode, job?: JobType): Map<string, Ribbon[]> {
+export function resultRibbons(items: ScoredBusiness[], sort: SortMode): Map<string, Ribbon[]> {
   const winners: [Ribbon, string | undefined][] = [
     ['match', bestBy(items, (s) => s.score, false)],
-    // When nobody has a price for the job, all tie on Infinity and nobody gets "Billigst".
-    [
-      'price',
-      job
-        ? bestBy(items, (s) => s.business.pricing.examples.find((e) => e.job === job.id)?.min ?? Infinity, true)
-        : cheapestId(items),
-    ],
+    ['price', cheapestId(items)],
     ['distance', bestBy(items, (s) => Math.round(s.distanceKm * 10), true)],
   ];
   const ordered = [...winners].sort(([a], [b]) => Number(b === sort) - Number(a === sort));
