@@ -2,7 +2,13 @@ import { APP_INFO } from '@/constants/app-info';
 import { MIN_REVIEWS_FOR_FILTER } from '@/lib/filters';
 import { CLOSE_MARGIN, WORKSHOP_RADIUS_KM } from '@/lib/matcher';
 import { MIN_PAID_PRICES } from '@/lib/prices';
-import { DISTANCE_SCALE_KM, REVIEW_PRIOR_COUNT, REVIEW_PRIOR_MEAN } from '@/lib/ranking';
+import {
+  DISTANCE_SCALE_KM,
+  PRICE_LEVEL_BAND,
+  PRICE_LEVEL_MIN_PEERS,
+  REVIEW_PRIOR_COUNT,
+  REVIEW_PRIOR_MEAN,
+} from '@/lib/ranking';
 import { TOP_RATED_MIN_REVIEWS, TOP_RATED_MIN_SCORE, VERIFICATION_VALID_DAYS } from '@/lib/verification';
 
 import type { InfoPage } from './content';
@@ -64,8 +70,9 @@ export function infoPagesEn(): Record<
         {
           heading: 'Filters',
           paragraphs: [
-            'Filters such as distance, opening hours, 24-hour service, licences and Verified hide businesses but do not change their score. The Verified badge does not give a better position either.',
+            'Filters such as distance, price level, opening hours, 24-hour service, licences and Verified hide businesses but do not change their score. The Verified badge does not give a better position either.',
             `The customer rating filter only shows businesses with at least ${MIN_REVIEWS_FOR_FILTER} reviews.`,
+            `Price level compares the middle of the hourly range with the typical hourly rate (the median) of all businesses on FixMatch in the same trade and country, not just those on the list. "Medium" is within ${Math.round(PRICE_LEVEL_BAND * 100)} % of it, "Low" is below and "High" is above. When there are fewer than ${PRICE_LEVEL_MIN_PEERS} businesses in the trade, they have no price level and only show when price level is set to "All".`,
           ],
         },
       ],

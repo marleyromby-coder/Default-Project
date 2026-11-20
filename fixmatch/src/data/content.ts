@@ -3,7 +3,13 @@ import { getLanguage } from '@/i18n';
 import { MIN_REVIEWS_FOR_FILTER } from '@/lib/filters';
 import { CLOSE_MARGIN, WORKSHOP_RADIUS_KM } from '@/lib/matcher';
 import { MIN_PAID_PRICES } from '@/lib/prices';
-import { DISTANCE_SCALE_KM, REVIEW_PRIOR_COUNT, REVIEW_PRIOR_MEAN } from '@/lib/ranking';
+import {
+  DISTANCE_SCALE_KM,
+  PRICE_LEVEL_BAND,
+  PRICE_LEVEL_MIN_PEERS,
+  REVIEW_PRIOR_COUNT,
+  REVIEW_PRIOR_MEAN,
+} from '@/lib/ranking';
 import { TOP_RATED_MIN_REVIEWS, TOP_RATED_MIN_SCORE, VERIFICATION_VALID_DAYS } from '@/lib/verification';
 
 import { infoPagesEn } from './content-en';
@@ -84,8 +90,9 @@ export function infoPagesDa() {
         {
           heading: 'Filtre',
           paragraphs: [
-            'Filtre som afstand, åbningstid, døgnvagt, autorisation og Verificeret skjuler virksomheder, men ændrer ikke deres score. Verificeret-mærket giver heller ikke en bedre placering.',
+            'Filtre som afstand, prisniveau, åbningstid, døgnvagt, autorisation og Verificeret skjuler virksomheder, men ændrer ikke deres score. Verificeret-mærket giver heller ikke en bedre placering.',
             `Filteret for kundernes vurdering viser kun virksomheder med mindst ${MIN_REVIEWS_FOR_FILTER} anmeldelser.`,
+            `Prisniveau sammenligner midten af timeprisen med den typiske timepris (medianen) for alle virksomheder på FixMatch i samme fag og land, ikke kun dem på listen. "Middel" er inden for ${Math.round(PRICE_LEVEL_BAND * 100)} % af den, "Lavt" er under, og "Højt" er over. Er der færre end ${PRICE_LEVEL_MIN_PEERS} virksomheder i faget, har de intet prisniveau og vises kun, når prisniveau står på "Alle".`,
           ],
         },
       ],
