@@ -16,6 +16,7 @@ import { getCategory } from '@/data/categories';
 import { useLayout } from '@/hooks/use-layout';
 import { useScored } from '@/hooks/use-results';
 import { useTheme } from '@/hooks/use-theme';
+import { sharedTrade } from '@/lib/compare';
 import { callBusiness } from '@/lib/contact';
 import { currencySymbol, formatDistance, formatNumber, formatPrice, formatRating } from '@/lib/format';
 import { getOpenStatus } from '@/lib/opening-hours';
@@ -53,7 +54,11 @@ export default function CompareScreen() {
   const insets = useSafeAreaInsets();
   const { state, toggleCompare, clearCompare } = useApp();
   const { market } = useMarket();
-  const items = useScored(state.compare);
+  // A business can be in two trades; it is compared (and scored) in the trade all of them share.
+  const tradeId = sharedTrade(
+    state.compare.map((id) => state.businesses.find((b) => b.id === id)).filter((b) => b !== undefined),
+  );
+  const items = useScored(state.compare, tradeId);
 
   const header = (
     <Stack.Screen
@@ -101,8 +106,7 @@ export default function CompareScreen() {
   );
   const jobExample = (s: ScoredBusiness) =>
     sharedJob?.job ? s.business.pricing.examples.find((e) => e.job === sharedJob.job) : undefined;
-  const trades = new Set(items.map((s) => s.business.categories[0]));
-  const trade = trades.size === 1 ? getCategory(items[0].business.categories[0]) : undefined;
+  const trade = tradeId ? getCategory(tradeId) : undefined;
   // Prices and scores are only compared within one trade, so a mix of trades gets no winners.
   const winners = trade
     ? {
@@ -114,7 +118,8 @@ export default function CompareScreen() {
       }
     : {};
   const jobName = sharedJob?.job
-    ? (getCategory(items[0].business.categories[0])?.jobs.find((j) => j.id === sharedJob.job)?.name ?? sharedJob.label)
+    ? ((trade ?? getCategory(items[0].business.categories[0]))?.jobs.find((j) => j.id === sharedJob.job)?.name ??
+      sharedJob.label)
     : undefined;
 
   return (

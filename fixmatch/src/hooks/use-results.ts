@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
 import { countryOf } from '@/lib/business-text';
+import { scoringTrade } from '@/lib/compare';
 import { applyFilters } from '@/lib/filters';
 import { scoreBusinesses, sortScored, type ScoredBusiness } from '@/lib/ranking';
 import type { CategoryId, Filters, SortMode } from '@/lib/types';
@@ -55,8 +56,12 @@ export function useResults(
   }, [category, sort, activeFilters, scope, country, state.businesses, state.location.coords, state.priorities]);
 }
 
-/** Scores a fixed set of businesses (favorites, compare list) against the user's location. */
-export function useScored(ids: string[]): ScoredBusiness[] {
+/**
+ * Scores a fixed set of businesses (favorites, compare list) against the user's location. Each is
+ * scored among its trade: `trade` when it is listed in it (Sammenlign passes the trade the compared
+ * businesses share), otherwise its first trade.
+ */
+export function useScored(ids: string[], trade?: CategoryId): ScoredBusiness[] {
   const { state } = useApp();
   return useMemo(() => {
     const chosen = ids
@@ -65,15 +70,16 @@ export function useScored(ids: string[]): ScoredBusiness[] {
     if (chosen.length === 0) return [];
     // Price is scored against the whole trade, so a lone favorite still gets a fair price score.
     const byTrade = new Map<string, ScoredBusiness[]>();
-    for (const key of new Set(chosen.map((b) => `${countryOf(b)}:${b.categories[0]}`))) {
-      const [country, trade] = key.split(':');
+    const keyOf = (b: (typeof chosen)[number]) => `${countryOf(b)}:${scoringTrade(b, trade)}`;
+    for (const key of new Set(chosen.map(keyOf))) {
+      const [country, peerTrade] = key.split(':');
       const peers = state.businesses.filter(
-        (b) => countryOf(b) === country && b.categories.includes(trade as CategoryId),
+        (b) => countryOf(b) === country && b.categories.includes(peerTrade as CategoryId),
       );
       byTrade.set(key, scoreBusinesses(peers, state.location.coords, state.priorities));
     }
     return chosen
-      .map((b) => byTrade.get(`${countryOf(b)}:${b.categories[0]}`)?.find((s) => s.business.id === b.id))
+      .map((b) => byTrade.get(keyOf(b))?.find((s) => s.business.id === b.id))
       .filter((s): s is ScoredBusiness => s !== undefined);
-  }, [ids, state.businesses, state.location.coords, state.priorities]);
+  }, [ids, trade, state.businesses, state.location.coords, state.priorities]);
 }
