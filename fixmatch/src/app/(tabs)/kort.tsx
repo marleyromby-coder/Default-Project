@@ -370,15 +370,27 @@ function useFloating() {
 }
 
 /** "fra 560 kr. pr. time", with the price large, as on the result cards. */
-function HourlyFrom({ item, variant }: { item: ScoredBusiness; variant: 'title2' | 'headline' }) {
+/**
+ * "fra 560 kr. pr. time": on one line under the map, or `stacked` on three right-aligned lines
+ * beside the narrow list on wide screens, like the result cards, so the name keeps its room.
+ */
+function HourlyFrom({
+  item,
+  variant,
+  stacked,
+}: {
+  item: ScoredBusiness;
+  variant: 'title2' | 'headline';
+  stacked?: boolean;
+}) {
   const { business } = item;
   return (
-    <View style={styles.hourly}>
-      <AppText variant="footnote" tone="textSecondary">
+    <View style={stacked ? styles.hourlyStacked : styles.hourly}>
+      <AppText variant="footnote" tone="textSecondary" maxFontSizeMultiplier={1.3}>
         {t('fra')}
       </AppText>
       <PriceText value={business.pricing.hourlyMin} currency={currencyOf(business)} variant={variant} />
-      <AppText variant="footnote" tone="textSecondary">
+      <AppText variant="footnote" tone="textSecondary" maxFontSizeMultiplier={1.3}>
         {t('pr. time')}
       </AppText>
     </View>
@@ -464,7 +476,7 @@ function MapRow({ item, selected, onPress }: { item: ScoredBusiness; selected: b
           <OpenStatus business={business} />
         </View>
         <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-          <HourlyFrom item={item} variant="headline" />
+          <HourlyFrom item={item} variant="headline" stacked />
         </View>
       </Tappable>
       {selected ? (
@@ -553,6 +565,7 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
   },
   hourly: { flexDirection: 'row', alignItems: 'baseline', gap: 4 },
+  hourlyStacked: { alignItems: 'flex-end' },
   emptyCard: {
     borderRadius: Radius.card,
     borderWidth: StyleSheet.hairlineWidth,
