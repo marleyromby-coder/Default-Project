@@ -40,14 +40,12 @@ function amount(text: string): number | undefined {
   return value > 0 ? value : undefined;
 }
 
-const VERDICT: Record<
-  QuoteVerdict,
-  { title: string; icon: IconName; tone: 'info' | 'success' | 'warning' | 'danger' }
-> = {
+const VERDICT: Record<QuoteVerdict, { title: string; icon: IconName; tone: 'info' | 'success' | 'warning' }> = {
   low: { title: msg('Lav pris'), icon: 'info', tone: 'info' },
   normal: { title: msg('Normal pris'), icon: 'check', tone: 'success' },
   high: { title: msg('Lidt højt'), icon: 'info', tone: 'warning' },
-  veryHigh: { title: msg('Højt'), icon: 'flag', tone: 'danger' },
+  // A high quote is a warning, not danger: coral is only for akut and danger.
+  veryHigh: { title: msg('Høj pris'), icon: 'flag', tone: 'warning' },
 };
 
 /**
