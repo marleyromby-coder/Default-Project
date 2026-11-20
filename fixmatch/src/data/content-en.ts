@@ -24,7 +24,7 @@ export function infoPagesEn(): Record<
         {
           heading: 'The three factors',
           bullets: [
-            'Price: the business’s hourly rate compared with the other businesses in the same trade and the same country. The cheapest gets the full score, the most expensive none. Prices are never compared across countries or currencies.',
+            'Price: the business’s hourly rate compared with the other businesses in the same trade and the same country. In the score we use the middle of the hourly range, e.g. 560–660 kr. counts as 610 kr. The cheapest gets the full score, the most expensive none. Prices are never compared across countries or currencies.',
             `Distance: the straight-line distance from your location. The score falls steadily with distance – at ${DISTANCE_SCALE_KM} km it is about a third of the score at 0 km.`,
             `Reviews: the average stars from users who contacted the business through FixMatch. We add ${REVIEW_PRIOR_COUNT} neutral reviews of ${n(REVIEW_PRIOR_MEAN)}, so a handful of reviews cannot give an unfairly high or low score. A business without reviews therefore counts as ${REVIEW_PRIOR_COUNT} neutral reviews of ${n(REVIEW_PRIOR_MEAN)} – neither better nor worse.`,
           ],
@@ -32,8 +32,20 @@ export function infoPagesEn(): Record<
         {
           heading: 'Your weighting',
           paragraphs: [
-            'Under "Your priorities" you choose how much each factor matters. The weights add up to 100 %, and the score is the weighted average times 100. You can also sort by price, distance or reviews alone. When you sort by reviews, businesses without reviews come last.',
+            'Under "Your priorities" you choose how much each factor matters. The weights add up to 100 %, and the score is the weighted average times 100. You can also sort by price, distance or reviews alone. When you sort by price, the lowest "from" price per hour comes first – the number on the cards. When you sort by reviews, businesses without reviews come last.',
             'Reviews on other sites do not count. Nor does the answer rate ("Answers the phone").',
+          ],
+        },
+        {
+          heading: 'The labels on the list',
+          paragraphs: [
+            'The labels "Best match", "Cheapest" and "Nearest" and the numbers in the sort tabs only compare the businesses you see on the list after your filters. When several are equal, none gets the label. When there is only one business, we show no labels or numbers.',
+          ],
+          bullets: [
+            'Best match: the highest FixMatch score.',
+            'Cheapest: the lowest "from" price per hour. If you chose a job, it is the lowest "from" price for the job, and a business without a price for the job cannot get the label.',
+            'Nearest: the shortest straight-line distance.',
+            'Best reviewed: only counts businesses with reviews and uses the same weighted average as the score. So a business with many good reviews can come before one with a single 5.0 review.',
           ],
         },
         {

@@ -63,7 +63,7 @@ export function weightsFromPriorities(priorities: Priorities): Weights {
   return { price: price / total, distance: distance / total, reviews: reviews / total };
 }
 
-/** Midpoint of the hourly range, used to compare price levels. */
+/** Midpoint of the hourly range, used for the score's price part and the price level. */
 export function priceIndex(business: Business): number {
   return (business.pricing.hourlyMin + business.pricing.hourlyMax) / 2;
 }
@@ -128,7 +128,13 @@ export function sortScored(list: ScoredBusiness[], mode: SortMode): ScoredBusine
   const byName = (a: ScoredBusiness, b: ScoredBusiness) => a.business.name.localeCompare(b.business.name, 'da');
   switch (mode) {
     case 'price':
-      sorted.sort((a, b) => priceIndex(a.business) - priceIndex(b.business) || a.distanceKm - b.distanceKm);
+      // The "fra" price the cards show first; the middle of the range and the distance break ties.
+      sorted.sort(
+        (a, b) =>
+          a.business.pricing.hourlyMin - b.business.pricing.hourlyMin ||
+          priceIndex(a.business) - priceIndex(b.business) ||
+          a.distanceKm - b.distanceKm,
+      );
       break;
     case 'distance':
       sorted.sort((a, b) => a.distanceKm - b.distanceKm || byName(a, b));

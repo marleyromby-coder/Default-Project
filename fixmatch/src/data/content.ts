@@ -44,7 +44,7 @@ export function infoPagesDa() {
         {
           heading: 'De tre parametre',
           bullets: [
-            'Pris: virksomhedens timepris sammenlignet med de andre virksomheder i samme fag og samme land. Den billigste får fuld score, den dyreste ingen. Priser sammenlignes aldrig på tværs af lande og valutaer.',
+            'Pris: virksomhedens timepris sammenlignet med de andre virksomheder i samme fag og samme land. I scoren bruger vi midten af timeprisen, fx tæller 560–660 kr. som 610 kr. Den billigste får fuld score, den dyreste ingen. Priser sammenlignes aldrig på tværs af lande og valutaer.',
             `Afstand: afstanden i luftlinje fra din placering. Scoren falder jævnt med afstanden – ved ${DISTANCE_SCALE_KM} km er den ca. en tredjedel af scoren ved 0 km.`,
             `Anmeldelser: gennemsnittet af stjernerne fra brugere, der har kontaktet virksomheden gennem FixMatch. Vi lægger ${REVIEW_PRIOR_COUNT} neutrale anmeldelser på ${n(REVIEW_PRIOR_MEAN)} til, så få anmeldelser ikke giver en urimelig høj eller lav score. En virksomhed uden anmeldelser regnes altså som ${REVIEW_PRIOR_COUNT} neutrale anmeldelser på ${n(REVIEW_PRIOR_MEAN)} – hverken bedre eller dårligere.`,
           ],
@@ -52,8 +52,20 @@ export function infoPagesDa() {
         {
           heading: 'Din vægtning',
           paragraphs: [
-            'Under "Dine prioriteter" vælger du, hvor vigtig hver parameter er. Vægtene lægges sammen til 100 %, og scoren er det vægtede gennemsnit gange 100. Du kan også sortere efter pris, afstand eller anmeldelser alene. Sorterer du efter anmeldelser, kommer virksomheder uden anmeldelser sidst.',
+            'Under "Dine prioriteter" vælger du, hvor vigtig hver parameter er. Vægtene lægges sammen til 100 %, og scoren er det vægtede gennemsnit gange 100. Du kan også sortere efter pris, afstand eller anmeldelser alene. Sorterer du efter pris, kommer den laveste fra-pris pr. time først – det tal, der står på kortene. Sorterer du efter anmeldelser, kommer virksomheder uden anmeldelser sidst.',
             'Anmeldelser på andre sider tæller ikke med. Det gør svarprocenten ("Tager telefonen") heller ikke.',
+          ],
+        },
+        {
+          heading: 'Mærkerne på listen',
+          paragraphs: [
+            'Mærkerne "Bedste match", "Billigst" og "Nærmest" og tallene i sorteringen sammenligner kun de virksomheder, du ser på listen efter dine filtre. Står flere lige, får ingen mærket. Er der kun én virksomhed, viser vi hverken mærker eller tal.',
+          ],
+          bullets: [
+            'Bedste match: den højeste FixMatch-score.',
+            'Billigst: den laveste fra-pris pr. time. Har du valgt en opgave, er det den laveste fra-pris for opgaven, og en virksomhed uden pris for opgaven kan ikke få mærket.',
+            'Nærmest: den korteste afstand i luftlinje.',
+            'Bedst anmeldt: tæller kun virksomheder med anmeldelser og bruger det samme vægtede gennemsnit som scoren. Derfor kan en virksomhed med mange gode anmeldelser stå før en med én anmeldelse på 5,0.',
           ],
         },
         {

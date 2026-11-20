@@ -1,13 +1,13 @@
-import { bestBy, priceIndex, reviewCount, sortScored, type ScoredBusiness } from './ranking';
-import type { SortMode } from './types';
+import { bestBy, reviewCount, sortScored, type ScoredBusiness } from './ranking';
+import type { JobType, SortMode } from './types';
 
 /**
  * The business each sort tab puts first in the list that is shown, so the tab can show its
- * value ("Bedste match 82/100 · Billigste 560 kr./t · Nærmeste 2,6 km · Bedst anmeldt ★ 4,5").
- * The rules are sortScored's own: "Billigste" is the lowest price level (the middle of the
- * hourly range), and the tab shows that business's "fra" price, the same number its card shows
- * at the top of the list. "Bedst anmeldt" only counts businesses with FixMatch reviews and is
- * undefined when none has any, so the tab shows no number.
+ * value ("Bedste match 82/100 · Billigste 560 kr./t · Nærmeste 2,6 km · Bedst anmeldt ★ 4,5 (19)").
+ * The rules are sortScored's own: "Billigste" is the lowest "fra" price (the start of the hourly
+ * range), the same number the cards and the trade tiles show. "Bedst anmeldt" only counts
+ * businesses with FixMatch reviews and is undefined when none has any, so the tab shows no number.
+ * A list of one compares nothing, so every tab is empty.
  */
 export interface SortTabWinners {
   match?: ScoredBusiness;
@@ -17,7 +17,7 @@ export interface SortTabWinners {
 }
 
 export function sortTabWinners(items: ScoredBusiness[]): SortTabWinners {
-  if (items.length === 0) return {};
+  if (items.length < 2) return {};
   const first = (mode: SortMode, list: ScoredBusiness[]) => sortScored(list, mode)[0];
   const reviewed = items.filter((s) => reviewCount(s.business) > 0);
   return {
@@ -36,14 +36,19 @@ export const MAX_RIBBONS = 2;
 
 /**
  * Which cards get "Bedste match", "Billigst" and "Nærmest": only the one business that wins
- * outright on the sort's own measure (score, price level, distance to 0.1 km). A tie or a list of
- * one gives no ribbon, since nothing was beaten. A card that wins all three keeps two: the
- * current sort's first, then match, price and distance.
+ * outright (highest score, lowest "fra" price, shortest distance to 0.1 km). With a job chosen,
+ * "Billigst" goes to the lowest "fra" price for that job, and a business without a price for it
+ * cannot get it. A tie or a list of one gives no ribbon, since nothing was beaten. A card that
+ * wins all three keeps two: the current sort's first, then match, price and distance.
  */
-export function resultRibbons(items: ScoredBusiness[], sort: SortMode): Map<string, Ribbon[]> {
+export function resultRibbons(items: ScoredBusiness[], sort: SortMode, job?: JobType): Map<string, Ribbon[]> {
+  const price = job
+    ? (s: ScoredBusiness) => s.business.pricing.examples.find((e) => e.job === job.id)?.min ?? Infinity
+    : (s: ScoredBusiness) => s.business.pricing.hourlyMin;
   const winners: [Ribbon, string | undefined][] = [
     ['match', bestBy(items, (s) => s.score, false)],
-    ['price', bestBy(items, (s) => priceIndex(s.business), true)],
+    // When nobody has a price for the job, all tie on Infinity and nobody gets "Billigst".
+    ['price', bestBy(items, price, true)],
     ['distance', bestBy(items, (s) => Math.round(s.distanceKm * 10), true)],
   ];
   const ordered = [...winners].sort(([a], [b]) => Number(b === sort) - Number(a === sort));
