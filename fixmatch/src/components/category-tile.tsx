@@ -71,7 +71,8 @@ export function TradeTile({ category, fromPrice, nearby, onPress }: TradeTilePro
       </AppText>
       {price ? (
         // Up to two lines, with the amount and currency kept together, so a long line breaks as
-        // "from" / "DKK 560" and the price itself is never the part that is cut.
+        // "from" / "DKK 560" and the price itself is never the part that is cut. On iOS it shrinks just
+        // enough to fit: iOS ignores minimumFontScale (its only floor is 4 pt); Android stops at 0.8.
         <AppText
           variant="footnote"
           tone="textSecondary"

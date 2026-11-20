@@ -45,7 +45,8 @@ export function SortTabs({ items, value, onChange }: Props) {
   const winners = useMemo(() => sortTabWinners(items), [items]);
   const { match, price, distance, rating } = winners;
   const small = { color: colors.textSecondary };
-  // The values shrink on iOS before they are cut, e.g. at large text sizes on 375 pt phones.
+  // On iOS a value that does not fit shrinks just enough instead of being cut, e.g. at large text sizes on
+  // 375 pt phones. iOS ignores minimumFontScale (its only floor is 4 pt); Android stops at 0.75.
   const fit = { numberOfLines: 1, adjustsFontSizeToFit: true, minimumFontScale: 0.75, maxFontSizeMultiplier: 1.2 };
 
   const tabs: Tab[] = [

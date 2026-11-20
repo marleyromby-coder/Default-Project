@@ -107,7 +107,8 @@ export function Button({
             weight={textOnly ? '600' : '700'}
             style={[{ color: palette.fg }, link ? styles.linkLabel : null]}
             numberOfLines={link ? 2 : 1}
-            // A one-line label shrinks a little on iOS rather than being cut; labels that fit stay as they are.
+            // A one-line label that does not fit shrinks just enough on iOS instead of being cut; labels that
+            // fit stay as they are. iOS ignores minimumFontScale (its only floor is 4 pt); Android stops at 0.8.
             adjustsFontSizeToFit={!textOnly}
             minimumFontScale={0.8}
             maxFontSizeMultiplier={1.3}>
