@@ -70,15 +70,17 @@ export function TradeTile({ category, fromPrice, nearby, onPress }: TradeTilePro
         {category.name}
       </AppText>
       {price ? (
+        // Up to two lines, with the amount and currency kept together, so a long line breaks as
+        // "from" / "DKK 560" and the price itself is never the part that is cut.
         <AppText
           variant="footnote"
           tone="textSecondary"
           align="center"
-          numberOfLines={1}
+          numberOfLines={2}
           adjustsFontSizeToFit
           minimumFontScale={0.8}
           maxFontSizeMultiplier={1.3}>
-          {t('fra {price}', { price })}
+          {t('fra {price}', { price: price.replace(/ /g, '\u00a0') })}
         </AppText>
       ) : null}
     </Tappable>

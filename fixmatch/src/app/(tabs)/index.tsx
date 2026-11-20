@@ -308,7 +308,8 @@ export default function HomeScreen() {
                     <AppText variant="subhead" weight="600" numberOfLines={2} style={styles.jobName}>
                       {job.name}
                     </AppText>
-                    <AppText variant="headline" display weight="800" numberOfLines={1}>
+                    {/* Two lines, so the unit ("pr. m²", "pr. stk.") is never the part that is cut. */}
+                    <AppText variant="headline" display weight="800" numberOfLines={2} maxFontSizeMultiplier={1.3}>
                       {formatPriceRange(price.min, price.max, price.unit, price.currency)}
                     </AppText>
                     <AppText variant="caption" tone="textSecondary" numberOfLines={1}>
