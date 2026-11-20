@@ -41,7 +41,7 @@ export function Badge({ label, tone = 'neutral', icon, accessibilityLabel }: Pro
     sun: { bg: colors.accentSoft, fg: colors.accentText },
     sky: { bg: colors.skySoft, fg: colors.skyText },
     coral: { bg: colors.coralSoft, fg: colors.coralText },
-    panel: { bg: colors.panelRaised, fg: colors.onPanel },
+    panel: { bg: colors.panelInset, fg: colors.onPanel },
   }[tone];
   return (
     <View

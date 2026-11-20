@@ -13,6 +13,23 @@ function contrast(a: string, b: string): number {
   return (high + 0.05) / (low + 0.05);
 }
 
+/** An rgba(r, g, b, a) layer blended over a #RRGGBB colour, as #RRGGBB. */
+function blend(base: string, layer: string): string {
+  const match = layer.match(/rgba\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)/);
+  if (!match) throw new Error(`not an rgba colour: ${layer}`);
+  const alpha = Number(match[4]);
+  return `#${[1, 2, 3]
+    .map((i) => {
+      const under = parseInt(base.slice(i * 2 - 1, i * 2 + 1), 16);
+      const value = Math.round(Number(match[i]) * alpha + under * (1 - alpha));
+      return value.toString(16).padStart(2, '0');
+    })
+    .join('')}`;
+}
+
+/** HeroPanel's large decoration disc: `onPanel` at 7 %. */
+const DISC_OPACITY = 0.07;
+
 type Pair = [keyof Palette, keyof Palette];
 
 /** Body text: at least 4.5:1. */
@@ -80,6 +97,14 @@ describe.each(['light', 'dark'] as const)('%s palette', (scheme) => {
 
   it.each(LARGE)('%s on %s reaches 3:1', (fg, bg) => {
     expect(contrast(colors[fg], colors[bg])).toBeGreaterThanOrEqual(3);
+  });
+
+  it.each(['panel', 'panel2'] as const)('badge text on %s keeps 4.5:1, also over the decoration disc', (base) => {
+    const white = parseInt(colors.onPanel.slice(1, 3), 16);
+    const disc = blend(colors[base], `rgba(${white}, ${white}, ${white}, ${DISC_OPACITY})`);
+    for (const under of [colors[base], disc]) {
+      expect(contrast(colors.onPanel, blend(under, colors.panelInset))).toBeGreaterThanOrEqual(4.5);
+    }
   });
 
   it.each(Object.keys(TradeColors[scheme]))('trade %s: initials on the soft tint reach 4.5:1', (id) => {

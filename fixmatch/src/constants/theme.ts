@@ -48,8 +48,10 @@ export const Colors = {
     /** Text and icons on the panel. */
     onPanel: '#FFFFFF',
     onPanelSoft: '#E6F7EF',
-    /** A translucent white layer on the panel, for pills and round buttons on it. */
+    /** A translucent white layer on the panel, for round buttons and icon discs on it (icons need 3:1). */
     panelRaised: 'rgba(255, 255, 255, 0.16)',
+    /** A dark layer on the panel behind small text, such as badges, so white text keeps 4.5:1. */
+    panelInset: 'rgba(0, 0, 0, 0.18)',
     /** Sun yellow: the main action, "Billigst" and the logo's dot. Never text on white. */
     accent: '#FFB800',
     onAccent: '#1A1400',
@@ -106,6 +108,7 @@ export const Colors = {
     onPanel: '#FFFFFF',
     onPanelSoft: '#D5EFE4',
     panelRaised: 'rgba(255, 255, 255, 0.12)',
+    panelInset: 'rgba(0, 0, 0, 0.2)',
     accent: '#FFC21F',
     onAccent: '#1A1400',
     accentSoft: '#2C250F',
