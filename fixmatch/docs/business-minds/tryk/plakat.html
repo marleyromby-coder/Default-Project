@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="da" data-format="A1" data-bleed="1">
+<head>
+<meta charset="utf-8">
+<title>FixMatch – plakat til Business Minds</title>
+<!--
+  FixMatch-plakaten til standen ved Business Minds i Vejle.
+  Tegnet i A1 (594 × 841 mm). build.js laver PDF'erne:
+    ?format=A1&bleed=1   600 × 847 mm (A1 + 3 mm beskæring)
+    ?format=A1&bleed=0   594 × 841 mm (uden beskæring)
+    ?format=A2&bleed=1   426 × 600 mm (A2 + 3 mm beskæring, skaleret ned)
+    ?format=A2&bleed=0   420 × 594 mm
+  Navnene i bunden kommer fra ../team.json (build.js lægger dem i window.POSTER_TEAM).
+  Billederne ligger i assets/. Tekst: ../pitch/plakat-og-flyer-tekst.md.
+-->
+<style>
+@font-face { font-family: 'Schibsted Grotesk'; font-weight: 700; src: url('assets/fonts/schibsted-grotesk-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Schibsted Grotesk'; font-weight: 800; src: url('assets/fonts/schibsted-grotesk-latin-800-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Schibsted Grotesk'; font-weight: 900; src: url('assets/fonts/schibsted-grotesk-latin-900-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-weight: 500; src: url('assets/fonts/inter-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-weight: 600; src: url('assets/fonts/inter-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-weight: 700; src: url('assets/fonts/inter-latin-700-normal.woff2') format('woff2'); }
+
+:root {
+  /* Farver fra docs/design/designsystem.md (lys tilstand). */
+  --bg: #F1F5F3;
+  --card: #FFFFFF;
+  --border: #DFE7E3;
+  --text: #0B1A15;
+  --text2: #41524C;
+  --panel: #007A56;
+  --panel2: #00614A;
+  --on-panel: #FFFFFF;
+  --on-panel-soft: #E6F7EF;
+  --brand: #00805C;
+  --brand-text: #00704F;
+  --brand-soft: #DCF4E9;
+  --sun: #FFB800;
+  --ph-bg: #FFF3CC;
+  --ph-text: #7F5300;
+  --display: 'Schibsted Grotesk', system-ui, sans-serif;
+  --body: 'Inter', system-ui, sans-serif;
+
+  /* Siden: beskæring og skala sættes af scriptet nederst. */
+  --bleed: 3mm;
+  --page-w: 600mm;
+  --page-h: 847mm;
+  --scale: 1;
+  --shift-x: 0mm;
+  --shift-y: 0mm;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); }
+body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+/* Arket (det trykte format inkl. beskæring) og kunstværket i A1-mål indeni. */
+.page {
+  position: relative;
+  width: var(--page-w);
+  height: var(--page-h);
+  overflow: hidden;
+  background: var(--bg);
+}
+.art {
+  position: absolute;
+  left: calc(var(--bleed) + var(--shift-x));
+  top: calc(var(--bleed) + var(--shift-y));
+  width: 594mm;
+  height: 841mm;
+  transform: scale(var(--scale));
+  transform-origin: 0 0;
+  font-family: var(--body);
+  color: var(--text);
+}
+
+/* ---------- Panelet (går ud i beskæringen øverst og i siderne) ---------- */
+.panel {
+  position: absolute;
+  left: -10mm; right: -10mm; top: -10mm;
+  height: 489mm;
+  background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
+  border-radius: 0 0 52mm 52mm;
+  overflow: hidden;
+}
+.panel .orb {
+  position: absolute;
+  left: 386mm; top: -230mm;
+  width: 520mm; height: 520mm;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.055);
+}
+.panel .ring {
+  position: absolute;
+  left: 470mm; top: 150mm;
+  width: 300mm; height: 300mm;
+  border-radius: 50%;
+  border: 1.1mm solid rgba(255, 255, 255, 0.09);
+}
+
+/* ---------- Top: ordmærke og demo-mærke ---------- */
+.wordmark {
+  position: absolute;
+  left: 28mm; top: 26mm;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 104pt;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--on-panel);
+}
+.dot { color: var(--sun); }
+
+.demo-pill {
+  position: absolute;
+  right: 28mm; top: 35mm;
+  display: flex; align-items: center; gap: 4mm;
+  height: 17mm;
+  padding: 0 7mm 0 5.5mm;
+  border-radius: 9mm;
+  border: 0.6mm solid rgba(255, 255, 255, 0.5); /* kontur i stedet for fyld: hvid tekst på panelet (5,4:1) */
+  color: var(--on-panel);
+  font-weight: 600;
+  font-size: 30pt;
+  letter-spacing: -0.005em;
+}
+.demo-pill svg { width: 9mm; height: 9mm; }
+
+/* ---------- Overskrift og underlinje ---------- */
+h1 {
+  position: absolute;
+  left: 25.8mm; top: 72mm;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 214pt;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--on-panel);
+  white-space: nowrap;
+}
+.sub {
+  position: absolute;
+  left: 28mm; top: 227mm;
+  width: 540mm;
+  font-weight: 500;
+  font-size: 72pt;
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+  color: var(--on-panel-soft);
+}
+
+/* ---------- Telefonerne ---------- */
+.phones { position: absolute; left: 0; top: 0; width: 594mm; height: 841mm; pointer-events: none; }
+.phone {
+  /* --w: telefonens bredde. 1 enhed (--u) = 1 punkt på en iPhone (skærmen er 390 punkter bred). */
+  --u: calc(var(--w) / 414);
+  position: absolute;
+  width: calc(414 * var(--u));
+  height: calc(918 * var(--u));
+}
+.phone .body {
+  position: absolute; inset: 0;
+  border-radius: calc(68 * var(--u));
+  background: #0B0E0F;
+  box-shadow:
+    inset 0 0 0 calc(1.6 * var(--u)) #6A7075,
+    inset 0 0 0 calc(4.2 * var(--u)) #24292C,
+    0 calc(28 * var(--u)) calc(70 * var(--u)) rgba(0, 32, 22, 0.34),
+    0 calc(8 * var(--u)) calc(18 * var(--u)) rgba(0, 32, 22, 0.22);
+}
+.phone .btn {
+  position: absolute;
+  width: calc(4 * var(--u));
+  border-radius: calc(2 * var(--u));
+  background: linear-gradient(90deg, #2B3033, #50565B);
+}
+.phone .btn.l { left: calc(-3 * var(--u)); }
+.phone .btn.r { right: calc(-3 * var(--u)); background: linear-gradient(90deg, #50565B, #2B3033); }
+.phone .screen {
+  position: absolute;
+  left: calc(12 * var(--u)); top: calc(12 * var(--u));
+  width: calc(390 * var(--u)); height: calc(894 * var(--u));
+  border-radius: calc(56 * var(--u));
+  overflow: hidden;
+  background: var(--panel);
+  isolation: isolate;
+}
+.phone .screen canvas {
+  position: absolute; left: 0; top: 0;
+  width: 100%; height: calc(52 * var(--u));
+}
+.phone .screen img.shot {
+  /* Skærmbillederne har en 1 punkt grå kant i siderne (webudgaven); den skjules. */
+  position: absolute;
+  left: calc(-1 * var(--u)); top: calc(50 * var(--u));
+  width: calc(392 * var(--u)); height: auto;
+}
+.phone .status {
+  position: absolute; left: 0; top: 0; right: 0;
+  height: calc(50 * var(--u));
+  color: #FFFFFF;
+}
+.phone .status .time {
+  position: absolute;
+  left: calc(46 * var(--u)); top: calc(17 * var(--u));
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: calc(17 * var(--u));
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.phone .status svg {
+  position: absolute;
+  right: calc(30 * var(--u)); top: calc(19 * var(--u));
+  width: calc(76 * var(--u)); height: calc(13 * var(--u));
+}
+.phone .island {
+  position: absolute;
+  left: calc(132 * var(--u)); top: calc(11 * var(--u));
+  width: calc(126 * var(--u)); height: calc(37 * var(--u));
+  border-radius: calc(19 * var(--u));
+  background: #000;
+}
+.phone .glare {
+  position: absolute; inset: 0;
+  border-radius: calc(56 * var(--u));
+  background: linear-gradient(115deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 28%);
+  pointer-events: none;
+}
+
+/* Placering: trin 1 bag til venstre, trin 2 forrest, trin 3 bag til højre. */
+.p1 { --w: 118mm; left: 40mm;  top: 340mm; }
+.p3 { --w: 118mm; left: 232mm; top: 340mm; }
+.p2 { --w: 135.3mm; left: 127.35mm; top: 311mm; }
+
+/* Små mærker på telefonerne: trinnummer og "Demo". */
+.tag-step {
+  position: absolute;
+  width: 22mm; height: 22mm;
+  margin: -11mm 0 0 -11mm;
+  z-index: 5;
+  border-radius: 50%;
+  background: #FFFFFF;
+  color: var(--brand-text);
+  display: grid; place-items: center;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 46pt;
+  line-height: 1;
+  box-shadow: 0 2mm 5mm rgba(0, 32, 22, 0.25);
+}
+.tag-step span { transform: translateY(-0.6mm); }
+.tag-demo {
+  position: absolute;
+  left: 50%; bottom: calc(-14 * var(--u));
+  transform: translateX(-50%);
+  display: flex; align-items: center; gap: 2mm;
+  height: 10.5mm;
+  padding: 0 4.5mm 0 3.5mm;
+  border-radius: 6mm;
+  background: var(--text);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 19pt;
+  white-space: nowrap;
+}
+.tag-demo svg { width: 5.5mm; height: 5.5mm; }
+
+/* ---------- Stor QR-kode med solgul ramme ---------- */
+.qr-main { position: absolute; left: 368mm; top: 318mm; width: 198mm; }
+.qr-main .label {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 60pt;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--on-panel);
+}
+.qr-frame {
+  margin-top: 9mm;
+  width: 198mm; height: 198mm;
+  padding: 10mm;
+  border-radius: 18mm;
+  background: var(--sun);
+  box-shadow: 0 9mm 22mm rgba(0, 32, 22, 0.28), 0 2mm 5mm rgba(0, 32, 22, 0.18);
+}
+.qr-quiet {
+  /* Hvid stille zone: 4 moduler på hver side af koden (29 moduler + 8 = 37). */
+  width: 100%; height: 100%;
+  border-radius: 9mm;
+  background: #FFFFFF;
+  padding: calc(100% * 4 / 37);
+}
+.qr-quiet img { display: block; width: 100%; height: 100%; }
+.url {
+  font-family: var(--body);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.qr-main .url { margin-top: 5mm; font-size: 30pt; text-align: center; }
+
+/* ---------- Tre trin og løftet ---------- */
+.steps {
+  position: absolute;
+  left: 28mm; top: 625mm;
+  list-style: none;
+}
+.steps li {
+  display: flex; align-items: center; gap: 7mm;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 60pt;
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.steps li + li { margin-top: 4.5mm; }
+.num {
+  flex: none;
+  width: 22mm; height: 22mm;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #FFFFFF;
+  display: grid; place-items: center;
+  font-weight: 900;
+  font-size: 44pt;
+  line-height: 1;
+}
+.num span { transform: translateY(-0.5mm); }
+
+.promise {
+  position: absolute;
+  left: 28mm; top: 718mm;
+  display: flex; gap: 7mm; align-items: flex-start;
+  font-family: var(--display);
+  font-size: 60pt;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.promise svg { flex: none; width: 22mm; height: 22mm; margin-top: 2.6mm; }
+.promise b { display: block; font-weight: 800; color: var(--text); }
+.promise span { display: block; font-weight: 700; color: var(--brand-text); }
+
+/* ---------- Lille QR-kode til firmaer ---------- */
+.qr-biz { position: absolute; left: 446mm; top: 625mm; width: 120mm; }
+.qr-biz .label {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 34pt;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+.qr-biz .label span { display: block; color: var(--brand-text); }
+.qr-biz .card {
+  margin-top: 5mm;
+  width: 120mm; height: 120mm;
+  border-radius: 8mm;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 0.5mm var(--border), 0 3mm 8mm rgba(0, 32, 22, 0.10);
+  /* 33 moduler + 4 på hver side = 41. */
+  padding: calc(120mm * 4 / 41);
+}
+.qr-biz .card img { display: block; width: 100%; height: 100%; }
+.qr-biz .url { margin-top: 3.5mm; font-size: 21pt; text-align: center; }
+
+/* ---------- Fodlinje ---------- */
+.foot {
+  /* Står fast i bunden og vokser opad, hvis navnene fylder mere end én linje. */
+  position: absolute;
+  left: 28mm; bottom: 24mm;
+  width: 404mm;
+  font-size: 26pt;
+  line-height: 1.32;
+  font-weight: 500;
+  color: var(--text2);
+}
+.foot b { font-weight: 700; color: var(--text); }
+.ph {
+  background: var(--ph-bg);
+  color: var(--ph-text);
+  border-radius: 1.4mm;
+  padding: 0 1.2mm;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+@media screen {
+  html, body { background: #9AA6A1; }
+  .page { margin: 20px auto; box-shadow: 0 10px 40px rgba(0,0,0,.3); }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="art">
+    <div class="panel"><div class="orb"></div><div class="ring"></div></div>
+
+    <div class="wordmark">fixmatch<span class="dot">.</span></div>
+    <div class="demo-pill">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.4v.2"/></svg>
+      Demoversion
+    </div>
+
+    <h1>Se prisen,<br>før du ringer<span class="dot">.</span></h1>
+    <p class="sub">Find og sammenlign håndværkere og<br>mekanikere i København. Gratis iPhone-app.</p>
+
+    <div class="phones">
+      <figure class="phone p1" data-step="1">
+        <i class="btn l" style="top:calc(150 * var(--u)); height:calc(34 * var(--u))"></i>
+        <i class="btn l" style="top:calc(214 * var(--u)); height:calc(64 * var(--u))"></i>
+        <i class="btn l" style="top:calc(292 * var(--u)); height:calc(64 * var(--u))"></i>
+        <i class="btn r" style="top:calc(240 * var(--u)); height:calc(100 * var(--u))"></i>
+        <div class="body"><div class="screen">
+          <canvas width="390" height="20"></canvas>
+          <img class="shot" src="assets/app-home-3x.png" alt="Find: fag-fliserne og knappen Sammenlign priser">
+          <div class="status"><span class="time">9:41</span><svg viewBox="0 0 76 13"><use href="#sb-icons"/></svg></div>
+          <div class="island"></div>
+          <div class="glare"></div>
+        </div></div>
+        <span class="tag-demo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.4v.2"/></svg>Demo</span>
+      </figure>
+      <figure class="phone p3" data-step="3">
+        <i class="btn l" style="top:calc(150 * var(--u)); height:calc(34 * var(--u))"></i>
+        <i class="btn l" style="top:calc(214 * var(--u)); height:calc(64 * var(--u))"></i>
+        <i class="btn l" style="top:calc(292 * var(--u)); height:calc(64 * var(--u))"></i>
+        <i class="btn r" style="top:calc(240 * var(--u)); height:calc(100 * var(--u))"></i>
+        <div class="body"><div class="screen">
+          <canvas width="390" height="20"></canvas>
+          <img class="shot" src="assets/app-virksomhed-3x.png" alt="Virksomhed: priserne, Verificeret og knappen Ring">
+          <div class="status"><span class="time">9:41</span><svg viewBox="0 0 76 13"><use href="#sb-icons"/></svg></div>
+          <div class="island"></div>
+          <div class="glare"></div>
+        </div></div>
+        <span class="tag-demo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.4v.2"/></svg>Demo</span>
+      </figure>
+      <figure class="phone p2" data-step="2">
+        <i class="btn l" style="top:calc(150 * var(--u)); height:calc(34 * var(--u))"></i>
+        <i class="btn l" style="top:calc(214 * var(--u)); height:calc(64 * var(--u))"></i>
+        <i class="btn l" style="top:calc(292 * var(--u)); height:calc(64 * var(--u))"></i>
+        <i class="btn r" style="top:calc(240 * var(--u)); height:calc(100 * var(--u))"></i>
+        <div class="body"><div class="screen">
+          <canvas width="390" height="20"></canvas>
+          <img class="shot" src="assets/app-kategori-vvs-3x.png" alt="Resultater: VVS'ere med timepriser, afstand og anmeldelser">
+          <div class="status"><span class="time">9:41</span><svg viewBox="0 0 76 13"><use href="#sb-icons"/></svg></div>
+          <div class="island"></div>
+          <div class="glare"></div>
+        </div></div>
+        <span class="tag-demo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.4v.2"/></svg>Demo</span>
+      </figure>
+    </div>
+
+    <!-- Trinnumrene på telefonerne (midtpunkt i mm). -->
+    <span class="tag-step" style="left:99mm; top:332mm"><span>1</span></span>
+    <span class="tag-step" style="left:195mm; top:303mm"><span>2</span></span>
+    <span class="tag-step" style="left:291mm; top:332mm"><span>3</span></span>
+
+    <div class="qr-main">
+      <p class="label">Scan og se,<br>hvordan den virker.</p>
+      <div class="qr-frame"><div class="qr-quiet"><img src="assets/qr-fixmatchh.svg" alt="QR-kode til fixmatchh.netlify.app"></div></div>
+      <p class="url">fixmatchh.netlify.app</p>
+    </div>
+
+    <ol class="steps">
+      <li><span class="num"><span>1</span></span>Vælg et fag, eller beskriv problemet.</li>
+      <li><span class="num"><span>2</span></span>Se priserne, og sammenlign op til tre.</li>
+      <li><span class="num"><span>3</span></span>Ring direkte til firmaet.</li>
+    </ol>
+
+    <div class="promise">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#00805C" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2.8 4.5 5.6v5.6c0 4.6 3.1 8.4 7.5 9.9 4.4-1.5 7.5-5.3 7.5-9.9V5.6L12 2.8Z"/><path d="m8.6 12.1 2.4 2.4 4.5-4.7"/></svg>
+      <p><b>Rækkefølgen kan ikke købes.</b><span>Intet gebyr pr. kunde.</span></p>
+    </div>
+
+    <div class="qr-biz">
+      <p class="label">Håndværker i<br>København?<span>Tilmeld jer gratis.</span></p>
+      <div class="card"><img src="assets/qr-tilmeld.svg" alt="QR-kode til fixmatchh.netlify.app/tilmeld/"></div>
+      <p class="url">fixmatchh.netlify.app/tilmeld/</p>
+    </div>
+
+    <div class="foot">
+      <p><b>Testversion med demo-firmaer.</b> Skærmbillederne er fra demoen.</p>
+      <p><span data-team="deltagere"><span class="ph">[Navn 1]</span>, <span class="ph">[Navn 2]</span>, <span class="ph">[Navn 3]</span>, <span class="ph">[Navn 4]</span></span></p>
+      <p><span data-team="skole"><span class="ph">[Skolens navn]</span></span> · Business Minds <span data-team="aarstal">2026/2027</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- Statuslinjens ikoner (signal, wifi, batteri) i hvidt. -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="sb-icons" fill="#FFFFFF">
+      <rect x="0" y="8.6" width="3" height="4" rx="0.9"/>
+      <rect x="4.6" y="6.3" width="3" height="6.3" rx="0.9"/>
+      <rect x="9.2" y="3.8" width="3" height="8.8" rx="0.9"/>
+      <rect x="13.8" y="1.2" width="3" height="11.4" rx="0.9"/>
+      <path d="M30.5 3.1a10.6 10.6 0 0 1 7.4 3l1.3-1.3a12.5 12.5 0 0 0-17.4 0l1.3 1.3a10.6 10.6 0 0 1 7.4-3Zm0 3.9a6.8 6.8 0 0 1 4.6 1.8l1.3-1.3a8.7 8.7 0 0 0-11.8 0l1.3 1.3A6.8 6.8 0 0 1 30.5 7Zm0 3.8a3 3 0 0 1 1.9.7l-1.9 1.9-1.9-1.9a3 3 0 0 1 1.9-.7Z"/>
+      <rect x="47" y="1" width="24" height="11.4" rx="3.6" fill="none" stroke="#FFFFFF" stroke-opacity="0.45" stroke-width="1"/>
+      <rect x="49" y="3" width="20" height="7.4" rx="2"/>
+      <path d="M72.7 4.6v4.2a2.2 2.2 0 0 0 0-4.2Z" fill-opacity="0.5"/>
+    </g>
+  </defs>
+</svg>
+
+<script>
+(function () {
+  // Format og beskæring fra adressen: ?format=A1|A2&bleed=1|0
+  var params = new URLSearchParams(location.search);
+  var format = (params.get('format') || 'A1').toUpperCase();
+  var bleed = params.get('bleed') === '0' ? 0 : 3;
+  var trim = { A1: [594, 841], A2: [420, 594] }[format] || [594, 841];
+  var scale = Math.min(trim[0] / 594, trim[1] / 841);
+  var root = document.documentElement;
+  root.dataset.format = format;
+  root.dataset.bleed = bleed ? '1' : '0';
+  root.style.setProperty('--bleed', bleed + 'mm');
+  root.style.setProperty('--page-w', trim[0] + 2 * bleed + 'mm');
+  root.style.setProperty('--page-h', trim[1] + 2 * bleed + 'mm');
+  root.style.setProperty('--scale', String(scale));
+  root.style.setProperty('--shift-x', (trim[0] - 594 * scale) / 2 + 'mm');
+  root.style.setProperty('--shift-y', (trim[1] - 841 * scale) / 2 + 'mm');
+  document.title = 'FixMatch – plakat ' + format + (bleed ? ' med 3 mm beskæring' : ' uden beskæring');
+  var page = document.createElement('style');
+  page.textContent = '@page { size: ' + (trim[0] + 2 * bleed) + 'mm ' + (trim[1] + 2 * bleed) + 'mm; margin: 0; }';
+  document.head.appendChild(page);
+
+  // Navne fra team.json (build.js lægger dem i window.POSTER_TEAM, før siden indlæses).
+  var team = window.POSTER_TEAM || {};
+  document.querySelectorAll('[data-team]').forEach(function (el) {
+    var value = team[el.dataset.team];
+    if (typeof value === 'string' && value.trim()) el.innerHTML = value;
+  });
+
+  // Statuslinjen: skærmbillederne har ingen, så toppen af panelet forlænges opad
+  // ved at strække billedets øverste pixelrække. Virker også med nye skærmbilleder.
+  var pending = [];
+  document.querySelectorAll('.phone').forEach(function (phone) {
+    var img = phone.querySelector('img.shot');
+    var canvas = phone.querySelector('canvas');
+    pending.push(new Promise(function (resolve) {
+      function draw() {
+        var ctx = canvas.getContext('2d');
+        var w = img.naturalWidth;
+        var edge = Math.round(w / 390); // 1 punkt grå kant i siderne
+        ctx.imageSmoothingEnabled = true;
+        ctx.drawImage(img, edge, 0, w - 2 * edge, 2, 0, 0, canvas.width, canvas.height);
+        resolve();
+      }
+      if (img.complete && img.naturalWidth) draw();
+      else { img.addEventListener('load', draw); img.addEventListener('error', resolve); }
+    }));
+  });
+  window.posterReady = Promise.all(pending).then(function () { return document.fonts.ready; });
+})();
+</script>
+</body>
+</html>
