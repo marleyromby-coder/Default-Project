@@ -64,7 +64,7 @@ Har du kontaktet en virksomhed gennem FixMatch, kan du anmelde den og dele, hvad
 
 ## 10. Naborabat
 
-Starter du en gruppe, gemmer vi opgaven, gaden eller området, som du selv skriver det, dit postnummer, perioden, din besked og en kode hos Supabase i EU, knyttet til din bruger. Melder du dig til en gruppe, gemmer vi, at din bruger er med. Alle i appen og alle med gruppens link på hjemmesiden kan se opgaven, området, perioden, beskeden og hvor mange der er med, men aldrig hvem. Grupper forsvinder fra listen efter 90 dage, og alt slettes, når du sletter din bruger. Beskeden til virksomheden sender du selv fra din telefon.
+Starter du en gruppe, gemmer vi opgaven, gaden eller området, som du selv skriver det, dit postnummer, perioden, din besked og en kode hos Supabase i EU, knyttet til din bruger. Melder du dig til en gruppe, gemmer vi, at din bruger er med. Alle i appen og alle med gruppens link på hjemmesiden kan se opgaven, området, postnummeret, perioden, beskeden og hvor mange der er med, men aldrig hvem. Grupper forsvinder fra listen efter 90 dage, og alt slettes, når du sletter din bruger. Beskeden til virksomheden sender du selv fra din telefon.
 
 ## 11. Billeder og data fra internettet
 

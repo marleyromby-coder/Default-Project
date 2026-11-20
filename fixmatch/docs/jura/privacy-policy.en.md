@@ -60,7 +60,7 @@ If you contacted a business through FixMatch, you can review it and share what t
 
 ## 10. Neighbour discount
 
-If you start a group, we store the job, the street or area as you write it, your postcode, the period, your message and a code with Supabase in the EU, linked to your account. If you join a group, we store that your account is a member. Everyone in the app, and anyone with the group's link on the website, can see the job, the area, the period, the message and how many are in, but never who. Groups leave the list after 90 days, and everything is deleted when you delete your account. You send the message to the business from your own phone yourself.
+If you start a group, we store the job, the street or area as you write it, your postcode, the period, your message and a code with Supabase in the EU, linked to your account. If you join a group, we store that your account is a member. Everyone in the app, and anyone with the group's link on the website, can see the job, the area, the postcode, the period, the message and how many are in, but never who. Groups leave the list after 90 days, and everything is deleted when you delete your account. You send the message to the business from your own phone yourself.
 
 ## 11. Images and data from the internet
 

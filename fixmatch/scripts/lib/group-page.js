@@ -2,8 +2,9 @@
  * The Naborabat page (website/naborabat.md and neighbours.en.md, where {{group}} stands).
  * The invite a neighbour sends from the app links here with the group's code
  * (/naborabat/?kode=ABC123). The page shows the group from the app's public view
- * open_group_jobs (the job, the street and how many are in, never who) and opens the app
- * on the group with fixmatch://faelles?kode=…, where the neighbour joins.
+ * open_group_jobs (the job, the street, the postcode, the period, the message and how many are
+ * in, never who) and opens the app on the group with fixmatch://faelles?kode=…, where the
+ * neighbour joins.
  */
 const { readGroupDiscount, readJobs, readNumber } = require('./app-data');
 const { readSupabase } = require('./signup-form');

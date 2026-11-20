@@ -10,4 +10,4 @@ Team up with the neighbours on jobs like gutter cleaning, boiler service or tyre
 2. Open the link, or enter the code in FixMatch under **Neighbour discount**, and tap **Join**.
 3. Once there are at least {{min_group}} of you, the neighbour who started the group sends one request to a business. You agree the price with it directly, and each household gets its own invoice.
 
-Others only see the job, the street and how many you are. Never names or addresses. FixMatch is not a party to the agreement.
+Everyone can see the job, the street, the postcode, the period and the message, and how many you are – never who. FixMatch is not a party to the agreement.
