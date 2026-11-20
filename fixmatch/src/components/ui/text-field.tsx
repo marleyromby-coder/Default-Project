@@ -14,17 +14,24 @@ interface TextFieldProps extends Omit<TextInputProps, 'style' | 'ref'> {
   hint?: string;
   /** Replaces the hint in red when the value is wrong. */
   error?: string;
+  /**
+   * Leave out the visible label, when the screen shows it itself (e.g. above a row with the field
+   * and a button). VoiceOver still reads it as the field's label.
+   */
+  labelHidden?: boolean;
 }
 
 /** A labelled text field whose border shows focus, matching the fields in beskriv.tsx. */
-export function TextField({ ref, label, hint, error, onFocus, onBlur, ...input }: TextFieldProps) {
+export function TextField({ ref, label, hint, error, labelHidden, onFocus, onBlur, ...input }: TextFieldProps) {
   const colors = useTheme();
   const [focused, setFocused] = useState(false);
   return (
     <View style={styles.wrapper}>
-      <AppText variant="subhead" weight="600" tone="textSecondary">
-        {label}
-      </AppText>
+      {labelHidden ? null : (
+        <AppText variant="subhead" weight="600" tone="textSecondary">
+          {label}
+        </AppText>
+      )}
       <View
         style={[
           styles.field,

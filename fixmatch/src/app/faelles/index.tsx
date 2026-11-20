@@ -117,18 +117,30 @@ export default function GroupsScreen() {
             onPress={() => router.push('/faelles/ny')}
             block
           />
-          <View style={styles.codeBox}>
-            <View style={styles.flex}>
-              <TextField
-                label={t('Har du fået en kode af en nabo?')}
-                value={code}
-                onChangeText={(value) => setCode(value.toUpperCase().slice(0, 6))}
-                autoCapitalize="characters"
-                autoCorrect={false}
-                placeholder="ABC123"
-              />
+          {/* The label spans the card, so only the field and "Deltag" share the row. */}
+          <View style={styles.code}>
+            <AppText
+              variant="subhead"
+              weight="600"
+              tone="textSecondary"
+              accessibilityElementsHidden
+              importantForAccessibility="no">
+              {t('Har du fået en kode af en nabo?')}
+            </AppText>
+            <View style={styles.codeBox}>
+              <View style={styles.flex}>
+                <TextField
+                  label={t('Har du fået en kode af en nabo?')}
+                  labelHidden
+                  value={code}
+                  onChangeText={(value) => setCode(value.toUpperCase().slice(0, 6))}
+                  autoCapitalize="characters"
+                  autoCorrect={false}
+                  placeholder="ABC123"
+                />
+              </View>
+              <Button title={t('Deltag')} disabled={code.trim().length !== 6} loading={busy} onPress={join} />
             </View>
-            <Button title={t('Deltag')} disabled={code.trim().length !== 6} loading={busy} onPress={join} />
           </View>
         </View>
 
@@ -178,6 +190,7 @@ const styles = StyleSheet.create({
     borderRadius: Radius.card,
     borderCurve: 'continuous',
   },
+  code: { gap: Spacing.xs },
   codeBox: { flexDirection: 'row', alignItems: 'flex-end', gap: Spacing.sm },
   section: { gap: Spacing.sm },
 });
