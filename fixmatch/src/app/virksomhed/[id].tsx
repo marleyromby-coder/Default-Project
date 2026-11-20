@@ -579,7 +579,8 @@ export default function BusinessScreen() {
 
       {scrolled ? (
         <View style={[styles.topBar, { height: insets.top + 60, backgroundColor: colors.panel }]} pointerEvents="none">
-          <AppText variant="headline" display tone="onPanel" numberOfLines={1} style={styles.topBarTitle}>
+          {/* SF Pro semibold, like the title of every other panel-coloured navigation bar. */}
+          <AppText variant="headline" weight="600" tone="onPanel" numberOfLines={1} style={styles.topBarTitle}>
             {business.name}
           </AppText>
         </View>
