@@ -146,9 +146,10 @@ export function BusinessMap({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width, height, view, visible, scale, cosLat, padding.top, padding.bottom]);
 
-  const water = dark ? '#121C1E' : '#D3E0E2';
-  const land = dark ? '#1F231D' : '#F7F4ED';
-  const coast = dark ? '#343A31' : '#D9D1C1';
+  // Land and coast from the app's cool palette; the sea a cool blue-grey tint of it.
+  const water = dark ? '#0F1A1C' : '#D6E4E8';
+  const land = colors.surfaceAlt;
+  const coast = colors.border;
   const originPoint = project(origin);
 
   return (
