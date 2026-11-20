@@ -523,6 +523,8 @@ const en: Record<string, string> = {
   // Browsing screens: Find, results and compare
   '{count} {trade} side om side': '{count} {trade} side by side',
   '{count} virksomheder side om side': '{count} businesses side by side',
+  '1 {trade} valgt': '1 {trade} chosen',
+  '1 virksomhed valgt': '1 business chosen',
   'Nær {place} · priser {tax}': 'Near {place} · prices {tax}',
   'Lavest fra': 'Lowest from',
   Demoversion: 'Demo version',

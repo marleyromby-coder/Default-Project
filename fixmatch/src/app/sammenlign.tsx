@@ -132,9 +132,13 @@ export default function CompareScreen() {
           <View pointerEvents="none" style={[styles.overscroll, { backgroundColor: colors.panel }]} />
           <HeroPanel safeArea={false} overlap={OVERLAP} contentStyle={styles.hero}>
             <AppText variant="title1" tone="onPanel">
-              {trade
-                ? t('{count} {trade} side om side', { count: items.length, trade: lowerTrade(trade.plural) })
-                : t('{count} virksomheder side om side', { count: items.length })}
+              {items.length === 1
+                ? trade
+                  ? t('1 {trade} valgt', { trade: lowerTrade(trade.name) })
+                  : t('1 virksomhed valgt')
+                : trade
+                  ? t('{count} {trade} side om side', { count: items.length, trade: lowerTrade(trade.plural) })
+                  : t('{count} virksomheder side om side', { count: items.length })}
               <Text style={{ color: colors.accent }}>.</Text>
             </AppText>
             <AppText variant="footnote" tone="onPanelSoft">
