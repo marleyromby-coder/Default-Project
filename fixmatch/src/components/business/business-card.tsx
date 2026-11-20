@@ -241,6 +241,8 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
             title={t('Se priser')}
             size="small"
             block
+            // The column is narrow: less side padding leaves room for "See prices" at larger text.
+            style={styles.pricesButton}
             onPress={openPage}
             accessibilityLabel={t('Se priser hos {name}', { name: business.name })}
           />
@@ -313,4 +315,5 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
   },
   price: { alignItems: 'flex-end' },
+  pricesButton: { paddingHorizontal: Spacing.sm },
 });

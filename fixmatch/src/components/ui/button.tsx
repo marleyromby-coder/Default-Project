@@ -107,6 +107,9 @@ export function Button({
             weight={textOnly ? '600' : '700'}
             style={[{ color: palette.fg }, link ? styles.linkLabel : null]}
             numberOfLines={link ? 2 : 1}
+            // A one-line label shrinks a little on iOS rather than being cut; labels that fit stay as they are.
+            adjustsFontSizeToFit={!textOnly}
+            minimumFontScale={0.8}
             maxFontSizeMultiplier={1.3}>
             {title}
           </AppText>
