@@ -326,12 +326,18 @@ export default function HomeScreen() {
         <Section title={t('Værktøjer')}>
           <View style={[styles.tools, column]}>
             <ListSection>
-              <ListRow icon="siren" title={t('Akut hjælp – døgnvagt')} onPress={() => router.push('/akut')} />
+              <ListRow
+                icon="siren"
+                title={t('Akut hjælp – døgnvagt')}
+                tint={{ background: colors.coralSoft, color: colors.coralText }}
+                onPress={() => router.push('/akut')}
+              />
               <ListRow icon="receipt" title={t('Tilbudstjek')} onPress={() => router.push('/tilbudstjek')} />
               <ListRow icon="leaf" title={t('Grøn guide')} onPress={() => router.push('/groen-guide')} />
               <ListRow
                 icon="warning"
                 title={t('Advarselslampe i bilen')}
+                tint={{ background: TradeColors[scheme].mekaniker.soft, color: TradeColors[scheme].mekaniker.onSoft }}
                 onPress={() => router.push('/advarselslamper')}
               />
               <ListRow icon="people" title={t('Naborabat')} onPress={() => router.push('/faelles')} />
