@@ -151,7 +151,8 @@ export default function CompareScreen() {
                   <Tappable
                     onPress={() => toggleCompare(business.id)}
                     accessibilityLabel={t('Fjern {name} fra sammenligning', { name: business.name })}
-                    hitSlop={8}
+                    // 24 pt + 2 × 10 = a 44 pt target.
+                    hitSlop={10}
                     style={[styles.remove, { backgroundColor: colors.fill }]}>
                     <Icon name="close" size={11} color={colors.textSecondary} weight="bold" />
                   </Tappable>
