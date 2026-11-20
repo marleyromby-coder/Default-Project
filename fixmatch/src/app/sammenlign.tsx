@@ -99,15 +99,18 @@ export default function CompareScreen() {
   );
   const jobExample = (s: ScoredBusiness) =>
     sharedJob?.job ? s.business.pricing.examples.find((e) => e.job === sharedJob.job) : undefined;
-  const winners = {
-    match: bestMatch(items),
-    price: bestPrice(items),
-    job: sharedJob?.job ? bestBy(items, (s) => jobExample(s)?.min ?? Infinity, true) : undefined,
-    distance: bestDistance(items),
-    rating: bestReviewed(items),
-  };
   const trades = new Set(items.map((s) => s.business.categories[0]));
   const trade = trades.size === 1 ? getCategory(items[0].business.categories[0]) : undefined;
+  // Prices and scores are only compared within one trade, so a mix of trades gets no winners.
+  const winners = trade
+    ? {
+        match: bestMatch(items),
+        price: bestPrice(items),
+        job: sharedJob?.job ? bestBy(items, (s) => jobExample(s)?.min ?? Infinity, true) : undefined,
+        distance: bestDistance(items),
+        rating: bestReviewed(items),
+      }
+    : {};
   const jobName = sharedJob?.job
     ? (getCategory(items[0].business.categories[0])?.jobs.find((j) => j.id === sharedJob.job)?.name ?? sharedJob.label)
     : undefined;
