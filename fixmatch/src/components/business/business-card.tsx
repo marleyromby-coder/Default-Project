@@ -136,16 +136,18 @@ export function BusinessCard({ item, job, rank, onCompareLimit, priceOverride, h
             <View style={styles.identity}>
               <BusinessMark business={business} size={44} />
               <View style={styles.titleText}>
-                <View style={styles.nameRow}>
-                  <AppText variant="headline" display numberOfLines={2} style={styles.flexShrink}>
-                    {business.name}
-                  </AppText>
+                {/* The seal sits in the text, so it follows the last word of a two-line name. */}
+                <AppText variant="headline" display numberOfLines={2}>
+                  {business.name}
                   {verified ? (
-                    <View style={styles.seal}>
-                      <VerifiedMark business={business} />
-                    </View>
+                    <>
+                      {'\u00a0'}
+                      <View style={styles.seal}>
+                        <VerifiedMark business={business} />
+                      </View>
+                    </>
                   ) : null}
-                </View>
+                </AppText>
                 <AppText variant="footnote" tone="textSecondary" numberOfLines={1}>
                   {businessText(business).tagline}
                 </AppText>
@@ -279,10 +281,8 @@ const styles = StyleSheet.create({
   ribbons: { flexDirection: 'row', gap: Spacing.xs, flexWrap: 'wrap' },
   identity: { flexDirection: 'row', gap: Spacing.md, alignItems: 'flex-start' },
   titleText: { flex: 1, gap: 1 },
-  nameRow: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.xs },
-  // Puts the seal beside the first line of a two-line name.
-  seal: { paddingTop: 3 },
-  flexShrink: { flexShrink: 1 },
+  // An inline view rests on the baseline; this lowers the seal to the middle of the letters.
+  seal: { width: 16, height: 16, transform: [{ translateY: 2 }] },
   meta: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: Spacing.xs + 1, rowGap: 2 },
   // The open status starts with its own coloured dot, so it needs no "·" and can start a line.
   free: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs },
