@@ -85,12 +85,15 @@ export function ClusterBubble({ count }: { count: number }) {
   );
 }
 
-/** The chosen town, when the system's own GPS dot is not shown: the ochre dot of the logo. */
+/**
+ * The chosen town, when the system's own GPS dot is not shown: an emerald dot with a white ring.
+ * Not sun yellow, which on the map would read as a "Billigst" marker.
+ */
 export function OriginDot() {
   const colors = useTheme();
   return (
-    <View style={[styles.halo, { backgroundColor: `${colors.accent}33` }]}>
-      <View style={[styles.origin, { backgroundColor: colors.accent }]} />
+    <View style={[styles.halo, { backgroundColor: `${colors.brand}33` }]}>
+      <View style={[styles.origin, { backgroundColor: colors.brand }]} />
     </View>
   );
 }
