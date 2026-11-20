@@ -69,7 +69,7 @@ export function infoPagesDa() {
           ],
           bullets: [
             'Bedste match: den højeste FixMatch-score.',
-            'Billigst: den laveste fra-pris pr. time. Har du valgt en opgave, er det den laveste fra-pris for opgaven, og en virksomhed uden pris for opgaven kan ikke få mærket.',
+            'Billigst: den laveste fra-pris pr. time.',
             'Nærmest: den korteste afstand i luftlinje.',
             'Bedst anmeldt: tæller kun virksomheder med anmeldelser og bruger det samme vægtede gennemsnit som scoren. Derfor kan en virksomhed med mange gode anmeldelser stå før en med én anmeldelse på 5,0.',
           ],

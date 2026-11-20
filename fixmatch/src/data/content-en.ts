@@ -49,7 +49,7 @@ export function infoPagesEn(): Record<
           ],
           bullets: [
             'Best match: the highest FixMatch score.',
-            'Cheapest: the lowest "from" price per hour. If you chose a job, it is the lowest "from" price for the job, and a business without a price for the job cannot get the label.',
+            'Cheapest: the lowest "from" price per hour.',
             'Nearest: the shortest straight-line distance.',
             'Best reviewed: only counts businesses with reviews and uses the same weighted average as the score. So a business with many good reviews can come before one with a single 5.0 review.',
           ],
