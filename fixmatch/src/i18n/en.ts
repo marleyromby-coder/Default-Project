@@ -330,7 +330,8 @@ const en: Record<string, string> = {
   'Sammenlign på det, der betyder noget': 'Compare on what matters',
   'Sammenlign {count} virksomheder': 'Compare {count} businesses',
   'Sammenlign {name}': 'Compare {name}',
-  'Sammenlignet med den typiske timepris i faget.': 'Compared with the typical hourly rate in the trade.',
+  'Sammenlignet med den typiske timepris i faget i hele landet. Er der under {count} virksomheder i faget, har de intet prisniveau og vises kun under “Alle”.':
+    'Compared with the typical hourly rate in the trade across the country. With fewer than {count} businesses in the trade, they have no price level and only show under “All”.',
   Samtykke: 'Consent',
   'Se anmeldelser andre steder': 'See reviews elsewhere',
   'Se hvem der er tættest på, og hvor langt de kører.': 'See who is nearest and how far they travel.',

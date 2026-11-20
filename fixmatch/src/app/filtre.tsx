@@ -18,6 +18,7 @@ import {
   MIN_REVIEWS_FOR_FILTER,
   RATING_OPTIONS,
 } from '@/lib/filters';
+import { PRICE_LEVEL_MIN_PEERS } from '@/lib/ranking';
 import type { Filters } from '@/lib/types';
 import { useApp, useMarket } from '@/state/app-state';
 import { t } from '@/i18n';
@@ -89,7 +90,10 @@ export default function FiltersScreen() {
             ))}
           </View>
           <AppText variant="caption" tone="textSecondary">
-            {t('Sammenlignet med den typiske timepris i faget.')}
+            {t(
+              'Sammenlignet med den typiske timepris i faget i hele landet. Er der under {count} virksomheder i faget, har de intet prisniveau og vises kun under “Alle”.',
+              { count: PRICE_LEVEL_MIN_PEERS },
+            )}
           </AppText>
         </Group>
         <View style={[styles.switches, { backgroundColor: colors.surface }]}>
