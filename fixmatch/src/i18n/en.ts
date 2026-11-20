@@ -1441,7 +1441,7 @@ const en: Record<string, string> = {
   '{count} med': '{count} in',
   'Din gruppe': 'Your group',
   'Du er med': 'You are in',
-  'Vand løber ud': 'Water is running out',
+  'Vand løber ud': 'Water is leaking',
   'Luk for hovedhanen. Den sidder oftest ved vandmåleren i bryggers, kælder eller skab i entreen.':
     'Shut off the main valve. It is usually by the water meter in the utility room, basement or a cupboard in the hall.',
   'Sluk for strømmen i rummet på eltavlen, hvis vandet er nær stikkontakter eller lamper.':
