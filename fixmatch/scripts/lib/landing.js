@@ -92,7 +92,7 @@ function text(lang, { minGroup, discount }) {
       },
       {
         image: 'virksomhed',
-        alt: 'En virksomheds side i appen med verificeret-flueben, timepris, afstand og svarprocent',
+        alt: 'En virksomheds side i appen med Verificeret- og Demo-mærke, match, timepris, afstand, anmeldelser og prisniveau',
         icon: 'shield',
         title: 'Tryghed før du ringer',
         lead: 'Du skal kunne stole på dem, du lukker ind i dit hjem. Derfor viser appen det, der betyder noget.',
@@ -244,7 +244,7 @@ function text(lang, { minGroup, discount }) {
       },
       {
         image: 'virksomhed',
-        alt: 'A business page in the app with the verified badge, hourly rate, distance and answer rate',
+        alt: 'A business page in the app with the Verified and Demo badges, match, hourly rate, distance, reviews and price level',
         icon: 'shield',
         title: 'Peace of mind before you call',
         lead: 'You need to trust the people you let into your home. So the app shows what matters.',
@@ -370,7 +370,7 @@ function landing(lang, { root, assets = '' }) {
 <ul data-live-list></ul>
 </div>
 </div>
-${phone('home', lang === 'da' ? 'Forsiden i appen: søgefelt, Beskriv dit problem, Tilbudstjek og fagene' : 'The front page of the app: search, Describe your problem, Quote check and the trades', ' hero-phone')}
+${phone('home', lang === 'da' ? 'Forsiden i appen: søgefelt, knappen Sammenlign priser og fagene med fra-priser' : 'The front page of the app: search, the Compare prices button and the trades with their from prices', ' hero-phone')}
 </section>`;
 
   // The eight trades as the app's tiles, on a card that overlaps the panel like the app's search card.
