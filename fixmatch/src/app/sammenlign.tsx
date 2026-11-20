@@ -19,7 +19,8 @@ import { useTheme } from '@/hooks/use-theme';
 import { callBusiness } from '@/lib/contact';
 import { currencySymbol, formatDistance, formatNumber, formatPrice, formatRating } from '@/lib/format';
 import { getOpenStatus } from '@/lib/opening-hours';
-import { bestBy, bestReviewed, priceIndex, type ScoredBusiness } from '@/lib/ranking';
+import { bestBy, bestReviewed, type ScoredBusiness } from '@/lib/ranking';
+import { cheapestId } from '@/lib/sort-tabs';
 import { t } from '@/i18n';
 import { businessText, currencyOf, timeZoneOf } from '@/lib/business-text';
 import { taxNote } from '@/lib/markets';
@@ -28,7 +29,8 @@ import { useApp, useMarket } from '@/state/app-state';
 type Best = (items: ScoredBusiness[]) => string | undefined;
 
 const bestMatch: Best = (items) => bestBy(items, (s) => s.score, false);
-const bestPrice: Best = (items) => bestBy(items, (s) => priceIndex(s.business), true);
+// The lowest "fra" price, the same rule as "Billigst" on the list.
+const bestPrice: Best = cheapestId;
 const bestDistance: Best = (items) => bestBy(items, (s) => Math.round(s.distanceKm * 10), true);
 
 /** How a winning cell is coloured: sun for price, sky for distance, brand for match and reviews. */
@@ -178,7 +180,8 @@ export default function CompareScreen() {
                 <Value
                   key={s.business.id}
                   win={winners.price === s.business.id ? 'sun' : undefined}
-                  winLabel={t('Billigst')}>
+                  // The row shows the whole range, so the label says what was compared.
+                  winLabel={t('Lavest fra')}>
                   {(tone) => (
                     <Big tone={tone}>{numberRange(s.business.pricing.hourlyMin, s.business.pricing.hourlyMax)}</Big>
                   )}

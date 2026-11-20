@@ -1,5 +1,5 @@
 import { scoreBusinesses, sortScored } from '@/lib/ranking';
-import { MAX_RIBBONS, resultRibbons, sortTabWinners } from '@/lib/sort-tabs';
+import { cheapestId, MAX_RIBBONS, resultRibbons, sortTabWinners } from '@/lib/sort-tabs';
 import type { Business, JobType } from '@/lib/types';
 
 import { makeBusiness } from '@/__fixtures__/business';
@@ -64,6 +64,26 @@ describe('sortTabWinners', () => {
 
   it('is empty for a list of one, since nothing was compared', () => {
     expect(sortTabWinners(score([business('alone', 1, 500, 600, [4.5, 3])]))).toEqual({});
+  });
+});
+
+describe('cheapestId', () => {
+  it('picks the lowest "fra" price even when the middles of the ranges are equal', () => {
+    // 560–660 and 565–655 both have the middle 610 (the demo VVS list in København K).
+    const items = score([
+      business('fjordvand', 2, 565, 655),
+      business('hjertevarme', 3, 560, 660),
+      business('roerfalken', 1, 580, 690),
+    ]);
+    expect(cheapestId(items)).toBe('hjertevarme');
+    // The list's ribbon and the price sort agree with it.
+    expect(resultRibbons(items, 'match').get('hjertevarme')).toContain('price');
+    expect(sortScored(items, 'price')[0].business.id).toBe('hjertevarme');
+  });
+
+  it('gives no winner on a tie or a list of one', () => {
+    expect(cheapestId(score([business('a', 1, 560, 600), business('b', 2, 560, 700)]))).toBeUndefined();
+    expect(cheapestId(score([business('alone', 1, 500, 600)]))).toBeUndefined();
   });
 });
 

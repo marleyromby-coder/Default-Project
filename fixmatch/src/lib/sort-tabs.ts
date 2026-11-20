@@ -28,6 +28,15 @@ export function sortTabWinners(items: ScoredBusiness[]): SortTabWinners {
   };
 }
 
+/**
+ * "Billigst": the one business with the lowest "fra" price per hour, the number the cards show
+ * first. The list's ribbon and the "Timepris" row in Sammenlign both use it, so the same
+ * businesses get the same winner in both places. Undefined on a tie or with fewer than two.
+ */
+export function cheapestId(items: ScoredBusiness[]): string | undefined {
+  return bestBy(items, (s) => s.business.pricing.hourlyMin, true);
+}
+
 /** The small ribbons on a result card. */
 export type Ribbon = 'match' | 'price' | 'distance';
 
@@ -42,13 +51,15 @@ export const MAX_RIBBONS = 2;
  * wins all three keeps two: the current sort's first, then match, price and distance.
  */
 export function resultRibbons(items: ScoredBusiness[], sort: SortMode, job?: JobType): Map<string, Ribbon[]> {
-  const price = job
-    ? (s: ScoredBusiness) => s.business.pricing.examples.find((e) => e.job === job.id)?.min ?? Infinity
-    : (s: ScoredBusiness) => s.business.pricing.hourlyMin;
   const winners: [Ribbon, string | undefined][] = [
     ['match', bestBy(items, (s) => s.score, false)],
     // When nobody has a price for the job, all tie on Infinity and nobody gets "Billigst".
-    ['price', bestBy(items, price, true)],
+    [
+      'price',
+      job
+        ? bestBy(items, (s) => s.business.pricing.examples.find((e) => e.job === job.id)?.min ?? Infinity, true)
+        : cheapestId(items),
+    ],
     ['distance', bestBy(items, (s) => Math.round(s.distanceKm * 10), true)],
   ];
   const ordered = [...winners].sort(([a], [b]) => Number(b === sort) - Number(a === sort));
