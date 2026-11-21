@@ -38,7 +38,7 @@ QR-koderne er mindst 3 cm brede i alle flyer-filer. Bruger I `Tilpas til side`, 
      "kontakt": "Navn · 12 34 56 78 · navn@skole.dk",
      "underviser": "Underviserens navn",
      "partnere": "…",
-     "skole": "Skolens navn",
+     "skole": "Aarhus Business College, Risskov",
      "aarstal": "2026/2027"
    }
    ```

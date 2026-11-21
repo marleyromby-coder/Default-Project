@@ -48,7 +48,7 @@ Håndværker i København? Tilmeld jer gratis.
 
 **FODLINJE** (lille):
 Testversion med demo-firmaer. Skærmbillederne er fra demoen.
-Marley Sangill · Morgan Nentvig · Oscar Holst · [Skolens navn] · Business Minds 2026/2027
+Marley Sangill · Morgan Nentvig · Oscar Holst · Aarhus Business College, Risskov · Business Minds 2026/2027
 
 ### Skærme på plakaten
 
@@ -115,7 +115,7 @@ Vi samler de første 40 firmaer i København. Kender du en håndværker? Så giv
 
 **Kontakt:** Marley Sangill · [telefon] · [e-mail]
 Marley Sangill, Morgan Nentvig, Oscar Holst
-Underviser: Lars Nørlykke Adolfsen · [Skolens navn] · Business Minds 2026/2027
+Underviser: Lars Nørlykke Adolfsen · Aarhus Business College, Risskov · Business Minds 2026/2027
 
 _Lille tekst nederst:_ Verificeret er ikke en kvalitetsgaranti.
 
