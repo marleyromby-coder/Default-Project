@@ -14,11 +14,11 @@ Fredag og mandag er de eneste hverdage. Derfor ligger opkaldene til firmaerne og
 
 ## Fredag 20. november: Fordel, ring, bestil tryk og læs højt
 
-- [ ] **Skriv navnene ind.** Bestem, hvem der er hvem: [Navn 1] åbner og lukker, [Navn 2] viser demoen, [Navn 3] tager pengene. Erstat [Navn 1]–[Navn 4] i de fire filer her, og skriv navne, skole, underviser og kontaktlinje i `../team.json`.
+- [x] **Navnene er skrevet ind.** Marley åbner og lukker, Morgan viser demoen, Oscar tager pengene. Vil I bytte roller, så ret navnene i filerne her. I `../team.json` mangler stadig skolens navn og telefon og e-mail i kontaktlinjen.
 - [ ] **Byg plakat og flyer igen, og bestil tryk i dag.** Kør `build.js` (se `../tryk/README.md`), og tjek, at der ikke står nogen pladsholdere til sidst. Mange trykkerier lukker i weekenden og leverer på 1–2 hverdage. Spørg, om de kan have trykket klar mandag 23. november. Kan de ikke, så print flyeren på skolens printer mandag, og få plakaten printet hos et kopicenter mandag morgen. Se "Tryk" nedenfor.
 - [ ] **Ring til 15 firmaer i København**, i deres åbningstid. Følg reglerne i talepapiret (`docs/pitch/talepapir-haandvaerkere.md`): kun firmaets almindelige nummer, tjek Robinsonlisten for enkeltmandsfirmaer, og brug ikke CVR-oplysninger, hvis firmaet er reklamebeskyttet. Brug pitchen på 30 sekunder. Skriv hvert svar ned: ja, nej, hvorfor, og et citat, hvis de siger noget godt.
 - [ ] **Læs pitchen højt tre gange med stopur.** Sid ned. Sæt en streg der, hvor du trækker vejret. Skriv tiden ned hver gang.
-- [ ] **Gør demo-telefonen klar** efter tjeklisten i `pitch-dommere.md`: den nyeste testversion 0.9.0 (commit 6fa499a eller nyere), bruger oprettet, placering København K, og Hjertevarme VVS & Blik øverst under "Bedste match".
+- [ ] **Gør demo-telefonen klar** efter tjeklisten i `pitch-dommere.md`: den nyeste testversion 0.9.0 (bygget 21. november eller senere), placering København K, og Hjertevarme VVS & Blik øverst under "Bedste match".
 - [ ] **Skærmbillederne på plakat og flyer er taget** fra appen den 20. november. Tjek, at demo-telefonen viser det samme: VVS-listen og firmasiden for Hjertevarme VVS & Blik.
 - [ ] **Fortæl teamet, hvad der skal rettes i rapporten** (`rapport.html`): pladsholderne for reaktioner fra opkald, antal tilmeldte og navne, og "Company Programme" i afsnit 8, som skal hedde det samme som konkurrencen.
 
@@ -27,14 +27,13 @@ Fredag og mandag er de eneste hverdage. Derfor ligger opkaldene til firmaerne og
 - [ ] **Øv hele pitchen stående, tre gange, med stopur.** Mål: 3:30–3:45. Er I over 3:50, så sig sætningerne kortere. Skær aldrig i demoen eller i ærlighedslinjerne.
 - [ ] **Optag én gennemgang på telefonen, og lyt til den sammen.** Hvor taler I for hurtigt? Hvor siger I "øh"? Hvor lyder det læst op? Ret én ting hver.
 - [ ] **Øv overleveringerne fem gange hver**, kun de sidste og første sætninger:
-  - [Navn 1] → [Navn 2]: "… hvor man ser prisen, før man ringer." → "Det her er demo-firmaer."
-  - [Navn 2] → [Navn 3]: "Og hvordan tjener vi så penge? [Navn 3]."
-  - [Navn 3] → [Navn 1]: "… Fire lande mere er klar i koden." → "Hvorfor os?"
-- [ ] **Øv åbningen med en, der svarer igen.** En ven eller et familiemedlem siger "1.500 kroner?" eller "Det ved jeg ikke". [Navn 1] svarer som i manuskriptet og fortsætter.
+  - Marley → Morgan: "… hvor man ser prisen, før man ringer." → "Det her er demo-firmaer."
+  - Morgan → Oscar: "Og hvordan tjener vi så penge? Oscar."
+  - Oscar → Marley: "… Fire lande mere er klar i koden." → "Hvorfor os?"
+- [ ] **Øv åbningen med en, der svarer igen.** En ven eller et familiemedlem siger "1.500 kroner?" eller "Det ved jeg ikke". Marley svarer som i manuskriptet og fortsætter.
 - [ ] **Kør demoen 10 gange.** Brug tabellen "Demo-vejen trin for trin" i `pitch-dommere.md`.
   - 5 gange i flytilstand, mens du taler.
   - 2 gange, hvor en anden pludselig siger "appen er gået ned". Skift til skærmbillederne på plakaten (eller en udskrift af den) eller i albummet uden at stoppe.
-  - 1 gang, hvor Ring åbner "Opret en bruger". Tryk Annuller, og fortsæt.
   - 1 gang med backup-telefonen.
   - 1 gang foran en, der står 1,5 meter væk. Kan vedkommende se priserne?
 
@@ -63,13 +62,13 @@ Fredag og mandag er de eneste hverdage. Derfor ligger opkaldene til firmaerne og
 
 **Telefonen**
 
-- [ ] Testversionen hedder 0.9.0, har demodata og er bygget fra commit 6fa499a eller nyere (se `pitch-dommere.md`).
+- [ ] Testversionen hedder 0.9.0, har demodata og er bygget 21. november eller senere (se `pitch-dommere.md`).
 - [ ] Hele demoen kører i flytilstand: forside → VVS'er → "Se priser" hos Hjertevarme VVS & Blik → Ring → boksen "Eksempelvirksomhed" → OK.
-- [ ] Brugeren er oprettet, så Ring ikke åbner "Opret en bruger".
+- [ ] Ring viser boksen "Eksempelvirksomhed" med det samme, også uden bruger.
 - [ ] Forsiden siger "København K · inden for 25 km" (valgt i listen, ikke med "Brug min nuværende placering"), og Hjertevarme VVS & Blik står øverst under "Bedste match" med "82/100".
-- [ ] Auto-Lås: Aldrig. Forstyr ikke: til. Lyd: fra. Koden til Guidet adgang kender både [Navn 2] og [Navn 4].
+- [ ] Auto-Lås: Aldrig. Forstyr ikke: til. Lyd: fra. Koden til Guidet adgang kender både Morgan og Oscar.
 - [ ] Telefonen og power banken er opladet til 100 %.
-- [ ] Backup-telefonen har samme testversion og samme bruger.
+- [ ] Backup-telefonen har samme testversion.
 - [ ] Albummet "FixMatch demo" med skærmbilleder mærket "Demo" ligger på begge telefoner.
 
 **Tekst og tryk**
@@ -123,7 +122,7 @@ Tryk først ét prøveeksemplar af flyeren, og scan QR-koderne, før I trykker r
 **Jer**
 
 - [ ] Navneskilte
-- [ ] Stopur (på [Navn 4]s telefon)
+- [ ] Stopur (på Oscars telefon)
 - [ ] Vand og noget at spise
 - [ ] Billetter til Vejle
 

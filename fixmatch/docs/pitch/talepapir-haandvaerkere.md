@@ -87,4 +87,4 @@ Vi viser kun det, I godkender, og samtykket gemmes med tidspunkt. Data ligger i 
 - [ ] Læg den nye hjemmeside online, så tilmeldingen virker.
 - [ ] Hav en telefon klar med den nyeste testversion til demoen.
 - [ ] Øv demoen: beskriv et problem → sammenlign → åbn en profil → tryk Ring.
-- [ ] Udfyld [navne] i talenoterne på første slide.
+- [x] Navnene (Marley, Morgan og Oscar) står i talenoterne på første slide.

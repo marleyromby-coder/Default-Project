@@ -4,7 +4,7 @@ Til spørgsmålene efter standpitchen. Svarene er korte, så de kan siges højt 
 
 **Sådan svarer I:**
 
-- Den, der har området, svarer: [Navn 1] idé og produkt, [Navn 2] salg og partnere, [Navn 3] økonomi og jura, [Navn 4] marketing.
+- Den, der har området, svarer: Marley idé og produkt, Morgan salg, partnere og marketing, Oscar økonomi og jura.
 - Svar først på spørgsmålet i én sætning. Forklar derefter, hvis der er tid.
 - Ved I det ikke, så sig det: "Det ved vi ikke endnu. Sådan vil vi finde ud af det: …" Se afsnittet "Svar vi ikke har endnu".
 - Kilden under hvert svar er til jer. Spørger en dommer "Hvor har I det fra?", så sig kilden.
@@ -125,8 +125,8 @@ Ja, vi har selv bygget den. Og ja, vi har brugt AI-værktøjer til kode og analy
 _Kilde: rapporten afsnit 6 (styrker og svagheder, kriser). Sig "AI" her, fordi rapporten selv gør det. I selve pitchen bruger vi ikke ordet._
 
 **26. Hvem gør hvad i teamet, og hvad har I lært?**
-[Navn 1] står for idé og produkt, [Navn 2] for salg og partnere, [Navn 3] for økonomi og jura og [Navn 4] for marketing. Vi har lært, at en god idé ikke er nok. Den skal overleve mødet med kunder, jura og teknik. Derfor droppede vi både den globale plan og Trustpilot.
-_Kilde: rapporten afsnit 6 (roller) og afsnit 8 (læringsudbytte); `team.json` (navnene er pladsholdere)._
+Marley står for idé og produkt, Morgan for salg, partnere og marketing og Oscar for økonomi og jura. Vi har lært, at en god idé ikke er nok. Den skal overleve mødet med kunder, jura og teknik. Derfor droppede vi både den globale plan og Trustpilot.
+_Kilde: rapporten afsnit 6 (roller) og afsnit 8 (læringsudbytte); `team.json` (navnene)._
 
 **27. Hvordan er FixMatch bæredygtigt?**
 Appen viser afstanden, så man kan vælge lokalt. Med Naborabat kan tre familier få renset tagrender samme dag, og så sparer håndværkeren to ture. Tilbudstjek viser håndværkerfradraget i kroner, og det kræver faktura. Men vi kan endnu ikke dokumentere effekten. Efter lanceringen måler vi afstanden til det valgte firma og andelen af Naborabat-opgaver.

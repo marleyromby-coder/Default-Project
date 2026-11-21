@@ -48,7 +48,7 @@ Håndværker i København? Tilmeld jer gratis.
 
 **FODLINJE** (lille):
 Testversion med demo-firmaer. Skærmbillederne er fra demoen.
-[Navn 1] · [Navn 2] · [Navn 3] · [Navn 4] · [Skolens navn] · Business Minds 2026/2027
+Marley Sangill · Morgan Nentvig · Oscar Holst · [Skolens navn] · Business Minds 2026/2027
 
 ### Skærme på plakaten
 
@@ -113,9 +113,9 @@ Brugerne betaler aldrig. Firmaer kan vælge et Pro-abonnement med flere billeder
 **Lige nu**
 Vi samler de første 40 firmaer i København. Kender du en håndværker? Så giv flyeren videre.
 
-**Kontakt:** [Navn · telefon · e-mail]
-[Navn 1], [Navn 2], [Navn 3], [Navn 4]
-Underviser: [Underviserens navn] · [Skolens navn] · Business Minds 2026/2027
+**Kontakt:** Marley Sangill · [telefon] · [e-mail]
+Marley Sangill, Morgan Nentvig, Oscar Holst
+Underviser: Lars Nørlykke Adolfsen · [Skolens navn] · Business Minds 2026/2027
 
 _Lille tekst nederst:_ Verificeret er ikke en kvalitetsgaranti.
 
