@@ -57,11 +57,14 @@ export async function openLink(url: string): Promise<void> {
   }
 }
 
-/** Calls the business. The first time, the user is asked for an account with a name and phone number. */
+/**
+ * Calls the business. The first time, the user is asked for an account with a name and phone number.
+ * A demo business only shows that it is fictional, with no account needed.
+ */
 export async function callBusiness(business: Business): Promise<void> {
   haptics.select();
-  if (!(await requireContactProfile())) return;
   const number = formatPhone(business.contact.phone);
+  // A demo business is never contacted, so it needs no account: the demo also works offline.
   if (business.demo) {
     demoNotice(
       business,
@@ -71,6 +74,7 @@ export async function callBusiness(business: Business): Promise<void> {
     );
     return;
   }
+  if (!(await requireContactProfile())) return;
   logContact(business, 'call');
   rememberCall(business);
   try {
@@ -171,11 +175,11 @@ export async function reportProblem(business?: Business): Promise<void> {
 /** Starts a FaceTime call to the business, for a video check before the visit. */
 export async function startFaceTime(business: Business): Promise<void> {
   haptics.select();
-  if (!(await requireContactProfile())) return;
   if (business.demo) {
     demoNotice(business, t('starter et FaceTime-opkald til virksomheden, så de kan se problemet med det samme.'));
     return;
   }
+  if (!(await requireContactProfile())) return;
   logContact(business, 'call');
   const number = business.contact.phone.replace(/[^\d+]/g, '');
   try {
@@ -232,11 +236,11 @@ export async function sendProblem(
   options: { plain?: boolean } = {},
 ): Promise<void> {
   haptics.select();
-  if (!(await requireContactProfile())) return;
   if (business.demo) {
     demoNotice(business, t('åbner Beskeder med din beskrivelse og dine billeder, klar til at sende til virksomheden.'));
     return;
   }
+  if (!(await requireContactProfile())) return;
   // `plain`: the text is the whole message already (video check), not a problem to wrap.
   const message = options.plain ? problem.text : problemMessage(business, problem);
   try {
