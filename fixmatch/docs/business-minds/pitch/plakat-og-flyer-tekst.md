@@ -113,7 +113,7 @@ Brugerne betaler aldrig. Firmaer kan vælge et Pro-abonnement med flere billeder
 **Lige nu**
 Vi samler de første 40 firmaer i Danmark. Kender du en håndværker? Så giv flyeren videre.
 
-**Kontakt:** Marley Sangill · marleyromby@gmail.com
+**Kontakt:** Marley Sangill · 22 89 96 40 · marleyromby@gmail.com
 Marley Sangill, Morgan Nentvig, Oscar Holst
 Underviser: Lars Nørlykke Adolfsen · Aarhus Business College, Risskov · Business Minds 2026/2027
 
