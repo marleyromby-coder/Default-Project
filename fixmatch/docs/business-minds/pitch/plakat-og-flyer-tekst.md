@@ -30,7 +30,7 @@ Alt her følger rapporten og talepapiret. Skærmbillederne viser demo-firmaer, s
 Se prisen, før du ringer.
 
 **UNDERLINJE:**
-Find og sammenlign håndværkere og mekanikere i København. Gratis iPhone-app.
+Find og sammenlign håndværkere og mekanikere i Danmark. Gratis iPhone-app.
 
 **TRE TRIN** (hvert trin står over sit skærmbillede):
 1. Vælg et fag, eller beskriv problemet.
@@ -44,7 +44,7 @@ Rækkefølgen kan ikke købes. Intet gebyr pr. kunde.
 Scan og se, hvordan den virker.
 
 **LILLE QR-KODE** → https://fixmatchh.netlify.app/tilmeld/
-Håndværker i København? Tilmeld jer gratis.
+Håndværker i Danmark? Tilmeld jer gratis.
 
 **FODLINJE** (lille):
 Testversion med demo-firmaer. Skærmbillederne er fra demoen.
@@ -111,7 +111,7 @@ Tilmeld jer gratis.
 Brugerne betaler aldrig. Firmaer kan vælge et Pro-abonnement med flere billeder og priser (forslag: 299–499 kr./md.). Pro giver aldrig en bedre plads.
 
 **Lige nu**
-Vi samler de første 40 firmaer i København. Kender du en håndværker? Så giv flyeren videre.
+Vi samler de første 40 firmaer i Danmark. Kender du en håndværker? Så giv flyeren videre.
 
 **Kontakt:** Marley Sangill · [telefon] · [e-mail]
 Marley Sangill, Morgan Nentvig, Oscar Holst
@@ -139,7 +139,7 @@ _Lille tekst nederst:_ Verificeret er ikke en kvalitetsgaranti.
 | Tekst | Kilde |
 |---|---|
 | "Se prisen, før du ringer." | Rapporten afsnit 4 (positionering) |
-| Håndværkere og mekanikere i København, gratis iPhone-app | Rapporten "Kort fortalt" og afsnit 3 |
+| Håndværkere og mekanikere i Danmark, gratis iPhone-app | Rapporten "Kort fortalt" og afsnit 3 |
 | Vælg et fag, eller beskriv problemet | Rapporten afsnit 1 ("Ideen") |
 | Sammenlign op til tre | `src/state/app-state.tsx` (`MAX_COMPARE = 3`) |
 | Rækkefølgen kan ikke købes; anmeldelser fra brugere via FixMatch | `src/data/content.ts`; `docs/jura/anmeldelser.md` |
@@ -147,5 +147,5 @@ _Lille tekst nederst:_ Verificeret er ikke en kvalitetsgaranti.
 | Verificeret: CVR, ejer og autorisation; ikke en kvalitetsgaranti | `content.ts` ("Sådan verificerer vi") |
 | I godkender alt; kan komme ud når som helst; tre minutter | Talepapiret (pitchen på 30 sekunder) |
 | Tilbudstjek: lavt, normalt eller højt | Rapporten "Kort fortalt" |
-| De første 40 firmaer i København | Rapporten afsnit 4 og 8; talepapiret |
+| De første 40 firmaer i Danmark | Rapporten afsnit 4 og 8; talepapiret |
 | Testversion med demo-firmaer | README; talepapiret ("Mærk skærmbilleder 'Demo'") |

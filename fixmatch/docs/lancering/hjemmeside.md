@@ -22,10 +22,10 @@ Indtil I køber et domæne, ligger siden gratis hos Netlify på **https://fixmat
 1. Byg siden: `cd fixmatch && npm run website:build`. Den færdige side ligger i mappen `fixmatch/dist-website`.
 2. Gå ind på https://app.netlify.com/drop, og opret en gratis konto (fx med GitHub eller e-mail), så siden bliver liggende.
 3. Træk mappen `dist-website` ind i feltet på siden. Efter nogle sekunder er siden online på en tilfældig adresse som `glittering-otter-123.netlify.app`.
-4. Gå til **Site configuration → Change site name**, og skriv `fixmatchh` (med to h'er). Så er adressen https://fixmatchh.netlify.app. (Navnet `fixmatch` var ikke vores. Netlify-sitet startede som steady-moxie-cef7e6.)
+4. Gå til **Site configuration → Change site name**, og skriv `fixmatchh` (med to h'er). Så er adressen https://fixmatchh.netlify.app, som QR-koderne på plakat og flyer peger på. Siger Netlify, at navnet er optaget, så ligger det på en ældre side i jeres konto: Læg så den nye version på den gamle side under **Deploys** i stedet, eller slet den gamle side først.
 5. Åbn adressen, og tjek forsiden, privatlivspolitikken og tilmeldingen på telefonen.
 
-**Skal navnet skiftes?** Vælg et nyt i Netlify. Ret så linjen `const WEBSITE = …` og `website: …` i `src/constants/app-info.ts` til den nye adresse, og byg siden igen (punkt 1). Adressen står i appen, i privatlivspolitikken og i sitemap'en, så den skal passe.
+**Skal navnet skiftes?** Vælg et nyt i Netlify. Ret så linjen `const WEBSITE = …` og `website: …` i `src/constants/app-info.ts` til den nye adresse, byg siden igen (punkt 1), og ret adresserne i `docs/business-minds/tryk/build.js` og byg tryksagerne igen. Adressen står i appen, på plakat og flyer, i privatlivspolitikken og i sitemap'en, så den skal passe.
 
 ## Når noget ændres
 

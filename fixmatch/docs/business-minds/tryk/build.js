@@ -36,7 +36,7 @@ const PT = 72 / 25.4; // punkter pr. mm
 
 /** QR-koderne i assets/ og den adresse, hver af dem skal føre til. */
 const QR_CODES = {
-  'assets/qr-fixmatchh.svg': 'https://fixmatchh.netlify.app',
+  'assets/qr-forside.svg': 'https://fixmatchh.netlify.app',
   'assets/qr-tilmeld.svg': 'https://fixmatchh.netlify.app/tilmeld/',
 };
 const QUIET_MODULES = 4;

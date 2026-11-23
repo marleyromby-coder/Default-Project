@@ -29,7 +29,7 @@ Jo, det er en af de største. "Firmaer, der ikke vil vise priser" står som en t
 _Kilde: rapporten afsnit 8 (SWOT); talepapiret ("Jeg kan ikke give en pris …"); `content.ts` ("Sådan rangerer vi")._
 
 **5. Hvorfor både håndværkere og mekanikere, når jeres målgruppe er unge boligejere?**
-Vores brugere er boligejere, lejere og bilister, og problemet er det samme: Man ved ikke, hvad det bør koste. Mekaniker er ét af vores otte fag. Men vi starter med de unge boligejere i København, og det er dem, vi markedsfører til først.
+Vores brugere er boligejere, lejere og bilister, og problemet er det samme: Man ved ikke, hvad det bør koste. Mekaniker er ét af vores otte fag. Men vi starter med de unge boligejere i Danmark, og det er dem, vi markedsfører til først.
 _Kilde: rapporten "Kort fortalt" og afsnit 3 (segmentering, 8 fag)._
 
 **6. I demoen er det samme firma både "Bedste match" og "Billigst". Er bedste match bare det billigste?**
@@ -57,11 +57,11 @@ _Kilde: rapporten afsnit 3 (Porters fem kræfter), afsnit 5 (konkurrencefordele)
 ## Salg og markedsføring
 
 **11. Høne og æg: Hvordan får I firmaer uden brugere og brugere uden firmaer?**
-Vi starter med firmaerne i én by, København, fordi en app uden håndværkere er tom. Målet for de første 90 dage er 300 firmaer på listen, 150 samtaler, 60 tilmeldte og 40 live, mindst tre i hvert fag. Vi finder dem i CVR og på Google Maps og ringer eller kommer forbi. Det er gratis for firmaerne, så de har intet at tabe. Først derefter går vi efter boligejerne med korte videoer på TikTok og Instagram om, hvad en opgave koster.
+Vi starter med firmaerne i Danmark, fordi en app uden håndværkere er tom. Målet for de første 90 dage er 300 firmaer på listen, 150 samtaler, 60 tilmeldte og 40 live, mindst tre i hvert fag. Vi finder dem i CVR og på Google Maps og ringer eller kommer forbi. Det er gratis for firmaerne, så de har intet at tabe. Først derefter går vi efter boligejerne med korte videoer på TikTok og Instagram om, hvad en opgave koster.
 _Kilde: rapporten afsnit 4 (salgsstrategi, 90-dagesmål, 4P og AIDA)._
 
 **12. Hvor mange firmaer har I talt med, og hvad sagde de?**
-[Udfyld efter jeres opkald: "De sidste dage har vi ringet til [X] firmaer i København. [Y] vil gerne være med, når vi går live. En [fag] sagde: '[citat]'. Dem, der sagde nej, sagde typisk: '[grund]'."]
+[Udfyld efter jeres opkald: "De sidste dage har vi ringet til [X] firmaer. [Y] vil gerne være med, når vi går live. En [fag] sagde: '[citat]'. Dem, der sagde nej, sagde typisk: '[grund]'."]
 Har I ikke ringet, eller har ingen sagt ja, så sig ærligt: "Vi har ingen rigtige firmaer i appen endnu. Det er præcis det, vi gør nu, og målet er 40 på 90 dage."
 _Kilde: rapporten afsnit 3 og 7 (pladsholderne for reaktioner og antal skal udfyldes); afsnit 4 (90-dagesmål)._
 
@@ -89,11 +89,11 @@ Det første år tager vi ingen penge, fordi appen er i test, og vi skal stifte e
 _Kilde: rapporten afsnit 5 (penetrationsstrategi, omkostninger, regneeksempel: år 1 = 0 kr.); talepapiret ("Det skal I undgå"). Rapporten siger ikke, hvem der betaler år 1._
 
 **18. Hvad tjener I om tre år?**
-Vi har lavet et regneeksempel, ikke en prognose. År 1 er test og lancering i København uden indtægt. År 2: 50 betalende firmaer à 299 kroner giver 179.400 kroner. År 3: 200 à 399 kroner giver 957.600 kroner. Når vi vokser, kommer der nye udgifter til løn, jura og moms.
+Vi har lavet et regneeksempel, ikke en prognose. År 1 er test og lancering i Danmark uden indtægt. År 2: 50 betalende firmaer à 299 kroner giver 179.400 kroner. År 3: 200 à 399 kroner giver 957.600 kroner. Når vi vokser, kommer der nye udgifter til løn, jura og moms.
 _Kilde: rapporten afsnit 5 (tabellen "Regneeksempel, ikke prognose")._
 
 **19. Hvad vil I bruge præmiepenge på?**
-[Tilpas til holdets beslutning.] På det, der står mellem os og App Store: at stifte et ApS med CVR-nummer, juridisk rådgivning og databehandleraftaler. Derudover varemærket og lanceringen i København. Hele første års drift koster 9.900 kroner, så pengene går til at vokse, ikke til at overleve.
+[Tilpas til holdets beslutning.] På det, der står mellem os og App Store: at stifte et ApS med CVR-nummer, juridisk rådgivning og databehandleraftaler. Derudover varemærket og lanceringen i Danmark. Hele første års drift koster 9.900 kroner, så pengene går til at vokse, ikke til at overleve.
 _Kilde: rapporten afsnit 5 (omkostninger) og afsnit 8 (næste skridt). Rapporten nævner ikke præmiepenge, så svaret er et forslag._
 
 ## Tryghed, anmeldelser og jura
@@ -132,8 +132,8 @@ _Kilde: rapporten afsnit 6 (roller) og afsnit 8 (læringsudbytte); `team.json` (
 Appen viser afstanden, så man kan vælge lokalt. Med Naborabat kan tre familier få renset tagrender samme dag, og så sparer håndværkeren to ture. Tilbudstjek viser håndværkerfradraget i kroner, og det kræver faktura. Men vi kan endnu ikke dokumentere effekten. Efter lanceringen måler vi afstanden til det valgte firma og andelen af Naborabat-opgaver.
 _Kilde: rapporten afsnit 2 (Triple Bottom Line, verdensmål 8, 11, 12, 13 og 16, kritisk vurdering)._
 
-**28. Hvorfor kun iPhone og kun København? Hvordan vil I vokse?**
-Vi vil gøre én ting godt, før vi gør to. "Kun iPhone" står som en svaghed i vores SWOT. Firmaerne behøver ikke en iPhone, for tilmeldingen og "Ledig i dag" ligger på hjemmesiden. Planen har porte: først 40 verificerede firmaer i København, så App Store i Danmark og Aarhus, så Pro og til sidst Sverige og Norge og derefter Tyskland og Storbritannien. De fire lande er allerede klar i koden.
+**28. Hvorfor kun iPhone og kun Danmark? Hvordan vil I vokse?**
+Vi vil gøre én ting godt, før vi gør to. "Kun iPhone" står som en svaghed i vores SWOT. Firmaerne behøver ikke en iPhone, for tilmeldingen og "Ledig i dag" ligger på hjemmesiden. Planen har porte: først 40 verificerede firmaer i Danmark, så App Store i Danmark, så Pro og til sidst Sverige og Norge og derefter Tyskland og Storbritannien. De fire lande er allerede klar i koden.
 _Kilde: talepapiret ("Mange af mine kunder har Android"); rapporten afsnit 8 (portene, SWOT); README._
 
 ## Svar vi ikke har endnu

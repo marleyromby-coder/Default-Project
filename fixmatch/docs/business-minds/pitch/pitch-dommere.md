@@ -5,7 +5,7 @@ Business Minds i Vejle. Dommerne kommer forbi standen, hører pitchen og stiller
 | | |
 |---|---|
 | **Mål** | Dommerne skal huske én sætning ("Se prisen, før du ringer"), forstå, hvordan FixMatch tjener penge, og gå fra standen med en flyer. |
-| **Længde** | Højst 4:00. Talt tekst: **413 ord** skrevet, **ca. 429 ord** udtalt (tal som "9.900" siges med flere ord). Ved 120 ord i minuttet er det ca. 3:34. Demo-øjeblikket (tryk og pauser på telefonen) tager ca. 5 sekunder, højst 20, og pauser og overleveringer ca. 8 sekunder. I alt **ca. 3:48** ved 120 ord i minuttet og ca. 3:30, hvis I taler lidt hurtigere (130 ord i minuttet). Mål på stopuret: 3:30–3:45. Stop senest 3:55. Tiderne i manuskriptet er regnet ved 120 ord i minuttet. |
+| **Længde** | Højst 4:00. Talt tekst: ca. **403 ord**, ca. 3:20 ved 120 ord i minuttet. Med demo-tryk og overleveringer (ca. 10–15 sekunder) er det **ca. 3:35**. Mål på stopuret: 3:20–3:45. Stop senest 3:55. Hver af jer taler ca. 1 minut. |
 | **Roller** | **Marley** (idé og produkt) åbner og lukker. **Morgan** (salg, partnere og marketing) styrer telefonen, viser demoen og tager målgruppe og salg. **Oscar** (økonomi og jura) tager penge, status og næste skridt. Indtil sin tur tager Oscar tid og har backup-telefonen klar. |
 | **I hånden** | Morgan: demo-telefonen, åben på forsiden. Marley: én flyer, klar til at række frem. Oscar: backup-telefonen og et stopur. Plakaten hænger bag jer, og QR-koden kan ses. Stikordskort i lommen, men læs ikke op. |
 
@@ -27,117 +27,83 @@ Gør det aftenen før, og tjek det igen om morgenen.
 
 ## Manuskriptet
 
-Det, der står i [klammer], siges ikke. Noter med "Kilde" er til jer, hvis en dommer spørger, hvor et tal kommer fra.
+Det, der står i [klammer], siges ikke. Noter med "Kilde" er til jer, hvis en dommer spørger, hvor noget kommer fra.
 
-### 0:00 · Marley · Spørgsmålet og Sofie
+### 0:00 · Marley · Problemet og idéen (ca. 1 minut)
 
-[Kig på dommerne. Ingen "Hej, vi er …". Start direkte.]
+[Kig på dommerne. Start direkte.]
 
-Hvad koster det at få renset et stoppet afløb?
+Forestil jer, at I lige er flyttet til en ny by. Det kunne være Aarhus eller København.
 
-[Pause, 2 sekunder.]
+Pludselig går toilettet i stykker. I har brug for en VVS'er. Men hvem skal I ringe til? Hvem er tæt på? Hvad koster det? Og hvem kan I stole på?
 
-Det vidste Sofie heller ikke. Hun har lige købt rækkehus i Valby og kender ingen VVS'er. Hun har fået et tilbud på 3.200 kroner. Er det fair? Kan hun stole på firmaet?
+I ender med at google, læse anmeldelser og ringe rundt. Selv efter flere opkald er det svært at sammenligne priserne.
 
-> **Hvis en dommer svarer** ("1.500 kroner?"): "Måske! Men det står sjældent nogen steder, før man har ringet. Det vidste Sofie heller ikke." Siger dommeren "Det ved jeg ikke": "Nej. Det vidste Sofie heller ikke." Fortsæt derfra.
->
-> Kilde: Sofie er rapportens persona (afsnit 3). Hun er opdigtet, og det siger I lige bagefter.
+Det problem vil vi løse. Vi hedder Marley, Morgan og Oscar, og vi står bag FixMatch.
 
-### 0:24 · Marley · Problemet og hvem vi er
+FixMatch er en gratis iPhone-app, der samler håndværkere og mekanikere ét sted. Man sammenligner pris, afstand og anmeldelser og ser prisen, før man ringer.
 
-Sofie er opdigtet, men hun er vores målgruppe: unge boligejere i storbyen. Tallene er ægte. 12 procent af boligejerne har dårlige erfaringer med håndværkere. Og i 2022 fik ankenævnene over 1.100 klager over håndværkere.
+Vi starter i Danmark, fordi vi hellere vil gøre ét land rigtig godt end mange lande halvt.
 
-Vi er Marley, Morgan og Oscar fra FixMatch. En gratis iPhone-app, hvor man ser prisen, før man ringer.
+Vores mål er at gøre det lige så nemt at finde en håndværker som at bestille en taxa.
 
 [Træd et halvt skridt til side. Morgan træder frem med telefonen.]
 
-> Kilde: 12 % (Realdania og Bolius, "Danskerne i det byggede miljø" 2024; i Region Hovedstaden 16 %) og 1.156 klager i 2022 (715 + 181 + 260 til de tre ankenævn; siges "over 1.100"): bolius.dk, "Vi stoler på vores håndværkere, men …", rapportens kilde [1]. Målgruppen 25–40 år: afsnit 3, kilde [5].
+> Kilde: Danmark først: rapporten afsnit 4 og 8 (en konsulent rådede os til at starte i Danmark, og vi droppede den globale plan). Byerne er eksempler, ikke tal.
 
-### 0:53 · Morgan · Demoen
+### 1:00 · Morgan · Sådan virker appen (ca. 1 minut)
 
-[Hold telefonen i brysthøjde, med skærmen mod dommerne. Tal til dem, ikke til skærmen. Hold en pause på et sekund efter hvert tryk.]
+[Hold telefonen i brysthøjde, med skærmen mod dommerne. Peg på mærket "Demoversion".]
 
-[Peg på mærket "Demoversion" øverst på forsiden.]
-
-Det her er demo-firmaer. Alt er opdigtet.
+Lad mig vise jer det. Det her er vores testversion med demo-firmaer.
 
 [Tryk på flisen VVS'er.]
 
-VVS'er. Her er timepris, afstand og anmeldelser fra brugere, der har kontaktet firmaet gennem FixMatch.
+Dit afløb er stoppet. Du åbner FixMatch og vælger VVS'er. Du kan også skrive problemet og dit budget med dine egne ord.
 
-[Peg på fanerne øverst: "Bedste match 82/100", "Billigste 560 kr./t", "Nærmeste 2,6 km" og "Bedst anmeldt ★ 4,5 (19)". Tryk ikke.]
+Nu ser du VVS'erne i nærheden med deres egne timepriser. Du kan sortere efter bedste match, billigste, nærmeste eller bedst anmeldt og se dem på et kort. Rækkefølgen kan ikke købes.
 
-Man vælger selv, hvad der vejer mest. Rækkefølgen kan ikke købes.
+[Peg på fanerne og på linjen "Rækkefølgen kan ikke købes". Tryk så på "Se priser" på det øverste kort, Hjertevarme VVS & Blik.]
 
-[Peg på linjen "Rækkefølgen kan ikke købes" lige over listen. Tryk så på "Se priser" på det øverste kort, Hjertevarme VVS & Blik.]
+Her er priserne, og her kan man se, at vi har tjekket CVR, ejer og autorisation.
 
-Her er firmaets egne priser. Før hun ringer.
+[Peg på "Timepris 560–660 kr. inkl. moms" og på mærket "Verificeret". Tryk på den grønne knap "Ring +45 10 21 91 33". Boksen "Eksempelvirksomhed" kommer frem.]
 
-[Peg på "Timepris 560–660 kr. inkl. moms". Peg så på mærket "Verificeret" under navnet.]
-
-I den rigtige app betyder Verificeret, at vi selv har tjekket CVR, ejer og autorisation. Det er ikke et kvalitetsstempel.
-
-[Tryk på den grønne knap nederst: "Ring +45 10 21 91 33". Boksen "Eksempelvirksomhed" kommer frem: "Hjertevarme VVS & Blik er en fiktiv demo-virksomhed. … opkald er slået fra."]
-
-Så ringer hun direkte. Firmaet betaler ikke pr. kunde. I demoen er opkald slået fra.
+Så trykker jeg Ring og taler direkte med firmaet. Ingen mellemled. I demoen er opkald slået fra.
 
 [Tryk OK. Sænk telefonen.]
 
-> Kilde: Rangering og "kan ikke købes": `src/data/content.ts` ("Sådan rangerer vi"). Verificeret: `content.ts` ("Sådan verificerer vi") og README. Boksen "Eksempelvirksomhed": `src/lib/contact.ts`. Demoen viser "Bedste match" og ikke "Billigste", fordi rapportens kilde [5] siger, at 67 % vægter kvaliteten højest. At Hjertevarme også har mærket "Billigst", er et tilfælde i demo-dataene, ikke en regel (se `dommer-spoergsmaal.md`, spørgsmål 6).
+Kun brugere, der har kontaktet firmaet gennem FixMatch, kan anmelde det. Én gang hver.
 
-### 1:36 · Morgan · Tilbudstjek og bæredygtighed
-
-Med Tilbudstjek ser hun, om hendes tilbud er lavt, normalt eller højt. Det kan ingen af konkurrenterne, vi har tjekket.
-
-Det er også bæredygtigt. Man kan vælge lokalt, og Tilbudstjek viser håndværkerfradraget, som kræver faktura. Det taler imod sort arbejde.
-
-> Kilde: Tilbudstjek og "ingen af konkurrenterne, vi har tjekket": rapporten, "Kort fortalt" og afsnit 3, kilde [9] (vores egen konkurrentanalyse af 3byggetilbud, Handyhand, Autobutler, Anmeld Håndværker og Fikset). Tilbudstjek viser håndværkerfradraget i kroner, og fradraget kræver faktura: afsnit 2, kilde [4]. Sig ikke, om Sofies tilbud på 3.200 kroner er lavt eller højt. Det står ingen steder.
-
-### 1:56 · Morgan · Høne og æg
-
-Men en app uden håndværkere er tom. Det er høne og æg. Derfor starter vi med firmaerne i København. Markedslederen 3byggetilbud har cirka 2.100 firmaer, der betaler for kunder. Bagefter når vi boligejerne med TikTok-videoer om priser.
-
-Og hvordan tjener vi så penge? Oscar.
+På sigt vil vi også gøre det muligt at booke en tid direkte i appen.
 
 [Vend dig mod Oscar.]
 
-> Kilde: Høne og æg og København først: rapporten afsnit 4. 2.100 betalende firmaer: afsnit 3, kilde [2]. TikTok: afsnit 4 (4P og AIDA).
+> Kilde: Rangering og "kan ikke købes": `src/data/content.ts` ("Sådan rangerer vi"). Verificeret er ikke et kvalitetsstempel: `content.ts` ("Sådan verificerer vi"). Booking findes ikke i appen endnu; sig "på sigt".
 
-### 2:20 · Oscar · Penge
+### 2:05 · Oscar · Forretningsmodel og fremtid (ca. 1 minut)
 
-Brugerne betaler aldrig. Firmaerne kan købe Pro med flere billeder og priser. Men aldrig en bedre plads. Vi foreslår 299 til 499 kroner om måneden. Driften koster 9.900 kroner om året, så break-even er tre betalende firmaer. Det første år tager vi ingen penge.
+Hvordan tjener FixMatch så penge?
 
-> **Tidstjek:** Starter Oscar senere end 2:30, så spring "Fire lande mere er klar i koden" over, og Marley springer sætningen om Xcode over. Det sparer ca. 8 sekunder. Skær aldrig i demoen, i "demo-firmaer", i "ingen rigtige brugere" eller i bønnen.
+Vores målgruppe er boligejere, lejere og bilejere, der har brug for en håndværker eller mekaniker.
+
+Appen er gratis for kunderne. Firmaerne betaler aldrig pr. kunde eller pr. opkald, og profilen er gratis.
+
+Vi tjener penge på et frivilligt Pro-abonnement til firmaerne med flere billeder og priser. Vores forslag er 299 til 499 kroner om måneden. Pro giver aldrig en bedre placering. Driften koster os omkring 9.900 kroner om året, så tre Pro-kunder dækker den.
+
+Vi har ingen rigtige brugere endnu. Vi starter med firmaerne, fordi en app uden håndværkere er tom. Lige nu samler vi de første 40 firmaer i Danmark.
+
+Når Danmark virker, kommer Sverige, Norge, Tyskland og Storbritannien. De er allerede bygget ind i appen.
+
+[Peg på QR-koden på plakaten. Marley rækker en flyer frem.]
+
+Scan QR-koden, og prøv det selv. FixMatch. Se prisen, før du ringer.
+
+[Ca. 3:30. Stop. Smil. Vent på spørgsmål.]
+
+> **Tidstjek:** Starter Oscar senere end 2:20, så spring sætningen om Sverige, Norge, Tyskland og Storbritannien over. Skær aldrig i demoen, i "demo-firmaer", i "ingen rigtige brugere" eller i slutningen.
 >
-> Kilde: Rapporten afsnit 5: Pro-prisen er et forslag, 9.900 kr. i omkostninger, break-even 3 × 299 × 12 = 10.764 kr., og år 1 er uden indtægt. "Flere billeder og priser": talepapiret.
-
-### 2:46 · Oscar · Status og næste skridt
-
-Appen kører som testversion med demo-firmaer. Vi har ingen rigtige brugere endnu. De sidste dage har vi ringet til [X] firmaer. [Y] vil gerne være med.
-
-Næste skridt: 40 verificerede firmaer på 90 dage. Så CVR-nummer og App Store. Fire lande mere er klar i koden.
-
-> **Kun det, der er sandt.** Sætningen med [X] og [Y] siges kun, hvis I faktisk har ringet (se `oevelsesplan.md`, fredag og mandag). Har ingen sagt ja, så sig i stedet: "Vi har ingen rigtige firmaer i appen endnu. Det er det, vi gør nu."
->
-> Kilde: Testversion og ingen rigtige brugere: talepapiret og rapportens SWOT. 40 firmaer på 90 dage: rapporten afsnit 4 og 8. Fire lande (Sverige, Norge, Tyskland, Storbritannien): afsnit 8 og README.
-
-### 3:10 · Marley · Hvorfor os, bønnen og slutningen
-
-Hvorfor os? Vi har selv bygget appen. Da Xcode viste over 800 fejl, rettede vi dem. Da en konsulent sagde "start i Danmark", droppede vi den globale plan. Og vi tør ringe til firmaerne.
-
-[Ræk en flyer frem. Peg på QR-koden på plakaten.]
-
-Kender I en håndværker i København? Så giv dem en flyer. Vi skal bruge 40.
-
-[Pause. Kig på dommerne.]
-
-Sofie skal ikke kende en VVS'er. Hun skal bare kunne se prisen, før hun ringer.
-
-FixMatch. Se prisen, før du ringer.
-
-[Ca. 3:48 ved 120 ord i minuttet. Stop. Smil. Vent på spørgsmål.]
-
-> Kilde: 800 fejl, konsulenten og den globale plan: rapporten afsnit 6 og 7. "Vi tør ringe": afsnit 4. Spørger en dommer, hvad Xcode er: "Apples program til at bygge iPhone-apps."
+> Kilde: Rapporten afsnit 5: Pro-prisen er et forslag, 9.900 kr. i omkostninger, break-even 3 × 299 × 12 = 10.764 kr. Ingen rigtige brugere: talepapiret og rapportens SWOT. De fire lande: afsnit 8 og README.
 
 ## Demo-vejen trin for trin
 
@@ -145,17 +111,17 @@ Teksterne i kolonnen "Skærmen viser" er tjekket i webudgaven af appen den 20. n
 
 | # | Gør | Skærmen viser | Morgan siger |
 |---|---|---|---|
-| 1 | Hold telefonen mod dommerne. Forsiden er åben. Peg på "Demoversion". | Forsiden: "Se prisen, før du ringer.", mærket "Demoversion", "Hvor? København K · inden for 25 km" og de otte fag-fliser med "fra"-priser | "Det her er demo-firmaer. Alt er opdigtet." |
-| 2 | Tryk på flisen **VVS'er** ("fra 560 kr."). | "VVS'ere · Nær København K". Listen med "fra"-pris pr. time, afstand og anmeldelser. Fanen "Bedste match" er valgt. | "VVS'er. Her er timepris, afstand og anmeldelser …" |
-| 3 | Peg på fanerne. Tryk ikke. Peg så på "Rækkefølgen kan ikke købes". | Bedste match **82/100** · Billigste **560 kr./t** · Nærmeste **2,6 km** · Bedst anmeldt **★ 4,5 (19)**. Over listen: "6 VVS'ere · efter match" og "Rækkefølgen kan ikke købes" | "Man vælger selv, hvad der vejer mest …" |
-| 4 | Tryk på **Se priser** på det øverste kort. | Kortet: mærkerne "Bedste match" og "Billigst", **Hjertevarme VVS & Blik** med Verificeret-tegnet efter navnet, "★ 3,5 (2) · 2,6 km", "fra 560 kr. pr. time". Firmasiden åbner: "Match 82 af 100 · Timepris 560–660 kr. inkl. moms · Afstand 2,6 km fra København K" | "Her er firmaets egne priser. Før hun ringer." |
-| 5 | Peg på **Verificeret** under navnet. | Mærkerne "Verificeret", "Autoriseret VVS-installatør" og "Demo". Under dem: "3,5 · 2 anmeldelser fra brugere via FixMatch" og "Fiktiv eksempelvirksomhed …" | "I den rigtige app betyder Verificeret …" |
-| 6 | Tryk på den grønne knap **Ring +45 10 21 91 33** nederst. | Boksen **"Eksempelvirksomhed"**: "Hjertevarme VVS & Blik er en fiktiv demo-virksomhed. I den færdige app ringer knappen direkte op til virksomheden. Nummeret +45 10 21 91 33 er fiktivt, så opkald er slået fra." Knap: OK | "Så ringer hun direkte …" |
-| 7 | Tryk **OK**, og sænk telefonen. | Firmasiden igen | Videre til Tilbudstjek |
+| 1 | Hold telefonen mod dommerne. Forsiden er åben. Peg på "Demoversion". | Forsiden: "Se prisen, før du ringer.", mærket "Demoversion", "Hvor? København K · inden for 25 km" og de otte fag-fliser med "fra"-priser | "Lad mig vise jer det. Det her er vores testversion med demo-firmaer." |
+| 2 | Tryk på flisen **VVS'er** ("fra 560 kr."). | "VVS'ere · Nær København K". Listen med "fra"-pris pr. time, afstand og anmeldelser. Fanen "Bedste match" er valgt. | "Dit afløb er stoppet. Du åbner FixMatch og vælger VVS'er …" |
+| 3 | Peg på fanerne. Tryk ikke. Peg så på "Rækkefølgen kan ikke købes". | Bedste match **82/100** · Billigste **560 kr./t** · Nærmeste **2,6 km** · Bedst anmeldt **★ 4,5 (19)**. Over listen: "6 VVS'ere · efter match" og "Rækkefølgen kan ikke købes" | "Nu ser du VVS'erne i nærheden med deres egne timepriser …" |
+| 4 | Tryk på **Se priser** på det øverste kort. | Kortet: mærkerne "Bedste match" og "Billigst", **Hjertevarme VVS & Blik** med Verificeret-tegnet efter navnet, "★ 3,5 (2) · 2,6 km", "fra 560 kr. pr. time". Firmasiden åbner: "Match 82 af 100 · Timepris 560–660 kr. inkl. moms · Afstand 2,6 km fra København K" | "Her er priserne, og her kan man se …" |
+| 5 | Peg på **Verificeret** under navnet. | Mærkerne "Verificeret", "Autoriseret VVS-installatør" og "Demo". Under dem: "3,5 · 2 anmeldelser fra brugere via FixMatch" og "Fiktiv eksempelvirksomhed …" | "… at vi har tjekket CVR, ejer og autorisation." |
+| 6 | Tryk på den grønne knap **Ring +45 10 21 91 33** nederst. | Boksen **"Eksempelvirksomhed"**: "Hjertevarme VVS & Blik er en fiktiv demo-virksomhed. I den færdige app ringer knappen direkte op til virksomheden. Nummeret +45 10 21 91 33 er fiktivt, så opkald er slået fra." Knap: OK | "Så trykker jeg Ring og taler direkte med firmaet …" |
+| 7 | Tryk **OK**, og sænk telefonen. | Firmasiden igen | "Kun brugere, der har kontaktet firmaet gennem FixMatch, kan anmelde det …" |
 
 Demoen tager ca. 45 sekunder. Tal, mens du trykker. Vent aldrig mere end 3 sekunder på skærmen. Peg ikke på åbningstiderne: De følger klokken, og efter kl. 16 står der ikke "Åben til 16.00".
 
-**Spørger en dommer "Hvad koster et stoppet afløb så?"**, så rul lidt ned på firmasiden til "Eksempelpriser": "Stoppet afløb 1.100–2.600 kr." Sig: "Hos det her demo-firma står der 1.100 til 2.600 kroner. Tallene er opdigtede. I den rigtige app er det firmaernes egne priser." Sig ikke, om Sofies tilbud på 3.200 kroner er for dyrt.
+**Spørger en dommer "Hvad koster et stoppet afløb så?"**, så rul lidt ned på firmasiden til "Eksempelpriser": "Stoppet afløb 1.100–2.600 kr." Sig: "Hos det her demo-firma står der 1.100 til 2.600 kroner. Tallene er opdigtede. I den rigtige app er det firmaernes egne priser." Sig ikke, om et bestemt tilbud er for dyrt.
 
 ### Hvis noget går galt
 
@@ -178,7 +144,7 @@ Derfor har vi bygget FixMatch: en gratis iPhone-app, hvor man ser prisen, før m
 
 Brugerne betaler aldrig. Firmaerne kan købe Pro, som vi foreslår til 299 til 499 kroner om måneden. Driften koster 9.900 kroner om året, så break-even er tre betalende firmaer.
 
-Appen kører som testversion, og vi har ingen rigtige brugere endnu. Næste skridt er 40 verificerede firmaer i København. Kender I en håndværker? Så giv dem en flyer.
+Appen kører som testversion, og vi har ingen rigtige brugere endnu. Næste skridt er 40 verificerede firmaer i Danmark. Kender I en håndværker? Så giv dem en flyer.
 
 FixMatch. Se prisen, før du ringer.
 
@@ -186,13 +152,13 @@ FixMatch. Se prisen, før du ringer.
 
 Fx når en dommer allerede er på vej videre. **63 ord, ca. 30 sekunder ved 120 ord i minuttet.**
 
-FixMatch er en gratis iPhone-app, hvor man ser håndværkernes egne priser, før man ringer. Man sammenligner op til tre på pris, afstand og anmeldelser fra brugere via FixMatch og ringer direkte. Firmaerne betaler aldrig pr. kunde, og rækkefølgen kan ikke købes. Appen kører som testversion, og nu samler vi de første 40 firmaer i København. Tag en flyer. Se prisen, før du ringer.
+FixMatch er en gratis iPhone-app, hvor man ser håndværkernes egne priser, før man ringer. Man sammenligner op til tre på pris, afstand og anmeldelser fra brugere via FixMatch og ringer direkte. Firmaerne betaler aldrig pr. kunde, og rækkefølgen kan ikke købes. Appen kører som testversion, og nu samler vi de første 40 firmaer i Danmark. Tag en flyer. Se prisen, før du ringer.
 
 ## Slutreplik
 
 Når spørgsmålene er slut, eller dommerne går videre. Marley siger:
 
-"Tak, fordi I kom forbi. Tag en flyer med, og kender I en håndværker i København, så giv den videre. Se prisen, før du ringer."
+"Tak, fordi I kom forbi. Tag en flyer med, og kender I en håndværker, så giv den videre. Se prisen, før du ringer."
 
 ## Kildenoter samlet
 

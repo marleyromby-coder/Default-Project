@@ -11,7 +11,7 @@ Til præsentationen af FixMatch for håndværkere og værksteder. Talepapiret h�
 
 ## Pitch på 30 sekunder (telefon)
 
-> Hej, det er [navn] fra FixMatch. Jeg sælger ikke leads, og jeg skal bare bruge et halvt minut. Er det okay? … Vi har bygget en gratis app, hvor folk i København ser jeres priser og ringer direkte til jer. I betaler aldrig pr. kunde, og ingen kan købe sig foran jer. Vi tjekker CVR, ejer og autorisation og giver jer et gratis Verificeret-mærke, og I godkender selv alt, hvad der står om jer. Lige nu samler vi de første 40 firmaer i København. Det tager tre minutter at komme med, og I kan blive fjernet når som helst. Må jeg sende jer linket på SMS?
+> Hej, det er [navn] fra FixMatch. Jeg sælger ikke leads, og jeg skal bare bruge et halvt minut. Er det okay? … Vi har bygget en gratis app, hvor folk i hele Danmark ser jeres priser og ringer direkte til jer. I betaler aldrig pr. kunde, og ingen kan købe sig foran jer. Vi tjekker CVR, ejer og autorisation og giver jer et gratis Verificeret-mærke, og I godkender selv alt, hvad der står om jer. Lige nu samler vi de første 40 firmaer i København. Det tager tre minutter at komme med, og I kan blive fjernet når som helst. Må jeg sende jer linket på SMS?
 
 Hvis svaret er nej: "Helt i orden. Tak for snakken." Notér "ønsker ikke kontakt", og ring ikke igen.
 
@@ -33,10 +33,10 @@ På Pro og senere en annonceplads, der står adskilt og er mærket "Annonce". Dr
 Ja, og vi har selv bygget appen. Den virker – se her. Vi tager ingen penge, og I kan komme ud når som helst.
 
 **Hvor mange brugere har I?**
-Ingen rigtige brugere endnu. Appen kører i en testversion med demo-firmaer. Vi starter med firmaerne, fordi en app uden håndværkere er tom. Målet er 40 firmaer i København, mindst tre i hvert fag. Vi lover ikke et antal opkald.
+Ingen rigtige brugere endnu. Appen kører i en testversion med demo-firmaer. Vi starter med firmaerne, fordi en app uden håndværkere er tom. Målet er de første 40 firmaer i Danmark, mindst tre i hvert fag. Vi lover ikke et antal opkald.
 
 **Hvordan får I boligejerne til at bruge appen?**
-[Udfyld før fremlæggelsen. Ellers svarer I ærligt:] Når vi har mindst tre firmaer i hvert fag i København, går vi ud til boligejerne der – på sociale medier og via boligforeninger og mæglere. I kan følge resultatet i den månedlige oversigt.
+[Udfyld før fremlæggelsen. Ellers svarer I ærligt:] Når vi har mindst tre firmaer i hvert fag, går vi ud til boligejerne – på sociale medier og via boligforeninger og mæglere. I kan følge resultatet i den månedlige oversigt.
 
 **Jeg har ikke tid til endnu en app.**
 Det tager tre minutter, og vi kan gøre det sammen nu. Kunderne ringer på jeres normale nummer. "Ledig i dag" foregår via et personligt link, så I ikke skal hente appen.
