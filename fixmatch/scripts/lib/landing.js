@@ -444,8 +444,10 @@ function landing(lang, { root, assets = '' }) {
   const art = tradeArt(root);
   const trades = readJobs(root);
   const prices = readJobPrices(root);
-  // The edge of a 3D phone: thin dark layers between its front and its back.
-  const edge = '<i></i>'.repeat(5);
+  // The edge of a 3D phone: thin metal layers between its front and its back, and its side buttons.
+  const edge = `${'<i></i>'.repeat(9)}<b class="key a"></b><b class="key u"></b><b class="key d"></b><b class="key p"></b>`;
+  const island = '<span class="island"></span>';
+  const camera = '<span class="camera"><i></i><i></i><i></i><b></b></span>';
   // Trade tiles and the list's labels float around the phone at different depths. Decoration only.
   const floats = ['vvs', 'elektriker', 'toemrer', 'maler', 'mekaniker']
     .map((id, index) => `<span class="float f${index + 1}">${art.tile(id, { size: 64 })}</span>`)
@@ -473,7 +475,7 @@ function landing(lang, { root, assets = '' }) {
 <div class="tilt">
 <div class="scene">
 <div class="orbit" aria-hidden="true">${floats}${chips}</div>
-<figure class="phone3d">${edge}<span class="phone-back" aria-hidden="true"></span><span class="phone-front"><img src="${image('home')}" alt="${escape(t.heroAlt)}" width="300" height="656" fetchpriority="high" decoding="async"></span></figure>
+<figure class="phone3d">${edge}<span class="phone-back" aria-hidden="true">${camera}</span><span class="phone-front"><span class="glass"><img src="${image('home')}" alt="${escape(t.heroAlt)}" width="300" height="656" fetchpriority="high" decoding="async">${island}</span></span></figure>
 </div>
 </div>
 </div>
@@ -541,7 +543,7 @@ ${Object.entries(prices[id])
 </div>
 <div class="story-grid">
 <div class="story-stage" aria-hidden="true">
-<div class="story-phone" data-step="0"><div class="spin">${edge}<span class="phone-back"><span class="wordmark">fixmatch<span class="dot">.</span></span></span><span class="phone-front">${storyImages.map((name) => `<img src="${image(name)}" alt="" width="300" height="656" loading="lazy" decoding="async">`).join('')}</span></div></div>
+<div class="story-phone" data-step="0"><div class="spin">${edge}<span class="phone-back">${camera}<span class="wordmark">fixmatch<span class="dot">.</span></span></span><span class="phone-front"><span class="glass">${storyImages.map((name) => `<img src="${image(name)}" alt="" width="300" height="656" loading="lazy" decoding="async">`).join('')}${island}</span></span></div></div>
 </div>
 <ol class="story-steps">
 ${t.steps
@@ -748,8 +750,11 @@ main.landing { max-width: 1120px; margin: 0 auto; background: none; border: 0; b
 .hero .lead { color: var(--on-panel-soft) !important; font-size: 20px; max-width: 560px; }
 .soon { display: inline-flex; align-items: center; gap: 10px; min-height: 54px; padding: 0 20px 0 16px; border-radius: 16px; background: #0B1A15; color: #FFFFFF; line-height: 1.15; font-family: var(--display); font-weight: 700; font-size: 18px; }
 .soon small { display: block; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 12px; font-weight: 500; color: #B9C9C2; }
-.phone { margin: 0; width: 300px; flex: none; border-radius: 46px; padding: 10px; background: #0B1A15; box-shadow: 0 30px 60px -24px rgba(11, 26, 21, 0.45), 0 0 0 1px rgba(11, 26, 21, 0.08); }
-.phone img { display: block; width: 100%; height: auto; border-radius: 36px; }
+.phone { position: relative; margin: 0; width: 300px; flex: none; border-radius: 47px; padding: 3px; background: linear-gradient(135deg, #E4E9E6, #7C8580 28%, #CBD2CE 52%, #5B645F 78%, #B4BDB8); box-shadow: 0 30px 60px -24px rgba(11, 26, 21, 0.45), 0 0 0 1px rgba(11, 26, 21, 0.08); }
+.phone img { display: block; width: 100%; height: auto; border: 7px solid #050807; border-radius: 44px; }
+.phone::before, .island { content: ""; position: absolute; left: 50%; top: calc(10px + 1.7%); translate: -50% 0; width: 29%; aspect-ratio: 3.35; border-radius: 999px; background: #000000; z-index: 1; }
+.island { top: calc(6.5px + 1.7%); }
+.island::after { content: ""; position: absolute; right: 13%; top: 50%; translate: 0 -50%; width: 11%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 36% 34%, #33476A, #05070C 62%); }
 @media (prefers-color-scheme: dark) { .phone { box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6), 0 0 0 1px #2E423A; } }
 .live { margin-top: 28px; padding: 14px 18px; border-radius: 18px; background: var(--panel-sunk); border: 1px solid rgba(255, 255, 255, 0.12); max-width: 560px; }
 .live-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--on-panel-soft); margin-bottom: 4px !important; }
@@ -808,8 +813,8 @@ main.landing { max-width: 1120px; margin: 0 auto; background: none; border: 0; b
   .hero { padding: 4px 16px 0; }
   .hero h1 { font-size: 42px; }
   .hero .lead { font-size: 18px; }
-  .phone { width: 260px; border-radius: 40px; padding: 8px; }
-  .phone img { border-radius: 32px; }
+  .phone { width: 260px; border-radius: 42px; }
+  .phone img { border-width: 6px; border-radius: 39px; }
   .section-head, .faq h2, .promises h2 { padding: 0 4px; }
   .tiles { grid-template-columns: 1fr; }
   .caption { margin-top: -24px !important; }
@@ -823,19 +828,36 @@ body.wide .masthead { overflow: clip; }
 .stage { position: relative; --w: 270px; width: 440px; max-width: 100%; height: 620px; justify-self: center; perspective: 1400px; }
 .tilt, .scene, .orbit { position: absolute; inset: 0; transform-style: preserve-3d; }
 .scene { transform: rotateX(calc(var(--rx, 0) * 1deg)) rotateY(calc(var(--ry, 0) * 1deg)); transition: transform 0.4s ease-out; }
-.scene::before { content: ""; position: absolute; left: 18%; right: 10%; bottom: 0; height: 46px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0, 0, 0, 0.42), transparent); transform: translateZ(-140px); }
+.scene::before { content: ""; position: absolute; left: 14%; right: 6%; bottom: -4px; height: 54px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0, 0, 0, 0.5), transparent); filter: blur(8px); transform: translateZ(-150px); }
 .phone3d, .story-phone { position: absolute; inset: 0; margin: auto; width: var(--w); height: calc((var(--w) - 18px) * 656 / 300 + 18px); transform-style: preserve-3d; }
 .phone3d { transform: rotateY(-24deg) rotateX(9deg) rotateZ(3deg); }
-.phone3d > i, .spin > i, .phone-back, .phone-front { position: absolute; inset: 0; border-radius: 44px; }
-.phone3d > i, .spin > i { background: #1F2E29; }
+.phone3d > i, .spin > i, .phone-back, .phone-front { position: absolute; inset: 0; border-radius: 46px; }
+.phone3d > i, .spin > i { background: linear-gradient(100deg, #6E7772, #D9DFDB 9%, #8F9893 22%, #4A534F 50%, #9BA49F 78%, #E1E6E3 91%, #6E7772); }
 .phone3d > i:nth-child(1), .spin > i:nth-child(1) { transform: translateZ(-6px); }
-.phone3d > i:nth-child(2), .spin > i:nth-child(2) { transform: translateZ(-3px); }
-.phone3d > i:nth-child(4), .spin > i:nth-child(4) { transform: translateZ(3px); }
-.phone3d > i:nth-child(5), .spin > i:nth-child(5) { transform: translateZ(6px); }
-.phone-back { background: linear-gradient(160deg, #16241F, #0B1A15); transform: rotateY(180deg) translateZ(8px); backface-visibility: hidden; display: flex; align-items: center; justify-content: center; }
-.phone-front { background: #0B1A15; padding: 9px; transform: translateZ(8px); backface-visibility: hidden; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14); }
-.phone-front img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 35px; }
-.phone-front::after { content: ""; position: absolute; inset: 9px; border-radius: 35px; background: linear-gradient(115deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 34%); pointer-events: none; }
+.phone3d > i:nth-child(2), .spin > i:nth-child(2) { transform: translateZ(-4.5px); }
+.phone3d > i:nth-child(3), .spin > i:nth-child(3) { transform: translateZ(-3px); }
+.phone3d > i:nth-child(4), .spin > i:nth-child(4) { transform: translateZ(-1.5px); }
+.phone3d > i:nth-child(6), .spin > i:nth-child(6) { transform: translateZ(1.5px); }
+.phone3d > i:nth-child(7), .spin > i:nth-child(7) { transform: translateZ(3px); }
+.phone3d > i:nth-child(8), .spin > i:nth-child(8) { transform: translateZ(4.5px); }
+.phone3d > i:nth-child(9), .spin > i:nth-child(9) { transform: translateZ(6px); }
+.key { position: absolute; width: 10px; border-radius: 3px; background: linear-gradient(180deg, #DDE3DF, #8A938E 40%, #6C7570); }
+.key.a, .key.u, .key.d { left: -5px; transform: translateX(-1.5px) rotateY(-90deg); }
+.key.a { top: 17.5%; height: 4.2%; }
+.key.u { top: 25%; height: 7.5%; }
+.key.d { top: 34.5%; height: 7.5%; }
+.key.p { right: -5px; top: 28%; height: 12%; transform: translateX(1.5px) rotateY(90deg); }
+.phone-back { background: linear-gradient(155deg, #2B3B35, #16241F 45%, #0E1B17); transform: rotateY(180deg) translateZ(7px); backface-visibility: hidden; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.1); }
+.camera { position: absolute; left: 7%; top: 3.6%; width: 41%; aspect-ratio: 1; border-radius: 26%; background: linear-gradient(145deg, #34453F, #1B2A25); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1), 0 2px 6px rgba(0, 0, 0, 0.4); }
+.camera i { position: absolute; width: 40%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 38% 34%, #4B6076 0 8%, #101820 30%, #05080B 62%, #2B3A35 64%); box-shadow: 0 0 0 2px #3C4D47; }
+.camera i:nth-child(1) { left: 8%; top: 8%; }
+.camera i:nth-child(2) { left: 8%; bottom: 8%; }
+.camera i:nth-child(3) { right: 8%; top: 30%; }
+.camera b { position: absolute; right: 17%; top: 9%; width: 12%; aspect-ratio: 1; border-radius: 50%; background: #F3E9C8; }
+.phone-front { padding: 2.5px; background: linear-gradient(135deg, #E4E9E6, #7C8580 28%, #CBD2CE 52%, #5B645F 78%, #B4BDB8); transform: translateZ(7px); backface-visibility: hidden; }
+.glass { position: relative; display: block; width: 100%; height: 100%; padding: 6.5px; border-radius: 43.5px; background: #050807; }
+.glass img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 37px; }
+.glass::after { content: ""; position: absolute; inset: 6.5px; border-radius: 37px; background: linear-gradient(112deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.05) 20%, transparent 34%, transparent 72%, rgba(255, 255, 255, 0.08)) calc(30% - var(--ry, 0) * 2%) 0 / 220% 100%; pointer-events: none; }
 .wordmark { font-family: var(--display); font-weight: 900; font-size: 34px; letter-spacing: -0.035em; color: #FFFFFF; }
 .float, .chip { position: absolute; }
 .float .trade-tile { display: block; width: 64px; height: 64px; filter: drop-shadow(0 16px 14px rgba(0, 0, 0, 0.32)); }
@@ -898,7 +920,7 @@ main.landing > .values { position: relative; margin: -80px 0 96px; padding: 28px
 .spin { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateX(6deg) rotateY(calc(var(--step, 0) * 374deg - 14deg)); transition: transform 1s cubic-bezier(0.3, 0.7, 0.2, 1); }
 .story-phone[data-step="1"] { --step: 1; }
 .story-phone[data-step="2"] { --step: 2; }
-.story-phone .phone-front img { position: absolute; inset: 9px; width: calc(100% - 18px); height: calc(100% - 18px); opacity: 0; transition: opacity 0s linear 0.45s; }
+.story-phone .glass img { position: absolute; inset: 6.5px; width: calc(100% - 13px); height: calc(100% - 13px); opacity: 0; transition: opacity 0s linear 0.45s; }
 .story-phone[data-step="0"] img:nth-child(1), .story-phone[data-step="1"] img:nth-child(2), .story-phone[data-step="2"] img:nth-child(3) { opacity: 1; }
 
 /* Today and with FixMatch, side by side. */
