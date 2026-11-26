@@ -54,6 +54,10 @@ const UI = {
     business: 'For virksomheder',
     features: 'Funktioner',
     featuresAnchor: 'funktioner',
+    prices: 'Priser',
+    pricesAnchor: 'priser',
+    map: 'Kort',
+    mapAnchor: 'kort',
     groups: 'Naborabat',
     other: 'English',
     locale: 'da-DK',
@@ -65,6 +69,10 @@ const UI = {
     business: 'For businesses',
     features: 'Features',
     featuresAnchor: 'features',
+    prices: 'Prices',
+    pricesAnchor: 'prices',
+    map: 'Map',
+    mapAnchor: 'map',
     groups: 'Neighbour discount',
     other: 'Dansk',
     locale: 'en-GB',
@@ -309,6 +317,8 @@ ${
 <header>
 <a class="brand" href="${target(home)}" aria-label="${escape(info.name)}">${escape(info.name.toLowerCase())}<span class="dot">.</span></a>
 <nav class="top" aria-label="${lang === 'da' ? 'Hovedmenu' : 'Main menu'}">
+<a class="wide-only" href="${here === home ? '' : target(home)}#${ui.pricesAnchor}">${ui.prices}</a>
+<a class="wide-only" href="${here === home ? '' : target(home)}#${ui.mapAnchor}">${ui.map}</a>
 <a class="wide-only" href="${here === home ? '' : target(home)}#${ui.featuresAnchor}">${ui.features}</a>
 <a href="${target(links[3])}">${ui.business}</a>
 <a class="language" href="${target(other)}" hreflang="${lang === 'da' ? 'en' : 'da'}" lang="${lang === 'da' ? 'en' : 'da'}" aria-label="${ui.other}"><span class="long">${ui.other}</span><span class="short">${lang === 'da' ? 'EN' : 'DA'}</span></a>
@@ -384,6 +394,9 @@ function buildWebsite(out = OUT, root = ROOT) {
   fs.copyFileSync(path.join(root, 'assets/images/icon.png'), path.join(out, 'icon.png'));
   // Screenshots from the app for the front page.
   fs.cpSync(path.join(root, 'website/images'), path.join(out, 'images'), { recursive: true });
+  // Photos for the front page, once they have been downloaded (npm run website:photos).
+  const photos = path.join(root, 'website/photos');
+  if (fs.existsSync(photos)) fs.cpSync(photos, path.join(out, 'photos'), { recursive: true });
 
   // Netlify (and most hosts) show 404.html for an address that does not exist.
   const notFound = `<h1>Siden findes ikke</h1>
@@ -412,6 +425,8 @@ function buildWebsite(out = OUT, root = ROOT) {
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
 /images/*
+  Cache-Control: public, max-age=604800
+/photos/*
   Cache-Control: public, max-age=604800
 `,
   );

@@ -27,6 +27,18 @@ Indtil I køber et domæne, ligger siden gratis hos Netlify på **https://fixmat
 
 **Skal navnet skiftes?** Vælg et nyt i Netlify. Ret så linjen `const WEBSITE = …` og `website: …` i `src/constants/app-info.ts` til den nye adresse, byg siden igen (punkt 1), og ret adresserne i `docs/business-minds/tryk/build.js` og byg tryksagerne igen. Adressen står i appen, på plakat og flyer, i privatlivspolitikken og i sitemap'en, så den skal passe.
 
+## Billeder på forsiden
+
+Forsiden viser fotos af håndværkere, når de ligger i `fixmatch/website/photos/`. De hentes én gang fra Pexels (frie at bruge) med:
+
+```
+cd fixmatch && npm run website:photos && npm run website:build
+```
+
+Læg billederne i git bagefter, så de er med næste gang. Uden billederne bygges siden uden foto-sektionerne. Listen over billeder står i `website/photos.json`.
+
+Kortet på forsiden viser demo-virksomhederne og er mærket som eksempler. Landet på kortet ligger i `website/map-land.json` og laves med `npm run website:map`.
+
 ## Når noget ændres
 
 Byg siden igen, og træk den nye `dist-website` ind under **Deploys** på jeres site i Netlify. Den gamle udgave bliver erstattet med det samme.

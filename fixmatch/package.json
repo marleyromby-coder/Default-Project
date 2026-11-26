@@ -74,6 +74,8 @@
     "data:cities": "node scripts/build-world-cities.js",
     "data:map": "node scripts/build-map-outline.js",
     "website:build": "node scripts/build-website.js",
+    "website:map": "node scripts/build-website-map.js",
+    "website:photos": "node scripts/fetch-website-photos.js",
     "widgets:check": "node scripts/check-widgets.js"
   },
   "private": true,

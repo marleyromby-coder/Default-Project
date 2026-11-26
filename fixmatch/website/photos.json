@@ -1,0 +1,35 @@
+[
+  {
+    "key": "vvs",
+    "pexelsId": 6419128,
+    "trade": "vvs",
+    "job": "stoppet-afloeb",
+    "alt": { "da": "VVS-installatør monterer rørfittings", "en": "A plumber fitting pipe connectors" }
+  },
+  {
+    "key": "elektriker",
+    "pexelsId": 27928762,
+    "trade": "elektriker",
+    "job": "stikkontakt",
+    "alt": { "da": "Elektriker arbejder i en eltavle", "en": "An electrician working in a fuse board" }
+  },
+  {
+    "key": "toemrer",
+    "pexelsId": 5974279,
+    "trade": "toemrer",
+    "job": "vindue",
+    "alt": { "da": "Tømrer saver i træ på værkstedet", "en": "A carpenter sawing wood in the workshop" }
+  },
+  {
+    "key": "mekaniker",
+    "pexelsId": 3807799,
+    "trade": "mekaniker",
+    "job": "stort-service",
+    "alt": { "da": "Mekaniker tjekker hjul på en bil på lift", "en": "A mechanic checking a wheel on a car on a lift" }
+  },
+  {
+    "key": "virksomhed",
+    "pexelsId": 5493653,
+    "alt": { "da": "Maler ruller maling på en væg", "en": "A painter rolling paint onto a wall" }
+  }
+]

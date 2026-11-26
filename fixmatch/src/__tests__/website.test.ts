@@ -144,6 +144,32 @@ describe('website', () => {
     expect(da.match(/data-step-item/g)?.length).toBeGreaterThanOrEqual(3);
   });
 
+  it('shows the map of the app with the demo businesses only, and photos only once they are downloaded', () => {
+    const out = fs.mkdtempSync(path.join(os.tmpdir(), 'fixmatch-site-'));
+    buildWebsite(out);
+    const demo = require('../data/demo-businesses.json') as { country?: string; contact: { phone: string } }[];
+    const danish = demo.filter((b) => (b.country ?? 'DK') === 'DK');
+    for (const [file, note] of [
+      ['index.html', /fiktive eksempler fra testversionen/],
+      ['en/index.html', /fictional examples from the test version/],
+    ] as const) {
+      const html = fs.readFileSync(path.join(out, file), 'utf8');
+      expect(html).toContain('data-map');
+      expect(html).toMatch(note);
+      // The pins: name, trade, place on the map, hourly price, town and whether it is verified. Nothing else.
+      const businesses = JSON.parse(html.match(/"businesses":(\[\[.*?\]\]),"trades"/)?.[1] ?? '[]');
+      expect(businesses).toHaveLength(danish.length);
+      for (const business of businesses) expect(business).toHaveLength(7);
+      for (const business of danish.slice(0, 20)) expect(html).not.toContain(business.contact.phone);
+      // A photo on the page is always a file in the build: without the photos there are no photo sections.
+      for (const [, src] of html.matchAll(/src="((?:\.\.\/)?photos\/[^"]+)"/g)) {
+        expect(fs.existsSync(path.join(out, path.dirname(file), src))).toBe(true);
+      }
+    }
+    const land = JSON.parse(fs.readFileSync(path.join(__dirname, '../../website/map-land.json'), 'utf8'));
+    expect(land.rings.length).toBeGreaterThan(10);
+  });
+
   it('has a front page with pictures from the app and live numbers from the public views only', () => {
     const out = fs.mkdtempSync(path.join(os.tmpdir(), 'fixmatch-site-'));
     buildWebsite(out);

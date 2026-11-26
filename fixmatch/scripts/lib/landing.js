@@ -4,7 +4,11 @@
  * Supabase project as the app. The numbers only show once there is something to show.
  */
 const { readGroupDiscount, readJobPrices, readJobs, readNumber } = require('./app-data');
+const fs = require('node:fs');
+const path = require('node:path');
+
 const { readSupabase } = require('./signup-form');
+const { MAP_STYLE, siteMap } = require('./site-map');
 const { tradeArt } = require('./trade-art');
 
 const escape = (text) =>
@@ -68,6 +72,17 @@ function text(lang, { minGroup, discount }) {
         "Listen over VVS'ere i appen med fra-pris, afstand og anmeldelser",
         'En virksomheds side i appen med priser, Verificeret-mærke og knappen Ring',
       ],
+    },
+    gallery: {
+      kicker: 'Otte fag i én app',
+      title: 'Fra dryppende vandhane til nyt tag',
+      typical: 'typisk',
+      credit: 'Fotos: Pexels. Personerne på billederne er ikke tilknyttet FixMatch.',
+      label: 'Se typiske priser: {trade}',
+    },
+    cta: {
+      title: ['Se prisen,', 'før du ringer.'],
+      lead: 'FixMatch kommer snart til iPhone. Har du en virksomhed, kan du være med fra starten.',
     },
     compare: {
       kicker: 'Derfor FixMatch',
@@ -259,6 +274,17 @@ function text(lang, { minGroup, discount }) {
         'The list of plumbers in the app with from price, distance and reviews',
         'A business page in the app with prices, the Verified badge and the Call button',
       ],
+    },
+    gallery: {
+      kicker: 'Eight trades in one app',
+      title: 'From a dripping tap to a new roof',
+      typical: 'typically',
+      credit: 'Photos: Pexels. The people in the pictures are not connected to FixMatch.',
+      label: 'See typical prices: {trade}',
+    },
+    cta: {
+      title: ['See the price', 'before you call.'],
+      lead: 'FixMatch is coming soon to iPhone. If you run a business, you can join from the start.',
     },
     compare: {
       kicker: 'Why FixMatch',
@@ -533,6 +559,38 @@ ${Object.entries(prices[id])
 <p class="note">${escape(t.guide.note)}</p>
 </section>`;
 
+  // Photos of tradespeople at work (website/photos.json), once they have been downloaded with
+  // npm run website:photos. Without them the page simply has no photo sections.
+  const photoList = JSON.parse(fs.readFileSync(path.join(root, 'website/photos.json'), 'utf8'));
+  const hasPhoto = (key) => fs.existsSync(path.join(root, 'website/photos', `${key}.jpg`));
+  const photo = (key) => `${assets}photos/${key}.jpg`;
+  const shots = photoList.filter((p) => p.trade && trades[p.trade] && prices[p.trade]?.[p.job]);
+  const gallery =
+    shots.length >= 4 && shots.every((p) => hasPhoto(p.key))
+      ? `<section class="gallery">
+<div class="section-head">
+<p class="eyebrow">${escape(t.gallery.kicker)}</p>
+<h2>${escape(t.gallery.title)}</h2>
+</div>
+<div class="gallery-grid">
+${shots
+  .slice(0, 4)
+  .map(
+    (
+      p,
+    ) => `<a class="shot" href="#${lang === 'da' ? 'priser' : 'prices'}" data-guide="guide-${p.trade}" aria-label="${escape(t.gallery.label.replace('{trade}', trades[p.trade].name[lang]))}">
+<img src="${photo(p.key)}" alt="${escape(p.alt[lang])}" loading="lazy" decoding="async">
+<span class="shot-text">${art.tile(p.trade, { size: 40 })}<strong>${escape(trades[p.trade].name[lang])}</strong><span>${escape(trades[p.trade].jobs[p.job][lang])} · ${escape(t.gallery.typical)} ${escape(price(prices[p.trade][p.job]))}</span></span>
+</a>`,
+  )
+  .join('\n')}
+</div>
+<p class="note">${escape(t.gallery.credit)}</p>
+</section>`
+      : '';
+
+  const map = siteMap(lang, { root, trades, art });
+
   // How it works: on a wide screen a 3D phone stays in view and turns to the next screen at
   // each step (the script adds "pinned"). Otherwise each step simply has its own picture.
   const storyImages = ['home', 'kategori', 'virksomhed'];
@@ -613,7 +671,9 @@ ${t.promises.map(([name, title, body]) => `<div class="tile">${icon(name)}<h3>${
 </div>
 </section>`;
 
-  const business = `<section class="business" id="${lang === 'da' ? 'virksomheder' : 'businesses'}">
+  const businessPhoto = photoList.find((p) => p.key === 'virksomhed');
+  const showBusinessPhoto = businessPhoto && hasPhoto('virksomhed');
+  const business = `<section class="business${showBusinessPhoto ? ' has-photo' : ''}" id="${lang === 'da' ? 'virksomheder' : 'businesses'}">
 <div>
 <p class="eyebrow">${escape(t.businessKicker)}</p>
 <h2>${escape(t.businessTitle)}</h2>
@@ -624,6 +684,17 @@ ${t.businessPoints.map((point) => `<li>${icon('check')}<div><span>${escape(point
 <div class="actions">
 <a class="button sun" href="${signUp}">${escape(t.businessCta)}${icon('arrow')}</a>
 <a class="button on-ink" href="${available}">${escape(t.availableCta)}</a>
+</div>
+${showBusinessPhoto ? `<figure class="business-photo"><img src="${photo('virksomhed')}" alt="${escape(businessPhoto.alt[lang])}" loading="lazy" decoding="async"></figure>` : ''}
+</section>`;
+
+  // The last word before the footer: the promise once more, and the two ways in.
+  const cta = `<section class="cta">
+<h2>${escape(t.cta.title[0])}<br>${escape(t.cta.title[1]).replace(/\.$/, '<span class="dot">.</span>')}</h2>
+<p class="lead">${escape(t.cta.lead)}</p>
+<div class="actions">
+<span class="soon">${icon('phone')}<span><small>${escape(t.soon[0])}</small>${escape(t.soon[1])}</span></span>
+<a class="button sun" href="${signUp}">${escape(t.business)}${icon('arrow')}</a>
 </div>
 </section>`;
 
@@ -694,6 +765,13 @@ ${t.faq.map(([question, answer]) => `<details><summary>${escape(question)}</summ
       });
     }, { passive: true });
   }
+  // A photo of a trade opens that trade in the price guide.
+  for (const link of document.querySelectorAll('[data-guide]')) {
+    link.addEventListener('click', () => {
+      const choice = document.getElementById(link.dataset.guide);
+      if (choice) choice.checked = true;
+    });
+  }
   const story = document.querySelector('[data-story]');
   if (story && 'IntersectionObserver' in window) {
     const wide = matchMedia('(min-width: 901px)');
@@ -721,8 +799,10 @@ ${t.faq.map(([question, answer]) => `<details><summary>${escape(question)}</summ
     description: t.description,
     // The hero goes on the panel at the top of the page (build-website.js), the rest below it.
     top: hero,
-    html: [values, guide, story, compare, features, promises, business, faq].join('\n'),
-    script: script + motion,
+    html: [values, gallery, guide, map.html, story, compare, features, promises, business, faq, cta]
+      .filter(Boolean)
+      .join('\n'),
+    script: script + map.script + motion,
   };
 }
 
@@ -988,6 +1068,39 @@ main.landing > .values { position: relative; margin: -80px 0 96px; padding: 28px
   .story-steps .phone { max-width: 220px; align-self: center; }
   .compare-card { padding: 24px 20px; }
 }
+/* Photos of the trades. Each opens its trade in the price guide. */
+.gallery-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; perspective: 1400px; }
+.shot { position: relative; display: block; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 24px; background: var(--fill); color: #FFFFFF; text-decoration: none; box-shadow: var(--shadow-raised); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.shot::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11, 26, 21, 0) 40%, rgba(11, 26, 21, 0.86)); }
+.shot-text { position: absolute; left: 18px; right: 18px; bottom: 16px; z-index: 1; display: grid; gap: 2px; }
+.shot-text .trade-tile { width: 40px; height: 40px; margin-bottom: 8px; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35)); }
+.shot-text strong { font-family: var(--display); font-weight: 800; font-size: 24px; line-height: 1.15; letter-spacing: -0.03em; }
+.shot-text span { color: #E6F7EF; font-size: 15px; line-height: 1.35; }
+.shot:hover { transform: translateY(-6px) rotateX(3deg); }
+.shot:hover img { transform: scale(1.05); }
+.business.has-photo { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+.business.has-photo > :not(.business-photo) { grid-column: 1; }
+.business-photo { grid-column: 2; grid-row: 1 / span 3; margin: 0; min-height: 320px; border-radius: 20px; overflow: hidden; position: relative; }
+.business-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cta { text-align: center; padding: 72px 24px; border-radius: 28px; color: var(--on-panel); background: radial-gradient(circle at 88% -20%, rgba(255, 255, 255, 0.08) 0 220px, transparent 221px), linear-gradient(180deg, var(--panel), var(--panel-2)); }
+.cta h2 { color: var(--on-panel); font-size: clamp(38px, 6vw, 64px); line-height: 1; letter-spacing: -0.045em; margin-bottom: 18px; }
+.cta .lead { color: var(--on-panel-soft) !important; max-width: 520px; margin: 0 auto; }
+.cta .actions { justify-content: center; }
+@media (prefers-reduced-motion: reduce) { .shot, .shot img { transition: none; } }
+@media (max-width: 900px) {
+  .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .business.has-photo { grid-template-columns: 1fr; }
+  .business-photo { grid-column: 1; grid-row: auto; min-height: 240px; }
+}
+@media (max-width: 520px) {
+  .shot { border-radius: 20px; }
+  .shot-text { left: 12px; right: 12px; bottom: 12px; }
+  .shot-text strong { font-size: 19px; }
+  .shot-text span { font-size: 13px; }
+  .shot-text .trade-tile { width: 32px; height: 32px; }
+  .cta { padding: 48px 18px; }
+}
 `;
 
-module.exports = { landing, LANDING_STYLE };
+module.exports = { landing, LANDING_STYLE: LANDING_STYLE + MAP_STYLE };
