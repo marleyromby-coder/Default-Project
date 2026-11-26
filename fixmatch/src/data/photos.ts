@@ -44,7 +44,7 @@ export const PHOTOS = {
   'mekaniker-7': { pexelsId: 8985603, alt: msg('Mekaniker afmonterer et dæk') },
   'mekaniker-8': { pexelsId: 11139242, alt: msg('Mekaniker reparerer en bil') },
   'mekaniker-9': { pexelsId: 8985615, alt: msg('Mekaniker bruger en skruenøgle') },
-  'maler-1': { pexelsId: 5493653, alt: msg('Maler ruller maling på en væg') },
+  'maler-1': { pexelsId: 5493653, alt: msg('Maler spartler loftet med en langskaftet spartel') },
   'maler-2': { pexelsId: 6474471, alt: msg('Maler maler en indervæg') },
   'maler-3': { pexelsId: 7218011, alt: msg('To malere maler en væg') },
   'maler-4': { pexelsId: 5583116, alt: msg('Malerrulle med hvid maling') },

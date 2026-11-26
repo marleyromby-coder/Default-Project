@@ -237,7 +237,7 @@ const en: Record<string, string> = {
   'Maks. afstand': 'Max. distance',
   'Maler maler en indervæg': 'Painter painting an interior wall',
   'Maler maler et hus udvendigt': 'Painter painting the outside of a house',
-  'Maler ruller maling på en væg': 'Painter rolling paint onto a wall',
+  'Maler spartler loftet med en langskaftet spartel': 'Painter skimming a ceiling with a long-handled blade',
   'Malerrulle med hvid maling': 'Paint roller with white paint',
   Mandag: 'Monday',
   'Mange håndværk kræver optagelse i Handwerksrolle hos Handwerkskammer.':
