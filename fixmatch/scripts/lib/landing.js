@@ -10,6 +10,7 @@ const path = require('node:path');
 const { readSupabase } = require('./signup-form');
 const { MAP_STYLE, siteMap } = require('./site-map');
 const { tradeArt } = require('./trade-art');
+const { planner, PLANNER_ID, PLANNER_STYLE } = require('./website-experience');
 
 const escape = (text) =>
   String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -63,6 +64,7 @@ function text(lang, { minGroup, discount }) {
       pick: 'Vælg fag',
       typical: 'Typiske priser:',
       note: 'Vejledende priser inkl. moms. Den endelige pris aftaler du med virksomheden.',
+      plan: 'Beskriv din opgave',
     },
     story: {
       kicker: 'Sådan virker det',
@@ -105,6 +107,7 @@ function text(lang, { minGroup, discount }) {
     },
     soon: ['Kommer snart', 'til iPhone'],
     business: 'Har du en virksomhed?',
+    plan: 'Start med din opgave',
     liveTitle: 'Lige nu på FixMatch',
     live: {
       free: ['virksomhed har tid i dag', 'virksomheder har tid i dag'],
@@ -265,6 +268,7 @@ function text(lang, { minGroup, discount }) {
       pick: 'Choose a trade',
       typical: 'Typical prices:',
       note: 'Guide prices in Denmark including VAT. You agree the final price with the business.',
+      plan: 'Describe your project',
     },
     story: {
       kicker: 'How it works',
@@ -307,6 +311,7 @@ function text(lang, { minGroup, discount }) {
     },
     soon: ['Coming soon', 'to iPhone'],
     business: 'Do you run a business?',
+    plan: 'Start with your project',
     liveTitle: 'On FixMatch right now',
     live: {
       free: ['business has time today', 'businesses have time today'],
@@ -459,6 +464,7 @@ function landing(lang, { root, assets = '' }) {
   const minGroup = readNumber(root, 'src/state/groups.ts', 'MIN_GROUP');
   const discount = readGroupDiscount(root);
   const t = text(lang, { minGroup, discount });
+  const plan = planner(lang, root);
   const image = (name) => `${assets}images/app-${name}-${lang}.webp`;
   const phone = (name, alt, extra = '') =>
     `<figure class="phone${extra}"><img src="${image(name)}" alt="${escape(alt)}" width="300" height="656" loading="${extra ? 'eager' : 'lazy'}" decoding="async"></figure>`;
@@ -489,9 +495,10 @@ function landing(lang, { root, assets = '' }) {
 <h1>${escape(t.h1[0])}<br>${lastLine}</h1>
 <p class="lead">${escape(t.lead)}</p>
 <div class="actions">
+<a class="button sun" href="#${PLANNER_ID}">${escape(t.plan)}${icon('arrow')}</a>
 <span class="soon">${icon('phone')}<span><small>${escape(t.soon[0])}</small>${escape(t.soon[1])}</span></span>
-<a class="button sun" href="${signUp}">${escape(t.business)}${icon('arrow')}</a>
 </div>
+<a class="hero-secondary" href="${signUp}">${escape(t.business)} →</a>
 <div class="live" data-live hidden>
 <p class="live-title"><span class="pulse" aria-hidden="true"></span>${escape(t.liveTitle)}</p>
 <ul data-live-list></ul>
@@ -551,6 +558,7 @@ ${Object.entries(prices[id])
   )
   .join('\n')}
 </ul>
+<a class="guide-plan" href="#${PLANNER_ID}" data-trade="${id}">${escape(t.guide.plan)} →</a>
 </div>`,
   )
   .join('\n')}
@@ -799,10 +807,10 @@ ${t.faq.map(([question, answer]) => `<details><summary>${escape(question)}</summ
     description: t.description,
     // The hero goes on the panel at the top of the page (build-website.js), the rest below it.
     top: hero,
-    html: [values, gallery, guide, map.html, story, compare, features, promises, business, faq, cta]
+    html: [values, gallery, guide, plan.html, map.html, story, compare, features, promises, business, faq, cta]
       .filter(Boolean)
       .join('\n'),
-    script: script + map.script + motion,
+    script: script + map.script + plan.script + motion,
   };
 }
 
@@ -1103,4 +1111,4 @@ main.landing > .values { position: relative; margin: -80px 0 96px; padding: 28px
 }
 `;
 
-module.exports = { landing, LANDING_STYLE: LANDING_STYLE + MAP_STYLE };
+module.exports = { landing, LANDING_STYLE: LANDING_STYLE + MAP_STYLE + PLANNER_STYLE };

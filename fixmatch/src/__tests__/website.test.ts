@@ -144,6 +144,33 @@ describe('website', () => {
     expect(da.match(/data-step-item/g)?.length).toBeGreaterThanOrEqual(3);
   });
 
+  it('has a project planner that the hero and every trade of the price guide lead to', () => {
+    const out = fs.mkdtempSync(path.join(os.tmpdir(), 'fixmatch-site-'));
+    buildWebsite(out);
+    const da = fs.readFileSync(path.join(out, 'index.html'), 'utf8');
+    const en = fs.readFileSync(path.join(out, 'en/index.html'), 'utf8');
+    for (const html of [da, en]) {
+      expect(html).toContain('<section class="planner" id="opgave"');
+      expect(html).toContain('id="project-form"');
+      expect(html.match(/class="guide-plan" href="#opgave" data-trade="/g)).toHaveLength(CATEGORY_DATA.length);
+      expect(html).toMatch(/<a class="button sun" href="#opgave">/);
+    }
+    // The trades and jobs come from the app, like the price guide.
+    expect(da).toContain(`<option value="${CATEGORY_DATA[0].id}">`);
+    expect(da).toContain('Hvad skal du<br>have fikset?');
+    expect(en).toContain('What needs<br>fixing?');
+  });
+
+  it('lets keyboard users skip to the content on every page', () => {
+    const out = fs.mkdtempSync(path.join(os.tmpdir(), 'fixmatch-site-'));
+    buildWebsite(out);
+    for (const file of ['index.html', 'privatliv/index.html', 'en/index.html', 'en/support/index.html']) {
+      const html = fs.readFileSync(path.join(out, file), 'utf8');
+      expect(html).toMatch(/<a class="skip-link" href="#main-content">(Spring til indhold|Skip to content)<\/a>/);
+      expect(html).toContain('<main id="main-content"');
+    }
+  });
+
   it('shows the map of the app with the demo businesses only, and photos only once they are downloaded', () => {
     const out = fs.mkdtempSync(path.join(os.tmpdir(), 'fixmatch-site-'));
     buildWebsite(out);

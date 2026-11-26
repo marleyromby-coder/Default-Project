@@ -216,6 +216,8 @@ const STYLE = `
   --ink: #22322C; --on-ink: #ECF4F0; --on-ink-soft: #B3C4BD; --danger: #FF9B85;
   --shadow-card: none; --shadow-raised: 0 8px 24px rgba(0, 0, 0, 0.45);
 } }
+.skip-link { position: absolute; top: -100px; left: 20px; z-index: 10; padding: 12px 20px; border-radius: 12px; background: var(--surface); color: var(--text); }
+.skip-link:focus { top: 12px; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-text-size-adjust: 100%; }
 h1, h2, h3, .brand { font-family: var(--display); font-weight: 800; letter-spacing: -0.03em; }
@@ -313,6 +315,7 @@ ${
 <style>${STYLE.replaceAll('{{fonts}}', rel('fonts') + '/')}${html.includes('id="signup"') || html.includes('id="availability"') ? FORM_STYLE : ''}${html.includes('id="availability"') ? AVAILABILITY_STYLE : ''}${html.includes('name="trades"') ? tradeChoiceStyle() : ''}${html.includes('id="group"') ? GROUP_STYLE : ''}${wide ? LANDING_STYLE : ''}</style>
 </head>
 <body${wide ? ' class="wide"' : ''}>
+<a class="skip-link" href="#main-content">${lang === 'da' ? 'Spring til indhold' : 'Skip to content'}</a>
 <div class="masthead">
 <header>
 <a class="brand" href="${target(home)}" aria-label="${escape(info.name)}">${escape(info.name.toLowerCase())}<span class="dot">.</span></a>
@@ -326,7 +329,7 @@ ${
 </header>
 ${head}
 </div>
-<main${wide ? ' class="landing"' : ''}>
+<main id="main-content"${wide ? ' class="landing"' : ''}>
 ${body}
 </main>
 ${script}
