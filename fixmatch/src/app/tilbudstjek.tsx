@@ -15,7 +15,7 @@ import { useIsDark, useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { countryOf } from '@/lib/business-text';
 import { DATA_MODE } from '@/lib/data-source';
-import { currencySymbol, formatNumber, formatPrice, formatPriceRange } from '@/lib/format';
+import { currencySymbol, formatNumber, formatPrice, formatPriceRange, parseAmount } from '@/lib/format';
 import { taxNote } from '@/lib/markets';
 import { defaultQuantity } from '@/lib/matcher';
 import {
@@ -36,7 +36,7 @@ import { msg, t } from '@/i18n';
 
 /** "12.500 kr." typed in any way → 12500. Empty or zero → undefined. */
 function amount(text: string): number | undefined {
-  const value = Number(text.replace(/\D/g, ''));
+  const value = parseAmount(text) ?? 0;
   return value > 0 ? value : undefined;
 }
 
@@ -405,7 +405,7 @@ function AmountField({
       <View style={[styles.amountField, { backgroundColor: colors.background, borderColor: colors.border }]}>
         <TextInput
           value={value}
-          onChangeText={(text) => onChange(text.replace(/[^\d.\s]/g, '').slice(0, 9))}
+          onChangeText={(text) => onChange(text.replace(/[^\d.,\s]/g, '').slice(0, 12))}
           placeholder={placeholder}
           placeholderTextColor={colors.textTertiary}
           keyboardType="number-pad"

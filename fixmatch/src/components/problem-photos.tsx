@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
-import { Linking, Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
@@ -8,7 +8,7 @@ import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
 import { IconWell, Radius, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
-import { showDialog } from '@/lib/dialog';
+import { ensureCameraPermission } from '@/lib/camera-permission';
 import { t } from '@/i18n';
 import { addProblemPhotos, MAX_PHOTOS, type ProblemPhoto, removeProblemPhoto, useProblem } from '@/state/problem';
 
@@ -31,14 +31,7 @@ function toPhotos(result: ImagePicker.ImagePickerResult): ProblemPhoto[] {
 }
 
 async function takePhoto() {
-  const permission = await ImagePicker.requestCameraPermissionsAsync();
-  if (!permission.granted) {
-    showDialog(t('FixMatch må ikke bruge kameraet'), t('Slå kameraet til for FixMatch i Indstillinger.'), [
-      { text: t('Annuller'), style: 'cancel' },
-      { text: t('Åbn Indstillinger'), onPress: () => Linking.openSettings().catch(() => undefined) },
-    ]);
-    return;
-  }
+  if (!(await ensureCameraPermission())) return;
   addProblemPhotos(toPhotos(await ImagePicker.launchCameraAsync(PICKER_OPTIONS)));
 }
 

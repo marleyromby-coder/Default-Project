@@ -75,10 +75,12 @@ export async function callBusiness(business: Business): Promise<void> {
     return;
   }
   if (!(await requireContactProfile())) return;
-  logContact(business, 'call');
-  rememberCall(business);
   try {
     await Linking.openURL(phoneHref(business.contact.phone));
+    // Only once the phone has the number: a device that cannot call (iPad, web) has not
+    // contacted anyone, so no review is unlocked and no "Fik du fat i dem?" follows.
+    logContact(business, 'call');
+    rememberCall(business);
   } catch {
     await Clipboard.setStringAsync(number).catch(() => undefined);
     showDialog(
@@ -255,7 +257,8 @@ export async function sendProblem(
       if (result !== 'cancelled') logContact(business, 'message');
       return;
     }
-    await Share.share({ message, url: problem.photos[0]?.uri, title: business.name });
+    const { action } = await Share.share({ message, url: problem.photos[0]?.uri, title: business.name });
+    if (action === Share.sharedAction) logContact(business, 'message');
   } catch {
     await Clipboard.setStringAsync(message).catch(() => undefined);
     showDialog(t('Kopieret'), t('Beskrivelsen er kopieret, så du kan indsætte den i en besked.'));

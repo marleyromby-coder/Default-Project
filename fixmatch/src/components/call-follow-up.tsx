@@ -13,7 +13,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { showDialog } from '@/lib/dialog';
 import { t } from '@/i18n';
 import { useAccount } from '@/state/account';
-import { answerCall, callToAskAbout, dismissCall, usePendingCall } from '@/state/answers';
+import { answerCall, ASK_AFTER_MS, callToAskAbout, dismissCall, usePendingCall } from '@/state/answers';
 import { useApp } from '@/state/app-state';
 
 /**
@@ -29,12 +29,21 @@ export function CallFollowUp() {
   const [askAbout, setAskAbout] = useState<string>();
 
   useEffect(() => {
-    const check = () => setAskAbout(callToAskAbout()?.businessId);
     const subscription = AppState.addEventListener('change', (next) => {
-      if (next === 'active') check();
+      if (next === 'active') setAskAbout(callToAskAbout()?.businessId);
     });
     return () => subscription.remove();
   }, []);
+
+  // Also after a cold start: if iOS closed the app during the call, it never becomes 'active'
+  // again, but the call is kept on the phone and loads as already older than ASK_AFTER_MS.
+  // A call made just now is younger, so cancelling the call prompt does not ask later on.
+  const pendingAt = pending?.at;
+  useEffect(() => {
+    if (!pendingAt || Date.now() - Date.parse(pendingAt) < ASK_AFTER_MS) return;
+    const timer = setTimeout(() => setAskAbout(callToAskAbout()?.businessId), 0);
+    return () => clearTimeout(timer);
+  }, [pendingAt]);
 
   const business = state.businesses.find((b) => b.id === askAbout);
   if (!business || !pending || pending.businessId !== business.id) return null;

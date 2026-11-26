@@ -27,7 +27,8 @@ export default function AppTabs() {
       <NativeTabs.Trigger name="gemte">
         <NativeTabs.Trigger.Label>{t('Gemte')}</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon sf={{ default: 'heart', selected: 'heart.fill' }} md="favorite" />
-        <NativeTabs.Trigger.Badge hidden={saved === 0}>{String(saved)}</NativeTabs.Trigger.Badge>
+        {/* No text at 0: with a text, expo-router ignores `hidden` and shows a red "0". */}
+        <NativeTabs.Trigger.Badge hidden={saved === 0}>{saved > 0 ? String(saved) : undefined}</NativeTabs.Trigger.Badge>
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="profil">
         <NativeTabs.Trigger.Label>{t('Profil')}</NativeTabs.Trigger.Label>

@@ -15,6 +15,15 @@ export function formatNumber(value: number): string {
   return sign + String(Math.abs(rounded)).replace(/\B(?=(\d{3})+(?!\d))/g, separators().thousands);
 }
 
+/**
+ * A whole amount typed or pasted by the user: "1.250", "1 250" and "1,250" → 1250. Decimals
+ * ("1.250,50", "99.95") are dropped rather than read as digits, which would make 125050.
+ */
+export function parseAmount(text: string): number | undefined {
+  const digits = text.trim().replace(/[.,]\d{1,2}$/, '').replace(/\D/g, '');
+  return digits ? Number(digits) : undefined;
+}
+
 /** 4.7 → "4,7" in Danish, "4.7" in English. */
 export function formatDecimal(value: number): string {
   return (Math.round(value * 10) / 10).toFixed(1).replace('.', separators().decimal);

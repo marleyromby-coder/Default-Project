@@ -19,6 +19,7 @@ import { formatPrice, formatPriceRange } from '@/lib/format';
 import { defaultQuantity } from '@/lib/matcher';
 import { checkQuote, greenDeduction, type QuoteVerdict } from '@/lib/quote-check';
 import { parseQuoteLines, type QuoteLine, summarizeQuote } from '@/lib/quote-lines';
+import { ensureCameraPermission } from '@/lib/camera-permission';
 import { useApp, useMarket } from '@/state/app-state';
 import { useSharedPrices } from '@/state/community';
 import { t } from '@/i18n';
@@ -72,8 +73,7 @@ export default function QuotePhotoScreen() {
 
   const pick = async (camera: boolean) => {
     if (camera) {
-      const permission = await ImagePicker.requestCameraPermissionsAsync();
-      if (!permission.granted) return;
+      if (!(await ensureCameraPermission())) return;
     }
     const result = camera
       ? await ImagePicker.launchCameraAsync({ mediaTypes: ['images'], quality: 0.8, exif: false })

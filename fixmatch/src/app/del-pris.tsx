@@ -16,7 +16,7 @@ import { useLayout } from '@/hooks/use-layout';
 import { countryOf } from '@/lib/business-text';
 import { showDialog } from '@/lib/dialog';
 import { success } from '@/lib/haptics';
-import { currencySymbol } from '@/lib/format';
+import { currencySymbol, parseAmount } from '@/lib/format';
 import { getMarket, taxNote } from '@/lib/markets';
 import { msg, t } from '@/i18n';
 import { useAccount } from '@/state/account';
@@ -25,7 +25,7 @@ import { postalArea, reportPrice, useCanReview } from '@/state/community';
 
 /** "12.500 kr." typed in any way → 12500. Empty or zero → undefined. */
 function amount(text: string): number | undefined {
-  const value = Number(text.replace(/\D/g, ''));
+  const value = parseAmount(text) ?? 0;
   return value > 0 ? value : undefined;
 }
 

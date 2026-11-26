@@ -25,7 +25,7 @@ export const MIN_ANSWERS = 5;
 /** Ask only if the user comes back within this long; later it is probably not about the call. */
 const ASK_WITHIN_MS = 30 * 60_000;
 /** And not before this long: coming straight back means the call never started. */
-const ASK_AFTER_MS = 8_000;
+export const ASK_AFTER_MS = 8_000;
 
 const PENDING_KEY = 'fixmatch:pending-call';
 const MY_ANSWERS_KEY = 'fixmatch:call-answers';

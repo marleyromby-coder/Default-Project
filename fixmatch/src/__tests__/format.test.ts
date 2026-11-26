@@ -10,6 +10,7 @@ import {
   formatPrice,
   formatRating,
   formatRegistryNumber,
+  parseAmount,
   phoneHref,
   setDistanceUnit,
   speakablePrice,
@@ -97,5 +98,25 @@ describe('format in English and other currencies', () => {
     expect(formatPhone('+447700900123')).toBe('+44 7700 900123');
     expect(formatPhone('+12125550142')).toBe('+1 (212) 555-0142');
     expect(phoneHref('+44 7700 900123')).toBe('tel:+447700900123');
+  });
+});
+
+describe('parseAmount', () => {
+  it('reads whole amounts with any thousands separator', () => {
+    expect(parseAmount('1.250')).toBe(1250);
+    expect(parseAmount('1 250')).toBe(1250);
+    expect(parseAmount('1,250')).toBe(1250);
+    expect(parseAmount('12500 kr.')).toBe(12500);
+  });
+
+  it('drops decimals instead of reading them as digits', () => {
+    expect(parseAmount('1.250,50')).toBe(1250);
+    expect(parseAmount('99.95')).toBe(99);
+    expect(parseAmount('1,5')).toBe(1);
+  });
+
+  it('is undefined without digits', () => {
+    expect(parseAmount('')).toBeUndefined();
+    expect(parseAmount('kr.')).toBeUndefined();
   });
 });

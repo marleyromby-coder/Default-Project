@@ -19,9 +19,10 @@ import { useLayout } from '@/hooks/use-layout';
 import { localDay } from '@/lib/availability';
 import { showDialog } from '@/lib/dialog';
 import { success } from '@/lib/haptics';
-import { currencySymbol } from '@/lib/format';
+import { currencySymbol, parseAmount } from '@/lib/format';
 import { defaultDeduction, type DeductionKind, hasInspections } from '@/lib/home-log';
 import type { CategoryId } from '@/lib/types';
+import { ensureCameraPermission } from '@/lib/camera-permission';
 import { useContacts } from '@/state/account';
 import { useApp, useMarket } from '@/state/app-state';
 import { addHomeJob, keepPhoto, removeHomeJob, updateHomeJob, useHomeJobs } from '@/state/home';
@@ -30,8 +31,7 @@ import { t } from '@/i18n';
 const MAX_PHOTOS = 6;
 
 function amount(text: string): number | undefined {
-  const digits = text.replace(/\D/g, '');
-  return digits ? Number(digits) : undefined;
+  return parseAmount(text);
 }
 
 /** "7/11/2026", "7.11.2026" or "2026-11-07" → "2026-11-07"; anything else → undefined. */
@@ -112,8 +112,7 @@ export default function HomeJobScreen() {
 
   const addPhotos = async (camera: boolean) => {
     if (camera) {
-      const permission = await ImagePicker.requestCameraPermissionsAsync();
-      if (!permission.granted) return;
+      if (!(await ensureCameraPermission())) return;
     }
     const result = camera
       ? await ImagePicker.launchCameraAsync({ mediaTypes: ['images'], quality: 0.7, exif: false })

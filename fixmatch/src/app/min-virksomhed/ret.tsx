@@ -14,7 +14,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { useLayout } from '@/hooks/use-layout';
 import { currencyOf } from '@/lib/business-text';
 import { showDialog } from '@/lib/dialog';
-import { currencySymbol } from '@/lib/format';
+import { currencySymbol, parseAmount } from '@/lib/format';
 import { parseHours, WEEKDAYS } from '@/lib/opening-hours';
 import type { Business, PriceUnit } from '@/lib/types';
 import { t } from '@/i18n';
@@ -23,8 +23,7 @@ import { changedFields, type ChangeRequest, requestChanges, useManagedBusiness }
 
 /** "12.500" or "12500 kr." → 12500. Empty → undefined. */
 function amount(text: string): number | undefined {
-  const digits = text.replace(/\D/g, '');
-  return digits ? Number(digits) : undefined;
+  return parseAmount(text);
 }
 
 const hoursText = (slot: [string, string] | null) => (slot ? `${slot[0]}–${slot[1]}` : '');

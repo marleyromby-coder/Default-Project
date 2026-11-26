@@ -1,5 +1,5 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 
 import { BusinessCard } from '@/components/business/business-card';
@@ -71,11 +71,20 @@ export default function CategoryScreen() {
   );
   const filters = state.filters;
 
-  // Opening from "Akut hjælp" turns on the døgnvagt filter once.
+  // The latest filters, for turning the visit's own filter off again when the list closes.
+  const filtersRef = useRef(filters);
   useEffect(() => {
-    if (akut === '1') setFilters({ ...DEFAULT_FILTERS, emergency: true });
-    // ... and "Fik du fat i dem?" the free-today filter.
-    if (ledig === '1') setFilters({ ...DEFAULT_FILTERS, availableSoon: true });
+    filtersRef.current = filters;
+  });
+
+  // Opening from "Akut hjælp" turns on the døgnvagt filter, and "Fik du fat i dem?" the
+  // free-today filter, for this visit only: the filters are shared by every trade's list, so
+  // left on, the next list opened from Find would silently show only døgnvagt or free-today.
+  useEffect(() => {
+    const flag = akut === '1' ? 'emergency' : ledig === '1' ? 'availableSoon' : null;
+    if (!flag) return;
+    setFilters({ ...DEFAULT_FILTERS, [flag]: true });
+    return () => setFilters({ ...filtersRef.current, [flag]: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [akut, ledig]);
 
@@ -320,7 +329,9 @@ export default function CategoryScreen() {
                     })
               }
               action={
-                filterCount > 0 ? (
+                // Also when only the default distance hides them, as for a trade with nobody
+                // within 25 km: the filter sheet is not the only way out then.
+                filterCount > 0 || results.nearestOutside ? (
                   <Button
                     title={results.nearestOutside ? t('Vis hele landet') : t('Nulstil filtre')}
                     variant="tinted"
