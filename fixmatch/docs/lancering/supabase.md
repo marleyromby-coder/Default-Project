@@ -1,15 +1,6 @@
 # Supabase: brugere og virksomhedstilmeldinger
 
-> **Status 9. november 2026:** Projektet `khhizugetbekalfjmyhr` i Frankfurt er oprettet, filerne i `supabase/migrations/` til og med `20261113120000_lock_admin_views.sql` er kørt, Log ind med Apple er slået til, og `.env` peger på projektet. Tilbage: databehandleraftalen (DPA), egen e-mailafsender (SMTP) og opgradering til Pro før lancering.
-
-> **Skal køres i hånden (17. november 2026).** Kør de fire nye filer i SQL Editor (trin 2), i denne rækkefølge, før næste build eller hjemmesiden går ud. Ellers fejler tilmeldingerne (kolonnen `review_links` mangler), og "Rapportér" falder tilbage til e-mail.
->
-> 1. `20261117120000_review_links.sql` – kolonnen `review_links` til links til virksomhedens egne profiler på andre anmeldelsessider, og eksporten med kolonnen `anmeldelseslinks`. Kør den kun én gang.
-> 2. `20261117130000_content_reports.sql` – tabellen `content_reports` til "Rapportér", og `hidden` på Naborabat-grupper.
-> 3. `20261117140000_report_retention.sql` – kolonnen `handled_at`, så I kan slette rapporter 12 måneder efter, I har afsluttet dem. Appen kan kun tilføje rapporter, ikke sætte `handled_at`.
-> 4. `20261117150000_lock_public_views.sql` – appen og hjemmesiden kan kun læse de offentlige visninger. Indtil den er kørt, kan alle med den offentlige nøgle rette og slette delte priser gennem `shared_prices`, så kør den hurtigst muligt.
->
-> Fil 3 og 4 kan køres flere gange. Tjek bagefter med forespørgslen under "Godt at vide", at ingen visning giver mere end læseadgang.
+> **Status 26. november 2026:** Projektet `khhizugetbekalfjmyhr` i Frankfurt kører igen efter at have været sat på pause (gratisplanen pauser efter en uge uden aktivitet, se "Hvis noget går galt"). Alle filer i `supabase/migrations/` til og med `20261117150000_lock_public_views.sql` er kørt, Log ind med Apple og e-mail er slået til, og `.env` peger på projektet. Kør ikke filerne igen: `20261117120000_review_links.sql` må kun køres én gang. Tilbage: Log ind med Google (trin 3b), databehandleraftalen (DPA), egen e-mailafsender (SMTP) og opgradering til Pro før lancering.
 
 FixMatch gemmer brugere (navn, telefon, e-mail), hvem der har ringet til hvilken virksomhed, og virksomhedernes egne tilmeldinger i **Supabase**. Serveren står i EU (Frankfurt). Det tager ca. 20 minutter at sætte op, og det er gratis at starte.
 
