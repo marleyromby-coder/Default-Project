@@ -147,7 +147,6 @@ const en: Record<string, string> = {
   Fredag: 'Friday',
   Fremhævet: 'Featured',
   'Fremragende match': 'Excellent match',
-  'Fundet via FixMatch': 'Found on FixMatch',
   'Fx autoriseret til el, VVS eller gas': 'E.g. licensed for electrical, plumbing or gas work',
   'Fx: Køkkenvasken er stoppet, og vandet løber ikke ud': "E.g. The kitchen sink is blocked and won't drain",
   Færre: 'Fewer',
@@ -613,7 +612,11 @@ const en: Record<string, string> = {
   'For mange forsøg. Vent et minut, og prøv igen.': 'Too many attempts. Wait a minute and try again.',
   'Koden er forkert eller udløbet. Prøv igen, eller få en ny kode.':
     'The code is wrong or has expired. Try again, or get a new code.',
-  'Ingen forbindelse. Tjek internettet, og prøv igen.': 'No connection. Check your internet connection and try again.',
+  'Kunne ikke få forbindelse til FixMatch. Tjek internettet, og prøv igen om lidt.':
+    'Couldn’t reach FixMatch. Check your internet connection and try again in a moment.',
+  'Vi kan ikke få forbindelse til FixMatch lige nu, så du kan ikke logge ind. Tjek internettet, eller prøv igen om lidt.':
+    'We can’t reach FixMatch right now, so you can’t sign in. Check your internet connection or try again in a moment.',
+  'Fortsæt med Google': 'Continue with Google',
   'Noget gik galt. Prøv igen om lidt.': 'Something went wrong. Try again in a moment.',
   'Opret en bruger': 'Create an account',
   'Så kan håndværkerne se, hvem de taler med, når du kontakter dem. Det tager under et minut.':
@@ -1642,6 +1645,17 @@ const en: Record<string, string> = {
     'Call directly at the bottom – or save the business with the heart.',
   Forstået: 'Got it',
   'Forstået. Skjul tippet': 'Got it. Hide the tip',
+  // The project brief (lib/project-brief.ts), shared from "Beskriv dit problem".
+  'Min opgave · FixMatch': 'My project · FixMatch',
+  'Fag: {trade}': 'Trade: {trade}',
+  'Opgave: {job}': 'Job: {job}',
+  'Antal: {quantity}': 'Quantity: {quantity}',
+  'Sted: {place}': 'Location: {place}',
+  'Tidspunkt: {timing}': 'Timing: {timing}',
+  'Beskrivelse:': 'Description:',
+  'Jeg er fleksibel': 'I’m flexible',
+  'Bed om en samlet pris med materialer og kørsel ({tax}). Aftal omfang, tidspunkt og eventuelle ekstraarbejder skriftligt.':
+    'Ask for a total price including materials and travel ({tax}). Agree the scope, timing and any extra work in writing.',
 };
 
 export default en;

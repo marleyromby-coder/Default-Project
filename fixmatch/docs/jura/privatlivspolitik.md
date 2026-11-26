@@ -38,10 +38,11 @@ Dine gemte virksomheder, din valgte by, dine prioriteter, din sammenligningslist
 
 Du kan se og sammenligne virksomheder uden en bruger. Første gang du ringer til en virksomhed gennem FixMatch, beder vi dig oprette en, så virksomheden ved, hvem den taler med.
 
-- **Det gemmer vi:** din e-mail (eller det id og den e-mail, Apple giver os, når du bruger "Log ind med Apple" – Apple kan skjule din rigtige e-mail), dit navn, dit telefonnummer, og hvilke virksomheder du har ringet til gennem FixMatch og hvornår.
+- **Det gemmer vi:** din e-mail (eller det id og den e-mail, Apple giver os, når du bruger "Log ind med Apple" – Apple kan skjule din rigtige e-mail – eller den e-mail og det navn, Google giver os, når du bruger "Fortsæt med Google"), dit navn, dit telefonnummer, og hvilke virksomheder du har ringet til gennem FixMatch og hvornår.
 - **Hvorfor:** så du kan logge ind, og så virksomheden kan se navn og nummer på den, der har kontaktet den gennem FixMatch. Retsgrundlaget er aftalen med dig om at bruge FixMatch (GDPR art. 6, stk. 1, litra b).
 - **Hvem ser det:** kun den virksomhed, du har ringet til, ser dit navn, dit telefonnummer og tidspunktet. Virksomheden ser det på sin egen side i FixMatch i 90 dage efter, du kontaktede den, og må kun bruge det til at svare dig. Vi sælger aldrig oplysningerne og bruger dem ikke til reklame.
 - **Hvor:** hos vores databehandler Supabase på servere i EU (Frankfurt, Tyskland).
+- **Apple og Google:** logger du ind med Apple eller Google, ser de, at du logger ind på FixMatch, og behandler det efter deres egne privatlivspolitikker. Vi får kun det id, den e-mail og det navn, de giver os, aldrig din adgangskode.
 - **Hvor længe:** indtil du sletter din bruger under *Profil → Slet bruger*. Så slettes brugeren, navn, telefonnummer og listen over opkald med det samme. Brugere, der ikke har været brugt i 24 måneder, sletter vi.
 
 > Indgå Supabase' databehandleraftale (DPA) i dashboardet under Settings → Legal Documents, og vælg region Frankfurt (eu-central-1), når projektet oprettes. Slet inaktive brugere mindst én gang om året (se docs/lancering/supabase.md).

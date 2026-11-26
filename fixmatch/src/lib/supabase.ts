@@ -21,6 +21,9 @@ export const supabase: SupabaseClient | null =
           autoRefreshToken: true,
           persistSession: true,
           detectSessionInUrl: false,
+          // Log ind med Google goes through the browser and comes back with a one-time code,
+          // which is only exchanged together with a secret kept on the phone (PKCE).
+          flowType: 'pkce',
         },
       })
     : null;
@@ -34,6 +37,26 @@ export const SERVER_ENABLED = supabase !== null;
  * Set EXPO_PUBLIC_EMAIL_LOGIN=on when SMTP is set up (docs/lancering/supabase.md, step 4).
  */
 export const EMAIL_LOGIN_ENABLED = !SERVER_ENABLED || process.env.EXPO_PUBLIC_EMAIL_LOGIN !== 'off';
+
+let providers: Promise<Record<string, boolean> | null> | null = null;
+
+/**
+ * The sign-in methods switched on in the Supabase project (Authentication → Sign In /
+ * Providers), e.g. `{ apple: true, google: false }`, so the app only shows the ones that
+ * work. `{}` without a server, and `null` while the server cannot be reached (asked again
+ * next time).
+ */
+export function serverProviders(): Promise<Record<string, boolean> | null> {
+  if (!supabase || !url || !key) return Promise.resolve({});
+  providers ??= fetch(`${url}/auth/v1/settings`, { headers: { apikey: key } })
+    .then((response) => (response.ok ? response.json() : Promise.reject(new Error(`HTTP ${response.status}`))))
+    .then((settings: { external?: Record<string, boolean> }) => settings.external ?? {})
+    .catch(() => {
+      providers = null;
+      return null;
+    });
+  return providers;
+}
 
 // Tokens are only refreshed while the app is in front, as Supabase recommends for apps.
 if (supabase && Platform.OS !== 'web') {

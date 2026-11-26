@@ -10,7 +10,7 @@ No. The app is free. You only pay the business for the work, and you agree the p
 
 ### Do I need an account?
 
-You can look at and compare everything without one. The first time you call or message a business through FixMatch, you sign in with Apple and give your name and phone number, so the business knows who it is talking to. Sign in with Apple is the only way to log in. You can delete it under *Profile → Delete account*. Afterwards you can also remove FixMatch from your Apple Account under *Settings → your name → Sign in with Apple → FixMatch*.
+You can look at and compare everything without one. The first time you call or message a business through FixMatch, you sign in with Apple or Google and give your name and phone number, so the business knows who it is talking to. You can delete it under *Profile → Delete account*. Afterwards you can also remove FixMatch from your Apple Account under *Settings → your name → Sign in with Apple → FixMatch*, or from your Google Account under *Security → Your connections to third-party apps & services*.
 
 ### What does the tick next to the name mean?
 

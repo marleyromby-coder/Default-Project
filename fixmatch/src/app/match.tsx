@@ -1,6 +1,6 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, Share, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { BusinessCard } from '@/components/business/business-card';
 import { CompareTray } from '@/components/business/compare-tray';
@@ -22,6 +22,7 @@ import { CLOSE_MARGIN, FIT_LABELS, type BudgetFit, type BudgetMatch } from '@/li
 import { t } from '@/i18n';
 import { currencyOf } from '@/lib/business-text';
 import { taxNote } from '@/lib/markets';
+import { projectBrief, shareProjectBrief } from '@/lib/project-brief';
 import { MAX_COMPARE, useApp, useMarket } from '@/state/app-state';
 import { useProblem } from '@/state/problem';
 
@@ -128,19 +129,22 @@ export default function MatchScreen() {
     return { label, ...FIT_BADGE[m.fit] };
   };
 
+  // "Min opgave": the whole description as text the user sends to a business themselves.
   const share = () =>
-    Share.share({
-      url: problem.photos[0]?.uri,
-      message: [
-        params.tekst,
-        budget
-          ? t('Budget: {price} {tax}', { price: formatPrice(budget, market.currency), tax: taxNote(market) })
-          : undefined,
-        t('Fundet via FixMatch'),
-      ]
-        .filter(Boolean)
-        .join('\n'),
-    }).catch(() => undefined);
+    category
+      ? shareProjectBrief(
+          projectBrief({
+            trade: category.name,
+            job,
+            quantity,
+            budget,
+            urgent,
+            text: params.tekst ?? '',
+            place: state.location.label,
+            market,
+          }),
+        )
+      : undefined;
 
   const onCompareLimit = () =>
     showDialog(
@@ -190,7 +194,8 @@ export default function MatchScreen() {
               {t('Åbn en virksomhed, og tryk "Send billeder og beskrivelse", så får de dem som en besked fra dig.')}
             </AppText>
           ) : null}
-          {params.tekst && problem.photos.length === 0 ? (
+          {/* With pictures, the business page sends them with the text instead. */}
+          {problem.photos.length === 0 ? (
             <Button
               title={t('Del beskrivelsen med en virksomhed')}
               icon="share"

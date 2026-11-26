@@ -40,6 +40,22 @@ Det laver tabellerne `profiles` (navn og telefon), `contacts` (hvem ringede til 
 2. Under **Client IDs** skriver du `dk.fixmatch.app` (appens bundle id). Mere skal der ikke til for login i appen; felterne til "Secret Key" er kun til login på en hjemmeside.
 3. Appen har allerede tilladelsen til Log ind med Apple (`usesAppleSignIn` i `app.json`). Xcode opretter den, når du signerer.
 
+## 3b. Log ind med Google
+
+Knappen "Fortsæt med Google" vises først i appen, når Google er slået til i Supabase. Appen spørger selv projektet (`/auth/v1/settings`), så der skal ikke bygges en ny app, når den slås til.
+
+1. **Google Cloud Console** ([console.cloud.google.com](https://console.cloud.google.com)) → opret et projekt, fx `FixMatch`.
+2. **Google Auth Platform → Branding**: appens navn `FixMatch`, jeres support-e-mail og et link til privatlivspolitikken (`https://fixmatchh.netlify.app/privatliv/`). **Audience**: *External*, og tryk **Publish app**, så alle kan logge ind (ellers kun testbrugere). **Data Access**: `openid`, `.../auth/userinfo.email` og `.../auth/userinfo.profile`.
+3. **Clients → Create client** → type **Web application** (også selvom det er en iPhone-app: login sker i en browser hos Supabase).
+   - **Authorized redirect URIs**: `https://<projekt-id>.supabase.co/auth/v1/callback` (står også på Google-siden i Supabase).
+   - Gem, og kopiér **Client ID** og **Client secret**.
+4. **Supabase → Authentication → Sign In / Providers → Google** → slå til, indsæt Client ID og Client secret, og gem.
+5. **Supabase → Authentication → URL Configuration → Redirect URLs** → tilføj `fixmatch://auth/callback`. Uden den sender Supabase brugeren til hjemmesiden i stedet for tilbage til appen.
+
+**Test:** Åbn appen → Profil → Opret bruger → Fortsæt med Google. Brugeren står bagefter under **Authentication → Users** med udbyderen `google`.
+
+> Apple kræver, at en app med Google-login også har Log ind med Apple (App Store-retningslinje 4.8). Det har FixMatch, så det er i orden.
+
 ## 4. Log ind med e-mail og kode
 
 1. **Authentication → Sign In / Providers → Email**: skal være slået til.
@@ -176,7 +192,11 @@ Slet også e-mails med rapporter og svar 12 måneder efter, sagen er afsluttet.
 | Appen siger "Demo: din bruger gemmes kun på denne telefon" | `.env` mangler eller blev ikke læst. Tjek de to linjer, og byg igen med `npm run ios:xcode` |
 | "For mange forsøg" ved e-mail-login | Supabase' indbyggede afsender er nået sin grænse. Sæt egen SMTP op (trin 4) |
 | E-mailen har et link i stedet for en kode | Skabelonerne mangler `{{ .Token }}` (trin 4) |
+| Appen siger "Vi kan ikke få forbindelse til FixMatch lige nu", og tilmelding på hjemmesiden fejler | Projektet er sat på pause. Gratisplanen sætter projekter på pause efter en uge uden aktivitet, og så findes adressen `<projekt-id>.supabase.co` ikke længere. Gå til [supabase.com/dashboard](https://supabase.com/dashboard), åbn projektet, og tryk **Restore project** (tager et par minutter). Er projektet væk, så opret et nyt (trin 1–5), kør alle filer i `supabase/migrations/` igen, ret `.env`, og byg appen og hjemmesiden igen. Pro-planen pauser ikke |
 | Log ind med Apple fejler med "Unacceptable audience" | `dk.fixmatch.app` mangler under Client IDs (trin 3) |
+| "Fortsæt med Google" vises ikke | Google er ikke slået til i Supabase (trin 3b), eller projektet er på pause |
+| Google-login ender på hjemmesiden i stedet for i appen | `fixmatch://auth/callback` mangler under Redirect URLs (trin 3b, punkt 5) |
+| Google siger "redirect_uri_mismatch" | Supabase' callback-adresse mangler under Authorized redirect URIs i Google Cloud (trin 3b, punkt 3) |
 | "Det lykkedes ikke" når man gemmer navn og telefon | SQL'en er ikke kørt (trin 2), eller telefonnummeret har tegn, der ikke er tilladt |
 | Tilmelding på hjemmesiden åbner en e-mail i stedet for at gemme | Hjemmesiden er bygget uden `.env`. Kør `npm run website:build` igen, og læg `dist-website/` op igen |
 | Tilmelding giver "blev ikke sendt" | Forkert URL eller nøgle i `.env`, eller SQL'en er ikke kørt |

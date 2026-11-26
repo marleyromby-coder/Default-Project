@@ -300,7 +300,7 @@ export function infoPagesDa() {
         {
           heading: 'Din bruger',
           paragraphs: [
-            'Du kan se og sammenligne uden en bruger. Første gang du ringer eller skriver til en virksomhed, beder vi dig logge ind med Apple. Vi gemmer det id og den e-mail, Apple giver os (Apple kan skjule din rigtige e-mail), dit navn, dit telefonnummer og hvilke virksomheder du har kontaktet og hvornår – hos Supabase på servere i EU (Frankfurt).',
+            'Du kan se og sammenligne uden en bruger. Første gang du ringer eller skriver til en virksomhed, beder vi dig logge ind med Apple eller Google. Vi gemmer det id, den e-mail og det navn, Apple eller Google giver os (Apple kan skjule din rigtige e-mail), dit navn, dit telefonnummer og hvilke virksomheder du har kontaktet og hvornår – hos Supabase på servere i EU (Frankfurt).',
             'Kun den virksomhed, du ringer til, ser dit navn og nummer. Vi sælger dem aldrig. Du sletter det hele under Profil → Slet bruger.',
           ],
         },
@@ -347,7 +347,7 @@ export function infoPagesDa() {
       sections: [
         {
           bullets: [
-            'Appen er gratis. Du kan se og sammenligne uden en bruger. For at ringe eller skrive til en virksomhed logger du ind med Apple og giver dit navn og telefonnummer, som virksomheden ser.',
+            'Appen er gratis. Du kan se og sammenligne uden en bruger. For at ringe eller skrive til en virksomhed logger du ind med Apple eller Google og giver dit navn og telefonnummer, som virksomheden ser.',
             'Priser, åbningstider og andre oplysninger er oplyst af virksomhederne. Vi gør os umage for, at de er korrekte, men kan ikke garantere det.',
             'Anmeldelser kommer kun fra brugere, der har kontaktet virksomheden gennem FixMatch. Vi tjekker, at du har trykket Ring eller skrevet til virksomheden i FixMatch. Vi kan ikke se, om opkaldet blev besvaret, eller om opgaven blev udført.',
             'Anmeldelser, grupper og billeder må ikke være krænkende, truende eller uanstændige. Vi har nultolerance: indholdet skjules, og brugeren kan blive slettet.',

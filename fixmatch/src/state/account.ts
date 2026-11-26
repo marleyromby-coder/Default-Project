@@ -1,12 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Crypto from 'expo-crypto';
+import * as Linking from 'expo-linking';
 import { router } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
 import { useSyncExternalStore } from 'react';
 import { Platform } from 'react-native';
 
 import type { Business } from '@/lib/types';
-import { supabase } from '@/lib/supabase';
+import { serverProviders, supabase } from '@/lib/supabase';
 
 /** What a business sees when you contact it. */
 export interface Profile {
@@ -180,6 +182,46 @@ export async function signInWithApple(): Promise<{ name: string } | null> {
     save({ status: 'signedIn', userId: credential.user, email: credential.email ?? undefined, profile: null });
   }
   return { name };
+}
+
+/** Log ind med Google is shown in the iPhone app when it is switched on in Supabase. */
+export async function isGoogleSignInAvailable(): Promise<boolean> {
+  if (Platform.OS === 'web' || !supabase) return false;
+  return (await serverProviders())?.google === true;
+}
+
+/** Where Google sends the browser back to; must be listed under Redirect URLs in Supabase. */
+export const GOOGLE_REDIRECT_PATH = 'auth/callback';
+
+/**
+ * Log ind med Google: Supabase's Google sign-in in a secure browser sheet, which returns to
+ * the app with a one-time code that is exchanged for a session (PKCE). Returns the name
+ * Google shares (to fill in the profile), or null if the user cancelled.
+ */
+export async function signInWithGoogle(): Promise<{ name: string } | null> {
+  if (!supabase) throw new Error('Google sign-in needs the server');
+  const redirectTo = Linking.createURL(GOOGLE_REDIRECT_PATH);
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo, skipBrowserRedirect: true },
+  });
+  if (error) throw error;
+  const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
+  if (result.type !== 'success') return null;
+  const params = Linking.parse(result.url).queryParams ?? {};
+  const first = (value: unknown) => (Array.isArray(value) ? value[0] : value);
+  const code = first(params.code);
+  if (typeof code !== 'string' || !code) {
+    const reason = first(params.error_description) ?? first(params.error);
+    throw new Error(typeof reason === 'string' && reason ? reason : 'Google sent no code');
+  }
+  const exchanged = await supabase.auth.exchangeCodeForSession(code, data.flowId ? { flowId: data.flowId } : undefined);
+  if (exchanged.error) throw exchanged.error;
+  const user = exchanged.data.user;
+  await signedIn(user.id, user.email);
+  const meta = user.user_metadata as { full_name?: unknown; name?: unknown } | undefined;
+  const name = [meta?.full_name, meta?.name].find((value): value is string => typeof value === 'string') ?? '';
+  return { name: name.trim() };
 }
 
 /** Sends a 6-digit code by e-mail. Without a server there is no code, and the e-mail is kept. */
