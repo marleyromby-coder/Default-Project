@@ -35,6 +35,36 @@ function readJobs(root) {
   return trades;
 }
 
+/**
+ * The typical price of each job, from the same `job(…)` lines as readJobs:
+ * `{ vvs: { 'stoppet-afloeb': { unit: 'opgave', min: 1200, max: 2800 }, … }, … }`.
+ * These are the ranges the app shows under "Hvad koster det typisk?".
+ */
+function readJobPrices(root) {
+  const source = fs.readFileSync(path.join(root, 'src/data/categories.ts'), 'utf8');
+  const start = source.indexOf('export const CATEGORY_DATA');
+  if (start < 0) throw new Error('src/data/categories.ts: CATEGORY_DATA findes ikke');
+  const end = source.indexOf('\n];', start);
+  const prices = {};
+  for (const chunk of source
+    .slice(start, end)
+    .split(/\n {4}id: /)
+    .slice(1)) {
+    const id = chunk.match(new RegExp(`^${STRING}`));
+    if (!id) throw new Error('src/data/categories.ts: kunne ikke læse et fag');
+    const jobs = {};
+    const pattern = new RegExp(
+      `job\\(\\s*${STRING},\\s*${STRING},\\s*${STRING},\\s*${STRING},\\s*(\\d+),\\s*(\\d+)`,
+      'g',
+    );
+    for (const job of chunk.matchAll(pattern)) {
+      jobs[unquote(job, 1)] = { unit: unquote(job, 7), min: Number(job[9]), max: Number(job[10]) };
+    }
+    prices[unquote(id, 1)] = jobs;
+  }
+  return prices;
+}
+
 /** A numeric constant exported from an app source file, e.g. MIN_GROUP from src/state/groups.ts. */
 function readNumber(root, file, name) {
   const source = fs.readFileSync(path.join(root, file), 'utf8');
@@ -51,4 +81,4 @@ function readGroupDiscount(root) {
   return { min: Number(match[1]), max: Number(match[2]) };
 }
 
-module.exports = { readGroupDiscount, readJobs, readNumber };
+module.exports = { readGroupDiscount, readJobPrices, readJobs, readNumber };

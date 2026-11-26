@@ -3,7 +3,7 @@
  * screenshots from the app (website/images/app-*.webp), and live numbers from the same
  * Supabase project as the app. The numbers only show once there is something to show.
  */
-const { readGroupDiscount, readJobs, readNumber } = require('./app-data');
+const { readGroupDiscount, readJobPrices, readJobs, readNumber } = require('./app-data');
 const { readSupabase } = require('./signup-form');
 const { tradeArt } = require('./trade-art');
 
@@ -28,6 +28,7 @@ const ICONS = {
   phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
   euro: '<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="M12 8v8M8 12h8"/>',
   star: '<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/>',
+  cross: '<path d="M6 6l12 12M18 6 6 18"/>',
   people:
     '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M15 14.5c3 0 6 1.8 6 5.5"/>',
 };
@@ -37,16 +38,59 @@ const icon = (name) =>
 
 function text(lang, { minGroup, discount }) {
   const da = {
-    title: 'Find den rette håndværker',
+    title: 'Se prisen, før du ringer',
     description:
-      'Sammenlign lokale håndværkere og værksteder på pris, afstand og anmeldelser fra brugere via FixMatch, og ring direkte. Gratis iPhone-app, først i Danmark.',
-    eyebrow: 'Til iPhone · Først i Danmark',
-    h1: ['Den rette håndværker.', 'Til den rette pris.'],
-    lead: 'Sammenlign lokale håndværkere og værksteder på pris, afstand og anmeldelser fra brugere via FixMatch – du vælger selv, hvad der vejer mest. Ring direkte til virksomheden. Ingen mellemled, og rækkefølgen kan ikke købes.',
+      'Se håndværkernes og værkstedernes egne priser, før du ringer. Sammenlign på pris, afstand og anmeldelser, og ring direkte. Gratis iPhone-app.',
+    eyebrow: 'Gratis iPhone-app · Først i Danmark',
+    h1: ['Se prisen,', 'før du ringer.'],
+    lead: 'FixMatch viser håndværkernes og værkstedernes egne priser, før du tager telefonen. Sammenlign på pris, afstand og anmeldelser fra brugere via FixMatch, tjek om dit tilbud er fair, og ring direkte. Ingen mellemled, og rækkefølgen kan ikke købes.',
+    heroAlt: 'Forsiden i appen: søgefelt, knappen Sammenlign priser og fagene med fra-priser',
+    chips: ['Bedste match', 'Billigst', 'Verificeret'],
+    valuesLabel: 'Det får du',
+    values: [
+      ['coins', 'Pris først', 'Timepris og typiske priser står fremme, før du ringer.'],
+      ['shield', 'Fair tilbud', 'Tilbudstjek siger, om dit tilbud er lavt, normalt eller højt.'],
+      ['phone', 'Direkte kontakt', 'Du ringer selv til firmaet. Ingen gebyrer og ingen mellemled.'],
+    ],
+    guide: {
+      kicker: 'Prisguide',
+      title: 'Hvad koster det typisk?',
+      lead: 'Vælg et fag, og se det typiske prisniveau for almindelige opgaver. I appen ser du også, hvad de enkelte firmaer tager.',
+      pick: 'Vælg fag',
+      typical: 'Typiske priser:',
+      note: 'Vejledende priser inkl. moms. Den endelige pris aftaler du med virksomheden.',
+    },
+    story: {
+      kicker: 'Sådan virker det',
+      title: 'Tre tryk fra problem til opkald',
+      alts: [
+        'Forsiden i appen med søgefelt og de otte fag',
+        "Listen over VVS'ere i appen med fra-pris, afstand og anmeldelser",
+        'En virksomheds side i appen med priser, Verificeret-mærke og knappen Ring',
+      ],
+    },
+    compare: {
+      kicker: 'Derfor FixMatch',
+      title: 'Fra at ringe rundt til at vælge selv',
+      before: 'I dag',
+      after: 'Med FixMatch',
+      rows: [
+        ['Du ringer rundt for at få en pris.', 'Du ser firmaernes egne priser, før du ringer.'],
+        ['Du ved ikke, om tilbuddet er fair.', 'Tilbudstjek siger, om prisen er lav, normal eller høj.'],
+        ['Du udfylder en formular og venter på at blive ringet op.', 'Du vælger selv og ringer direkte til firmaet.'],
+        [
+          'Du kan ikke se, om nogen har betalt for at stå øverst.',
+          'Rækkefølgen kan ikke købes, og annoncer er altid mærket.',
+        ],
+        [
+          'Anmeldelser kan komme fra hvem som helst.',
+          'Kun brugere, der har kontaktet firmaet gennem FixMatch, kan anmelde.',
+        ],
+      ],
+    },
     soon: ['Kommer snart', 'til iPhone'],
     business: 'Har du en virksomhed?',
     liveTitle: 'Lige nu på FixMatch',
-    tradesLabel: 'Fagene i appen',
     live: {
       free: ['virksomhed har tid i dag', 'virksomheder har tid i dag'],
       groups: ['åben naborabat-gruppe', 'åbne naborabat-grupper'],
@@ -134,7 +178,6 @@ function text(lang, { minGroup, discount }) {
       ['car', 'Lampe i bilen?', 'Se hvad advarselslampen betyder, og om du kan køre videre.'],
       ['widget', 'Widgets', 'Dine gemte håndværkere og hurtig hjælp direkte på hjemmeskærmen.'],
     ],
-    stepsTitle: 'Sådan virker det',
     steps: [
       ['Fortæl, hvad der skal laves', 'Vælg et fag, eller beskriv problemet med dine egne ord.'],
       ['Sammenlign', 'Pris, afstand, anmeldelser og hvem der har tid. Gem dem, du kan lide.'],
@@ -186,16 +229,59 @@ function text(lang, { minGroup, discount }) {
     ],
   };
   const en = {
-    title: 'Find the right tradesperson',
+    title: 'See the price before you call',
     description:
-      'Compare local tradespeople and garages on price, distance and reviews from FixMatch users, and call them directly. A free iPhone app, launching in Denmark.',
-    eyebrow: 'For iPhone · Launching in Denmark',
-    h1: ['The right tradesperson.', 'At the right price.'],
-    lead: 'Compare local tradespeople and garages on price, distance and reviews from FixMatch users – you choose what matters most. Call the business directly. No middleman, and the order cannot be bought.',
+      'See what tradespeople and garages charge before you call. Compare on price, distance and reviews, and call them directly. A free iPhone app.',
+    eyebrow: 'Free iPhone app · Launching in Denmark',
+    h1: ['See the price', 'before you call.'],
+    lead: 'FixMatch shows what tradespeople and garages charge before you pick up the phone. Compare on price, distance and reviews from FixMatch users, check whether your quote is fair, and call directly. No middleman, and the order cannot be bought.',
+    heroAlt: 'The front page of the app: search, the Compare prices button and the trades with their from prices',
+    chips: ['Best match', 'Cheapest', 'Verified'],
+    valuesLabel: 'What you get',
+    values: [
+      ['coins', 'Price first', 'Hourly rates and typical prices are shown before you call.'],
+      ['shield', 'A fair quote', 'Quote check tells you whether your quote is low, normal or high.'],
+      ['phone', 'Direct contact', 'You call the business yourself. No fees and no middleman.'],
+    ],
+    guide: {
+      kicker: 'Price guide',
+      title: 'What does it usually cost?',
+      lead: 'Choose a trade and see the typical price level for common jobs. In the app you also see what each business charges.',
+      pick: 'Choose a trade',
+      typical: 'Typical prices:',
+      note: 'Guide prices in Denmark including VAT. You agree the final price with the business.',
+    },
+    story: {
+      kicker: 'How it works',
+      title: 'Three taps from problem to call',
+      alts: [
+        'The front page of the app with search and the eight trades',
+        'The list of plumbers in the app with from price, distance and reviews',
+        'A business page in the app with prices, the Verified badge and the Call button',
+      ],
+    },
+    compare: {
+      kicker: 'Why FixMatch',
+      title: 'From ringing round to choosing yourself',
+      before: 'Today',
+      after: 'With FixMatch',
+      rows: [
+        ['You ring round to get a price.', 'You see what businesses charge before you call.'],
+        [
+          'You do not know whether the quote is fair.',
+          'Quote check tells you whether the price is low, normal or high.',
+        ],
+        ['You fill in a form and wait to be called.', 'You choose yourself and call the business directly.'],
+        [
+          'You cannot tell whether someone paid to be at the top.',
+          'The order cannot be bought, and ads are always labelled.',
+        ],
+        ['Reviews can come from anyone.', 'Only users who contacted the business through FixMatch can review it.'],
+      ],
+    },
     soon: ['Coming soon', 'to iPhone'],
     business: 'Do you run a business?',
     liveTitle: 'On FixMatch right now',
-    tradesLabel: 'The trades in the app',
     live: {
       free: ['business has time today', 'businesses have time today'],
       groups: ['open neighbour group', 'open neighbour groups'],
@@ -286,7 +372,6 @@ function text(lang, { minGroup, discount }) {
       ['car', 'Warning light?', 'See what the warning light in your car means, and whether you can drive on.'],
       ['widget', 'Widgets', 'Your saved tradespeople and quick help right on your home screen.'],
     ],
-    stepsTitle: 'How it works',
     steps: [
       ['Say what needs doing', 'Choose a trade, or describe the problem in your own words.'],
       ['Compare', 'Price, distance, reviews and who has time. Save the ones you like.'],
@@ -356,6 +441,20 @@ function landing(lang, { root, assets = '' }) {
 
   // The last full stop of the heading in sun yellow, like "Se prisen, før du ringer." in the app.
   const lastLine = escape(t.h1[1]).replace(/\.$/, '<span class="dot">.</span>');
+  const art = tradeArt(root);
+  const trades = readJobs(root);
+  const prices = readJobPrices(root);
+  // The edge of a 3D phone: thin dark layers between its front and its back.
+  const edge = '<i></i>'.repeat(5);
+  // Trade tiles and the list's labels float around the phone at different depths. Decoration only.
+  const floats = ['vvs', 'elektriker', 'toemrer', 'maler', 'mekaniker']
+    .map((id, index) => `<span class="float f${index + 1}">${art.tile(id, { size: 64 })}</span>`)
+    .join('');
+  const chips = t.chips
+    .map(
+      (label, index) => `<span class="chip c${index + 1}">${index === 2 ? icon('check') : ''}${escape(label)}</span>`,
+    )
+    .join('');
   const hero = `<section class="hero">
 <div class="hero-text">
 <p class="eyebrow">${escape(t.eyebrow)}</p>
@@ -370,18 +469,113 @@ function landing(lang, { root, assets = '' }) {
 <ul data-live-list></ul>
 </div>
 </div>
-${phone('home', lang === 'da' ? 'Forsiden i appen: søgefelt, knappen Sammenlign priser og fagene med fra-priser' : 'The front page of the app: search, the Compare prices button and the trades with their from prices', ' hero-phone')}
+<div class="stage" data-stage>
+<div class="tilt">
+<div class="scene">
+<div class="orbit" aria-hidden="true">${floats}${chips}</div>
+<figure class="phone3d">${edge}<span class="phone-back" aria-hidden="true"></span><span class="phone-front"><img src="${image('home')}" alt="${escape(t.heroAlt)}" width="300" height="656" fetchpriority="high" decoding="async"></span></figure>
+</div>
+</div>
+</div>
 </section>`;
 
-  // The eight trades as the app's tiles, on a card that overlaps the panel like the app's search card.
-  const art = tradeArt(root);
-  const trades = `<div class="trades">
-<ul class="trade-list" aria-label="${escape(t.tradesLabel)}">
-${Object.entries(readJobs(root))
-  .map(([id, trade]) => `<li>${art.tile(id)}<span>${escape(trade.name[lang])}</span></li>`)
-  .join('\n')}
+  // What you get, on a card that overlaps the panel like the app's search card.
+  const values = `<div class="values">
+<ul aria-label="${escape(t.valuesLabel)}">
+${t.values.map(([name, title, body]) => `<li>${icon(name)}<div><strong>${escape(title)}</strong><span>${escape(body)}</span></div></li>`).join('\n')}
 </ul>
 </div>`;
+
+  // The price guide: choose a trade and see what its common jobs typically cost. Radio buttons
+  // and CSS only, so it works without JavaScript and with the keyboard.
+  const number = (value) => String(value).replace(/\B(?=(\d{3})+(?!\d))/g, lang === 'da' ? '.' : ',');
+  const unitText = {
+    da: { opgave: '', m2: ' pr. m²', stk: ' pr. stk.' },
+    en: { opgave: '', m2: ' per m²', stk: ' each' },
+  }[lang];
+  const price = ({ unit, min, max }) => {
+    const range = min === max ? number(min) : `${number(min)}–${number(max)}`;
+    return lang === 'da' ? `${range} kr.${unitText[unit]}` : `DKK ${range}${unitText[unit]}`;
+  };
+  const tradeIds = Object.keys(trades);
+  const guide = `<section class="guide" id="${lang === 'da' ? 'priser' : 'prices'}">
+<div class="section-head">
+<p class="eyebrow">${escape(t.guide.kicker)}</p>
+<h2>${escape(t.guide.title)}</h2>
+<p class="lead">${escape(t.guide.lead)}</p>
+</div>
+<fieldset class="guide-body">
+<legend class="vh">${escape(t.guide.pick)}</legend>
+${tradeIds.map((id, index) => `<input class="vh" type="radio" name="guide-trade" id="guide-${id}"${index === 0 ? ' checked' : ''}>`).join('\n')}
+<div class="guide-trades">
+${tradeIds.map((id) => `<label for="guide-${id}">${art.tile(id, { size: 72 })}<span>${escape(trades[id].name[lang])}</span></label>`).join('\n')}
+</div>
+<div class="guide-panels">
+${tradeIds
+  .map(
+    (id) => `<div class="guide-panel" style="--trade: ${art.colors[id].deep}; --trade-dark: ${art.colors[id].tile}">
+<h3>${escape(t.guide.typical)} ${escape(trades[id].name[lang])}</h3>
+<ul>
+${Object.entries(prices[id])
+  .map(
+    ([job, value]) =>
+      `<li><span class="job">${escape(trades[id].jobs[job][lang])}</span><span class="range" aria-hidden="true"><i style="--from: ${Math.round((value.min / value.max) * 100)}%"></i></span><strong>${escape(price(value))}</strong></li>`,
+  )
+  .join('\n')}
+</ul>
+</div>`,
+  )
+  .join('\n')}
+</div>
+</fieldset>
+<p class="note">${escape(t.guide.note)}</p>
+</section>`;
+
+  // How it works: on a wide screen a 3D phone stays in view and turns to the next screen at
+  // each step (the script adds "pinned"). Otherwise each step simply has its own picture.
+  const storyImages = ['home', 'kategori', 'virksomhed'];
+  const story = `<section class="story" data-story>
+<div class="section-head">
+<p class="eyebrow">${escape(t.story.kicker)}</p>
+<h2>${escape(t.story.title)}</h2>
+</div>
+<div class="story-grid">
+<div class="story-stage" aria-hidden="true">
+<div class="story-phone" data-step="0"><div class="spin">${edge}<span class="phone-back"><span class="wordmark">fixmatch<span class="dot">.</span></span></span><span class="phone-front">${storyImages.map((name) => `<img src="${image(name)}" alt="" width="300" height="656" loading="lazy" decoding="async">`).join('')}</span></div></div>
+</div>
+<ol class="story-steps">
+${t.steps
+  .map(
+    ([title, body], index) => `<li data-step-item${index === 0 ? ' class="on"' : ''}>
+<div class="step-text"><span class="number">${index + 1}</span><h3>${escape(title)}</h3><p>${escape(body)}</p></div>
+${phone(storyImages[index], t.story.alts[index])}
+</li>`,
+  )
+  .join('\n')}
+</ol>
+</div>
+</section>`;
+
+  const compare = `<section class="compare">
+<div class="section-head">
+<p class="eyebrow">${escape(t.compare.kicker)}</p>
+<h2>${escape(t.compare.title)}</h2>
+</div>
+<div class="compare-grid">
+<div class="compare-card before">
+<h3>${escape(t.compare.before)}</h3>
+<ul>
+${t.compare.rows.map(([before]) => `<li>${icon('cross')}<span>${escape(before)}</span></li>`).join('\n')}
+</ul>
+</div>
+<div class="compare-card after">
+<h3>${escape(t.compare.after)}</h3>
+<ul>
+${t.compare.rows.map(([, after]) => `<li>${icon('check')}<span>${escape(after)}</span></li>`).join('\n')}
+</ul>
+</div>
+</div>
+</section>`;
 
   const features = `<section class="features" id="${lang === 'da' ? 'funktioner' : 'features'}">
 <div class="section-head">
@@ -408,13 +602,6 @@ ${feature.points.map(([title, body]) => `<li>${icon('check')}<div><strong>${esca
 <div class="tiles">
 ${t.more.map(([name, title, body]) => `<div class="tile">${icon(name)}<h4>${escape(title)}</h4><p>${escape(body)}</p></div>`).join('\n')}
 </div>
-</section>`;
-
-  const steps = `<section class="steps">
-<h2>${escape(t.stepsTitle)}</h2>
-<ol>
-${t.steps.map(([title, body], index) => `<li><span class="number">${index + 1}</span><h3>${escape(title)}</h3><p>${escape(body)}</p></li>`).join('\n')}
-</ol>
 </section>`;
 
   const promises = `<section class="promises">
@@ -484,13 +671,56 @@ ${t.faq.map(([question, answer]) => `<details><summary>${escape(question)}</summ
 </script>`
     : '';
 
+  // Motion: the hero's 3D scene follows the pointer, and the story's phone turns at each step.
+  // Both are extras: without the script (or with reduced motion) the page reads the same.
+  const motion = `<script>
+(() => {
+  const calm = matchMedia('(prefers-reduced-motion: reduce)');
+  const stage = document.querySelector('[data-stage]');
+  if (stage && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const scene = stage.querySelector('.scene');
+    let frame = 0;
+    addEventListener('pointermove', (event) => {
+      if (frame || calm.matches) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const box = stage.getBoundingClientRect();
+        const x = (event.clientX - (box.left + box.width / 2)) / innerWidth;
+        const y = (event.clientY - (box.top + box.height / 2)) / innerHeight;
+        scene.style.setProperty('--ry', (x * 22).toFixed(2));
+        scene.style.setProperty('--rx', (-y * 14).toFixed(2));
+      });
+    }, { passive: true });
+  }
+  const story = document.querySelector('[data-story]');
+  if (story && 'IntersectionObserver' in window) {
+    const wide = matchMedia('(min-width: 901px)');
+    const phone = story.querySelector('.story-phone');
+    const steps = [...story.querySelectorAll('[data-step-item]')];
+    const apply = () => story.classList.toggle('pinned', wide.matches && !calm.matches);
+    apply();
+    wide.addEventListener('change', apply);
+    calm.addEventListener('change', apply);
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const index = steps.indexOf(entry.target);
+        phone.dataset.step = String(index);
+        steps.forEach((step, n) => step.classList.toggle('on', n === index));
+      }
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    steps.forEach((step) => observer.observe(step));
+  }
+})();
+</script>`;
+
   return {
     title: t.title,
     description: t.description,
     // The hero goes on the panel at the top of the page (build-website.js), the rest below it.
     top: hero,
-    html: [trades, features, steps, promises, business, faq].join('\n'),
-    script,
+    html: [values, guide, story, compare, features, promises, business, faq].join('\n'),
+    script: script + motion,
   };
 }
 
@@ -512,7 +742,7 @@ main.landing { max-width: 1120px; margin: 0 auto; background: none; border: 0; b
 .button.on-ink { color: var(--on-ink); border: 1.5px solid rgba(255, 255, 255, 0.28); }
 .button.on-ink:hover { background: rgba(255, 255, 255, 0.08); }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 32px; }
-.hero { max-width: 1120px; margin: 0 auto; padding: 20px 20px 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 56px; align-items: center; }
+.hero { max-width: 1120px; margin: 0 auto; padding: 20px 20px 0; display: grid; grid-template-columns: minmax(0, 1fr) 440px; gap: 40px; align-items: center; }
 .hero .eyebrow { color: var(--on-panel-soft); }
 .hero h1 { color: var(--on-panel); font-size: clamp(44px, 6.2vw, 74px); line-height: 1; letter-spacing: -0.045em; margin: 0 0 22px; }
 .hero .lead { color: var(--on-panel-soft) !important; font-size: 20px; max-width: 560px; }
@@ -520,7 +750,6 @@ main.landing { max-width: 1120px; margin: 0 auto; background: none; border: 0; b
 .soon small { display: block; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 12px; font-weight: 500; color: #B9C9C2; }
 .phone { margin: 0; width: 300px; flex: none; border-radius: 46px; padding: 10px; background: #0B1A15; box-shadow: 0 30px 60px -24px rgba(11, 26, 21, 0.45), 0 0 0 1px rgba(11, 26, 21, 0.08); }
 .phone img { display: block; width: 100%; height: auto; border-radius: 36px; }
-.hero-phone { transform: rotate(2deg); box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.12); }
 @media (prefers-color-scheme: dark) { .phone { box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6), 0 0 0 1px #2E423A; } }
 .live { margin-top: 28px; padding: 14px 18px; border-radius: 18px; background: var(--panel-sunk); border: 1px solid rgba(255, 255, 255, 0.12); max-width: 560px; }
 .live-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--on-panel-soft); margin-bottom: 4px !important; }
@@ -528,10 +757,6 @@ main.landing { max-width: 1120px; margin: 0 auto; background: none; border: 0; b
 .live ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 20px; }
 .live li { margin: 0; color: var(--on-panel-soft); font-size: 15px; line-height: 1.35; }
 .live strong { display: block; color: var(--on-panel); font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1.1; letter-spacing: -0.035em; }
-main.landing > .trades { position: relative; margin: -80px 0 96px; padding: 26px 24px 22px; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow-raised); }
-.trade-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 18px 12px; }
-.trade-list li { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; font-family: var(--display); font-weight: 700; font-size: 16px; line-height: 1.2; letter-spacing: -0.01em; }
-.trade-list .trade-tile { width: 72px; height: 72px; }
 .section-head { text-align: center; max-width: 680px; margin: 0 auto 56px; }
 .feature { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 72px; align-items: center; margin: 0 auto 88px; max-width: 940px; }
 .feature.flip { grid-template-columns: minmax(0, 1fr) 300px; }
@@ -552,11 +777,6 @@ main.landing > .trades { position: relative; margin: -80px 0 96px; padding: 26px
 .tile .icon { box-sizing: content-box; padding: 11px; border-radius: 14px; background: var(--brand-soft); color: var(--brand-text); margin-bottom: 16px; }
 .tile h3, .tile h4 { font-family: var(--display); font-size: 19px; font-weight: 700; letter-spacing: -0.015em; margin: 0 0 6px; }
 .tile p { color: var(--muted); font-size: 15px; }
-.steps ol { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.steps li { margin: 0; padding: 26px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-card); }
-.steps .number { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(180deg, var(--panel), var(--panel-2)); color: var(--on-panel); font-family: var(--display); font-weight: 800; font-size: 20px; margin-bottom: 16px; }
-.steps h3 { margin-bottom: 6px; font-size: 21px; }
-.steps p { color: var(--muted); }
 .promises h2 { margin-bottom: 28px; }
 .business { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 56px; padding: 56px; border-radius: 28px; background: var(--ink); color: var(--on-ink); }
 .business .eyebrow { color: var(--on-ink-soft); }
@@ -575,12 +795,10 @@ main.landing > .trades { position: relative; margin: -80px 0 96px; padding: 26px
 .faq details p { color: var(--muted); margin-top: 10px; }
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; gap: 40px; padding-top: 8px; }
-  .hero-phone { justify-self: center; transform: none; }
-  .trade-list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .feature, .feature.flip { grid-template-columns: 1fr; gap: 32px; }
   .feature .phone, .feature.flip .phone { order: 2; justify-self: center; width: 260px; }
   .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .tiles.three, .steps ol, .business { grid-template-columns: 1fr; }
+  .tiles.three, .business { grid-template-columns: 1fr; }
   .business { padding: 36px 24px; }
 }
 @media (max-width: 520px) {
@@ -592,13 +810,161 @@ main.landing > .trades { position: relative; margin: -80px 0 96px; padding: 26px
   .hero .lead { font-size: 18px; }
   .phone { width: 260px; border-radius: 40px; padding: 8px; }
   .phone img { border-radius: 32px; }
-  main.landing > .trades { margin: -64px 0 72px; padding: 18px 8px 16px; border-radius: 20px; }
-  .trade-list { gap: 14px 4px; }
-  .trade-list li { font-size: 14px; gap: 8px; }
-  .trade-list .trade-tile { width: 58px; height: 58px; }
-  .section-head, .faq h2, .steps h2, .promises h2 { padding: 0 4px; }
+  .section-head, .faq h2, .promises h2 { padding: 0 4px; }
   .tiles { grid-template-columns: 1fr; }
   .caption { margin-top: -24px !important; }
+}
+.vh { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+body.wide .masthead { overflow: clip; }
+.section-head .lead { margin-top: 4px; }
+.note { text-align: center; color: var(--muted-2); font-size: 14px; margin-top: 16px !important; }
+
+/* The 3D scene of the hero: a phone with real depth, and the app's tiles and labels floating around it. */
+.stage { position: relative; --w: 270px; width: 440px; max-width: 100%; height: 620px; justify-self: center; perspective: 1400px; }
+.tilt, .scene, .orbit { position: absolute; inset: 0; transform-style: preserve-3d; }
+.scene { transform: rotateX(calc(var(--rx, 0) * 1deg)) rotateY(calc(var(--ry, 0) * 1deg)); transition: transform 0.4s ease-out; }
+.scene::before { content: ""; position: absolute; left: 18%; right: 10%; bottom: 0; height: 46px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0, 0, 0, 0.42), transparent); transform: translateZ(-140px); }
+.phone3d, .story-phone { position: absolute; inset: 0; margin: auto; width: var(--w); height: calc((var(--w) - 18px) * 656 / 300 + 18px); transform-style: preserve-3d; }
+.phone3d { transform: rotateY(-24deg) rotateX(9deg) rotateZ(3deg); }
+.phone3d > i, .spin > i, .phone-back, .phone-front { position: absolute; inset: 0; border-radius: 44px; }
+.phone3d > i, .spin > i { background: #1F2E29; }
+.phone3d > i:nth-child(1), .spin > i:nth-child(1) { transform: translateZ(-6px); }
+.phone3d > i:nth-child(2), .spin > i:nth-child(2) { transform: translateZ(-3px); }
+.phone3d > i:nth-child(4), .spin > i:nth-child(4) { transform: translateZ(3px); }
+.phone3d > i:nth-child(5), .spin > i:nth-child(5) { transform: translateZ(6px); }
+.phone-back { background: linear-gradient(160deg, #16241F, #0B1A15); transform: rotateY(180deg) translateZ(8px); backface-visibility: hidden; display: flex; align-items: center; justify-content: center; }
+.phone-front { background: #0B1A15; padding: 9px; transform: translateZ(8px); backface-visibility: hidden; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14); }
+.phone-front img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 35px; }
+.phone-front::after { content: ""; position: absolute; inset: 9px; border-radius: 35px; background: linear-gradient(115deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 34%); pointer-events: none; }
+.wordmark { font-family: var(--display); font-weight: 900; font-size: 34px; letter-spacing: -0.035em; color: #FFFFFF; }
+.float, .chip { position: absolute; }
+.float .trade-tile { display: block; width: 64px; height: 64px; filter: drop-shadow(0 16px 14px rgba(0, 0, 0, 0.32)); }
+.f1 { left: 0; top: 9%; transform: translateZ(110px) rotate(-10deg); --d: 6.5s; }
+.f2 { right: 3%; top: 1%; transform: translateZ(-80px) rotate(8deg); --d: 7.5s; --delay: -2s; }
+.f3 { left: 0; top: 61%; transform: translateZ(50px) rotate(7deg); --d: 8s; --delay: -4s; }
+.f4 { right: 1%; top: 75%; transform: translateZ(140px) rotate(-7deg); --d: 6s; --delay: -1s; }
+.f5 { left: 22%; bottom: 0; transform: translateZ(-110px) rotate(12deg); --d: 9s; --delay: -3s; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 8px 15px; border-radius: 999px; font-family: var(--display); font-weight: 700; font-size: 15px; line-height: 1.3; letter-spacing: -0.01em; white-space: nowrap; box-shadow: 0 16px 28px -12px rgba(0, 0, 0, 0.55); }
+.chip .icon { width: 16px; height: 16px; stroke-width: 3; color: #00805C; }
+.c1 { left: 0; top: 35%; transform: translateZ(170px); background: #DCF4E9; color: #00704F; --d: 7s; --delay: -1.5s; }
+.c2 { right: 0; top: 21%; transform: translateZ(120px); background: #FFB800; color: #1A1400; --d: 6.2s; --delay: -3.5s; }
+.c3 { right: 2%; bottom: 21%; transform: translateZ(180px); background: #FFFFFF; color: #0B1A15; --d: 8.4s; --delay: -0.5s; }
+
+/* What you get: overlaps the panel like the app's search card. */
+main.landing > .values { position: relative; margin: -80px 0 96px; padding: 28px; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow-raised); }
+.values ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 32px; }
+.values li { display: flex; align-items: flex-start; gap: 14px; margin: 0; }
+.values .icon { box-sizing: content-box; padding: 11px; border-radius: 14px; background: var(--brand-soft); color: var(--brand-text); }
+.values strong { display: block; font-family: var(--display); font-weight: 800; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; }
+.values span { display: block; color: var(--muted); font-size: 15.5px; line-height: 1.45; }
+
+/* The price guide: radio buttons choose the trade, and CSS shows its panel. */
+.guide-body { border: 0; margin: 0; padding: 0; min-width: 0; }
+.guide-trades { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px; perspective: 900px; }
+.guide-trades label { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 14px 4px 12px; border: 2px solid transparent; border-radius: 20px; cursor: pointer; text-align: center; font-family: var(--display); font-weight: 700; font-size: 16px; line-height: 1.2; letter-spacing: -0.01em; }
+.guide-trades .trade-tile { width: 72px; height: 72px; filter: drop-shadow(0 6px 8px rgba(11, 26, 21, 0.16)); transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.guide-trades label:hover .trade-tile { transform: translateY(-6px) rotateX(16deg) rotateY(-16deg) scale(1.05); }
+.guide-body > input:nth-of-type(1):checked ~ .guide-trades > label:nth-child(1), .guide-body > input:nth-of-type(2):checked ~ .guide-trades > label:nth-child(2), .guide-body > input:nth-of-type(3):checked ~ .guide-trades > label:nth-child(3), .guide-body > input:nth-of-type(4):checked ~ .guide-trades > label:nth-child(4), .guide-body > input:nth-of-type(5):checked ~ .guide-trades > label:nth-child(5), .guide-body > input:nth-of-type(6):checked ~ .guide-trades > label:nth-child(6), .guide-body > input:nth-of-type(7):checked ~ .guide-trades > label:nth-child(7), .guide-body > input:nth-of-type(8):checked ~ .guide-trades > label:nth-child(8), .guide-body > input:nth-of-type(9):checked ~ .guide-trades > label:nth-child(9), .guide-body > input:nth-of-type(10):checked ~ .guide-trades > label:nth-child(10) { background: var(--surface); border-color: var(--brand); box-shadow: var(--shadow-card); }
+.guide-body > input:nth-of-type(1):focus-visible ~ .guide-trades > label:nth-child(1), .guide-body > input:nth-of-type(2):focus-visible ~ .guide-trades > label:nth-child(2), .guide-body > input:nth-of-type(3):focus-visible ~ .guide-trades > label:nth-child(3), .guide-body > input:nth-of-type(4):focus-visible ~ .guide-trades > label:nth-child(4), .guide-body > input:nth-of-type(5):focus-visible ~ .guide-trades > label:nth-child(5), .guide-body > input:nth-of-type(6):focus-visible ~ .guide-trades > label:nth-child(6), .guide-body > input:nth-of-type(7):focus-visible ~ .guide-trades > label:nth-child(7), .guide-body > input:nth-of-type(8):focus-visible ~ .guide-trades > label:nth-child(8), .guide-body > input:nth-of-type(9):focus-visible ~ .guide-trades > label:nth-child(9), .guide-body > input:nth-of-type(10):focus-visible ~ .guide-trades > label:nth-child(10) { outline: 3px solid var(--brand); outline-offset: 2px; }
+.guide-panels { margin-top: 20px; }
+.guide-panel { display: none; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow-card); padding: 26px 28px 12px; }
+.guide-body > input:nth-of-type(1):checked ~ .guide-panels > .guide-panel:nth-child(1), .guide-body > input:nth-of-type(2):checked ~ .guide-panels > .guide-panel:nth-child(2), .guide-body > input:nth-of-type(3):checked ~ .guide-panels > .guide-panel:nth-child(3), .guide-body > input:nth-of-type(4):checked ~ .guide-panels > .guide-panel:nth-child(4), .guide-body > input:nth-of-type(5):checked ~ .guide-panels > .guide-panel:nth-child(5), .guide-body > input:nth-of-type(6):checked ~ .guide-panels > .guide-panel:nth-child(6), .guide-body > input:nth-of-type(7):checked ~ .guide-panels > .guide-panel:nth-child(7), .guide-body > input:nth-of-type(8):checked ~ .guide-panels > .guide-panel:nth-child(8), .guide-body > input:nth-of-type(9):checked ~ .guide-panels > .guide-panel:nth-child(9), .guide-body > input:nth-of-type(10):checked ~ .guide-panels > .guide-panel:nth-child(10) { display: block; }
+.guide-panel h3 { font-size: 20px; margin-bottom: 8px; }
+.guide-panel ul { list-style: none; margin: 0; padding: 0; }
+.guide-panel li { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(80px, 1fr) 11.5em; align-items: center; gap: 18px; margin: 0; padding: 14px 0; border-top: 1px solid var(--border); }
+.guide-panel li:first-child { border-top: 0; }
+.guide-panel .job { font-weight: 600; }
+.guide-panel strong { font-family: var(--display); font-weight: 800; font-size: 20px; letter-spacing: -0.03em; white-space: nowrap; text-align: right; }
+.range { position: relative; height: 8px; border-radius: 999px; background: var(--fill); overflow: hidden; }
+.range i { position: absolute; inset: 0 0 0 var(--from); border-radius: 999px; background: var(--trade); }
+@media (prefers-color-scheme: dark) { .range i { background: var(--trade-dark); } }
+
+/* How it works. "pinned" (set by the script on wide screens) keeps a 3D phone in view that turns at each step. */
+.story-stage { display: none; }
+.story-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.story-steps li { margin: 0; padding: 26px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: 24px; }
+.story-steps .phone { width: 100%; max-width: 240px; align-self: center; }
+.story .number { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(180deg, var(--panel), var(--panel-2)); color: var(--on-panel); font-family: var(--display); font-weight: 800; font-size: 20px; margin-bottom: 16px; }
+.story-steps h3 { margin-bottom: 6px; font-size: 21px; }
+.story-steps p { color: var(--muted); }
+.story.pinned .story-grid { display: grid; grid-template-columns: 400px minmax(0, 1fr); gap: 72px; align-items: start; max-width: 960px; margin: 0 auto; }
+.story.pinned .story-stage { display: block; position: sticky; top: calc(50vh - 310px); height: 620px; --w: 270px; perspective: 1400px; }
+.story.pinned .story-steps { display: block; }
+.story.pinned .story-steps li { min-height: 76vh; justify-content: center; padding: 0; background: none; border: 0; box-shadow: none; opacity: 0.3; transition: opacity 0.4s; }
+.story.pinned .story-steps li.on { opacity: 1; }
+.story.pinned .story-steps .phone { display: none; }
+.story.pinned .story-steps h3 { font-size: 40px; font-weight: 800; line-height: 1.05; letter-spacing: -0.035em; margin-bottom: 12px; }
+.story.pinned .story-steps p { font-size: 19px; max-width: 420px; }
+.spin { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateX(6deg) rotateY(calc(var(--step, 0) * 374deg - 14deg)); transition: transform 1s cubic-bezier(0.3, 0.7, 0.2, 1); }
+.story-phone[data-step="1"] { --step: 1; }
+.story-phone[data-step="2"] { --step: 2; }
+.story-phone .phone-front img { position: absolute; inset: 9px; width: calc(100% - 18px); height: calc(100% - 18px); opacity: 0; transition: opacity 0s linear 0.45s; }
+.story-phone[data-step="0"] img:nth-child(1), .story-phone[data-step="1"] img:nth-child(2), .story-phone[data-step="2"] img:nth-child(3) { opacity: 1; }
+
+/* Today and with FixMatch, side by side. */
+.compare-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; perspective: 1600px; }
+.compare-card { border-radius: 24px; padding: 32px; }
+.compare-card h3 { font-size: 24px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 20px; }
+.compare-card ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.compare-card li { display: flex; align-items: flex-start; gap: 12px; margin: 0; min-height: 3.2em; }
+.compare-card .icon { box-sizing: content-box; width: 14px; height: 14px; padding: 5px; margin-top: 2px; border-radius: 50%; stroke-width: 3; }
+.compare-card.before { background: var(--surface); border: 1px solid var(--border); }
+.compare-card.before li, .compare-card.before h3 { color: var(--muted); }
+.compare-card.before .icon { background: var(--fill); color: var(--muted-2); }
+.compare-card.after { background: linear-gradient(180deg, var(--panel), var(--panel-2)); box-shadow: var(--shadow-raised); }
+.compare-card.after li, .compare-card.after h3 { color: var(--on-panel); }
+.compare-card.after li { font-weight: 600; }
+.compare-card.after .icon { background: rgba(255, 255, 255, 0.18); color: #FFFFFF; }
+@media (min-width: 901px) {
+  .compare-card.before { transform: rotateY(5deg); transform-origin: right center; }
+  .compare-card.after { transform: rotateY(-5deg) translateZ(24px); transform-origin: left center; }
+}
+
+/* Motion is an extra: only for those who have not asked for less of it. */
+@keyframes bob { 50% { translate: 0 -12px; } }
+@keyframes hover { 50% { translate: 0 -10px; } }
+@keyframes sway { from { transform: rotateY(-9deg) rotateX(2deg); } to { transform: rotateY(9deg) rotateX(-2deg); } }
+@keyframes panel-in { from { opacity: 0; translate: 0 10px; } }
+@keyframes turn-away { to { transform: rotateX(14deg) rotateY(24deg) scale(0.9); } }
+@keyframes tilt-in { from { opacity: 0.3; transform: perspective(1200px) rotateY(28deg) translateY(56px) scale(0.94); } }
+@keyframes tilt-in-flip { from { opacity: 0.3; transform: perspective(1200px) rotateY(-28deg) translateY(56px) scale(0.94); } }
+@media (prefers-reduced-motion: no-preference) {
+  .float, .chip { animation: bob var(--d, 7s) ease-in-out var(--delay, 0s) infinite; }
+  .phone3d { animation: hover 7s ease-in-out infinite; }
+  .guide-body > input:nth-of-type(1):checked ~ .guide-panels > .guide-panel:nth-child(1), .guide-body > input:nth-of-type(2):checked ~ .guide-panels > .guide-panel:nth-child(2), .guide-body > input:nth-of-type(3):checked ~ .guide-panels > .guide-panel:nth-child(3), .guide-body > input:nth-of-type(4):checked ~ .guide-panels > .guide-panel:nth-child(4), .guide-body > input:nth-of-type(5):checked ~ .guide-panels > .guide-panel:nth-child(5), .guide-body > input:nth-of-type(6):checked ~ .guide-panels > .guide-panel:nth-child(6), .guide-body > input:nth-of-type(7):checked ~ .guide-panels > .guide-panel:nth-child(7), .guide-body > input:nth-of-type(8):checked ~ .guide-panels > .guide-panel:nth-child(8), .guide-body > input:nth-of-type(9):checked ~ .guide-panels > .guide-panel:nth-child(9), .guide-body > input:nth-of-type(10):checked ~ .guide-panels > .guide-panel:nth-child(10) { animation: panel-in 0.3s ease-out; }
+  @media (hover: none) { .scene { animation: sway 9s ease-in-out infinite alternate; } }
+  @supports ((animation-timeline: scroll()) and (animation-range: 0% 100%)) {
+    .tilt { animation: turn-away linear both; animation-timeline: scroll(root block); animation-range: 0 80vh; }
+    .feature .phone { animation: tilt-in linear both; animation-timeline: view(); animation-range: entry 0% cover 38%; }
+    .feature.flip .phone { animation-name: tilt-in-flip; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene, .spin, .guide-trades .trade-tile { transition: none; }
+}
+@media (max-width: 900px) {
+  .stage { --w: 232px; width: 360px; height: 540px; }
+  main.landing > .values { margin-top: -72px; }
+  .values ul, .story-steps, .compare-grid { grid-template-columns: 1fr; }
+  .guide-trades { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .story-steps li { flex-direction: row; align-items: center; justify-content: space-between; }
+  .story-steps .phone { max-width: 180px; flex: none; }
+}
+@media (max-width: 520px) {
+  .stage { --w: 204px; width: 300px; height: 480px; }
+  .float .trade-tile { width: 52px; height: 52px; }
+  .chip { font-size: 13px; padding: 6px 12px; }
+  main.landing > .values { margin: -64px 0 72px; padding: 22px 18px; border-radius: 20px; }
+  .guide-trades { gap: 4px; }
+  .guide-trades label { font-size: 14px; padding: 10px 2px; border-radius: 16px; }
+  .guide-trades .trade-tile { width: 58px; height: 58px; }
+  .guide-panel { padding: 20px 18px 8px; border-radius: 20px; }
+  .guide-panel li { grid-template-columns: minmax(0, 1fr) auto; gap: 8px 12px; }
+  .guide-panel .range { grid-column: 1 / -1; order: 3; }
+  .guide-panel strong { font-size: 18px; }
+  .story-steps li { flex-direction: column; align-items: stretch; padding: 22px; }
+  .story-steps .phone { max-width: 220px; align-self: center; }
+  .compare-card { padding: 24px 20px; }
 }
 `;
 

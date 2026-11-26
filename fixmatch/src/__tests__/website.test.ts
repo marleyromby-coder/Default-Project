@@ -10,7 +10,7 @@ import { CONSENT_VERSION, emptySignup, signupRow } from '@/lib/business-signup';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { buildWebsite, fill, markdownToHtml, summary } = require('../../scripts/build-website');
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const { readJobs } = require('../../scripts/lib/app-data');
+const { readJobPrices, readJobs } = require('../../scripts/lib/app-data');
 
 /** The text as a browser shows it: e-mail addresses are written as character references. */
 const decode = (html: string) => html.replace(/&#(\d+);/g, (_, code: string) => String.fromCodePoint(Number(code)));
@@ -118,6 +118,30 @@ describe('website', () => {
       expect(Object.keys(trades[category.id].jobs)).toEqual(category.jobs.map((j) => j.id));
     }
     expect(trades.tagdaekker.jobs.tagrender).toEqual({ da: 'Rensning af tagrender', en: 'Gutter cleaning' });
+  });
+
+  it('shows the typical job prices of the app in the price guide, and works without JavaScript', () => {
+    const prices = readJobPrices(path.join(__dirname, '../..'));
+    for (const category of CATEGORY_DATA) {
+      expect(prices[category.id]).toEqual(
+        Object.fromEntries(category.jobs.map((j) => [j.id, { unit: j.unit, min: j.min, max: j.max }])),
+      );
+    }
+    const out = fs.mkdtempSync(path.join(os.tmpdir(), 'fixmatch-site-'));
+    buildWebsite(out);
+    const da = fs.readFileSync(path.join(out, 'index.html'), 'utf8');
+    const en = fs.readFileSync(path.join(out, 'en/index.html'), 'utf8');
+    const drain = CATEGORY_DATA[0].jobs[0];
+    const dots = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    expect(da).toContain(`${dots(drain.min)}–${dots(drain.max)} kr.`);
+    expect(en).toContain(`DKK ${dots(drain.min).replace('.', ',')}–${dots(drain.max).replace('.', ',')}`);
+    // One radio button and one panel per trade: CSS shows the chosen trade's panel.
+    expect(da.match(/type="radio" name="guide-trade"/g)).toHaveLength(CATEGORY_DATA.length);
+    expect(da.match(/class="guide-panel"/g)).toHaveLength(CATEGORY_DATA.length);
+    expect(da).toMatch(/Vejledende priser inkl\. moms/);
+    // Motion respects the reader's setting, and every step of "Sådan virker det" has its own picture.
+    expect(da).toContain('prefers-reduced-motion: no-preference');
+    expect(da.match(/data-step-item/g)?.length).toBeGreaterThanOrEqual(3);
   });
 
   it('has a front page with pictures from the app and live numbers from the public views only', () => {
