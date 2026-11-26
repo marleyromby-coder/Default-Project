@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { type ReactNode, useMemo } from 'react';
+import { type ReactNode, useEffect, useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -58,7 +58,7 @@ export default function HomeScreen() {
   const colors = useTheme();
   const scheme = useIsDark() ? 'dark' : 'light';
   const insets = useSafeAreaInsets();
-  const { state, setLocation } = useApp();
+  const { state, setLocation, setStartTrade } = useApp();
   const { country, market, supported, open } = useMarket();
   const origin = state.location.coords;
   const radius = state.filters.maxDistanceKm;
@@ -107,6 +107,15 @@ export default function HomeScreen() {
       return { business: b, score: scored?.score ?? 0, km: distanceKm(origin, b.coords) };
     });
   }, [local, origin, state.priorities]);
+
+  // The trade chosen at the end of the introduction: open its list once, on top of Find.
+  const startTrade = state.startTrade;
+  useEffect(() => {
+    if (!startTrade) return;
+    setStartTrade(undefined);
+    if (getCategory(startTrade)) router.push({ pathname: '/kategori/[id]', params: { id: startTrade } });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startTrade]);
 
   const demo = supported && DATA_MODE === 'demo';
   const demoText = t('Demoversion: virksomhederne er fiktive eksempler, indtil de rigtige har givet samtykke.');
@@ -284,7 +293,18 @@ export default function HomeScreen() {
 
         <Section
           title={t('Hvad koster det typisk?')}
-          subtitle={t('Prisintervaller {tax} fra virksomhederne i appen', { tax: taxNote(market) })}>
+          subtitle={t('Prisintervaller {tax} fra virksomhederne i appen', { tax: taxNote(market) })}
+          trailing={
+            <Tappable
+              onPress={() => router.push('/prisguide')}
+              accessibilityRole="link"
+              accessibilityLabel={t('Se hele prisguiden')}
+              hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}>
+              <AppText variant="subhead" weight="600" tone="brandText" maxFontSizeMultiplier={1.3}>
+                {t('Se alle')}
+              </AppText>
+            </Tappable>
+          }>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.carousel}>
             {POPULAR_JOBS.map(([categoryId, jobId]) => {
               const category = getCategory(categoryId);

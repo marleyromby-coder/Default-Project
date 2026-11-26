@@ -35,10 +35,14 @@ interface Persisted {
   priorities: Priorities;
   favorites: string[];
   compare: string[];
+  /** The first-time tips the user has closed (components/ui/hint.tsx). */
+  hints: string[];
 }
 
 interface State extends Persisted {
   ready: boolean;
+  /** The trade chosen at the end of the introduction: Find opens its list once. */
+  startTrade?: string;
   businesses: Business[];
   filters: Filters;
   /** Free days the businesses marked on the server ("Hvem har tid i dag?"). */
@@ -58,6 +62,8 @@ type Action =
   | { type: 'favorite'; id: string }
   | { type: 'compare'; id: string }
   | { type: 'compare-clear' }
+  | { type: 'hint'; id: string }
+  | { type: 'start-trade'; trade?: string }
   | { type: 'filters'; filters: Filters }
   | { type: 'reset' };
 
@@ -67,6 +73,7 @@ const INITIAL_PERSISTED: Persisted = {
   priorities: DEFAULT_PRIORITIES,
   favorites: [],
   compare: [],
+  hints: [],
 };
 
 /**
@@ -127,6 +134,10 @@ function reducer(state: State, action: Action): State {
     }
     case 'compare-clear':
       return { ...state, compare: [] };
+    case 'hint':
+      return state.hints.includes(action.id) ? state : { ...state, hints: [...state.hints, action.id] };
+    case 'start-trade':
+      return { ...state, startTrade: action.trade };
     case 'filters':
       return { ...state, filters: action.filters };
     case 'reset':
@@ -155,6 +166,7 @@ function sanitize(raw: unknown): Partial<Persisted> {
   if (Array.isArray(value.favorites)) out.favorites = value.favorites.filter((x) => typeof x === 'string');
   if (Array.isArray(value.compare))
     out.compare = value.compare.filter((x) => typeof x === 'string').slice(0, MAX_COMPARE);
+  if (Array.isArray(value.hints)) out.hints = value.hints.filter((x) => typeof x === 'string').slice(0, 50);
   return out;
 }
 
@@ -193,6 +205,10 @@ interface AppContextValue {
   toggleFavorite: (id: string) => void;
   toggleCompare: (id: string) => boolean;
   clearCompare: () => void;
+  /** Closes a first-time tip for good. */
+  dismissHint: (id: string) => void;
+  /** The trade Find should open once, after the introduction. */
+  setStartTrade: (trade?: string) => void;
   setFilters: (filters: Filters) => void;
   /** A business's free days, right after its owner changed them on "Min virksomhed". */
   setAvailability: (businessId: string, days: string[]) => void;
@@ -276,9 +292,10 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       priorities: state.priorities,
       favorites: state.favorites,
       compare: state.compare,
+      hints: state.hints,
     };
     AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(persisted)).catch(() => undefined);
-  }, [state.ready, state.onboarded, state.location, state.priorities, state.favorites, state.compare]);
+  }, [state.ready, state.onboarded, state.location, state.priorities, state.favorites, state.compare, state.hints]);
 
   // Home and lock screen widgets: location, language and saved businesses, with a timeline of
   // opening hours. Refreshed when the app comes back, so the timeline covers the next 12 hours.
@@ -312,6 +329,8 @@ export function AppStateProvider({ children }: PropsWithChildren) {
         return true;
       },
       clearCompare: () => dispatch({ type: 'compare-clear' }),
+      dismissHint: (id) => dispatch({ type: 'hint', id }),
+      setStartTrade: (trade) => dispatch({ type: 'start-trade', trade }),
       setFilters: (filters) => dispatch({ type: 'filters', filters }),
       setAvailability: (businessId, days) =>
         dispatch({ type: 'availability', availability: { ...state.availability, [businessId]: days } }),

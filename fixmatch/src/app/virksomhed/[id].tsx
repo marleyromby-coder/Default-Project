@@ -16,6 +16,7 @@ import { Button, IconButton } from '@/components/ui/button';
 import { Card, CardTitle, Divider } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Icon, type IconName } from '@/components/ui/icon';
+import { Hint } from '@/components/ui/hint';
 import { Notice } from '@/components/ui/notice';
 import { Stars } from '@/components/ui/stars';
 import { Tappable } from '@/components/ui/tappable';
@@ -226,6 +227,16 @@ export default function BusinessScreen() {
               style={styles.notice}
             />
           ) : null}
+
+          <Hint
+            id="business"
+            title={t('Det kan du her')}
+            points={[
+              { icon: 'tag', text: t('Se firmaets egne priser længere nede, før du ringer.') },
+              { icon: 'receipt', text: t('Har du fået et tilbud? Tjek det med Tilbudstjek.') },
+              { icon: 'phone', text: t('Ring direkte nederst – eller gem firmaet med hjertet.') },
+            ]}
+          />
 
           <Card>
             <PriceInsightView

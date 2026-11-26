@@ -79,6 +79,7 @@ export default function MoreScreen() {
         <View style={[styles.sections, column]}>
           {/* The tools, raised onto the panel; the panel's title says where you are. */}
           <ListSection elevation="raised" style={styles.raised}>
+            <ListRow icon="tag" title={t('Prisguide')} onPress={() => router.push('/prisguide')} />
             <ListRow icon="receipt" title={t('Tilbudstjek')} onPress={() => router.push('/tilbudstjek')} />
             <ListRow
               icon="siren"

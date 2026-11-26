@@ -136,6 +136,7 @@ function RootNavigator() {
         />
         <Stack.Screen name="beskriv" options={{ title: t('Beskriv dit problem') }} />
         <Stack.Screen name="tilbudstjek" options={{ title: t('Tilbudstjek') }} />
+        <Stack.Screen name="prisguide" options={{ title: t('Prisguide'), headerLargeTitleEnabled: true }} />
         <Stack.Screen
           name="anmeld"
           options={{

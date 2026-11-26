@@ -10,6 +10,7 @@ import { TradeArt } from '@/components/trade-art';
 import { Button, IconButton } from '@/components/ui/button';
 import { Chip } from '@/components/ui/chip';
 import { EmptyState } from '@/components/ui/empty-state';
+import { Hint } from '@/components/ui/hint';
 import { Icon } from '@/components/ui/icon';
 import { Tappable } from '@/components/ui/tappable';
 import { AppText } from '@/components/ui/text';
@@ -199,9 +200,20 @@ export default function CategoryScreen() {
 
         {job && jobPrice ? (
           <View style={[styles.job, { backgroundColor: colors.surface }]}>
-            <AppText variant="subhead" weight="600">
-              {job.name}
-            </AppText>
+            <View style={styles.jobHead}>
+              <AppText variant="subhead" weight="600" style={styles.flexShrink}>
+                {job.name}
+              </AppText>
+              <Tappable
+                onPress={() => router.push({ pathname: '/prisguide', params: { fag: category.id } })}
+                accessibilityRole="link"
+                accessibilityLabel={t('Skift opgave i prisguiden')}
+                hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}>
+                <AppText variant="footnote" weight="600" tone="brandText" maxFontSizeMultiplier={1.3}>
+                  {t('Skift opgave')}
+                </AppText>
+              </Tappable>
+            </View>
             <AppText variant="footnote" tone="textSecondary">
               {t('Typisk pris her: {priceRange} {tax}. Vejledende – bed om et skriftligt tilbud.', {
                 priceRange: formatPriceRange(jobPrice.min, jobPrice.max, jobPrice.unit, jobPrice.currency),
@@ -209,6 +221,38 @@ export default function CategoryScreen() {
               })}
             </AppText>
           </View>
+        ) : (
+          <Tappable
+            onPress={() => router.push({ pathname: '/prisguide', params: { fag: category.id } })}
+            accessibilityRole="link"
+            accessibilityLabel={t('Prisguide: hvad koster en opgave typisk hos {plural}?', {
+              plural: category.plural.toLowerCase(),
+            })}
+            style={[styles.guide, { backgroundColor: colors.surface }]}>
+            <Icon name="tag" size={16} color={colors.brandText} weight="semibold" />
+            <AppText variant="subhead" weight="600" style={styles.flex}>
+              {t('Hvad koster en opgave typisk?')}
+            </AppText>
+            <AppText variant="footnote" weight="600" tone="brandText" maxFontSizeMultiplier={1.3}>
+              {t('Prisguide')}
+            </AppText>
+            <Icon name="chevronRight" size={12} color={colors.brandText} weight="bold" />
+          </Tappable>
+        )}
+
+        {results.items.length > 0 ? (
+          <Hint
+            id="list"
+            title={t('Sådan læser du listen')}
+            points={[
+              { icon: 'sliders', text: t('Sortér øverst på match, pris, afstand eller anmeldelser.') },
+              { icon: 'tag', text: t('“fra” er firmaets egen timepris {tax}.', { tax: taxNote(market) }) },
+              {
+                icon: 'compare',
+                text: t('Vælg op til {MAX_COMPARE} med Sammenlign, og se dem side om side.', { MAX_COMPARE }),
+              },
+            ]}
+          />
         ) : null}
       </View>
     </View>
@@ -318,6 +362,17 @@ const styles = StyleSheet.create({
   },
   item: { paddingHorizontal: ScreenPadding },
   job: { gap: 2, padding: Spacing.md, borderRadius: Radius.lg, borderCurve: 'continuous' },
+  jobHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: Spacing.md },
+  guide: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+    minHeight: 48,
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.md,
+    borderRadius: Radius.lg,
+    borderCurve: 'continuous',
+  },
   // The chips scroll out to the screen edge, and start in line with the text above.
   chipScroll: { marginHorizontal: -ScreenPadding },
   chips: { gap: Spacing.sm, paddingHorizontal: ScreenPadding },

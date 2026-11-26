@@ -129,7 +129,6 @@ const en: Record<string, string> = {
   Find: 'Find',
   'Den rette håndværker.': 'The right tradesperson.',
   'Til den rette pris.': 'At the right price.',
-  'Find den rette håndværker – hurtigt': 'Find the right tradesperson – fast',
   'Find håndværkere nær dig': 'Find tradespeople near you',
   'Find match': 'Find a match',
   'Skriv, hvad der er galt, eller vælg et fag.': 'Describe what is wrong, or choose a trade.',
@@ -412,8 +411,6 @@ const en: Record<string, string> = {
   'Udskiftning af tag på ældre hus': 'Replacing the roof of an older house',
   'VVS, el, tømrer, murer, mekaniker og flere.': 'Plumbers, electricians, carpenters, bricklayers, mechanics and more.',
   'VVS-installatør monterer rørfittings': 'Plumber fitting pipe fittings',
-  'VVS’er, elektriker, tømrer, murer, mekaniker og flere. Lokale virksomheder samlet ét sted.':
-    'Plumbers, electricians, carpenters, bricklayers, mechanics and more. Local businesses in one place.',
   'Ved ikke': "Don't know",
   'Vejledende priser oplyst af virksomheden {date}. Materialer kan komme oveni. Bed altid om et skriftligt tilbud.':
     'Guide prices given by the business {date}. Materials may come on top. Always ask for a written quote.',
@@ -1604,6 +1601,47 @@ const en: Record<string, string> = {
   høj: 'high',
   'Ud fra midten af timeprisen. Middel er inden for {band} % af den typiske timepris i gruppen.':
     'Based on the middle of the hourly rate. Medium is within {band}% of the typical hourly rate in the group.',
+  'Se hele prisguiden': 'See the whole price guide',
+  'Se alle': 'See all',
+  Prisguide: 'Price guide',
+  'Skift opgave i prisguiden': 'Change job in the price guide',
+  'Skift opgave': 'Change job',
+  'Prisguide: hvad koster en opgave typisk hos {plural}?': 'Price guide: what does a job usually cost at {plural}?',
+  'Hvad koster en opgave typisk?': 'What does a job usually cost?',
+  'Sådan læser du listen': 'How to read the list',
+  'Sortér øverst på match, pris, afstand eller anmeldelser.': 'Sort at the top by match, price, distance or reviews.',
+  '“fra” er firmaets egen timepris {tax}.': '“from” is the business’s own hourly rate {tax}.',
+  'Vælg op til {MAX_COMPARE} med Sammenlign, og se dem side om side.':
+    'Choose up to {MAX_COMPARE} with Compare, and see them side by side.',
+  'Typiske priser {tax} for almindelige opgaver. Vejledende – den endelige pris aftaler du med virksomheden.':
+    'Typical prices {tax} for common jobs. A guide only – you agree the final price with the business.',
+  'Se {plural} nær dig': 'See {plural} near you',
+  'Har du fået et tilbud?': 'Got a quote?',
+  'Tilbudstjek siger, om prisen er lav, normal eller høj.':
+    'Quote check tells you whether the price is low, normal or high.',
+  'Tjek dit tilbud': 'Check your quote',
+  'Håndværkernes og værkstedernes egne priser står fremme, før du tager telefonen.':
+    'What tradespeople and garages charge is shown before you pick up the phone.',
+  '{name}: timepris fra {price}': '{name}: hourly rate from {price}',
+  'Den bygger på pris, afstand og anmeldelser. Du vælger selv, hvad der vejer mest.':
+    'It is based on price, distance and reviews. You choose what matters most.',
+  'Fair pris og direkte kontakt': 'A fair price and direct contact',
+  'Har du fået et tilbud? Se, om prisen er lav, normal eller høj.':
+    'Got a quote? See whether the price is low, normal or high.',
+  'Gratis for dig': 'Free for you',
+  'Du betaler kun virksomheden for arbejdet. Prisen aftaler du direkte med dem.':
+    'You only pay the business for the work, and you agree the price with them directly.',
+  'Hvad skal laves først?': 'What needs doing first?',
+  'Vælg et fag, så viser vi priserne nær {place} med det samme.':
+    'Choose a trade, and we show the prices near {place} right away.',
+  'Se forsiden først': 'See the front page first',
+  'Det kan du her': 'What you can do here',
+  'Se firmaets egne priser længere nede, før du ringer.': 'See the business’s own prices further down before you call.',
+  'Har du fået et tilbud? Tjek det med Tilbudstjek.': 'Got a quote? Check it with Quote check.',
+  'Ring direkte nederst – eller gem firmaet med hjertet.':
+    'Call directly at the bottom – or save the business with the heart.',
+  Forstået: 'Got it',
+  'Forstået. Skjul tippet': 'Got it. Hide the tip',
 };
 
 export default en;
